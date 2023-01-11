@@ -1,0 +1,5 @@
+{
+  "name": "@sctavern/emulator",
+  "main": "src/index.ts",
+  "type": "module"
+}

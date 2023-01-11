@@ -1,0 +1,5 @@
+{
+  "name": "@sctavern/data",
+  "main": "src/index.ts",
+  "type": "module"
+}
