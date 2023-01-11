@@ -141,7 +141,7 @@ export type CardKey =
   | '超负荷'
   | '机械工厂'
 
-export const AllCard = [
+export const AllCard: CardKey[] = [
   '帝国精锐',
   '英雄叉',
   '机械感染',
@@ -285,6 +285,7 @@ export const AllCard = [
 
 export const CardData: Record<CardKey, Card> = {
   帝国精锐: {
+    name: '帝国精锐',
     pinyin: 'dgjr',
     race: 'T',
     level: 4,
@@ -308,6 +309,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   英雄叉: {
+    name: '英雄叉',
     pinyin: 'yxc',
     race: 'P',
     level: 2,
@@ -329,6 +331,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   机械感染: {
+    name: '机械感染',
     pinyin: 'jxgr',
     race: 'Z',
     level: 3,
@@ -353,6 +356,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   死亡之握: {
+    name: '死亡之握',
     pinyin: 'swzw',
     race: 'N',
     level: 6,
@@ -377,6 +381,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   黄昏之翼: {
+    name: '黄昏之翼',
     pinyin: 'hhzy',
     race: 'T',
     level: 3,
@@ -397,6 +402,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   净化之光: {
+    name: '净化之光',
     pinyin: 'jhzg',
     race: 'P',
     level: 5,
@@ -419,6 +425,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   守卫巢穴: {
+    name: '守卫巢穴',
     pinyin: 'swcx',
     race: 'Z',
     level: 4,
@@ -440,6 +447,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   死亡舰队: {
+    name: '死亡舰队',
     pinyin: 'swjd',
     race: 'N',
     level: 6,
@@ -462,6 +470,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   艾尔游骑兵: {
+    name: '艾尔游骑兵',
     pinyin: 'aeyqb',
     race: 'T',
     level: 2,
@@ -488,6 +497,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   生物质发电: {
+    name: '生物质发电',
     pinyin: 'swzfd',
     race: 'P',
     level: 2,
@@ -510,6 +520,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   生化危机: {
+    name: '生化危机',
     pinyin: 'shwj',
     race: 'Z',
     level: 5,
@@ -531,6 +542,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   虚空裂痕: {
+    name: '虚空裂痕',
     pinyin: 'xklh',
     race: 'N',
     level: 5,
@@ -554,6 +566,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   以火治火: {
+    name: '以火治火',
     pinyin: 'yhzh',
     race: 'T',
     level: 3,
@@ -579,6 +592,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   六脉神剑: {
+    name: '六脉神剑',
     pinyin: 'lmsj',
     race: 'P',
     level: 3,
@@ -600,6 +614,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   优质基因: {
+    name: '优质基因',
     pinyin: 'yzjy',
     race: 'Z',
     level: 4,
@@ -622,6 +637,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   埃蒙仆从: {
+    name: '埃蒙仆从',
     pinyin: 'ampc',
     race: 'N',
     level: 4,
@@ -643,6 +659,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   死亡之翼: {
+    name: '死亡之翼',
     pinyin: 'swzy',
     race: 'N',
     level: 2,
@@ -664,6 +681,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   虚空援军: {
+    name: '虚空援军',
     pinyin: 'xkyj',
     race: 'N',
     level: 3,
@@ -688,6 +706,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   深渊行者: {
+    name: '深渊行者',
     pinyin: 'syxz',
     race: 'N',
     level: 4,
@@ -707,6 +726,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   黑暗祭坛: {
+    name: '黑暗祭坛',
     pinyin: 'hajt',
     race: 'N',
     level: 4,
@@ -726,6 +746,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   原始蟑螂: {
+    name: '原始蟑螂',
     pinyin: 'yszl',
     race: 'N',
     level: 1,
@@ -742,6 +763,7 @@ export const CardData: Record<CardKey, Card> = {
     desc: [['供养(1): 原始蟑螂', '供养(1): 原始蟑螂']],
   },
   不死队: {
+    name: '不死队',
     pinyin: 'bsd',
     race: 'N',
     level: 1,
@@ -760,6 +782,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   紧急部署: {
+    name: '紧急部署',
     pinyin: 'jjbs',
     race: 'N',
     level: 2,
@@ -776,6 +799,7 @@ export const CardData: Record<CardKey, Card> = {
     desc: [],
   },
   原始刺蛇: {
+    name: '原始刺蛇',
     pinyin: 'yscs',
     race: 'N',
     level: 2,
@@ -797,6 +821,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   原始异龙: {
+    name: '原始异龙',
     pinyin: 'ysyl',
     race: 'N',
     level: 3,
@@ -821,6 +846,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   虚空大军: {
+    name: '虚空大军',
     pinyin: 'xkdj',
     race: 'N',
     level: 3,
@@ -843,6 +869,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   鲜血猎手: {
+    name: '鲜血猎手',
     pinyin: 'xxls',
     race: 'N',
     level: 3,
@@ -862,6 +889,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   暴掠龙: {
+    name: '暴掠龙',
     pinyin: 'bll',
     race: 'N',
     level: 3,
@@ -883,6 +911,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   适者生存: {
+    name: '适者生存',
     pinyin: 'szsc',
     race: 'N',
     level: 4,
@@ -903,6 +932,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   毁灭者: {
+    name: '毁灭者',
     pinyin: 'hmz',
     race: 'N',
     level: 4,
@@ -923,6 +953,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   原始点火虫: {
+    name: '原始点火虫',
     pinyin: 'ysdhc',
     race: 'N',
     level: 4,
@@ -944,6 +975,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   原始雷兽: {
+    name: '原始雷兽',
     pinyin: 'ysls',
     race: 'N',
     level: 4,
@@ -965,6 +997,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   马拉什: {
+    name: '马拉什',
     pinyin: 'mls',
     race: 'N',
     level: 5,
@@ -985,6 +1018,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   黑暗预兆: {
+    name: '黑暗预兆',
     pinyin: 'hayz',
     race: 'N',
     level: 5,
@@ -1005,6 +1039,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   阿拉纳克: {
+    name: '阿拉纳克',
     pinyin: 'alnk',
     race: 'N',
     level: 5,
@@ -1025,6 +1060,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   天罚行者: {
+    name: '天罚行者',
     pinyin: 'tfxz',
     race: 'N',
     level: 5,
@@ -1049,6 +1085,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   德哈卡: {
+    name: '德哈卡',
     pinyin: 'dhk',
     race: 'N',
     level: 5,
@@ -1074,6 +1111,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   我叫小明: {
+    name: '我叫小明',
     pinyin: 'wjxm',
     race: 'N',
     level: 6,
@@ -1096,6 +1134,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   豆浆油条KT1: {
+    name: '豆浆油条KT1',
     pinyin: 'djytK',
     race: 'N',
     level: 6,
@@ -1118,6 +1157,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   豆浆油条: {
+    name: '豆浆油条',
     pinyin: 'djyt',
     race: 'N',
     level: 6,
@@ -1139,6 +1179,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   战斗号角: {
+    name: '战斗号角',
     pinyin: 'zdhj',
     race: 'N',
     level: 6,
@@ -1160,6 +1201,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   凯瑞甘: {
+    name: '凯瑞甘',
     pinyin: 'krg',
     race: 'N',
     level: 6,
@@ -1169,7 +1211,7 @@ export const CardData: Record<CardKey, Card> = {
     },
     attr: {
       pool: true,
-      darkgold: true,
+      amber: true,
       insert: true,
     },
     belong: 'none',
@@ -1186,6 +1228,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   刀锋女王: {
+    name: '刀锋女王',
     pinyin: 'dfnw',
     race: 'N',
     level: 6,
@@ -1194,7 +1237,7 @@ export const CardData: Record<CardKey, Card> = {
       刀锋女王: 1,
     },
     attr: {
-      darkgold: true,
+      amber: true,
     },
     belong: 'none',
     type: 'normal',
@@ -1206,6 +1249,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   虚空构造体: {
+    name: '虚空构造体',
     pinyin: 'xkgzt',
     race: 'N',
     level: 6,
@@ -1227,6 +1271,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   黄金矿工: {
+    name: '黄金矿工',
     pinyin: 'hjkg',
     race: 'N',
     level: 0,
@@ -1241,6 +1286,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   折跃援军: {
+    name: '折跃援军',
     pinyin: 'zyyj',
     race: 'P',
     level: 1,
@@ -1259,6 +1305,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   发电站: {
+    name: '发电站',
     pinyin: 'fdz',
     race: 'P',
     level: 1,
@@ -1276,6 +1323,7 @@ export const CardData: Record<CardKey, Card> = {
     desc: [],
   },
   供能中心: {
+    name: '供能中心',
     pinyin: 'gnzx',
     race: 'P',
     level: 2,
@@ -1294,6 +1342,7 @@ export const CardData: Record<CardKey, Card> = {
     desc: [['提升酒馆等级时, 获得<1>水晶塔', '提升酒馆等级时, 获得<2>水晶塔']],
   },
   龙骑兵团: {
+    name: '龙骑兵团',
     pinyin: 'lqbt',
     race: 'P',
     level: 2,
@@ -1314,6 +1363,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   万叉奔腾: {
+    name: '万叉奔腾',
     pinyin: 'wcbt',
     race: 'P',
     level: 2,
@@ -1330,6 +1380,7 @@ export const CardData: Record<CardKey, Card> = {
     desc: [['集结(2): 获得<1>狂热者', '集结(2): 获得<2>狂热者']],
   },
   折跃信标: {
+    name: '折跃信标',
     pinyin: 'zyxb',
     race: 'P',
     level: 2,
@@ -1352,6 +1403,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   艾尔之刃: {
+    name: '艾尔之刃',
     pinyin: 'aezr',
     race: 'P',
     level: 3,
@@ -1375,6 +1427,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   折跃部署: {
+    name: '折跃部署',
     pinyin: 'zybs',
     race: 'P',
     level: 3,
@@ -1395,6 +1448,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   暗影卫队: {
+    name: '暗影卫队',
     pinyin: 'aywd',
     race: 'P',
     level: 3,
@@ -1418,6 +1472,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   重回战场: {
+    name: '重回战场',
     pinyin: 'chzc',
     race: 'P',
     level: 3,
@@ -1440,6 +1495,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   折跃攻势: {
+    name: '折跃攻势',
     pinyin: 'zygs',
     race: 'P',
     level: 4,
@@ -1457,6 +1513,7 @@ export const CardData: Record<CardKey, Card> = {
     desc: [['任意卡牌折跃时, 获得<1>追猎者', '任意卡牌折跃时, 获得<2>追猎者']],
   },
   净化者军团: {
+    name: '净化者军团',
     pinyin: 'jhzjt',
     race: 'P',
     level: 4,
@@ -1479,6 +1536,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   凯拉克斯: {
+    name: '凯拉克斯',
     pinyin: 'klks',
     race: 'P',
     level: 4,
@@ -1501,6 +1559,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   虚空舰队: {
+    name: '虚空舰队',
     pinyin: 'xkjd',
     race: 'P',
     level: 4,
@@ -1518,6 +1577,7 @@ export const CardData: Record<CardKey, Card> = {
     desc: [['集结(5): 折跃<1>虚空辉光舰', '集结(5): 折跃<2>虚空辉光舰']],
   },
   势不可挡: {
+    name: '势不可挡',
     pinyin: 'sbkd',
     race: 'P',
     level: 4,
@@ -1541,6 +1601,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   黄金舰队: {
+    name: '黄金舰队',
     pinyin: 'hjjd',
     race: 'P',
     level: 5,
@@ -1562,6 +1623,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   尤尔兰: {
+    name: '尤尔兰',
     pinyin: 'yel',
     race: 'P',
     level: 5,
@@ -1584,6 +1646,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   光复艾尔: {
+    name: '光复艾尔',
     pinyin: 'gfae',
     race: 'P',
     level: 5,
@@ -1605,6 +1668,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   菲尼克斯: {
+    name: '菲尼克斯',
     pinyin: 'fnks',
     race: 'P',
     level: 5,
@@ -1629,6 +1693,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   酒馆后勤处: {
+    name: '酒馆后勤处',
     pinyin: 'jghqc',
     race: 'P',
     level: 6,
@@ -1652,6 +1717,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   净化一切: {
+    name: '净化一切',
     pinyin: 'jhyq',
     race: 'P',
     level: 6,
@@ -1674,6 +1740,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   阿尔达瑞斯: {
+    name: '阿尔达瑞斯',
     pinyin: 'aedrs',
     race: 'P',
     level: 6,
@@ -1694,6 +1761,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   阿塔尼斯: {
+    name: '阿塔尼斯',
     pinyin: 'atns',
     race: 'P',
     level: 6,
@@ -1720,6 +1788,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   死神火车: {
+    name: '死神火车',
     pinyin: 'sshc',
     race: 'T',
     level: 1,
@@ -1742,6 +1811,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   好兄弟: {
+    name: '好兄弟',
     pinyin: 'hxd',
     race: 'T',
     level: 1,
@@ -1761,6 +1831,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   挖宝奇兵: {
+    name: '挖宝奇兵',
     pinyin: 'wbqb',
     race: 'T',
     level: 2,
@@ -1771,7 +1842,7 @@ export const CardData: Record<CardKey, Card> = {
     },
     attr: {
       pool: true,
-      darkgold: true,
+      amber: true,
     },
     belong: 'none',
     type: 'normal',
@@ -1783,6 +1854,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   实验室安保: {
+    name: '实验室安保',
     pinyin: 'sysab',
     race: 'T',
     level: 2,
@@ -1806,6 +1878,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   征兵令: {
+    name: '征兵令',
     pinyin: 'zbl',
     race: 'T',
     level: 2,
@@ -1829,6 +1902,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   恶火小队: {
+    name: '恶火小队',
     pinyin: 'ehxd',
     race: 'T',
     level: 2,
@@ -1852,6 +1926,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   空投地雷: {
+    name: '空投地雷',
     pinyin: 'ktdl',
     race: 'T',
     level: 3,
@@ -1871,6 +1946,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   步兵连队: {
+    name: '步兵连队',
     pinyin: 'bbld',
     race: 'T',
     level: 3,
@@ -1892,6 +1968,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   飙车流: {
+    name: '飙车流',
     pinyin: 'bcl',
     race: 'T',
     level: 3,
@@ -1915,6 +1992,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   科考小队: {
+    name: '科考小队',
     pinyin: 'kkxd',
     race: 'T',
     level: 3,
@@ -1942,6 +2020,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   陆军学院: {
+    name: '陆军学院',
     pinyin: 'ljxy',
     race: 'T',
     level: 4,
@@ -1965,6 +2044,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   空军学院: {
+    name: '空军学院',
     pinyin: 'kjxy',
     race: 'T',
     level: 4,
@@ -1984,6 +2064,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   交叉火力: {
+    name: '交叉火力',
     pinyin: 'jchl',
     race: 'T',
     level: 4,
@@ -2007,6 +2088,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   枪兵坦克: {
+    name: '枪兵坦克',
     pinyin: 'qbtk',
     race: 'T',
     level: 4,
@@ -2029,6 +2111,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   斯台特曼: {
+    name: '斯台特曼',
     pinyin: 'sttm',
     race: 'T',
     level: 4,
@@ -2056,6 +2139,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   护航中队: {
+    name: '护航中队',
     pinyin: 'hhzd',
     race: 'T',
     level: 5,
@@ -2076,6 +2160,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   泰凯斯: {
+    name: '泰凯斯',
     pinyin: 'tks',
     race: 'T',
     level: 5,
@@ -2101,6 +2186,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   外籍军团: {
+    name: '外籍军团',
     pinyin: 'wjjt',
     race: 'T',
     level: 5,
@@ -2125,6 +2211,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   钢铁洪流: {
+    name: '钢铁洪流',
     pinyin: 'gthl',
     race: 'T',
     level: 5,
@@ -2148,6 +2235,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   游骑兵: {
+    name: '游骑兵',
     pinyin: 'yqb',
     race: 'T',
     level: 6,
@@ -2170,6 +2258,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   沃菲尔德: {
+    name: '沃菲尔德',
     pinyin: 'wfed',
     race: 'T',
     level: 6,
@@ -2196,6 +2285,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   帝国舰队: {
+    name: '帝国舰队',
     pinyin: 'dgjd',
     race: 'T',
     level: 6,
@@ -2221,6 +2311,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   虫群先锋: {
+    name: '虫群先锋',
     pinyin: 'cqxf',
     race: 'Z',
     level: 1,
@@ -2237,6 +2328,7 @@ export const CardData: Record<CardKey, Card> = {
     desc: [['每回合结束时, 获得<2>跳虫', '每回合结束时, 获得<4>跳虫']],
   },
   蟑螂小队: {
+    name: '蟑螂小队',
     pinyin: 'zlxd',
     race: 'Z',
     level: 1,
@@ -2259,6 +2351,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   屠猎者: {
+    name: '屠猎者',
     pinyin: 'tlz',
     race: 'Z',
     level: 2,
@@ -2284,6 +2377,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   埋地刺蛇: {
+    name: '埋地刺蛇',
     pinyin: 'mdcs',
     race: 'Z',
     level: 2,
@@ -2300,6 +2394,7 @@ export const CardData: Record<CardKey, Card> = {
     desc: [['出售时, 注卵<3>刺蛇', '出售时, 注卵<6>刺蛇']],
   },
   变异军团: {
+    name: '变异军团',
     pinyin: 'byjt',
     race: 'Z',
     level: 2,
@@ -2320,6 +2415,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   孵化蟑螂: {
+    name: '孵化蟑螂',
     pinyin: 'fhzl',
     race: 'Z',
     level: 2,
@@ -2336,6 +2432,7 @@ export const CardData: Record<CardKey, Card> = {
     desc: [['每回合结束时, 孵化<1>蟑螂', '每回合结束时, 孵化<2>蟑螂']],
   },
   爆虫滚滚: {
+    name: '爆虫滚滚',
     pinyin: 'bcgg',
     race: 'Z',
     level: 3,
@@ -2360,6 +2457,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   飞龙骑脸: {
+    name: '飞龙骑脸',
     pinyin: 'flql',
     race: 'Z',
     level: 3,
@@ -2377,6 +2475,7 @@ export const CardData: Record<CardKey, Card> = {
     desc: [['出售时, 孵化<2>异龙', '出售时, 孵化<4>异龙']],
   },
   凶残巨兽: {
+    name: '凶残巨兽',
     pinyin: 'xcjs',
     race: 'Z',
     level: 3,
@@ -2392,6 +2491,7 @@ export const CardData: Record<CardKey, Card> = {
     desc: [['出售时, 注卵<1>雷兽', '出售时, 注卵<2>雷兽']],
   },
   注卵虫后: {
+    name: '注卵虫后',
     pinyin: 'zlch',
     race: 'Z',
     level: 3,
@@ -2412,6 +2512,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   孵化所: {
+    name: '孵化所',
     pinyin: 'fhs',
     race: 'Z',
     level: 4,
@@ -2435,6 +2536,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   地底伏击: {
+    name: '地底伏击',
     pinyin: 'ddfj',
     race: 'Z',
     level: 4,
@@ -2451,6 +2553,7 @@ export const CardData: Record<CardKey, Card> = {
     desc: [['进场时, 孵化<1>潜伏者', '进场时, 孵化<2>潜伏者']],
   },
   孵化刺蛇: {
+    name: '孵化刺蛇',
     pinyin: 'fhcs',
     race: 'Z',
     level: 4,
@@ -2469,6 +2572,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   感染深渊: {
+    name: '感染深渊',
     pinyin: 'grsy',
     race: 'Z',
     level: 4,
@@ -2494,6 +2598,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   腐化大龙: {
+    name: '腐化大龙',
     pinyin: 'fhdl',
     race: 'Z',
     level: 5,
@@ -2515,6 +2620,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   空中管制: {
+    name: '空中管制',
     pinyin: 'kzgz',
     race: 'Z',
     level: 5,
@@ -2535,6 +2641,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   虫群大军: {
+    name: '虫群大军',
     pinyin: 'cqdj',
     race: 'Z',
     level: 5,
@@ -2556,6 +2663,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   终极进化: {
+    name: '终极进化',
     pinyin: 'zjjh',
     race: 'Z',
     level: 5,
@@ -2577,6 +2685,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   凶猛巨兽: {
+    name: '凶猛巨兽',
     pinyin: 'xmjs',
     race: 'Z',
     level: 6,
@@ -2601,6 +2710,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   扎加拉: {
+    name: '扎加拉',
     pinyin: 'zjl',
     race: 'Z',
     level: 6,
@@ -2622,6 +2732,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   斯托科夫: {
+    name: '斯托科夫',
     pinyin: 'stkf',
     race: 'Z',
     level: 6,
@@ -2642,6 +2753,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   虫卵: {
+    name: '虫卵',
     pinyin: 'cl',
     race: 'Z',
     level: 0,
@@ -2658,6 +2770,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   复制中心: {
+    name: '复制中心',
     pinyin: 'fzzx',
     race: 'T',
     level: 4,
@@ -2680,6 +2793,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   晋升仪式: {
+    name: '晋升仪式',
     pinyin: 'jsys',
     race: 'P',
     level: 4,
@@ -2703,6 +2817,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   基因突变: {
+    name: '基因突变',
     pinyin: 'jytb',
     race: 'Z',
     level: 3,
@@ -2725,6 +2840,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   风暴英雄: {
+    name: '风暴英雄',
     pinyin: 'fbyx',
     race: 'N',
     level: 5,
@@ -2734,7 +2850,7 @@ export const CardData: Record<CardKey, Card> = {
     },
     attr: {
       pool: true,
-      darkgold: true,
+      amber: true,
     },
     belong: 'none',
     type: 'normal',
@@ -2746,6 +2862,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   帝国敢死队: {
+    name: '帝国敢死队',
     pinyin: 'dggsd',
     race: 'T',
     level: 5,
@@ -2766,6 +2883,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   黑暗教长: {
+    name: '黑暗教长',
     pinyin: 'hajc',
     race: 'P',
     level: 5,
@@ -2788,6 +2906,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   雷兽窟: {
+    name: '雷兽窟',
     pinyin: 'lsk',
     race: 'Z',
     level: 3,
@@ -2809,6 +2928,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   混合体巨兽: {
+    name: '混合体巨兽',
     pinyin: 'hhtjs',
     race: 'N',
     level: 6,
@@ -2829,6 +2949,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   母舰核心: {
+    name: '母舰核心',
     pinyin: 'mjhx',
     race: 'P',
     level: 1,
@@ -2851,19 +2972,21 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   观察样本: {
+    name: '观察样本',
     pinyin: 'gcyb',
     race: 'N',
     level: 1,
     pack: '核心',
     unit: {},
     attr: {
-      darkgold: true,
+      amber: true,
     },
     belong: 'none',
     type: 'normal',
     desc: [],
   },
   毒气炮塔: {
+    name: '毒气炮塔',
     pinyin: 'dqpt',
     race: 'N',
     level: 1,
@@ -2883,6 +3006,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   凯达琳巨石: {
+    name: '凯达琳巨石',
     pinyin: 'kdljs',
     race: 'P',
     level: 1,
@@ -2905,6 +3029,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   岗哨机枪: {
+    name: '岗哨机枪',
     pinyin: 'gsjq',
     race: 'N',
     level: 1,
@@ -2927,6 +3052,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   行星要塞: {
+    name: '行星要塞',
     pinyin: 'xxys',
     race: 'N',
     level: 1,
@@ -2949,6 +3075,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   星门: {
+    name: '星门',
     pinyin: 'xm',
     race: 'P',
     level: 1,
@@ -2968,6 +3095,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   自动机炮: {
+    name: '自动机炮',
     pinyin: 'zdjp',
     race: 'Z',
     level: 1,
@@ -2987,6 +3115,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   作战中心: {
+    name: '作战中心',
     pinyin: 'zzzx',
     race: 'T',
     level: 1,
@@ -3006,6 +3135,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   导弹基地: {
+    name: '导弹基地',
     pinyin: 'ddjd',
     race: 'N',
     level: 1,
@@ -3028,6 +3158,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   粒子光炮: {
+    name: '粒子光炮',
     pinyin: 'lzgp',
     race: 'N',
     level: 1,
@@ -3047,6 +3178,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   再生钢: {
+    name: '再生钢',
     pinyin: 'zsg',
     race: 'N',
     level: 1,
@@ -3069,6 +3201,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   不法之徒: {
+    name: '不法之徒',
     pinyin: 'bfzt',
     race: 'T',
     level: 1,
@@ -3082,6 +3215,7 @@ export const CardData: Record<CardKey, Card> = {
     desc: [],
   },
   生化实验室: {
+    name: '生化实验室',
     pinyin: 'shsys',
     race: 'N',
     level: 0,
@@ -3098,6 +3232,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   紧急回收: {
+    name: '紧急回收',
     pinyin: 'jjhs',
     race: 'N',
     level: 0,
@@ -3114,6 +3249,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   星灵科技: {
+    name: '星灵科技',
     pinyin: 'xlkj',
     race: 'N',
     level: 0,
@@ -3130,6 +3266,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   尖端科技: {
+    name: '尖端科技',
     pinyin: 'jdkj',
     race: 'N',
     level: 0,
@@ -3146,6 +3283,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   超负荷: {
+    name: '超负荷',
     pinyin: 'cfh',
     race: 'N',
     level: 0,
@@ -3162,6 +3300,7 @@ export const CardData: Record<CardKey, Card> = {
     ],
   },
   机械工厂: {
+    name: '机械工厂',
     pinyin: 'jxgc',
     race: 'T',
     level: 0,

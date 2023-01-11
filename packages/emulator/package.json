@@ -1,5 +1,15 @@
 {
   "name": "@sctavern/emulator",
   "main": "src/index.ts",
-  "type": "module"
+  "scripts": {
+    "build": "esbuild --platform=node --bundle test/index.ts --outfile=index.js",
+    "run": "npm run build & node index.js"
+  },
+  "dependencies": {
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/uuid": "^9.0.0",
+    "esbuild": "^0.16.16"
+  }
 }

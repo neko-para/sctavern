@@ -1,5 +1,8 @@
+import { CardKey } from './card'
+import { MutationKey } from './mutation'
 import { RoleKey } from './role'
 import { UnitKey } from './unit'
+import { UpgradeKey } from './upgrade'
 
 export type Race = 'T' | 'Z' | 'P' | 'N'
 
@@ -43,6 +46,7 @@ export const enum UnitTag {
 }
 
 export interface Unit {
+  name: UnitKey
   pinyin: string
   race: Race
   value: number
@@ -57,6 +61,7 @@ export interface Unit {
 }
 
 export interface Card {
+  name: CardKey
   pinyin: string
   race: Race
   level: number
@@ -67,24 +72,24 @@ export interface Card {
   attr: {
     pool?: true
     rare?: true
-    darkgold?: true
+    amber?: true
     insert?: true
   }
   belong: CardBelong
   type: CardType
 
   desc: [string, string][]
-
-  banner?: string
 }
 
 export interface Upgrade {
+  name: UpgradeKey
   pinyin: string
   override: boolean
   category: UpgradeCategory
 }
 
 export interface Role {
+  name: RoleKey
   pinyin: string
   ability: string
   desc: string
@@ -92,6 +97,7 @@ export interface Role {
 }
 
 export interface Mutation {
+  name: MutationKey
   pinyin: string
   prevent?: RoleKey
 }
