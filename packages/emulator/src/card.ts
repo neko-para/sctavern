@@ -5,6 +5,8 @@ import {
   UpgradeKey,
   CardKey,
   CardData,
+  Card,
+  UnitData,
 } from '@sctavern/data'
 import { Dispatch } from './dispatch'
 import { GenericListener, InnerMsg } from './events'
@@ -46,11 +48,13 @@ export class CardInstance {
   color: 'normal' | 'amber' | 'gold'
   belong: CardBelong
 
+  occupy: CardKey[]
+
   units: UnitKey[]
   upgrades: UpgradeKey[]
   descs: string[]
 
-  constructor(player: PlayerInstance, card: CardKey) {
+  constructor(player: PlayerInstance, card: Card, setupUnits = true) {
     this.$ref$Player = player
     this.config = {
       MaxUnit: player.config.MaxUnitPerCard,
@@ -58,17 +62,19 @@ export class CardInstance {
     }
     this.attrib = new Attribute()
 
-    const cardt = CardData[card]
+    this.name = card.name
+    this.race = card.race
+    this.level = card.level
+    this.color = card.attr.amber ? 'amber' : 'normal'
+    this.belong = card.belong
 
-    this.name = card
-    this.race = cardt.race
-    this.level = cardt.level
-    this.color = cardt.attr.amber ? 'amber' : 'normal'
-    this.belong = cardt.belong
+    this.occupy = []
 
-    this.units = (Object.keys(cardt.unit) as UnitKey[])
-      .map(u => rep(u, cardt.unit[u] as number))
-      .flat()
+    this.units = setupUnits
+      ? (Object.keys(card.unit) as UnitKey[])
+          .map(u => rep(u, card.unit[u] as number))
+          .flat()
+      : []
     this.upgrades = []
     this.descs = []
   }
@@ -130,5 +136,30 @@ export class CardInstance {
     return idx === -1
       ? false
       : (this.units[idx] as '反应堆' | '科技实验室' | '高级科技实验室')
+  }
+
+  add_desc(d: string) {
+    this.descs.push(d)
+    const ds = DescriptorTable[d]
+    if (ds.config?.init) {
+      for (const k in ds.config.init) {
+        this.attrib.alter(k, ds.config.init[k][this.isg() ? 1 : 0])
+      }
+    }
+  }
+
+  clear_desc() {
+    for (const d of this.descs) {
+      const ds = DescriptorTable[d]
+      if (ds.config?.deinit) {
+        for (const k in ds.config.deinit) {
+          this.attrib.alter(k, ds.config.deinit[k][0])
+        }
+      }
+    }
+  }
+
+  value() {
+    return this.units.map(u => UnitData[u].value).reduce((a, b) => a + b, 0)
   }
 }

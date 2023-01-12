@@ -41,7 +41,8 @@ export class Pool {
       const ck = k as CardKey
       const card = CardData[ck]
 
-      if (pred(card)) {
+      // if (pred(card) && Math.random() > 0.5) {
+      if (pred(card) && card.level <= 1 && card.race === 'T') {
         if (unique) {
           f.push(card)
           mf.push(...rep(card, (this.heap[ck] || 1) - 1))

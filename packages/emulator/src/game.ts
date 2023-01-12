@@ -1,7 +1,7 @@
 import { InnerMsg } from './events'
 import { PlayerInstance } from './player'
 import { Pool } from './pool'
-import { ClientViewData, GameConfig } from './types'
+import { ClientViewData, GameConfig, PresentAction } from './types'
 import { rep, dup } from './utils'
 import DescriptorTable from './descriptor'
 import { Attribute } from './attrib'
@@ -79,7 +79,7 @@ export class GameInstance {
 
       round: this.round,
 
-      player: this.player.map(p => {
+      player: this.player.map((p, ip) => {
         return p
           ? {
               config: dup(p.config),
@@ -106,47 +106,200 @@ export class GameInstance {
                 enhance: p.role.enhance,
               },
 
-              store: p.store.map(s => {
-                return s
-                  ? {
-                      card: s.card,
-                      special: s.special,
-                      actions: [],
-                    }
-                  : null
+              action: [
+                {
+                  action: 'upgrade',
+                  enable: p.can_tavern_upgrade() && p.status === 'normal',
+                  msg: {
+                    msg: '$upgrade',
+                    player: ip,
+                  },
+                },
+                {
+                  action: 'refresh',
+                  enable: p.can_refresh() && p.status === 'normal',
+                  msg: {
+                    msg: '$refresh',
+                    player: ip,
+                  },
+                },
+                {
+                  action: p.locked ? 'unlock' : 'lock',
+                  enable: p.status === 'normal',
+                  msg: {
+                    msg: p.locked ? '$unlock' : '$lock',
+                    player: ip,
+                  },
+                },
+                {
+                  action: 'finish',
+                  enable: p.status === 'normal',
+                  msg: {
+                    msg: '$finish',
+                    player: ip,
+                  },
+                },
+                {
+                  action: 'ability',
+                  enable: p.role.enable && p.status === 'normal',
+                  msg: {
+                    msg: '$ability',
+                    player: ip,
+                  },
+                },
+              ],
+              store: p.store.map((s, i) => {
+                if (!s) {
+                  return null
+                }
+                const action = p.can_combine(s.card) ? 'combine' : 'enter'
+                return {
+                  card: s.card,
+                  special: s.special,
+                  actions: [
+                    {
+                      action,
+                      enable:
+                        p.can_buy(s.card, action, i) && p.status === 'normal',
+                      msg: {
+                        msg: '$action',
+                        player: ip,
+                        action,
+                        area: 'store',
+                        place: i,
+                      },
+                    },
+                    {
+                      action: 'stage',
+                      enable:
+                        p.can_buy(s.card, 'stage', i) &&
+                        p.can_stage() &&
+                        p.status === 'normal',
+                      msg: {
+                        msg: '$action',
+                        player: ip,
+                        action: 'stage',
+                        area: 'store',
+                        place: i,
+                      },
+                    },
+                  ],
+                }
               }),
-              hand: p.hand.map(h => {
+              hand: p.hand.map((h, i) => {
+                if (!h) {
+                  return null
+                }
+                const action = p.can_combine(h.card) ? 'combine' : 'enter'
                 return h
                   ? {
                       card: h.card,
-                      actions: [],
+                      actions: [
+                        {
+                          action,
+                          enable:
+                            p.can_buy(h.card, action, i) &&
+                            p.status === 'normal',
+                          msg: {
+                            msg: '$action',
+                            player: ip,
+                            action,
+                            area: 'hand',
+                            place: i,
+                          },
+                        },
+                        {
+                          action: 'sell',
+                          enable: p.status === 'normal',
+                          msg: {
+                            msg: '$action',
+                            player: ip,
+                            action: 'sell',
+                            area: 'hand',
+                            place: i,
+                          },
+                        },
+                      ],
                     }
                   : null
               }),
-              present: p.present.map(p => {
-                return p
-                  ? {
-                      card: {
-                        config: dup(p.card.config),
-                        name: p.card.name,
-                        race: p.card.race,
-                        level: p.card.level,
-                        color: p.card.color,
-                        belong: p.card.belong,
-                        units: dup(p.card.units),
-                        upgrades: dup(p.card.upgrades),
-                        descs: p.card.descs.map(
-                          key =>
-                            DescriptorTable[key].text?.[p.card.isg() ? 1 : 0] ||
-                            `未知描述 ${key}`
-                        ),
-                        notes: p.card.descs
-                          .map(key => DescriptorTable[key].note?.(p.card) || [])
-                          .flat(),
+              present: p.present.map((pr, i) => {
+                const acts: PresentAction[] = []
+                if (p.status === 'insert') {
+                  acts.push({
+                    action: 'insert',
+                    enable: true,
+                    msg: {
+                      msg: '$choice',
+                      player: ip,
+                      category: 'insert',
+                      place: i,
+                    },
+                  })
+                } else if (p.status === 'deploy') {
+                  acts.push({
+                    action: 'deploy',
+                    enable: true,
+                    msg: {
+                      msg: '$choice',
+                      player: ip,
+                      category: 'deploy',
+                      place: i,
+                    },
+                  })
+                } else if (p.status === 'normal') {
+                  if (pr) {
+                    acts.push({
+                      action: 'upgrade',
+                      enable: p.can_pres_upgrade(pr.card),
+                      msg: {
+                        msg: '$action',
+                        player: ip,
+                        action: 'upgrade',
+                        area: 'present',
+                        place: i,
                       },
-                      actions: [],
-                    }
-                  : null
+                    })
+                    acts.push({
+                      action: 'sell',
+                      enable: true,
+                      msg: {
+                        msg: '$action',
+                        player: ip,
+                        action: 'sell',
+                        area: 'present',
+                        place: i,
+                      },
+                    })
+                  }
+                }
+                return {
+                  card: pr
+                    ? {
+                        config: dup(pr.card.config),
+                        name: pr.card.name,
+                        race: pr.card.race,
+                        level: pr.card.level,
+                        color: pr.card.color,
+                        belong: pr.card.belong,
+                        units: dup(pr.card.units),
+                        upgrades: dup(pr.card.upgrades),
+                        descs: pr.card.descs.map(
+                          key =>
+                            DescriptorTable[key].text?.[
+                              pr.card.isg() ? 1 : 0
+                            ] || `未知描述 ${key}`
+                        ),
+                        notes: pr.card.descs
+                          .map(
+                            key => DescriptorTable[key].note?.(pr.card) || []
+                          )
+                          .flat(),
+                        value: pr.card.value(),
+                      }
+                    : null,
+                  actions: acts,
+                }
               }),
             }
           : null
@@ -160,14 +313,33 @@ export class GameInstance {
   }
 
   start() {
-    this.round = 1
+    this.round = 0
+    this.roundStart()
+  }
+
+  roundEnd() {
+    this.post({
+      msg: 'round-end',
+      round: this.round,
+    })
+    this.post({
+      msg: 'round-leave',
+      round: this.round,
+    })
+    setTimeout(() => {
+      this.roundStart()
+    }, 0)
+  }
+
+  roundStart() {
+    this.round += 1
     this.post({
       msg: 'round-start',
-      round: 1,
+      round: this.round,
     })
     this.post({
       msg: 'round-enter',
-      round: 1,
+      round: this.round,
     })
   }
 }

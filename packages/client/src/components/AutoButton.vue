@@ -5,7 +5,7 @@ const mobile = useMobileStore()
 withDefaults(
   defineProps<{
     variant?: 'flat' | 'elevated' | 'tonal' | 'outlined' | 'text' | 'plain'
-    accelerator: string | null
+    accelerator?: string | null
   }>(),
   {
     variant: 'elevated',
@@ -15,7 +15,11 @@ withDefaults(
 </script>
 
 <template>
-  <v-btn class="auto-button" :size="mobile.isMobile ? 'small' : 'default'">
+  <v-btn
+    class="auto-button"
+    :variant="variant"
+    :size="mobile.isMobile ? 'x-small' : 'large'"
+  >
     <span :_acc="accelerator ? `[${accelerator}]` : ''">
       <slot></slot>
     </span>
@@ -25,7 +29,7 @@ withDefaults(
 <style>
 @media (min-height: 600px) {
   .auto-button > span ::after {
-    content: attr(_acc);
+    /* content: attr(_acc); */
   }
 }
 </style>

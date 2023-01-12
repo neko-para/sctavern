@@ -26,12 +26,12 @@ export type InputMsg = ApplyKey<
     }
   | {
       msg: '$select'
-      choice: number
+      place: number
       area: GameArea
     }
   | {
       msg: '$choice'
-      choice: number
+      place: number
       category: 'insert' | 'discover' | 'deploy'
     }
   | ApplyKey<
@@ -49,7 +49,7 @@ export type InputMsg = ApplyKey<
         },
       {
         msg: '$action'
-        choice: number
+        place: number
       }
     >
   | ApplyKey<

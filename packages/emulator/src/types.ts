@@ -9,16 +9,34 @@ import type {
   CardBelong,
 } from '@sctavern/data'
 import { CardInstance } from './card'
-import { SpecificListener } from './events'
+import { InnerMsg, SpecificListener } from './events'
 import { PlayerInstance } from './player'
 
 export type DistributiveOmit<T, K extends keyof T> = T extends unknown
   ? Omit<T, K>
   : never
 
-export interface Action {
-  name: string
-  accelerator: string
+interface Action {
+  enable: boolean
+  msg: InnerMsg
+}
+
+export interface GlobalAction extends Action {
+  action: 'upgrade' | 'refresh' | 'lock' | 'unlock' | 'finish' | 'ability'
+}
+
+export interface StoreAction extends Action {
+  action: 'enter' | 'combine' | 'stage'
+  enable: boolean
+}
+
+export interface HandAction extends Action {
+  action: 'enter' | 'combine' | 'sell'
+  enable: boolean
+}
+
+export interface PresentAction extends Action {
+  action: 'sell' | 'upgrade' | 'insert' | 'deploy'
   enable: boolean
 }
 
@@ -98,16 +116,17 @@ export interface ClientViewData {
       enhance: boolean
     }
 
+    action: GlobalAction[]
     store: ({
       card: CardKey
       special: boolean
-      actions: Action[]
+      actions: StoreAction[]
     } | null)[]
     hand: ({
       card: CardKey
-      actions: Action[]
+      actions: HandAction[]
     } | null)[]
-    present: ({
+    present: {
       card: {
         config: CardConfig
 
@@ -121,9 +140,11 @@ export interface ClientViewData {
         upgrades: UpgradeKey[]
         descs: string[]
         notes: string[]
-      }
-      actions: Action[]
-    } | null)[]
+
+        value: number
+      } | null
+      actions: PresentAction[]
+    }[]
   } | null)[]
 }
 
@@ -157,6 +178,23 @@ export interface RoleInstance {
 export interface RoleImpl {
   listener: SpecificListener<PlayerInstance, RoleInstance>
 
-  refresh_cost?: (this: RoleInstance, player: PlayerInstance) => number
-  refreshed?: (this: RoleInstance, player: PlayerInstance) => void
+  refresh_cost: (this: RoleInstance, player: PlayerInstance) => number
+  refreshed: (this: RoleInstance, player: PlayerInstance) => void
+
+  buy_cost: (
+    this: RoleInstance,
+    player: PlayerInstance,
+    card: CardKey,
+    act: 'enter' | 'combine' | 'stage',
+    place: number
+  ) => number
+  bought: (
+    this: RoleInstance,
+    player: PlayerInstance,
+    card: CardKey,
+    act: 'enter' | 'combine' | 'stage',
+    place: number
+  ) => void
+
+  ability: (this: RoleInstance, player: PlayerInstance) => void
 }

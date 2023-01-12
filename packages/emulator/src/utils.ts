@@ -17,3 +17,7 @@ export function dup<T>(v: T): T {
     return v
   }
 }
+
+export function notNull<T>(v: T | null): v is T {
+  return !!v
+}

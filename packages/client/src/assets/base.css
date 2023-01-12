@@ -21,6 +21,13 @@
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
 }
 
+:root {
+  --color-terran: rgb(41, 90, 145);
+  --color-zerg: rgb(136, 41, 145);
+  --color-protoss: rgb(222, 201, 62);
+  --color-nuetral: rgb(100, 100, 100);
+}
+
 /* semantic color variables for this project */
 :root {
   --color-background: var(--vt-c-white);

@@ -1,4 +1,10 @@
-import { RoleKey, CardKey, RoleData, CardData } from '@sctavern/data'
+import {
+  RoleKey,
+  CardKey,
+  RoleData,
+  CardData,
+  UpgradeData,
+} from '@sctavern/data'
 import { CardInstance } from './card'
 import { Dispatch } from './dispatch'
 import { InnerMsg, GenericListener } from './events'
@@ -10,7 +16,7 @@ import {
   DistributiveOmit,
   RoleInstance,
 } from './types'
-import { rep } from './utils'
+import { notNull, rep } from './utils'
 import RoleTable from './role'
 import { Attribute } from './attrib'
 
@@ -38,16 +44,18 @@ const playerBind: GenericListener<PlayerInstance> = {
 
     this.role_refreshed()
   },
-  /*
   $finish: function () {
-    this.doned = true
-    this.game.add_done()
+    if (this.status === 'normal') {
+      this.status = 'finish'
+      // TODO: Notify game
+      this.$ref$Game.roundEnd()
+    }
   },
   $ability: function () {
-    if (!this.ability.enable) {
+    if (!this.role.enable) {
       return
     }
-    this.role.ability()
+    this.role_impl().ability.call(this.role, this)
   },
   $lock: function () {
     this.locked = true
@@ -55,29 +63,30 @@ const playerBind: GenericListener<PlayerInstance> = {
   $unlock: function () {
     this.locked = false
   },
-  $select: function ({ area, choice }) {
+  $select: function ({ area, place }) {
     this.selected = {
       area,
-      choice,
-    }
-    this.postClient({
-      msg: 'selected',
-      area,
-      choice,
-    })
-  },
-  $choice: function ({ category, choice }) {
-    const r = this.resolves[category]
-    if (r) {
-      this.resolves[category] = null
-      r(choice)
+      place,
     }
   },
-  $action: function ({ area, action, choice }) {
+  $choice: function ({ category, place }) {
+    switch (category) {
+      case 'insert':
+        if (!this.insertCard) {
+          return
+        }
+        this.status = 'normal'
+        this.enter(this.insertCard, place)
+        break
+      default:
+        return
+    }
+  },
+  $action: function ({ area, action, place }) {
     switch (area) {
       case 'store': {
-        const ck = this.store[choice]
-        if (!ck || !this.can_buy(ck, action, choice)) {
+        const ck = this.store[place]?.card
+        if (!ck || !this.can_buy(ck, action, place)) {
           return
         }
         switch (action) {
@@ -97,29 +106,37 @@ const playerBind: GenericListener<PlayerInstance> = {
             }
             break
         }
-        this.mineral -= this.role.buy_cost(ck, action, choice)
+        this.mineral -= this.role_impl().buy_cost.call(
+          this.role,
+          this,
+          ck,
+          action,
+          place
+        )
 
         switch (action) {
           case 'enter':
-            this.enter(getCard(ck))
+            this.require_enter(ck)
             break
           case 'combine':
-            this.combine(getCard(ck))
+            this.combine(ck)
             break
           case 'stage':
-            this.hand[this.hand.findIndex(v => v === null)] = ck
+            this.hand[this.hand.findIndex(v => !v)] = {
+              card: ck,
+            }
             break
         }
 
-        this.store[choice] = null
+        this.store[place] = null
 
         if (action !== 'combine') {
-          this.role.bought(choice)
+          this.role_impl().bought.call(this.role, this, ck, action, place)
         }
         break
       }
       case 'hand': {
-        const ck = this.hand[choice]
+        const ck = this.hand[place]?.card
         if (!ck) {
           return
         }
@@ -136,17 +153,17 @@ const playerBind: GenericListener<PlayerInstance> = {
             break
         }
 
-        this.hand[choice] = null
+        this.hand[place] = null
 
         switch (action) {
           case 'enter':
-            this.enter(getCard(ck))
+            this.enter(ck)
             break
           case 'combine':
-            this.combine(getCard(ck))
+            this.combine(ck)
             break
           case 'sell':
-            if (getCard(ck).attr.type !== 'support') {
+            if (CardData[ck].type !== 'support') {
               this.obtain_resource({
                 mineral: 1,
               })
@@ -156,7 +173,7 @@ const playerBind: GenericListener<PlayerInstance> = {
         break
       }
       case 'present': {
-        const c = this.present[choice]
+        const c = this.present[place]?.card
         if (!c) {
           return
         }
@@ -165,13 +182,10 @@ const playerBind: GenericListener<PlayerInstance> = {
             this.sell(c)
             break
           case 'upgrade': {
-            if (!this.can_pres_upgrade(c.data)) {
+            if (!this.can_pres_upgrade(c)) {
               return
             }
-
-            if (c.data.upgrades.length >= this.config.MaxUpgradePerCard) {
-              return
-            }
+            /*
             const comm: Upgrade[] = [],
               spec: Upgrade[] = []
             AllUpgrade.filter(u => !c.data.upgrades.includes(u))
@@ -227,6 +241,7 @@ const playerBind: GenericListener<PlayerInstance> = {
                 target: c,
               })
             }
+            */
             break
           }
         }
@@ -234,6 +249,7 @@ const playerBind: GenericListener<PlayerInstance> = {
       }
     }
   },
+  /*
   $cheat: async msg => {
     switch (msg.type) {
       case 'card':
@@ -287,6 +303,12 @@ const playerBind: GenericListener<PlayerInstance> = {
     this.locked = false
     this.fill_store()
   },
+  'round-leave': function () {
+    if (this.status !== 'finish') {
+      return
+    }
+    this.status = 'middle'
+  },
   /*
   'card-selled': function ({ target }) {
     if (target.data.race === 'N') {
@@ -311,6 +333,8 @@ export class PlayerInstance {
   upgrade_cost: number
 
   status: PlayerStatus
+
+  insertCard: CardKey | null
 
   mineral: number
   mineral_max: number
@@ -343,7 +367,7 @@ export class PlayerInstance {
       MaxUnitPerCard: 200,
       MaxUpgradePerCard: 5,
 
-      AlwaysInsert: false,
+      AlwaysInsert: true,
       StoreCount: [0, 3, 4, 4, 5, 5, 6],
       TavernUpgrade: [0, 5, 7, 8, 9, 11, 0],
 
@@ -358,6 +382,8 @@ export class PlayerInstance {
     this.upgrade_cost = 5 + 1
 
     this.status = 'middle'
+
+    this.insertCard = null
 
     this.mineral = 0
     this.mineral_max = 3 - 1
@@ -457,11 +483,207 @@ export class PlayerInstance {
     }
   }
 
+  role_impl() {
+    return RoleTable[this.role.name]
+  }
+
   role_refresh_cost() {
-    return RoleTable[this.role.name].refresh_cost?.call(this.role, this) || 1
+    return this.role_impl().refresh_cost.call(this.role, this) || 1
   }
 
   role_refreshed() {
-    RoleTable[this.role.name].refreshed?.call(this.role, this)
+    this.role_impl().refreshed.call(this.role, this)
+  }
+
+  locate_combine_target(card: CardKey) {
+    return this.present
+      .filter(notNull)
+      .map(c => c.card)
+      .filter(c => c.name === card && c.color === 'normal')
+      .slice(0, 2)
+  }
+
+  can_buy(card: CardKey, action: 'enter' | 'combine' | 'stage', place: number) {
+    return (
+      this.mineral >=
+      this.role_impl().buy_cost.call(this.role, this, card, action, place)
+    )
+  }
+
+  can_enter(card: CardKey) {
+    const c = CardData[card]
+    if (c.type === 'support') {
+      return this.present.filter(x => x).length > 0
+    } else {
+      return this.present.filter(x => !x).length > 0
+    }
+  }
+
+  can_combine(card: CardKey) {
+    return this.locate_combine_target(card).length === 2
+  }
+
+  can_stage() {
+    return this.hand.filter(x => !x).length > 0
+  }
+
+  can_pres_upgrade(card: CardInstance) {
+    return card.upgrades.length < card.config.MaxUpgrade && this.gas >= 2
+  }
+
+  can_tavern_upgrade() {
+    return this.level < 6 && this.mineral >= this.upgrade_cost
+  }
+
+  can_refresh() {
+    return this.mineral >= this.role_impl().refresh_cost.call(this.role, this)
+  }
+
+  enter_insert(card: CardKey) {
+    if (this.status !== 'normal') {
+      return
+    }
+    this.status = 'insert'
+    this.insertCard = card
+  }
+
+  require_enter(card: CardKey) {
+    const cd = CardData[card]
+    if (this.config.AlwaysInsert || cd.attr.insert) {
+      this.enter_insert(card)
+    } else {
+      this.enter(card)
+    }
+  }
+
+  enter(card: CardKey, place = -1) {
+    if (place === -1) {
+      place = this.present.findIndex(x => !x)
+      if (place === -1) {
+        return false
+      }
+    }
+    if (this.present[place]) {
+      const rp = this.present.indexOf(null, place + 1)
+      if (rp === -1) {
+        const lp = this.present.lastIndexOf(null)
+        this.present.splice(lp, 1)
+        this.present.splice(place, 0, null)
+      } else {
+        this.present.splice(rp, 1)
+        this.present.splice(place, 0, null)
+      }
+    }
+    const cd = CardData[card]
+    const ci = new CardInstance(this, cd)
+    if (cd.attr.pool) {
+      ci.occupy.push(card)
+    }
+    this.present[place] = {
+      card: ci,
+    }
+    cd.desc
+      .map((d, i) => `${card}${i}`)
+      .forEach(d => {
+        ci.add_desc(d)
+      })
+
+    this.post({
+      msg: 'card-entered',
+      target: place,
+    })
+
+    ci.post({
+      msg: 'post-enter',
+    })
+
+    return ci
+  }
+
+  combine(card: CardKey) {
+    const target = this.locate_combine_target(card)
+    if (target.length < 2) {
+      return false
+    }
+
+    const cd = CardData[card]
+    const ci = new CardInstance(this, cd, false)
+    ci.config = {
+      MaxUnit: Math.max(target[0].config.MaxUnit, target[1].config.MaxUnit),
+      MaxUpgrade: Math.max(
+        target[0].config.MaxUpgrade,
+        target[1].config.MaxUpgrade
+      ),
+    }
+    ci.color = 'gold'
+    ci.occupy = [...target[0].occupy, ...target[1].occupy]
+    ci.units = [...target[0].units, ...target[1].units].slice(
+      0,
+      ci.config.MaxUnit
+    )
+    ci.upgrades = [
+      ...target[0].upgrades,
+      ...target[1].upgrades.filter(u => {
+        return !target[0].upgrades.includes(u) || UpgradeData[u].override
+      }),
+    ]
+    if (cd.attr.pool) {
+      ci.occupy.push(card)
+    }
+    this.present[target[0].index()] = {
+      card: ci,
+    }
+    this.present[target[1].index()] = null
+    cd.desc
+      .map((d, i) => `${card}${i}`)
+      .forEach(d => {
+        ci.add_desc(d)
+      })
+
+    this.post({
+      msg: 'card-combined',
+      target: ci.index(),
+    })
+
+    ci.post({
+      msg: 'post-enter',
+    })
+
+    // TODO: reward
+
+    return ci
+  }
+
+  sell(ci: CardInstance) {
+    const pos = ci.index()
+    this.present[pos] = null
+    this.present.push({ card: ci })
+
+    const doPostEffect = ci.level > 0 || ci.name === '虫卵'
+    // const dark = ci.level >= 4 ? 2 : 1
+    if (doPostEffect) {
+      ci.post({
+        msg: 'post-sell',
+        pos,
+      })
+    }
+    ci.clear_desc()
+    this.$ref$Game.pool.drop(ci.occupy.map(c => CardData[c]))
+
+    if (doPostEffect) {
+      this.post({
+        msg: 'card-selled',
+        target: ci.index(), // 7, aka 6 + 1
+        // really need pos?
+      })
+      this.obtain_resource({
+        mineral: 1,
+      })
+      if (ci.name !== '虫卵') {
+        // gain darkness
+      }
+    }
+
+    this.present.pop()
   }
 }

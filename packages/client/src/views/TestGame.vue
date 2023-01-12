@@ -22,5 +22,9 @@ Watch(game, s => {
 </script>
 
 <template>
-  <game-instance-vue :state="state.state" :player="0"></game-instance-vue>
+  <game-instance-vue
+    :state="state.state"
+    :game="game"
+    :player="0"
+  ></game-instance-vue>
 </template>
