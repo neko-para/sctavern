@@ -79,7 +79,7 @@ const tr = computed(() => ({
         <div class="StoreContainer">
           <div>
             <store-item
-              class="ml-4"
+              class="ml-4 mt-1"
               v-for="(s, i) in state.player[player]?.store.slice(0, 3) || []"
               :key="`Store${i}`"
               :state="state"

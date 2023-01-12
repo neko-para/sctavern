@@ -713,10 +713,28 @@ export class PlayerInstance {
     }
     ci.color = 'gold'
     ci.occupy = [...target[0].occupy, ...target[1].occupy]
-    ci.units = [...target[0].units, ...target[1].units].slice(
-      0,
-      ci.config.MaxUnit
-    )
+    const i1 = target[0].infr()
+    const i2 = target[1].infr()
+    if (ci.race === 'T' && i1 && i2) {
+      if (i2 === '高级科技实验室') {
+        ci.units = [
+          ...target[0].units.filter(
+            u => !['反应堆', '科技实验室', '高级科技实验室'].includes(u),
+            ...target[1].units
+          ),
+        ]
+      } else {
+        ci.units = [
+          ...target[0].units,
+          ...target[1].units.filter(
+            u => !['反应堆', '科技实验室', '高级科技实验室'].includes(u)
+          ),
+        ]
+      }
+    } else {
+      ci.units = [...target[0].units, ...target[1].units]
+    }
+    ci.units = ci.units.slice(0, ci.config.MaxUnit)
     ci.upgrades = [
       ...target[0].upgrades,
       ...target[1].upgrades.filter(u => {

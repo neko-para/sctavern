@@ -24,7 +24,10 @@ const tr = {
 </script>
 
 <template>
-  <v-card class="d-flex flex-column align-self-start KeyCard">
+  <v-card
+    class="d-flex flex-column align-self-start KeyCard"
+    :color="item && props.state.player[props.player]?.locked ? 'cyan' : ''"
+  >
     <template v-if="item">
       <div class="d-flex">
         <race-icon :race="CardData[item.card].race"></race-icon>
