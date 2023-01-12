@@ -5,6 +5,7 @@ import {
   CardData,
   UpgradeData,
   Card,
+  Race,
 } from '@sctavern/data'
 import { CardInstance } from './card'
 import { Dispatch } from './dispatch'
@@ -20,6 +21,7 @@ import {
   DiscoverItem,
 } from './types'
 import { notNull, rep } from './utils'
+import DescriptorTable from './descriptor'
 import RoleTable from './role'
 import { Attribute } from './attrib'
 import { v4 as uuidv4 } from 'uuid'
@@ -496,6 +498,44 @@ export class PlayerInstance {
         }
       })
     }
+  }
+
+  check_unique_active(key: string, place: number) {
+    const d = DescriptorTable[key]
+    if (d.config?.unique) {
+      const pre = (
+        this.present
+          .map((c, i) => ({
+            card: c?.card || null,
+            pos: i,
+          }))
+          .filter(c => c.card) as { card: CardInstance; pos: number }[]
+      ).filter(c => c.card.descs.includes(key))
+      if (d.config.unique === 'normal') {
+        const cp = {
+          normal: 1,
+          amber: 1,
+          gold: 0,
+        }
+        pre.sort((a, b) => {
+          if (cp[a.card.color] !== cp[b.card.color]) {
+            return cp[a.card.color] - cp[b.card.color]
+          } else {
+            return a.pos - b.pos
+          }
+        })
+      }
+      return pre.length > 0 && pre[0].pos === place
+    } else {
+      return true
+    }
+  }
+
+  all_of(race: Race) {
+    return this.present
+      .filter(notNull)
+      .map(c => c.card)
+      .filter(c => c.race === race)
   }
 
   fill_store() {

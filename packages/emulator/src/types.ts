@@ -184,7 +184,7 @@ export interface Descriptor {
 
   listener: SpecificListener<CardInstance, Descriptor>
   text?: [string, string]
-  note?: (card: CardInstance) => string[]
+  note?: (card: CardInstance, active: boolean) => string[]
 }
 
 export interface RoleInstance {

@@ -294,7 +294,11 @@ export class GameInstance {
                         ),
                         notes: pr.card.descs
                           .map(
-                            key => DescriptorTable[key].note?.(pr.card) || []
+                            key =>
+                              DescriptorTable[key].note?.(
+                                pr.card,
+                                p.check_unique_active(key, i)
+                              ) || []
                           )
                           .flat(),
                         value: pr.card.value(),

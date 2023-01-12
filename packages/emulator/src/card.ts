@@ -106,6 +106,18 @@ export class CardInstance {
     return [this.left(realPos), this.right(realPos)].filter(notNull)
   }
 
+  find(u: UnitKey | ((unit: UnitKey) => boolean), maxi?: number) {
+    const pred = typeof u === 'string' ? (unit: UnitKey) => unit === u : u
+    return this.units
+      .map((u, i) => ({
+        u,
+        i,
+      }))
+      .filter(({ u }) => pred(u))
+      .map(({ i }) => i)
+      .slice(0, maxi)
+  }
+
   filter(pred: (unit: UnitKey, pos: number) => boolean, maxi = -1) {
     const taked: UnitKey[] = []
     if (maxi === -1) {
@@ -120,6 +132,15 @@ export class CardInstance {
       }
     })
     return taked
+  }
+
+  replace(places: number[], unit: UnitKey | ((u: UnitKey) => UnitKey)) {
+    const proc = typeof unit === 'string' ? () => unit : unit
+    places.forEach(idx => {
+      if (idx >= 0 && idx < this.units.length) {
+        this.units[idx] = proc(this.units[idx])
+      }
+    })
   }
 
   post<
@@ -138,7 +159,9 @@ export class CardInstance {
   answer(msg: InnerMsg) {
     Dispatch(cardBind, msg, this)
     for (const d of this.descs) {
-      Dispatch(DescriptorTable[d].listener, msg, this, DescriptorTable[d])
+      if (this.$ref$Player.check_unique_active(d, this.index())) {
+        Dispatch(DescriptorTable[d].listener, msg, this, DescriptorTable[d])
+      }
     }
   }
 
