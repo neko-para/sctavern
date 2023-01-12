@@ -5,6 +5,7 @@ import { ClientViewData, GameConfig } from './types'
 import { rep, dup } from './utils'
 import DescriptorTable from './descriptor'
 import { Attribute } from './attrib'
+import { PushState } from './wrapper'
 
 export class LCG {
   seed: number
@@ -72,7 +73,7 @@ export class GameInstance {
     this.emit()
   }
 
-  emit() {
+  getState(): ClientViewData {
     const state: ClientViewData = {
       config: dup(this.config),
 
@@ -151,8 +152,11 @@ export class GameInstance {
           : null
       }),
     }
-    console.log(JSON.stringify(state, null, 2))
-    // console.log(state)
+    return state
+  }
+
+  emit() {
+    PushState(this, this.getState())
   }
 
   start() {

@@ -1,14 +1,21 @@
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-
 import App from './App.vue'
 import router from './router'
+import vuetify from './plugins/vuetify'
+import { createPinia } from 'pinia'
+import { loadFonts } from './plugins/webfontloader'
+
+loadFonts()
 
 import './assets/main.css'
 
-const app = createApp(App)
+createApp(App).use(createPinia()).use(router).use(vuetify).mount('#app')
 
-app.use(createPinia())
-app.use(router)
+import { useMobileStore } from '@/stores/mobile'
 
-app.mount('#app')
+const mobile = useMobileStore()
+const mm = matchMedia('(max-height: 600px)')
+mobile.setMobile(mm.matches)
+mm.addEventListener('change', () => {
+  mobile.setMobile(mm.matches)
+})
