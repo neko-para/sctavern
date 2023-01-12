@@ -4,6 +4,17 @@
   "sourceRoot": "packages/@sctavern/data/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/data",
+        "tsConfig": "packages/data/tsconfig.lib.json",
+        "packageJson": "packages/data/package.json",
+        "main": "packages/data/src/index.ts",
+        "assets": ["packages/data/*.md"]
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

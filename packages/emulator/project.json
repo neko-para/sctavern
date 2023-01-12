@@ -1,9 +1,20 @@
 {
-  "name": "emulator",
+  "name": "@sctavern-emulator",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/emulator/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/emulator",
+        "tsConfig": "packages/emulator/tsconfig.lib.json",
+        "packageJson": "packages/emulator/package.json",
+        "main": "packages/emulator/src/index.ts",
+        "assets": ["packages/emulator/*.md"]
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { ClientViewData } from '@sctavern/emulator'
-import { useMobileStore } from '@/stores/mobile'
 import AutoButton from './AutoButton.vue'
-
-const mobile = useMobileStore()
 
 const props = defineProps<{
   state: ClientViewData
