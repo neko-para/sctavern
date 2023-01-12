@@ -4,6 +4,7 @@ import {
   RoleData,
   CardData,
   UpgradeData,
+  Card,
 } from '@sctavern/data'
 import { CardInstance } from './card'
 import { Dispatch } from './dispatch'
@@ -15,10 +16,13 @@ import {
   PlayerStatus,
   DistributiveOmit,
   RoleInstance,
+  DiscoverContext,
+  DiscoverItem,
 } from './types'
 import { notNull, rep } from './utils'
 import RoleTable from './role'
 import { Attribute } from './attrib'
+import { v4 as uuidv4 } from 'uuid'
 
 const playerBind: GenericListener<PlayerInstance> = {
   $upgrade: function () {
@@ -78,6 +82,56 @@ const playerBind: GenericListener<PlayerInstance> = {
         this.status = 'normal'
         this.enter(this.insertCard, place)
         break
+      case 'discover': {
+        if (!this.discoverItem) {
+          return
+        }
+        this.status = 'normal'
+        const drop: Card[] = []
+        const ctx = this.discoverItem
+        if (!ctx.fake) {
+          if (!ctx.nodrop) {
+            ctx.item.forEach((item, i) => {
+              if (i === place) {
+                return
+              }
+              if (item.type === 'card') {
+                drop.push(item.card)
+              }
+            })
+          }
+          if (place !== -1) {
+            const result = ctx.item[place]
+            if (result.type === 'card') {
+              const ck = result.card.name
+              if (this.can_stage()) {
+                this.stage(ck)
+              } else if (this.can_combine(ck)) {
+                this.combine(ck)
+              } else if (this.can_enter(ck)) {
+                this.require_enter(ck)
+              } else {
+                // restore it
+                drop.push(result.card)
+              }
+            } else if (result.type === 'upgrade') {
+              if ('target' in ctx) {
+                const ci = this.present[ctx.target as number]?.card
+                if (ci && this.can_pres_upgrade(ci)) {
+                  //
+                }
+              }
+            }
+          }
+        }
+        this.$ref$Game.pool.drop(drop)
+        this.discoverItem = null
+        this.post({
+          msg: 'discover-finished',
+          ctx,
+        })
+        break
+      }
       default:
         return
     }
@@ -122,9 +176,7 @@ const playerBind: GenericListener<PlayerInstance> = {
             this.combine(ck)
             break
           case 'stage':
-            this.hand[this.hand.findIndex(v => !v)] = {
-              card: ck,
-            }
+            this.stage(ck)
             break
         }
 
@@ -157,7 +209,7 @@ const playerBind: GenericListener<PlayerInstance> = {
 
         switch (action) {
           case 'enter':
-            this.enter(ck)
+            this.require_enter(ck)
             break
           case 'combine':
             this.combine(ck)
@@ -335,6 +387,7 @@ export class PlayerInstance {
   status: PlayerStatus
 
   insertCard: CardKey | null
+  discoverItem: DiscoverContext | null
 
   mineral: number
   mineral_max: number
@@ -367,7 +420,7 @@ export class PlayerInstance {
       MaxUnitPerCard: 200,
       MaxUpgradePerCard: 5,
 
-      AlwaysInsert: true,
+      AlwaysInsert: false,
       StoreCount: [0, 3, 4, 4, 5, 5, 6],
       TavernUpgrade: [0, 5, 7, 8, 9, 11, 0],
 
@@ -384,6 +437,7 @@ export class PlayerInstance {
     this.status = 'middle'
 
     this.insertCard = null
+    this.discoverItem = null
 
     this.mineral = 0
     this.mineral_max = 3 - 1
@@ -547,12 +601,54 @@ export class PlayerInstance {
     this.insertCard = card
   }
 
+  enter_discover(
+    item: DiscoverItem[],
+    cfg?: {
+      extra?: string
+      fake?: boolean
+      target?: number
+      nodrop?: boolean
+    }
+  ) {
+    if (this.status !== 'normal') {
+      return
+    }
+    const id = uuidv4()
+    this.status = 'discover'
+    const ctx: DiscoverContext = {
+      item,
+      id,
+    }
+    if (cfg) {
+      if (cfg.extra) {
+        ctx.extra = cfg.extra
+      }
+      if (cfg.fake) {
+        ctx.fake = cfg.fake
+      }
+      if (cfg.target) {
+        ctx.target = cfg.target
+      }
+      if (cfg.nodrop) {
+        ctx.nodrop = cfg.nodrop
+      }
+    }
+    this.discoverItem = ctx
+    return id
+  }
+
   require_enter(card: CardKey) {
     const cd = CardData[card]
     if (this.config.AlwaysInsert || cd.attr.insert) {
       this.enter_insert(card)
     } else {
       this.enter(card)
+    }
+  }
+
+  stage(card: CardKey) {
+    this.hand[this.hand.findIndex(v => !v)] = {
+      card,
     }
   }
 

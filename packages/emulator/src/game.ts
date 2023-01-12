@@ -88,6 +88,8 @@ export class GameInstance {
               upgrade_cost: p.upgrade_cost,
               status: p.status,
 
+              discover: p.discoverItem,
+
               mineral: p.mineral,
               mineral_max: p.mineral_max,
               gas: p.gas,
@@ -198,7 +200,7 @@ export class GameInstance {
                         {
                           action,
                           enable:
-                            p.can_buy(h.card, action, i) &&
+                            (action === 'enter' ? p.can_enter(h.card) : true) &&
                             p.status === 'normal',
                           msg: {
                             msg: '$action',

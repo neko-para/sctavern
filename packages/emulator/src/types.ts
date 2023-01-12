@@ -7,6 +7,8 @@ import type {
   UnitKey,
   UpgradeKey,
   CardBelong,
+  Card,
+  Upgrade,
 } from '@sctavern/data'
 import { CardInstance } from './card'
 import { InnerMsg, SpecificListener } from './events'
@@ -78,6 +80,29 @@ export interface CardConfig {
   MaxUpgrade: number
 }
 
+export type DiscoverItem =
+  | {
+      type: 'card'
+      card: Card
+    }
+  | {
+      type: 'upgrade'
+      upgrade: Upgrade
+    }
+  | {
+      type: 'custom'
+      str: string
+    }
+
+export interface DiscoverContext {
+  item: DiscoverItem[]
+  id: string
+  extra?: string
+  fake?: boolean
+  target?: number
+  nodrop?: boolean
+}
+
 export interface ClientViewData {
   config: GameConfig
 
@@ -91,6 +116,8 @@ export interface ClientViewData {
     upgrade_cost: number
 
     status: PlayerStatus
+
+    discover: null | DiscoverContext
 
     mineral: number
     mineral_max: number

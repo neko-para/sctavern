@@ -1,7 +1,7 @@
 import { CardKey, UnitKey, UpgradeKey } from '@sctavern/data'
 import { CardInstance } from './card'
 import { PlayerInstance } from './player'
-import { Descriptor, GameArea, ObtainUnitWay } from './types'
+import { Descriptor, DiscoverContext, GameArea, ObtainUnitWay } from './types'
 
 type ApplyKey<T, I> = T extends unknown ? T & I : never
 
@@ -97,6 +97,10 @@ export type PlayerMsg = ApplyKey<
     }
   | {
       msg: 'store-refreshed'
+    }
+  | {
+      msg: 'discover-finished'
+      ctx: DiscoverContext
     }
   | {
       msg: 'card-entered'

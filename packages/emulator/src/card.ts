@@ -12,15 +12,15 @@ import { Dispatch } from './dispatch'
 import { GenericListener, InnerMsg } from './events'
 import { PlayerInstance } from './player'
 import { CardConfig, DistributiveOmit, ObtainUnitWay } from './types'
-import { rep } from './utils'
+import { notNull, rep } from './utils'
 import DescriptorTable from './descriptor'
 import { Attribute } from './attrib'
 
 const cardBind: GenericListener<CardInstance> = {
   'round-end': function () {
-    // if (this.race === 'T' && this.infr[0] === 'hightech') {
-    // this.fast_prod()
-    // }
+    if (this.race === 'T' && this.infr() === '高级科技实验室') {
+      this.fast_prod()
+    }
   },
   'post-sell': function () {
     /*
@@ -83,6 +83,45 @@ export class CardInstance {
     return this.$ref$Player.present.findIndex(x => x?.card === this)
   }
 
+  left(realPos = -1) {
+    const pos = realPos === -1 ? this.index() : realPos
+    if (pos > 0) {
+      return this.$ref$Player.present[pos - 1]?.card || null
+    } else {
+      return null
+    }
+  }
+
+  right(realPos = -1) {
+    const pos = realPos === -1 ? this.index() : realPos
+    if (pos < 6) {
+      // 这里不能用present的长度, 因为出售时卡牌被临时添加到了present结尾, 若realPos为6则会导致将右侧卡牌判定为自己
+      return this.$ref$Player.present[pos + 1]?.card || null
+    } else {
+      return null
+    }
+  }
+
+  around(realPos = -1) {
+    return [this.left(realPos), this.right(realPos)].filter(notNull)
+  }
+
+  filter(pred: (unit: UnitKey, pos: number) => boolean, maxi = -1) {
+    const taked: UnitKey[] = []
+    if (maxi === -1) {
+      maxi = this.units.length
+    }
+    this.units = this.units.filter((u, i) => {
+      if (pred(u, i) && taked.length < maxi) {
+        taked.push(u)
+        return false
+      } else {
+        return true
+      }
+    })
+    return taked
+  }
+
   post<
     M extends Extract<InnerMsg, { player: number; card: number }>,
     MM extends DistributiveOmit<M, 'player' | 'card'>
@@ -136,6 +175,29 @@ export class CardInstance {
     return idx === -1
       ? false
       : (this.units[idx] as '反应堆' | '科技实验室' | '高级科技实验室')
+  }
+
+  fast_prod() {
+    this.post({
+      msg: 'fast-produce',
+    })
+  }
+
+  switch_infr() {
+    const u = this.infr()
+    if (u && u !== '高级科技实验室') {
+      this.units[this.units.indexOf(u)] =
+        u === '反应堆' ? '科技实验室' : '反应堆'
+      this.fast_prod()
+    }
+  }
+
+  upgrade_infr() {
+    const u = this.infr()
+    if (u && u !== '高级科技实验室') {
+      this.units[this.units.indexOf(u)] = '高级科技实验室'
+      this.fast_prod()
+    }
   }
 
   add_desc(d: string) {

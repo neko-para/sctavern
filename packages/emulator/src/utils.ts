@@ -1,3 +1,5 @@
+import { Descriptor } from './types'
+
 export function rep<T>(v: T, n: number) {
   return Array.from({ length: n }, () => v)
 }
@@ -20,4 +22,10 @@ export function dup<T>(v: T): T {
 
 export function notNull<T>(v: T | null): v is T {
   return !!v
+}
+
+export function NotImplementYet(): Descriptor {
+  return {
+    listener: {},
+  }
 }

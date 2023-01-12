@@ -3,6 +3,7 @@ import AutoButton from './AutoButton.vue'
 import StoreItem from './StoreItem.vue'
 import HandItem from './HandItem.vue'
 import PresentItem from './PresentItem.vue'
+import DiscoverItem from './DiscoverItem.vue'
 import { computed } from 'vue'
 import type { ClientViewData, GameInstance } from '@sctavern/emulator'
 
@@ -74,28 +75,44 @@ const tr = computed(() => ({
           </div>
         </div>
       </div>
-      <div class="StoreContainer">
-        <div>
-          <store-item
+      <div class="d-flex flex-column">
+        <div class="StoreContainer">
+          <div>
+            <store-item
+              class="ml-4"
+              v-for="(s, i) in state.player[player]?.store.slice(0, 3) || []"
+              :key="`Store${i}`"
+              :state="state"
+              :game="game"
+              :player="player"
+              :place="i"
+            ></store-item>
+          </div>
+          <div v-if="(state.player[player]?.store.length || 0) > 3">
+            <store-item
+              class="ml-4 mt-1"
+              v-for="(s, i) in state.player[player]?.store.slice(3) || []"
+              :key="`Store${i}`"
+              :state="state"
+              :game="game"
+              :player="player"
+              :place="i + 3"
+            ></store-item>
+          </div>
+        </div>
+        <div
+          v-if="pl?.status === 'discover' && pl.discover"
+          class="d-flex mt-2"
+        >
+          <discover-item
             class="ml-4"
-            v-for="(s, i) in state.player[player]?.store.slice(0, 3) || []"
-            :key="`Store${i}`"
+            v-for="(d, i) in state.player[player]?.discover?.item || []"
+            :key="`Discover${i}`"
             :state="state"
             :game="game"
             :player="player"
             :place="i"
-          ></store-item>
-        </div>
-        <div v-if="(state.player[player]?.store.length || 0) > 3">
-          <store-item
-            class="ml-4"
-            v-for="(s, i) in state.player[player]?.store.slice(3) || []"
-            :key="`Store${i}`"
-            :state="state"
-            :game="game"
-            :player="player"
-            :place="i + 3"
-          ></store-item>
+          ></discover-item>
         </div>
       </div>
     </div>
