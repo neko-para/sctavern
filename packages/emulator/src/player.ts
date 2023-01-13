@@ -7,6 +7,7 @@ import {
   Card,
   Race,
   AllUpgrade,
+  UnitKey,
 } from '@sctavern/data'
 import { CardInstance } from './card'
 import { Dispatch } from './dispatch'
@@ -424,6 +425,11 @@ export class PlayerInstance {
       MaxUpgradePerCard: 5,
 
       AlwaysInsert: false,
+      AlwaysIncubate: false,
+
+      ZergEggCount: 1,
+      ZergEggCard: '虫卵',
+
       StoreCount: [0, 3, 4, 4, 5, 5, 6],
       TavernUpgrade: [0, 5, 7, 8, 9, 11, 0],
 
@@ -530,11 +536,12 @@ export class PlayerInstance {
     }
   }
 
+  all() {
+    return this.present.filter(notNull).map(c => c.card)
+  }
+
   all_of(race: Race) {
-    return this.present
-      .filter(notNull)
-      .map(c => c.card)
-      .filter(c => c.race === race)
+    return this.all().filter(c => c.race === race)
   }
 
   fill_store() {
@@ -821,15 +828,15 @@ export class PlayerInstance {
 
   sell(ci: CardInstance) {
     const pos = ci.index()
+    ci.attrib.set('oldpos', pos)
     this.present[pos] = null
     this.present.push({ card: ci })
 
     const doPostEffect = ci.level > 0 || ci.name === '虫卵'
-    // const dark = ci.level >= 4 ? 2 : 1
+    const dark = ci.level >= 4 ? 2 : 1
     if (doPostEffect) {
       ci.post({
         msg: 'post-sell',
-        pos,
       })
     }
     ci.clear_desc()
@@ -838,17 +845,88 @@ export class PlayerInstance {
     if (doPostEffect) {
       this.post({
         msg: 'card-selled',
-        target: ci.index(), // 7, aka 6 + 1
-        // really need pos?
+        target: 7,
       })
       this.obtain_resource({
         mineral: 1,
       })
       if (ci.name !== '虫卵') {
-        // gain darkness
+        ci.around().forEach(c => {
+          c.gain_darkness(dark)
+        })
       }
     }
 
     this.present.pop()
+  }
+
+  destroy(ci: CardInstance) {
+    const pos = ci.index()
+    ci.attrib.set('oldpos', pos)
+    this.present[pos] = null
+    this.present.push({ card: ci })
+
+    const doPostEffect = ci.level > 0
+    const dark = ci.level >= 4 ? 2 : 1
+    ci.clear_desc()
+    this.$ref$Game.pool.drop(ci.occupy.map(c => CardData[c]))
+
+    if (doPostEffect) {
+      ci.around().forEach(c => {
+        c.gain_darkness(dark)
+      })
+    }
+
+    this.present.pop()
+  }
+
+  incubate(from: CardInstance, units: UnitKey[]) {
+    if (units.length === 0) {
+      return
+    }
+    const m = this.post({
+      msg: 'incubate',
+      from: from.index(),
+      units,
+    })
+    from.around().forEach(ci => {
+      if (ci.race === 'Z' || this.config.AlwaysIncubate) {
+        ci.obtain_unit(m.units, 'incubate')
+      }
+    })
+  }
+
+  inject(units: UnitKey[], into: 'all' | 'left' = 'all') {
+    if (units.length === 0) {
+      return
+    }
+
+    const eggs = this.present
+      .filter(notNull)
+      .map(c => c.card)
+      .filter(c => c.name === '虫卵')
+
+    while (eggs.length < this.config.ZergEggCount) {
+      const egg = this.enter(this.config.ZergEggCard)
+      if (!egg) {
+        break
+      }
+      egg.color = 'gold'
+      eggs.push(egg)
+    }
+    eggs.sort((a, b) => a.index() - b.index())
+    if (eggs.length > 0) {
+      if (into === 'left') {
+        eggs[0].obtain_unit(units)
+      } else {
+        eggs.forEach(e => {
+          e.obtain_unit(units)
+        })
+      }
+      this.post({
+        msg: 'inject',
+        units,
+      })
+    }
   }
 }

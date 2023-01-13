@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import RaceIcon from './RaceIcon.vue'
-import AutoButton from './AutoButton.vue'
 import { computed } from 'vue'
-import { CardData } from '@sctavern/data'
 import type { ClientViewData, GameInstance } from '@sctavern/emulator'
 
 const props = defineProps<{

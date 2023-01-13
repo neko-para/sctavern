@@ -79,12 +79,17 @@ export class CardInstance {
     this.descs = []
   }
 
-  index() {
+  rindex() {
     return this.$ref$Player.present.findIndex(x => x?.card === this)
   }
 
-  left(realPos = -1) {
-    const pos = realPos === -1 ? this.index() : realPos
+  index() {
+    const idx = this.rindex()
+    return idx === 7 ? this.attrib.get('oldpos') : idx
+  }
+
+  left() {
+    const pos = this.index()
     if (pos > 0) {
       return this.$ref$Player.present[pos - 1]?.card || null
     } else {
@@ -92,8 +97,8 @@ export class CardInstance {
     }
   }
 
-  right(realPos = -1) {
-    const pos = realPos === -1 ? this.index() : realPos
+  right() {
+    const pos = this.index()
     if (pos < 6) {
       // 这里不能用present的长度, 因为出售时卡牌被临时添加到了present结尾, 若realPos为6则会导致将右侧卡牌判定为自己
       return this.$ref$Player.present[pos + 1]?.card || null
@@ -102,8 +107,8 @@ export class CardInstance {
     }
   }
 
-  around(realPos = -1) {
-    return [this.left(realPos), this.right(realPos)].filter(notNull)
+  around() {
+    return [this.left(), this.right()].filter(notNull)
   }
 
   find(u: UnitKey | ((unit: UnitKey) => boolean), maxi?: number) {
@@ -150,7 +155,7 @@ export class CardInstance {
     const m = {
       ...msg,
       player: this.$ref$Player.index(),
-      card: this.index(),
+      card: this.rindex(),
     }
     this.$ref$Player.$ref$Game.post(m)
     return m
@@ -185,7 +190,6 @@ export class CardInstance {
   }
 
   obtain_upgrade(upgrade: UpgradeKey) {
-    console.log(upgrade)
     if (upgrade.length >= this.config.MaxUpgrade) {
       return
     }
@@ -250,6 +254,32 @@ export class CardInstance {
     if (u && u !== '高级科技实验室') {
       this.units[this.units.indexOf(u)] = '高级科技实验室'
       this.fast_prod()
+    }
+  }
+
+  incubate(id: number) {
+    this.post({
+      msg: 'req-incubate',
+      id,
+    })
+  }
+
+  regroup(id: number) {
+    this.post({
+      msg: 'req-regroup',
+      id,
+    })
+  }
+
+  gain_darkness(dark: number) {
+    if (this.attrib.has('dark')) {
+      this.attrib.alter('dark', dark)
+      if (dark > 0) {
+        this.post({
+          msg: 'obtain-darkness',
+          darkness: dark,
+        })
+      }
     }
   }
 

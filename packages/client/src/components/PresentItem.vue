@@ -46,7 +46,7 @@ function buildUnit(units: UnitKey[]) {
       <template v-if="item.card">
         <v-dialog v-model="infoDlg" class="w-75">
           <v-card class="d-flex flex-row InfoCard pa-2 justify-space-between">
-            <div class="d-flex flex-column">
+            <div class="d-flex flex-column DescCol">
               <span class="Label">
                 {{ item.card.name }}
               </span>
@@ -64,7 +64,7 @@ function buildUnit(units: UnitKey[]) {
                 <auto-span class="mt-2" :text="item.card.notes"></auto-span>
               </div>
             </div>
-            <div class="d-flex flex-column">
+            <div class="d-flex flex-column UnitCol">
               <span class="Label">
                 单位 {{ item.card.units.length }} /
                 {{ item.card.config.MaxUnit }}
@@ -74,7 +74,7 @@ function buildUnit(units: UnitKey[]) {
                 :text="buildUnit(item.card.units)"
               ></auto-span>
             </div>
-            <div class="d-flex flex-column">
+            <div class="d-flex flex-column UpgrCol">
               <span class="Label">
                 升级 {{ item.card.upgrades.length }} /
                 {{ item.card.config.MaxUpgrade }}
@@ -128,3 +128,14 @@ function buildUnit(units: UnitKey[]) {
     </template>
   </v-card>
 </template>
+
+<style>
+.DescCol {
+  flex: 4;
+}
+.UnitCol,
+.UpgrCol {
+  margin-left: 8px;
+  flex: 1;
+}
+</style>

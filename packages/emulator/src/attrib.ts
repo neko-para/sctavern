@@ -5,6 +5,10 @@ export class Attribute {
     this.value = {}
   }
 
+  has(key: string) {
+    return key in this.value
+  }
+
   get(key: string, def = 0) {
     return this.value[key] || def
   }

@@ -67,6 +67,10 @@ export interface PlayerConfig {
   MaxUpgradePerCard: number
 
   AlwaysInsert: boolean
+  AlwaysIncubate: boolean
+
+  ZergEggCount: number
+  ZergEggCard: CardKey
 
   StoreCount: number[]
   TavernUpgrade: number[]

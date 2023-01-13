@@ -2,7 +2,7 @@ import { elited, isNormal, UnitData, UnitKey } from '@sctavern/data'
 import { CardInstance } from '../card'
 import { InnerMsg } from '../events'
 import { Descriptor } from '../types'
-import { notNull, rep } from '../utils'
+import { rep } from '../utils'
 
 export function 任务<T extends InnerMsg['msg']>(
   msg: T,
@@ -83,11 +83,11 @@ export function 科挂X(
       'round-end'() {
         if (
           count <=
-          this.$ref$Player.present
-            .filter(notNull)
+          this.$ref$Player
+            .all()
             .map(
               c =>
-                c.card.units.filter(u =>
+                c.units.filter(u =>
                   ['科技实验室', '高级科技实验室'].includes(u)
                 ).length
             )
@@ -320,15 +320,12 @@ export default function (/* config */): Record<string, Descriptor> {
     沃菲尔德0: {
       listener: {
         'round-end'() {
-          this.$ref$Player.present
-            .filter(notNull)
-            .map(c => c.card)
-            .forEach(ci => {
-              ci.replace(
-                ci.find('陆战队员(精英)', this.isg() ? 2 : 1),
-                '帝盾卫兵'
-              )
-            })
+          this.$ref$Player.all().forEach(ci => {
+            ci.replace(
+              ci.find('陆战队员(精英)', this.isg() ? 2 : 1),
+              '帝盾卫兵'
+            )
+          })
         },
       },
     },

@@ -42,7 +42,7 @@ export class Pool {
       const card = CardData[ck]
 
       // if (pred(card) && Math.random() > 0.5) {
-      if (pred(card) && card.race === 'T') {
+      if (pred(card) && (card.race === 'T' || card.race === 'Z')) {
         if (unique) {
           f.push(card)
           mf.push(...rep(card, (this.heap[ck] || 1) - 1))

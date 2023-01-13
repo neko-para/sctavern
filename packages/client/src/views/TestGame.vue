@@ -12,8 +12,13 @@ import {
 } from '@sctavern/emulator'
 import GameInstanceVue from '@/components/GameInstance.vue'
 import { Compress, Decompress } from '@/utils'
+import { useSaveStore } from '@/stores/save'
 
 Init()
+
+const saveStore = useSaveStore()
+
+saveStore.LoadStorage()
 
 let game = new GameInstance({
   Pack: ['核心'],
@@ -30,16 +35,14 @@ const state = reactive({
 
 const TheWindow = window as unknown as Record<string, unknown>
 
-const gameState: string[] = reactive([])
-
 function update(s: ClientViewData) {
-  gameState.push(Compress<Save>({ version: 0, data: Serialize(game) }))
+  saveStore.history.push(Compress<Save>({ version: 0, data: Serialize(game) }))
   state.state = s
 }
 
 Watch(game, update)
 
-gameState.push(Compress<Save>({ version: 0, data: Serialize(game) }))
+saveStore.history.push(Compress<Save>({ version: 0, data: Serialize(game) }))
 
 interface Save {
   version: number
@@ -66,8 +69,20 @@ function load(data: string) {
 TheWindow['load'] = load
 
 function undo() {
-  gameState.pop()
-  load(gameState[gameState.length - 1])
+  saveStore.history.pop()
+  load(saveStore.history[saveStore.history.length - 1])
+}
+
+function saveStorage() {
+  saveStore.save = save()
+  saveStore.SaveStorage()
+}
+
+function loadStorage() {
+  saveStore.LoadStorage()
+  if (saveStore.save) {
+    load(saveStore.save)
+  }
 }
 </script>
 
@@ -79,13 +94,23 @@ function undo() {
   ></game-instance-vue>
   <v-card class="Debug d-flex flex-column">
     <span class="Label mx-auto">调试</span>
-    <div class="d-flex">
+    <div class="d-flex flex-column">
       <auto-button
         variant="elevated"
-        v-if="gameState.length > 1"
+        :disabled="saveStore.history.length <= 1"
         @click="undo()"
       >
-        撤销 {{ gameState.length - 1 }}
+        撤销 {{ saveStore.history.length - 1 }}
+      </auto-button>
+      <auto-button variant="elevated" @click="saveStorage()">
+        保存
+      </auto-button>
+      <auto-button
+        variant="elevated"
+        :disabled="!saveStore.save"
+        @click="loadStorage()"
+      >
+        读取
       </auto-button>
     </div>
   </v-card>

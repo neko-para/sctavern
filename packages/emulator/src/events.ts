@@ -193,7 +193,6 @@ export type CardMsg = ApplyKey<
     }
   | {
       msg: 'post-sell'
-      pos: number
     }
   | {
       msg: 'post-deploy'
