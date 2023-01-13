@@ -64,7 +64,7 @@ export class ClassManager {
         return value
       }
     }
-    const result = JSON.stringify(object, replacer, 2)
+    const result = JSON.stringify(object, replacer)
     postSerialize(object)
     return result
   }
@@ -95,13 +95,15 @@ export class ClassManager {
 
 const defaultManager = new ClassManager()
 
-defaultManager.autoRegister({
-  GameInstance,
-  PlayerInstance,
-  CardInstance,
-  Pool,
-  LCG,
-  Attribute,
-})
+export function initDefault() {
+  defaultManager.autoRegister({
+    GameInstance,
+    PlayerInstance,
+    CardInstance,
+    Pool,
+    LCG,
+    Attribute,
+  })
+}
 
 export default defaultManager

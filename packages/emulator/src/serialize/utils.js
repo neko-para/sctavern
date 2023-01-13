@@ -1,16 +1,15 @@
-import { v4 as uuidv4 } from 'uuid'
-
-export function setId(obj) {
+export function setId(obj, counter = { id: 0 }) {
   if (typeof obj === 'object' && obj) {
     if (obj instanceof Array) {
-      obj.forEach(setId)
+      obj.forEach(v => setId(v, counter))
     } else {
       if ('$id$' in obj) {
         return
       }
-      obj['$id$'] = uuidv4()
+      obj['$id$'] = counter.id
+      counter.id += 1
       for (const k in obj) {
-        setId(obj[k])
+        setId(obj[k], counter)
       }
     }
   }

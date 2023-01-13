@@ -6,6 +6,7 @@ import {
   UpgradeData,
   Card,
   Race,
+  AllUpgrade,
 } from '@sctavern/data'
 import { CardInstance } from './card'
 import { Dispatch } from './dispatch'
@@ -117,10 +118,11 @@ const playerBind: GenericListener<PlayerInstance> = {
                 drop.push(result.card)
               }
             } else if (result.type === 'upgrade') {
+              console.log(ctx)
               if ('target' in ctx) {
                 const ci = this.present[ctx.target as number]?.card
-                if (ci && this.can_pres_upgrade(ci)) {
-                  //
+                if (ci && this.can_obt_upgrade(ci)) {
+                  ci.obtain_upgrade(result.upgrade.name)
                 }
               }
             }
@@ -416,7 +418,6 @@ export class PlayerInstance {
   } | null)[]
 
   constructor(game: GameInstance, rolekey: RoleKey) {
-    const role = RoleData[rolekey]
     this.$ref$Game = game
     this.config = {
       MaxUnitPerCard: 200,
@@ -457,8 +458,6 @@ export class PlayerInstance {
       attrib: {},
 
       name: rolekey,
-      ability: role.ability,
-      desc: role.desc,
       enable: false,
 
       progress: null,
@@ -621,8 +620,12 @@ export class PlayerInstance {
     return this.hand.filter(x => !x).length > 0
   }
 
+  can_obt_upgrade(card: CardInstance) {
+    return card.upgrades.length < card.config.MaxUpgrade
+  }
+
   can_pres_upgrade(card: CardInstance) {
-    return card.upgrades.length < card.config.MaxUpgrade && this.gas >= 2
+    return this.can_obt_upgrade(card) && this.gas >= 2
   }
 
   can_tavern_upgrade() {
@@ -658,20 +661,7 @@ export class PlayerInstance {
     const ctx: DiscoverContext = {
       item,
       id,
-    }
-    if (cfg) {
-      if (cfg.extra) {
-        ctx.extra = cfg.extra
-      }
-      if (cfg.fake) {
-        ctx.fake = cfg.fake
-      }
-      if (cfg.target) {
-        ctx.target = cfg.target
-      }
-      if (cfg.nodrop) {
-        ctx.nodrop = cfg.nodrop
-      }
+      ...cfg,
     }
     this.discoverItem = ctx
     return id
@@ -803,7 +793,28 @@ export class PlayerInstance {
       msg: 'post-enter',
     })
 
-    // TODO: reward
+    const reward: DiscoverItem[] = this.$ref$Game.pool
+      .discover(c => c.level === Math.min(6, this.level + 1), 3)
+      .map(c => ({
+        type: 'card',
+        card: c,
+      }))
+
+    if (ci.upgrades.length < ci.config.MaxUpgrade) {
+      const us = AllUpgrade.map(u => UpgradeData[u])
+        .filter(u => u.category === 'combine')
+        .filter(u => !ci.upgrades.includes(u.name))
+      if (us.length > 0) {
+        reward.push({
+          type: 'upgrade',
+          upgrade: this.$ref$Game.lcg.shuffle(us)[0],
+        })
+      }
+    }
+
+    this.enter_discover(reward, {
+      target: ci.index(),
+    })
 
     return ci
   }

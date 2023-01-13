@@ -191,8 +191,6 @@ export interface RoleInstance {
   attrib: Record<string, number>
 
   name: RoleKey
-  ability: string
-  desc: string
   enable: boolean
 
   progress: {

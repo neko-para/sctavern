@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import RaceIcon from './RaceIcon.vue'
 import AutoButton from './AutoButton.vue'
+import AutoSpan from './AutoSpan.vue'
 import { ref, computed } from 'vue'
 import type { ClientViewData, GameInstance } from '@sctavern/emulator'
 import type { UnitKey } from '@sctavern/data'
@@ -28,17 +29,14 @@ const tr = {
   deploy: '这里',
 }
 
-const descDlg = ref(false)
-const unitDlg = ref(false)
+const infoDlg = ref(false)
 
 function buildUnit(units: UnitKey[]) {
   const set: Partial<Record<UnitKey, number>> = {}
   units.forEach(u => {
     set[u] = (set[u] || 0) + 1
   })
-  return Object.keys(set)
-    .map(u => `${u}\t${set[u as UnitKey]}`)
-    .join('\n')
+  return Object.keys(set).map(u => `${u}\t${set[u as UnitKey]}`)
 }
 </script>
 
@@ -46,32 +44,56 @@ function buildUnit(units: UnitKey[]) {
   <v-card class="d-flex flex-column align-self-start PresCard" :color="color">
     <template v-if="item">
       <template v-if="item.card">
-        <v-dialog v-model="descDlg">
-          <v-card class="w-50 mx-auto">
-            <v-card-text>
-              <pre>{{ item.card.descs.join('\n\n') }}</pre>
-            </v-card-text>
-          </v-card>
-        </v-dialog>
-
-        <v-dialog v-model="unitDlg">
-          <v-card class="w-25 mx-auto">
-            <v-card-text class="d-flex">
-              <pre class="mx-auto">{{ buildUnit(item.card.units) }}</pre>
-            </v-card-text>
+        <v-dialog v-model="infoDlg" class="w-75">
+          <v-card class="d-flex flex-row InfoCard pa-2 justify-space-between">
+            <div class="d-flex flex-column">
+              <span class="Label">
+                {{ item.card.name }}
+              </span>
+              <div class="d-flex">
+                <race-icon :race="item.card.race"></race-icon>
+                <span class="Label">
+                  {{ item.card.level }}
+                </span>
+                <span class="Label ml-auto">
+                  {{ item.card.value }}
+                </span>
+              </div>
+              <div class="d-flex flex-column mt-2 overflow-y-auto">
+                <auto-span :text="item.card.descs"></auto-span>
+                <auto-span class="mt-2" :text="item.card.notes"></auto-span>
+              </div>
+            </div>
+            <div class="d-flex flex-column">
+              <span class="Label">
+                单位 {{ item.card.units.length }} /
+                {{ item.card.config.MaxUnit }}
+              </span>
+              <auto-span
+                class="overflow-y-auto"
+                :text="buildUnit(item.card.units)"
+              ></auto-span>
+            </div>
+            <div class="d-flex flex-column">
+              <span class="Label">
+                升级 {{ item.card.upgrades.length }} /
+                {{ item.card.config.MaxUpgrade }}
+              </span>
+              <auto-span :text="item.card.upgrades"></auto-span>
+            </div>
           </v-card>
         </v-dialog>
 
         <div class="d-flex">
-          <auto-button variant="text" @click="descDlg = true">
-            描述
-          </auto-button>
-          <auto-button variant="text" @click="unitDlg = true">
-            单位
+          <auto-button variant="text" @click="infoDlg = true">
+            信息
           </auto-button>
         </div>
+        <span class="Label">
+          {{ item.card.name }}
+        </span>
         <div class="d-flex">
-          <race-icon v-if="item?.card" :race="item.card.race"></race-icon>
+          <race-icon :race="item.card.race"></race-icon>
           <span class="Label">
             {{ item.card.level }}
           </span>
@@ -79,14 +101,20 @@ function buildUnit(units: UnitKey[]) {
             {{ item.card.value }}
           </span>
         </div>
-        <span class="Label">
-          {{ item.card.name }}
-        </span>
-        <span class="Info">
-          {{ item.card.notes.join('\n') }}
-        </span>
+        <auto-span :text="item.card.notes"></auto-span>
+        <div class="d-flex justify-space-between mt-auto">
+          <span class="Info">
+            {{ item.card.units.length }} / {{ item.card.config.MaxUnit }}
+          </span>
+          <span class="Info">
+            {{ item.card.upgrades.length }} / {{ item.card.config.MaxUpgrade }}
+          </span>
+        </div>
       </template>
-      <div class="d-flex mt-auto">
+      <template v-else>
+        <div class="mt-auto"></div>
+      </template>
+      <div class="d-flex">
         <auto-button
           variant="text"
           v-for="(a, i) in item.actions || []"

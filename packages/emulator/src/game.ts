@@ -6,6 +6,7 @@ import { rep, dup } from './utils'
 import DescriptorTable from './descriptor'
 import { Attribute } from './attrib'
 import { PushState } from './wrapper'
+import { RoleData } from '@sctavern/data'
 
 export class LCG {
   seed: number
@@ -49,6 +50,8 @@ export class GameInstance {
 
   player: (PlayerInstance | null)[]
 
+  postDep: number
+
   constructor(cfg: GameConfig) {
     this.config = dup(cfg)
     this.attrib = new Attribute()
@@ -58,9 +61,11 @@ export class GameInstance {
     this.player = rep(null, this.config.Role.length).map((v, i) => {
       return new PlayerInstance(this, this.config.Role[i])
     })
+    this.postDep = 0
   }
 
   post(msg: InnerMsg) {
+    this.postDep += 1
     if ('player' in msg) {
       this.player[msg.player]?.answer(msg)
     } else {
@@ -70,7 +75,11 @@ export class GameInstance {
         }
       })
     }
-    this.emit()
+    this.postDep -= 1
+    if (this.postDep === 0) {
+      console.log(msg)
+      this.emit()
+    }
   }
 
   getState(): ClientViewData {
@@ -100,8 +109,8 @@ export class GameInstance {
 
               role: {
                 name: p.role.name,
-                ability: p.role.ability,
-                desc: p.role.desc,
+                ability: RoleData[p.role.name].ability,
+                desc: RoleData[p.role.name].desc,
                 enable: p.role.enable,
 
                 progress: dup(p.role.progress),
@@ -332,9 +341,7 @@ export class GameInstance {
       msg: 'round-leave',
       round: this.round,
     })
-    setTimeout(() => {
-      this.roundStart()
-    }, 0)
+    this.roundStart()
   }
 
   roundStart() {

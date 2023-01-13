@@ -28,7 +28,7 @@ const tr = computed(() => ({
 </script>
 
 <template>
-  <div class="d-flex flex-column pa-2">
+  <div class="d-flex flex-column pa-1">
     <div class="d-flex">
       <div class="d-flex flex-column">
         <span class="Info">

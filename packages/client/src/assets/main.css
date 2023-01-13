@@ -10,12 +10,12 @@ html, body {
   height: 100%;
 }
 
-* {
+span {
   font-family: 'Helvetica Neue', Helvetica, Arial, 'Microsoft Yahei', 'Hiragino Sans GB', 'Heiti SC', 'WenQuanYi Micro Hei', sans-serif;
 }
 
 @media (min-height: 600px) {
-  span.Info, pre {
+  span.Info {
     font-size: 16pt;
   }
   span.Label {
@@ -24,7 +24,7 @@ html, body {
 }
 
 @media (max-height: 599px) {
-  span.Info, pre {
+  span.Info {
     font-size: 8pt;
   }
   span.Label {
@@ -41,6 +41,9 @@ html, body {
     height: 500px;
     width: 14%;
   }
+  .InfoCard {
+    height: 500px;
+  }
 }
 
 @media (max-height: 599px) {
@@ -49,7 +52,10 @@ html, body {
     width: 100px;
   }
   .PresCard {
-    height: 150px;
+    height: 160px;
     width: 14%;
+  }
+  .InfoCard {
+    height: 200px;
   }
 }

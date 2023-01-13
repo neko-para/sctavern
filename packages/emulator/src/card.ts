@@ -4,9 +4,9 @@ import {
   UnitKey,
   UpgradeKey,
   CardKey,
-  CardData,
   Card,
   UnitData,
+  UpgradeData,
 } from '@sctavern/data'
 import { Dispatch } from './dispatch'
 import { GenericListener, InnerMsg } from './events'
@@ -182,6 +182,36 @@ export class CardInstance {
         time: 'post',
       })
     }
+  }
+
+  obtain_upgrade(upgrade: UpgradeKey) {
+    console.log(upgrade)
+    if (upgrade.length >= this.config.MaxUpgrade) {
+      return
+    }
+    const u = UpgradeData[upgrade]
+    if (!u.override && this.upgrades.includes(upgrade)) {
+      return
+    }
+    this.upgrades.push(upgrade)
+    switch (upgrade) {
+      case '折跃援军':
+        this.obtain_unit([
+          ...rep('水晶塔', 2),
+          ...rep('狂热者', 2),
+          ...rep('激励者', 2),
+        ] as UnitKey[])
+        break
+      case '修理无人机':
+        this.obtain_unit(rep('修理无人机', this.$ref$Player.level + 3))
+        break
+      // 黄金矿工
+      // 献祭
+    }
+    this.post({
+      msg: 'obtain-upgrade',
+      upgrade,
+    })
   }
 
   isg() {

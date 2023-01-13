@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
+    "buffer": "^6.0.3",
+    "pako": "^2.1.0",
     "pinia": "^2.0.28",
     "roboto-fontface": "*",
     "vue": "^3.2.45",
@@ -23,6 +25,7 @@
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
     "@types/node": "^18.11.12",
+    "@types/pako": "^2.0.0",
     "@types/webfontloader": "^1.0.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-prettier": "^7.0.0",

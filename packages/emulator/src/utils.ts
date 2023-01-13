@@ -1,3 +1,5 @@
+import { GameInstance } from './game'
+import cm from './serialize'
 import { Descriptor } from './types'
 
 export function rep<T>(v: T, n: number) {
@@ -28,4 +30,12 @@ export function NotImplementYet(): Descriptor {
   return {
     listener: {},
   }
+}
+
+export function Serialize(game: GameInstance) {
+  return cm.serialize(game)
+}
+
+export function Deserialize(data: string) {
+  return cm.deserialize(data) as GameInstance
 }
