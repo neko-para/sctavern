@@ -7,6 +7,7 @@ import {
   Card,
   UnitData,
   UpgradeData,
+  CardData,
 } from '@sctavern/data'
 import { Dispatch } from './dispatch'
 import { GenericListener, InnerMsg } from './events'
@@ -209,7 +210,15 @@ export class CardInstance {
       case '修理无人机':
         this.obtain_unit(rep('修理无人机', this.$ref$Player.level + 3))
         break
-      // 黄金矿工
+      case '黄金矿工':
+        this.clear_desc()
+        this.color = 'gold'
+        CardData['黄金矿工'].desc
+          .map((d, i) => `黄金矿工${i}`)
+          .forEach(d => {
+            this.add_desc(d)
+          })
+        break
       // 献祭
     }
     this.post({
@@ -286,6 +295,9 @@ export class CardInstance {
   add_desc(d: string) {
     this.descs.push(d)
     const ds = DescriptorTable[d]
+    if (!ds) {
+      console.log(d)
+    }
     if (ds.config?.init) {
       for (const k in ds.config.init) {
         this.attrib.alter(k, ds.config.init[k][this.isg() ? 1 : 0])
@@ -302,6 +314,7 @@ export class CardInstance {
         }
       }
     }
+    this.descs = []
   }
 
   value() {

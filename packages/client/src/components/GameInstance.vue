@@ -113,6 +113,19 @@ const tr = computed(() => ({
             :player="player"
             :place="i"
           ></discover-item>
+          <auto-button
+            v-if="state.player[player]?.discover?.extra"
+            @click="
+              game.post({
+                msg: '$choice',
+                category: 'discover',
+                place: -1,
+                player,
+              })
+            "
+          >
+            {{ state.player[player]?.discover?.extra }}
+          </auto-button>
         </div>
       </div>
     </div>

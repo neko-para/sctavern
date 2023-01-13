@@ -2,11 +2,13 @@ import { CardData, CardKey } from '@sctavern/data'
 import { Descriptor } from '../types'
 import TD from './terran'
 import ZD from './zerg'
+import SD from './special'
 
 export function CreateDescriptorTable() {
   const result: Record<string, Descriptor> = {
     ...TD(),
     ...ZD(),
+    ...SD(),
   }
   for (const key in result) {
     const m = /^(.+)(\d)$/.exec(key)

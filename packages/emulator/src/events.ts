@@ -99,10 +99,6 @@ export type PlayerMsg = ApplyKey<
       msg: 'store-refreshed'
     }
   | {
-      msg: 'discover-finished'
-      ctx: DiscoverContext
-    }
-  | {
       msg: 'card-entered'
       target: number
     }
@@ -147,15 +143,7 @@ export type PlayerMsg = ApplyKey<
     }
   | {
       msg: 'discover-finish'
-      choice: number
-    }
-  | {
-      msg: 'insert-finish'
-      choice: number
-    }
-  | {
-      msg: 'deploy-finish'
-      choice: number
+      ctx: DiscoverContext
     },
   {
     player: number

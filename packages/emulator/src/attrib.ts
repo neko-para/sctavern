@@ -10,7 +10,7 @@ export class Attribute {
   }
 
   get(key: string, def = 0) {
-    return this.value[key] || def
+    return this.has(key) ? this.value[key] : def
   }
 
   set(key: string, val: number) {

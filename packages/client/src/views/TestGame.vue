@@ -18,8 +18,6 @@ Init()
 
 const saveStore = useSaveStore()
 
-saveStore.LoadStorage()
-
 let game = new GameInstance({
   Pack: ['核心'],
   Seed: 1,
@@ -107,7 +105,7 @@ function loadStorage() {
       </auto-button>
       <auto-button
         variant="elevated"
-        :disabled="!saveStore.save"
+        :disabled="!saveStore.storageFlag"
         @click="loadStorage()"
       >
         读取

@@ -100,7 +100,8 @@ export type DiscoverItem =
 
 export interface DiscoverContext {
   item: DiscoverItem[]
-  id: string
+  id: number
+  choice?: number
   extra?: string
   fake?: boolean
   target?: number

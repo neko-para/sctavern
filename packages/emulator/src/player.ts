@@ -1,13 +1,13 @@
 import {
   RoleKey,
   CardKey,
-  RoleData,
   CardData,
   UpgradeData,
   Card,
   Race,
   AllUpgrade,
   UnitKey,
+  Upgrade,
 } from '@sctavern/data'
 import { CardInstance } from './card'
 import { Dispatch } from './dispatch'
@@ -131,14 +131,29 @@ const playerBind: GenericListener<PlayerInstance> = {
         }
         this.$ref$Game.pool.drop(drop)
         this.discoverItem = null
+        ctx.choice = place
         this.post({
-          msg: 'discover-finished',
+          msg: 'discover-finish',
           ctx,
         })
         break
       }
       default:
         return
+    }
+  },
+  'discover-finish'({ ctx }) {
+    if (ctx.id === this.attrib.get('upgrade-discover-id', -1)) {
+      this.attrib.set('upgrade-discover-id', -1)
+      if (ctx.choice === -1) {
+        this.obtain_resource({
+          gas: 1,
+        })
+        this.post({
+          msg: 'upgrade-cancelled',
+          target: ctx.target || 0,
+        })
+      }
     }
   },
   $action: function ({ area, action, place }) {
@@ -242,63 +257,65 @@ const playerBind: GenericListener<PlayerInstance> = {
             if (!this.can_pres_upgrade(c)) {
               return
             }
-            /*
-            const comm: Upgrade[] = [],
-              spec: Upgrade[] = []
-            AllUpgrade.filter(u => !c.data.upgrades.includes(u))
-              .map(getUpgrade)
+            const comm: Upgrade[] = []
+            const spec: Upgrade[] = []
+            AllUpgrade.filter(u => !c.upgrades.includes(u))
+              .map(u => UpgradeData[u])
               .forEach(u => {
                 switch (u.category) {
-                  case 'O':
-                    if (c.data.belong === 'origin') {
+                  case 'primal':
+                  case 'virtual':
+                    if (c.belong === u.category) {
                       spec.push(u)
                     }
                     break
-                  case 'V':
-                    if (c.data.belong === 'void') {
+                  case 'terran':
+                    if (c.race === 'T') {
                       spec.push(u)
                     }
                     break
-                  case 'T':
-                  case 'P':
-                  case 'Z':
-                    if (c.data.race === u.category) {
+                  case 'zerg':
+                    if (c.race === 'Z') {
                       spec.push(u)
                     }
                     break
-                  case 'C':
+                  case 'protoss':
+                    if (c.race === 'P') {
+                      spec.push(u)
+                    }
+                    break
+                  case 'public':
                     comm.push(u)
                     break
                 }
               })
-            this.game.gen.shuffle(spec)
-            const firstUpgrade = c.data.upgrades.length === 0
+            this.$ref$Game.lcg.shuffle(spec)
+            const firstUpgrade = c.upgrades.length === 0
             const sp = spec.slice(
               0,
-              firstUpgrade ? (c.data.belong === 'origin' ? 3 : 2) : 1
+              firstUpgrade ? (c.belong === 'primal' ? 3 : 2) : 1
             )
-            const item = this.game.gen
+            const item = this.$ref$Game.lcg
               .shuffle(comm)
               .slice(0, 4 - sp.length)
               .concat(sp)
             this.obtain_resource({
               gas: -2,
             })
-            if (
-              !this.discover(item, {
-                target: c,
+
+            const id = this.enter_discover(
+              item.map(u => ({
+                type: 'upgrade',
+                upgrade: u,
+              })),
+              {
                 extra: '放弃',
-              })
-            ) {
-              this.obtain_resource({
-                gas: 1,
-              })
-              this.post({
-                msg: 'upgrade-cancelled',
-                target: c,
-              })
+                target: c.index(),
+              }
+            )
+            if (typeof id === 'number') {
+              this.attrib.set('upgrade-discover-id', id)
             }
-            */
             break
           }
         }
@@ -663,7 +680,8 @@ export class PlayerInstance {
     if (this.status !== 'normal') {
       return
     }
-    const id = uuidv4()
+    const id = this.persisAttrib.get('discover-counter')
+    this.persisAttrib.alter('discover-counter', 1)
     this.status = 'discover'
     const ctx: DiscoverContext = {
       item,

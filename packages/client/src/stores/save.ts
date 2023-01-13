@@ -2,8 +2,11 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useSaveStore = defineStore('save', () => {
+  const storageFlag = ref(false)
   const save = ref<string | null>(null)
   const history = ref<string[]>([])
+
+  storageFlag.value = TestStorage()
 
   function SaveStorage() {
     localStorage.setItem(
@@ -13,6 +16,7 @@ export const useSaveStore = defineStore('save', () => {
         history: history.value,
       })
     )
+    storageFlag.value = true
   }
 
   function TestStorage() {
@@ -30,5 +34,5 @@ export const useSaveStore = defineStore('save', () => {
     history.value = h
   }
 
-  return { save, history, SaveStorage, TestStorage, LoadStorage }
+  return { save, history, SaveStorage, TestStorage, LoadStorage, storageFlag }
 })
