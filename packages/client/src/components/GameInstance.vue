@@ -32,8 +32,10 @@ const tr = computed(() => ({
     <div class="d-flex">
       <div class="d-flex flex-column">
         <span class="Info">
-          回合 {{ state.round }} 等级 {{ pl?.level }} 生命
-          {{ pl?.life }}
+          回合 {{ state.round }} 等级 {{ pl?.level }} 生命 {{ pl?.life }} 价值
+          {{
+            pl?.present.map(c => c.card?.value || 0).reduce((a, b) => a + b, 0)
+          }}
         </span>
         <span class="Info">
           升级 {{ pl?.upgrade_cost }} 晶矿 {{ pl?.mineral }} /

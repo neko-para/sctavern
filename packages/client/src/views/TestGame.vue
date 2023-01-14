@@ -82,6 +82,10 @@ function loadStorage() {
     load(saveStore.save)
   }
 }
+
+function cleanStorage() {
+  saveStore.CleanStorage()
+}
 </script>
 
 <template>
@@ -109,6 +113,13 @@ function loadStorage() {
         @click="loadStorage()"
       >
         读取
+      </auto-button>
+      <auto-button
+        variant="elevated"
+        :disabled="!saveStore.storageFlag"
+        @click="cleanStorage()"
+      >
+        清除
       </auto-button>
     </div>
   </v-card>

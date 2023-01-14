@@ -34,5 +34,18 @@ export const useSaveStore = defineStore('save', () => {
     history.value = h
   }
 
-  return { save, history, SaveStorage, TestStorage, LoadStorage, storageFlag }
+  function CleanStorage() {
+    localStorage.removeItem('save')
+    storageFlag.value = false
+  }
+
+  return {
+    save,
+    history,
+    SaveStorage,
+    TestStorage,
+    LoadStorage,
+    CleanStorage,
+    storageFlag,
+  }
 })
