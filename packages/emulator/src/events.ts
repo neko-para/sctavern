@@ -1,7 +1,6 @@
 import { CardKey, UnitKey, UpgradeKey } from '@sctavern/data'
 import { CardInstance } from './card'
-import { PlayerInstance } from './player'
-import { Descriptor, DiscoverContext, GameArea, ObtainUnitWay } from './types'
+import { DiscoverContext, GameArea, ObtainUnitWay } from './types'
 
 type ApplyKey<T, I> = T extends unknown ? T & I : never
 
@@ -100,37 +99,37 @@ export type PlayerMsg = ApplyKey<
     }
   | {
       msg: 'card-entered'
-      target: number
+      target: CardInstance
     }
   | {
       msg: 'card-combined'
-      target: number
+      target: CardInstance
     }
   | {
       msg: 'card-selled'
-      target: number
+      target: CardInstance
     }
   | {
       msg: 'upgrade-cancelled'
-      target: number
+      target: CardInstance
     }
   | {
       msg: 'task-done'
-      target: number
+      target: CardInstance
     }
   | {
       msg: 'infr-changed'
-      target: number
+      target: CardInstance
     }
   | {
       msg: 'seize'
-      target: number
-      from: number
+      target: CardInstance
+      from: CardInstance
     }
   | {
       msg: 'incubate'
       units: UnitKey[]
-      from: number
+      from: CardInstance
     }
   | {
       msg: 'inject'
@@ -139,7 +138,7 @@ export type PlayerMsg = ApplyKey<
   | {
       msg: 'wrap'
       units: UnitKey[]
-      into: number | null
+      into: CardInstance | null
     }
   | {
       msg: 'discover-finish'

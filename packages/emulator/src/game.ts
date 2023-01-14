@@ -2,7 +2,7 @@ import { InnerMsg } from './events'
 import { PlayerInstance } from './player'
 import { Pool } from './pool'
 import { ClientViewData, GameConfig, PresentAction } from './types'
-import { rep, dup } from './utils'
+import { dup, repX } from './utils'
 import DescriptorTable from './descriptor'
 import { Attribute } from './attrib'
 import { PushState } from './wrapper'
@@ -58,7 +58,7 @@ export class GameInstance {
     this.lcg = new LCG(this.config.Seed || 1) // prevent 0
     this.round = 0
     this.pool = new Pool(this.config.Pack, this.lcg)
-    this.player = rep(null, this.config.Role.length).map((v, i) => {
+    this.player = repX(null, this.config.Role.length).map((v, i) => {
       return new PlayerInstance(this, this.config.Role[i])
     })
     this.postDep = 0
@@ -309,7 +309,8 @@ export class GameInstance {
                                 p.check_unique_active(key, i)
                               ) || []
                           )
-                          .flat(),
+                          .flat()
+                          .concat(pr.card.extraNote()),
                         value: pr.card.value(),
                       }
                     : null,

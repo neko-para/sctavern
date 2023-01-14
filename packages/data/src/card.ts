@@ -459,7 +459,7 @@ export const CardData: Record<CardKey, Card> = {
     attr: {
       pool: true,
     },
-    belong: 'dark',
+    belong: 'none',
     type: 'normal',
     desc: [
       ['获得黑暗值时, 获得<1>毁灭者', '获得黑暗值时, 获得<2>毁灭者'],
@@ -554,7 +554,7 @@ export const CardData: Record<CardKey, Card> = {
     attr: {
       pool: true,
     },
-    belong: 'dark',
+    belong: 'none',
     type: 'normal',
     desc: [
       ['获得黑暗值时, 获得<1>百夫长', '获得黑暗值时, 获得<2>百夫长'],
@@ -718,7 +718,7 @@ export const CardData: Record<CardKey, Card> = {
     attr: {
       pool: true,
     },
-    belong: 'dark',
+    belong: 'none',
     type: 'normal',
     desc: [
       ['10黑暗值时单位复活1次', '10黑暗值时单位复活1次'],
@@ -738,7 +738,7 @@ export const CardData: Record<CardKey, Card> = {
     attr: {
       pool: true,
     },
-    belong: 'dark',
+    belong: 'none',
     type: 'normal',
     desc: [
       ['获得黑暗值时, 获得<1>凤凰', '获得黑暗值时, 获得<2>凤凰'],
@@ -774,7 +774,7 @@ export const CardData: Record<CardKey, Card> = {
     attr: {
       pool: true,
     },
-    belong: 'dark',
+    belong: 'none',
     type: 'normal',
     desc: [
       ['获得黑暗值时, 获得<1>不死队', '获得黑暗值时, 获得<2>不死队'],
@@ -881,7 +881,7 @@ export const CardData: Record<CardKey, Card> = {
     attr: {
       pool: true,
     },
-    belong: 'dark',
+    belong: 'none',
     type: 'normal',
     desc: [
       ['获得黑暗值时, 获得<1>鲜血猎手', '获得黑暗值时, 获得<2>鲜血猎手'],
@@ -943,7 +943,7 @@ export const CardData: Record<CardKey, Card> = {
     attr: {
       pool: true,
     },
-    belong: 'dark',
+    belong: 'none',
     type: 'normal',
     desc: [
       [
@@ -1071,7 +1071,7 @@ export const CardData: Record<CardKey, Card> = {
     attr: {
       pool: true,
     },
-    belong: 'dark',
+    belong: 'none',
     type: 'normal',
     desc: [
       [

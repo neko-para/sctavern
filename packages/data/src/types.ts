@@ -26,7 +26,7 @@ export type Pack =
   | '独辟蹊径'
   | '军备竞赛'
 
-export type CardBelong = 'none' | 'primal' | 'dark' | 'virtual'
+export type CardBelong = 'none' | 'primal' | 'virtual'
 
 export type UnitType = 'normal' | 'special unit' | 'special structure'
 

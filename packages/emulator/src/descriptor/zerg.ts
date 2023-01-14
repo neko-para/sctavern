@@ -146,29 +146,22 @@ export default function (/* config */): Record<string, Descriptor> {
       },
       listener: {
         'card-selled'({ target }) {
-          const tc = this.$ref$Player.present[target]?.card
-          if (tc) {
-            this.obtain_unit([
-              ...rep('爆虫', tc.find('跳虫').length),
-              ...rep('爆虫(精英)', tc.find('跳虫(精英)').length),
-            ] as UnitKey[])
-          }
+          this.obtain_unit([
+            ...rep('爆虫', target.find('跳虫').length),
+            ...rep('爆虫(精英)', target.find('跳虫(精英)').length),
+          ])
         },
       },
     },
     飞龙骑脸0: 孵化('post-sell', '异龙', 2, 4),
     凶残巨兽0: 注卵('post-sell', ci => rep('雷兽', ci.isg() ? 2 : 1)),
-    注卵虫后0: 注卵(
-      'round-start',
-      ci =>
-        [
-          ...rep('蟑螂', ci.isg() ? 2 : 1),
-          ...rep('刺蛇', ci.isg() ? 2 : 1),
-        ] as UnitKey[]
-    ),
+    注卵虫后0: 注卵('round-start', ci => [
+      ...rep('蟑螂', ci.isg() ? 2 : 1),
+      ...rep('刺蛇', ci.isg() ? 2 : 1),
+    ]),
     孵化所0: {
       config: {
-        unique: 'left',
+        unique: 'normal',
       },
       listener: {
         'obtain-unit'({ time, units, way }) {
@@ -265,7 +258,7 @@ export default function (/* config */): Record<string, Descriptor> {
     },
     扎加拉0: {
       config: {
-        unique: 'left',
+        unique: 'normal',
       },
       listener: {
         incubate({ units }) {
@@ -278,29 +271,25 @@ export default function (/* config */): Record<string, Descriptor> {
     },
     斯托科夫0: {
       config: {
-        unique: 'left',
+        unique: 'normal',
       },
       note: (ci, act) => [
         act
           ? ci.isg() || ci.$ref$Player.persisAttrib.get('斯托科夫')
             ? '注卵'
             : '禁用'
-          : '禁用',
+          : '停用',
       ],
       listener: {
         'card-entered'({ target }) {
-          const tc = this.$ref$Player.present[target]?.card
-          if (!tc) {
-            return
-          }
-          if (tc.race === 'Z' || tc.level >= 6) {
+          if (target.race === 'Z' || target.level >= 6) {
             return
           }
           const v = this.$ref$Player.persisAttrib.get('斯托科夫')
           this.$ref$Player.persisAttrib.set('斯托科夫', this.isg() ? 0 : 1 - v)
           if (this.isg() || v === 1) {
             this.$ref$Player.inject(
-              tc.units
+              target.units
                 .map(u => UnitData[u])
                 .filter(u => isNormal(u) && !u.tag.heroic)
                 .map(u => u.name),

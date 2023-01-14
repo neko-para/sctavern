@@ -183,6 +183,7 @@ export interface ClientViewData {
 export interface Descriptor {
   config?: {
     unique?: 'normal' | 'left' // 优先金卡 / 优先左卡
+    uniqueDisabled?: (ci: CardInstance) => boolean // 允许禁用唯一词条, 用于光复
     init?: Record<string, [number, number]>
     deinit?: Record<string, [number, number]>
   }

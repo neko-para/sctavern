@@ -1,8 +1,13 @@
+import { UnitKey } from '@sctavern/data'
 import { GameInstance } from './game'
 import cm from './serialize'
 import { Descriptor } from './types'
 
-export function rep<T>(v: T, n: number) {
+export function rep(v: UnitKey, n: number) {
+  return Array.from({ length: n }, () => v)
+}
+
+export function repX<T>(v: T, n: number) {
   return Array.from({ length: n }, () => v)
 }
 

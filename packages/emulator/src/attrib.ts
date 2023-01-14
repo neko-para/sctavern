@@ -20,4 +20,12 @@ export class Attribute {
   alter(key: string, dlt: number) {
     this.value[key] = this.get(key) + dlt
   }
+
+  load(attrib: Attribute, ignore: string[]) {
+    for (const key in Object.keys(attrib.value).filter(
+      s => !ignore.includes(s)
+    )) {
+      this.alter(key, attrib.get(key))
+    }
+  }
 }

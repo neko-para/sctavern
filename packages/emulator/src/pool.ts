@@ -1,6 +1,6 @@
 import { CardKey, Pack, AllCard, CardData, Card } from '@sctavern/data'
 import { LCG } from './game'
-import { rep } from './utils'
+import { repX } from './utils'
 
 const poolCount: Record<number, number> = {
   1: 18,
@@ -42,12 +42,12 @@ export class Pool {
       const card = CardData[ck]
 
       // if (pred(card) && Math.random() > 0.5) {
-      if (pred(card) && (card.race === 'T' || card.race === 'Z')) {
+      if (pred(card) && card.race !== 'N') {
         if (unique) {
           f.push(card)
-          mf.push(...rep(card, (this.heap[ck] || 1) - 1))
+          mf.push(...repX(card, (this.heap[ck] || 1) - 1))
         } else {
-          f.push(...rep(card, this.heap[ck] || 0))
+          f.push(...repX(card, this.heap[ck] || 0))
         }
       } else {
         nh[ck] = this.heap[ck]

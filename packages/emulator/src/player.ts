@@ -22,11 +22,10 @@ import {
   DiscoverContext,
   DiscoverItem,
 } from './types'
-import { notNull, rep } from './utils'
+import { notNull, repX } from './utils'
 import DescriptorTable from './descriptor'
 import RoleTable from './role'
 import { Attribute } from './attrib'
-import { v4 as uuidv4 } from 'uuid'
 
 const playerBind: GenericListener<PlayerInstance> = {
   $upgrade: function () {
@@ -151,7 +150,7 @@ const playerBind: GenericListener<PlayerInstance> = {
         })
         this.post({
           msg: 'upgrade-cancelled',
-          target: ctx.target || 0,
+          target: this.present[ctx.target || 0]?.card as CardInstance,
         })
       }
     }
@@ -434,6 +433,7 @@ export class PlayerInstance {
   present: ({
     card: CardInstance
   } | null)[]
+  process: CardInstance | null
 
   constructor(game: GameInstance, rolekey: RoleKey) {
     this.$ref$Game = game
@@ -487,9 +487,10 @@ export class PlayerInstance {
       enhance: true,
     }
 
-    this.store = rep(null, 3)
-    this.hand = rep(null, 6)
-    this.present = rep(null, 7)
+    this.store = repX(null, 3)
+    this.hand = repX(null, 6)
+    this.present = repX(null, 7)
+    this.process = null
   }
 
   index() {
@@ -512,7 +513,11 @@ export class PlayerInstance {
     Dispatch(playerBind, msg, this)
 
     if ('card' in msg) {
-      this.present[msg.card]?.card.answer(msg)
+      if (msg.card === -1) {
+        this.process?.answer(msg)
+      } else {
+        this.present[msg.card]?.card.answer(msg)
+      }
     } else {
       this.present.forEach(p => {
         if (p) {
@@ -525,7 +530,7 @@ export class PlayerInstance {
   check_unique_active(key: string, place: number) {
     const d = DescriptorTable[key]
     if (d.config?.unique) {
-      const pre = (
+      let pre = (
         this.present
           .map((c, i) => ({
             card: c?.card || null,
@@ -533,6 +538,9 @@ export class PlayerInstance {
           }))
           .filter(c => c.card) as { card: CardInstance; pos: number }[]
       ).filter(c => c.card.descs.includes(key))
+      if (d.config.uniqueDisabled) {
+        pre = pre.filter(c => d.config?.uniqueDisabled?.(c.card))
+      }
       if (d.config.unique === 'normal') {
         const cp = {
           normal: 1,
@@ -741,7 +749,7 @@ export class PlayerInstance {
 
     this.post({
       msg: 'card-entered',
-      target: place,
+      target: ci,
     })
 
     ci.post({
@@ -768,6 +776,8 @@ export class PlayerInstance {
     }
     ci.color = 'gold'
     ci.occupy = [...target[0].occupy, ...target[1].occupy]
+    ci.attrib.load(target[0].attrib, ['task'])
+    ci.attrib.load(target[1].attrib, ['task'])
     const i1 = target[0].infr()
     const i2 = target[1].infr()
     if (ci.race === 'T' && i1 && i2) {
@@ -811,7 +821,7 @@ export class PlayerInstance {
 
     this.post({
       msg: 'card-combined',
-      target: ci.index(),
+      target: ci,
     })
 
     ci.post({
@@ -848,7 +858,7 @@ export class PlayerInstance {
     const pos = ci.index()
     ci.attrib.set('oldpos', pos)
     this.present[pos] = null
-    this.present.push({ card: ci })
+    this.process = ci
 
     const doPostEffect = ci.level > 0 || ci.name === '虫卵'
     const dark = ci.level >= 4 ? 2 : 1
@@ -863,7 +873,7 @@ export class PlayerInstance {
     if (doPostEffect) {
       this.post({
         msg: 'card-selled',
-        target: 7,
+        target: ci,
       })
       this.obtain_resource({
         mineral: 1,
@@ -875,14 +885,14 @@ export class PlayerInstance {
       }
     }
 
-    this.present.pop()
+    this.process = null
   }
 
   destroy(ci: CardInstance) {
     const pos = ci.index()
     ci.attrib.set('oldpos', pos)
     this.present[pos] = null
-    this.present.push({ card: ci })
+    this.process = ci
 
     const doPostEffect = ci.level > 0
     const dark = ci.level >= 4 ? 2 : 1
@@ -895,7 +905,7 @@ export class PlayerInstance {
       })
     }
 
-    this.present.pop()
+    this.process = null
   }
 
   incubate(from: CardInstance, units: UnitKey[]) {
@@ -904,7 +914,7 @@ export class PlayerInstance {
     }
     const m = this.post({
       msg: 'incubate',
-      from: from.index(),
+      from: from,
       units,
     })
     from.around().forEach(ci => {
@@ -945,6 +955,28 @@ export class PlayerInstance {
         msg: 'inject',
         units,
       })
+    }
+  }
+
+  wrap(units: UnitKey[]) {
+    if (units.length === 0) {
+      return
+    }
+    const m = this.post({
+      msg: 'wrap',
+      units,
+      into: null as CardInstance | null,
+    })
+    if (m.into === null) {
+      const targets = this.all_of('P')
+      if (!targets.length) {
+        return
+      }
+      this.$ref$Game.lcg.shuffle(targets)
+      m.into = targets[0]
+    }
+    if (m.into) {
+      m.into.obtain_unit(units, 'wrap')
     }
   }
 }

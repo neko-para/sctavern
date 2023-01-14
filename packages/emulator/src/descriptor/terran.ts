@@ -28,7 +28,7 @@ export function 任务<T extends InnerMsg['msg']>(
             reward(this)
             this.$ref$Player.post({
               msg: 'task-done',
-              target: this.index(),
+              target: this,
             })
             if (policy === 'instant') {
               this.attrib.set('task', 0)
@@ -176,7 +176,7 @@ export default function (/* config */): Record<string, Descriptor> {
       3,
       card => card.left()?.upgrade_infr(),
       (ci, { target }) => {
-        return ci.$ref$Player.present[target]?.card.race === 'T'
+        return target.race === 'T'
       }
     ),
     科考小队0: 进场后切换两侧挂件(),
@@ -310,9 +310,7 @@ export default function (/* config */): Record<string, Descriptor> {
     游骑兵0: {
       listener: {
         'infr-changed'({ target }) {
-          this.$ref$Player.present[target]?.card.obtain_unit(
-            rep('雷诺(狙击手)', this.isg() ? 2 : 1)
-          )
+          target.obtain_unit(rep('雷诺(狙击手)', this.isg() ? 2 : 1))
         },
       },
     },
@@ -334,9 +332,8 @@ export default function (/* config */): Record<string, Descriptor> {
         unique: 'normal',
       },
       listener: {
-        'card-selled'({ target }) {
-          const ci = this.$ref$Player.present[target]?.card
-          if (!ci || ci.race !== 'T') {
+        'card-selled'({ target: ci }) {
+          if (ci.race !== 'T') {
             return
           }
           if (this.$ref$Player.attrib.get('沃菲尔德') >= (this.isg() ? 2 : 1)) {

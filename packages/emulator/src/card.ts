@@ -68,6 +68,9 @@ export class CardInstance {
     this.level = card.level
     this.color = card.attr.amber ? 'amber' : 'normal'
     this.belong = card.belong
+    if (card.type === 'structure') {
+      this.attrib.set('structure', 1)
+    }
 
     this.occupy = []
 
@@ -191,7 +194,7 @@ export class CardInstance {
   }
 
   obtain_upgrade(upgrade: UpgradeKey) {
-    if (upgrade.length >= this.config.MaxUpgrade) {
+    if (this.upgrades.length >= this.config.MaxUpgrade) {
       return
     }
     const u = UpgradeData[upgrade]
@@ -205,7 +208,7 @@ export class CardInstance {
           ...rep('水晶塔', 2),
           ...rep('狂热者', 2),
           ...rep('激励者', 2),
-        ] as UnitKey[])
+        ])
         break
       case '修理无人机':
         this.obtain_unit(rep('修理无人机', this.$ref$Player.level + 3))
@@ -241,6 +244,20 @@ export class CardInstance {
     return idx === -1
       ? false
       : (this.units[idx] as '反应堆' | '科技实验室' | '高级科技实验室')
+  }
+
+  self_power() {
+    return (
+      this.find(u => ['水晶塔', '虚空水晶塔'].includes(u)).length +
+      this.attrib.get('供能')
+    )
+  }
+
+  power() {
+    return this.around()
+      .map(c => c.self_power())
+      .concat(this.self_power())
+      .reduce((a, b) => a + b, 0)
   }
 
   fast_prod() {
@@ -319,5 +336,39 @@ export class CardInstance {
 
   value() {
     return this.units.map(u => UnitData[u].value).reduce((a, b) => a + b, 0)
+  }
+
+  extraNote() {
+    const res: string[] = []
+
+    if (this.attrib.get('structure')) {
+      res.push('建筑卡')
+    }
+
+    switch (this.belong) {
+      case 'primal':
+        res.push('属于原始虫群')
+        break
+      case 'virtual':
+        res.push('属于虚影')
+        break
+    }
+
+    if (this.race === 'T') {
+      const i = this.infr()
+      if (i) {
+        res.push(i)
+      }
+    }
+
+    if (this.race === 'P' || this.power() > 0) {
+      res.push(`能量强度: ${this.power()}`)
+    }
+
+    if (this.attrib.has('dark')) {
+      res.push(`黑暗值: ${this.attrib.get('dark')}`)
+    }
+
+    return res
   }
 }
