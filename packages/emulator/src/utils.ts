@@ -1,4 +1,4 @@
-import { UnitKey } from '@sctavern/data'
+import { UnitData, UnitKey } from '@sctavern/data'
 import { GameInstance } from './game'
 import cm from './serialize'
 import { Descriptor } from './types'
@@ -43,4 +43,43 @@ export function Serialize(game: GameInstance) {
 
 export function Deserialize(data: string) {
   return cm.deserialize(data) as GameInstance
+}
+
+export function mostValueUnit(
+  u: UnitKey[],
+  cmp: (v1: number, v2: number) => boolean = (v1, v2) => v1 > v2,
+  cv: (u: UnitKey) => number = u => UnitData[u].value
+): {
+  unit: UnitKey | null
+  index: number
+  value: number
+} {
+  if (u.length === 0) {
+    return {
+      unit: null,
+      index: -1,
+      value: -1,
+    }
+  }
+  const uv = u.map(cv)
+  const res = uv.reduce(
+    (ctx, value, index) => {
+      if (cmp(value, ctx.value)) {
+        return {
+          index,
+          value,
+        }
+      } else {
+        return ctx
+      }
+    },
+    {
+      index: -1,
+      value: uv[0],
+    }
+  )
+  return {
+    ...res,
+    unit: u[res.index],
+  }
 }

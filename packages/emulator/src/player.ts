@@ -106,17 +106,7 @@ const playerBind: GenericListener<PlayerInstance> = {
           if (place !== -1) {
             const result = ctx.item[place]
             if (result.type === 'card') {
-              const ck = result.card.name
-              if (this.can_stage()) {
-                this.stage(ck)
-              } else if (this.can_combine(ck)) {
-                this.combine(ck)
-              } else if (this.can_enter(ck)) {
-                this.require_enter(ck)
-              } else {
-                // restore it
-                drop.push(result.card)
-              }
+              this.obtain_card(result.card.name, !ctx.nodrop)
             } else if (result.type === 'upgrade') {
               console.log(ctx)
               if ('target' in ctx) {
@@ -351,7 +341,8 @@ const playerBind: GenericListener<PlayerInstance> = {
       return
     }
     this.status = 'normal'
-    this.attrib = new Attribute()
+    this.attrib = this.nextAttrib
+    this.nextAttrib = new Attribute()
     if (this.upgrade_cost > 0) {
       this.upgrade_cost -= 1
     }
@@ -399,6 +390,7 @@ export class PlayerInstance {
   $ref$Game: GameInstance
   config: PlayerConfig
   attrib: Attribute
+  nextAttrib: Attribute
   persisAttrib: Attribute
 
   life: number
@@ -454,6 +446,7 @@ export class PlayerInstance {
       MaxGas: 6,
     }
     this.attrib = new Attribute()
+    this.nextAttrib = new Attribute()
     this.persisAttrib = new Attribute()
 
     this.life = 100
@@ -569,6 +562,19 @@ export class PlayerInstance {
     return this.all().filter(c => c.race === race)
   }
 
+  count(): Record<Race, number> {
+    const res: Record<Race, number> = {
+      T: 0,
+      P: 0,
+      Z: 0,
+      N: 0,
+    }
+    this.all().forEach(ci => {
+      res[ci.race] += 1
+    })
+    return res
+  }
+
   fill_store() {
     const nf = this.store.filter(c => !c).length
     const nc = this.$ref$Game.pool.discover(
@@ -597,6 +603,20 @@ export class PlayerInstance {
     this.post({
       msg: 'store-refreshed',
     })
+  }
+
+  obtain_card(card: CardKey, drop = true) {
+    if (this.can_stage()) {
+      this.stage(card)
+    } else if (this.can_combine(card)) {
+      this.combine(card)
+    } else if (this.can_enter(card)) {
+      this.require_enter(card)
+    } else {
+      if (drop) {
+        this.$ref$Game.pool.drop([CardData[card]])
+      }
+    }
   }
 
   obtain_resource(res: { mineral?: number; gas?: number }) {
@@ -741,11 +761,7 @@ export class PlayerInstance {
     this.present[place] = {
       card: ci,
     }
-    cd.desc
-      .map((d, i) => `${card}${i}`)
-      .forEach(d => {
-        ci.add_desc(d)
-      })
+    ci.load_desc(cd)
 
     this.post({
       msg: 'card-entered',
@@ -813,11 +829,17 @@ export class PlayerInstance {
       card: ci,
     }
     this.present[target[1].index()] = null
-    cd.desc
-      .map((d, i) => `${card}${i}`)
-      .forEach(d => {
-        ci.add_desc(d)
-      })
+    ci.load_desc(cd)
+    ci.upgrades.forEach(u => {
+      switch (u) {
+        case '原始尖塔':
+          ci.add_desc('原始尖塔')
+          break
+        case '献祭':
+          ci.add_desc('献祭')
+          break
+      }
+    })
 
     this.post({
       msg: 'card-combined',

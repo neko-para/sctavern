@@ -3,6 +3,7 @@ import { Descriptor } from '../types'
 import TD from './terran'
 import ZD from './zerg'
 import PD from './protoss'
+import ND from './nuetral'
 import SD from './special'
 
 export function CreateDescriptorTable() {
@@ -10,6 +11,7 @@ export function CreateDescriptorTable() {
     ...TD(),
     ...ZD(),
     ...PD(),
+    ...ND(),
     ...SD(),
   }
   for (const key in result) {

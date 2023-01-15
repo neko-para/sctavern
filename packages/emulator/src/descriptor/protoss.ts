@@ -16,6 +16,11 @@ function 集结X(
           this.regroup(id)
         }
       },
+      'req-regroup'({ id: i }) {
+        if (id === i || i === -1) {
+          effect(this)
+        }
+      },
     },
   }
 }

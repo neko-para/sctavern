@@ -13,7 +13,7 @@ import { Dispatch } from './dispatch'
 import { GenericListener, InnerMsg } from './events'
 import { PlayerInstance } from './player'
 import { CardConfig, DistributiveOmit, ObtainUnitWay } from './types'
-import { notNull, rep } from './utils'
+import { mostValueUnit, notNull, rep } from './utils'
 import DescriptorTable from './descriptor'
 import { Attribute } from './attrib'
 
@@ -68,6 +68,9 @@ export class CardInstance {
     this.level = card.level
     this.color = card.attr.amber ? 'amber' : 'normal'
     this.belong = card.belong
+    if (this.belong === 'virtual') {
+      this.attrib.set('virtual', 1)
+    }
     if (card.type === 'structure') {
       this.attrib.set('structure', 1)
     }
@@ -92,8 +95,10 @@ export class CardInstance {
     return idx === 7 ? this.attrib.get('oldpos') : idx
   }
 
-  left() {
-    const pos = this.index()
+  left(pos = -1) {
+    if (pos === -1) {
+      pos = this.index()
+    }
     if (pos > 0) {
       return this.$ref$Player.present[pos - 1]?.card || null
     } else {
@@ -101,8 +106,10 @@ export class CardInstance {
     }
   }
 
-  right() {
-    const pos = this.index()
+  right(pos = -1) {
+    if (pos === -1) {
+      pos = this.index()
+    }
     if (pos < 6) {
       // 这里不能用present的长度, 因为出售时卡牌被临时添加到了present结尾, 若realPos为6则会导致将右侧卡牌判定为自己
       return this.$ref$Player.present[pos + 1]?.card || null
@@ -111,8 +118,8 @@ export class CardInstance {
     }
   }
 
-  around() {
-    return [this.left(), this.right()].filter(notNull)
+  around(pos = -1) {
+    return [this.left(pos), this.right(pos)].filter(notNull)
   }
 
   find(u: UnitKey | ((unit: UnitKey) => boolean), maxi?: number) {
@@ -214,15 +221,40 @@ export class CardInstance {
         this.obtain_unit(rep('修理无人机', this.$ref$Player.level + 3))
         break
       case '黄金矿工':
-        this.clear_desc()
         this.color = 'gold'
-        CardData['黄金矿工'].desc
-          .map((d, i) => `黄金矿工${i}`)
-          .forEach(d => {
-            this.add_desc(d)
-          })
+        this.clear_desc()
+        this.load_desc(CardData['黄金矿工'])
         break
-      // 献祭
+      case '献祭': {
+        const vo = (unit: UnitKey) => {
+          if (unit === '莎拉·凯瑞甘' || unit === '刀锋女王') {
+            return 10000
+          } else {
+            return UnitData[unit].value
+          }
+        }
+        if (this.units.length <= 1) {
+          this.attrib.set('sacrifice', 0)
+          this.attrib.set('sacrificeValue', 0)
+        } else {
+          const { index } = mostValueUnit(this.units, (a, b) => a > b, vo)
+          const res = this.filter((u, i) => i !== index).map(u => UnitData[u])
+
+          const sum =
+            res
+              .map(u => u.health + (u.shield || 0))
+              .reduce((a, b) => a + b, 0) * 1.5
+          const vsum = res.map(u => u.value).reduce((a, b) => a + b, 0)
+
+          this.attrib.set('sacrifice', sum)
+          this.attrib.set('sacrificeValue', vsum)
+        }
+        this.add_desc('献祭')
+        break
+      }
+      case '原始尖塔':
+        this.add_desc('原始尖塔')
+        break
     }
     this.post({
       msg: 'obtain-upgrade',
@@ -309,6 +341,31 @@ export class CardInstance {
     }
   }
 
+  set_void() {
+    this.attrib.set('void', 1)
+  }
+
+  seize(
+    target: CardInstance,
+    option?: {
+      fake?: boolean
+      withUpgrade?: boolean
+    }
+  ) {
+    if (!option?.fake) {
+      this.$ref$Player.post({
+        msg: 'seize',
+        target,
+        from: this,
+      })
+    }
+    this.obtain_unit(target.units)
+    if (option?.withUpgrade) {
+      target.upgrades.forEach(u => this.obtain_upgrade(u))
+    }
+    this.$ref$Player.destroy(target)
+  }
+
   add_desc(d: string) {
     this.descs.push(d)
     const ds = DescriptorTable[d]
@@ -320,6 +377,14 @@ export class CardInstance {
         this.attrib.alter(k, ds.config.init[k][this.isg() ? 1 : 0])
       }
     }
+  }
+
+  load_desc(cd: Card) {
+    cd.desc
+      .map((d, i) => `${cd.name}${i}`)
+      .forEach(d => {
+        this.add_desc(d)
+      })
   }
 
   clear_desc() {
@@ -335,7 +400,9 @@ export class CardInstance {
   }
 
   value() {
-    return this.units.map(u => UnitData[u].value).reduce((a, b) => a + b, 0)
+    return this.units
+      .map(u => UnitData[u].value)
+      .reduce((a, b) => a + b, this.attrib.get('sacrificeValue'))
   }
 
   extraNote() {
@@ -367,6 +434,21 @@ export class CardInstance {
 
     if (this.attrib.has('dark')) {
       res.push(`黑暗值: ${this.attrib.get('dark')}`)
+    }
+
+    if (this.attrib.get('virtual')) {
+      const cnt = this.$ref$Player.count()
+      res.push(
+        `虚空投影: ${
+          Object.keys(cnt)
+            .map(r => (cnt[r as Race] ? 1 : 0))
+            .reduce((a, b) => a + b, -1) * 15
+        }%`
+      )
+    }
+
+    if (this.attrib.has('sacrifice')) {
+      res.push(`献祭的生命值: ${this.attrib.get('sacrifice')}`)
     }
 
     return res
