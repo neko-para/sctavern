@@ -20,7 +20,7 @@ const saveStore = useSaveStore()
 
 let game = new GameInstance({
   Pack: ['核心'],
-  Seed: 1,
+  Seed: Math.floor(Math.random() * 1000000),
   Role: ['白板'],
   Mutation: [],
 })
