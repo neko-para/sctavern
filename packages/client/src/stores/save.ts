@@ -3,7 +3,6 @@ import { defineStore } from 'pinia'
 
 export const useSaveStore = defineStore('save', () => {
   const storageFlag = ref(false)
-  const save = ref<string | null>(null)
   const history = ref<string[]>([])
 
   storageFlag.value = TestStorage()
@@ -12,7 +11,6 @@ export const useSaveStore = defineStore('save', () => {
     localStorage.setItem(
       'save',
       JSON.stringify({
-        save: save.value,
         history: history.value,
       })
     )
@@ -27,10 +25,7 @@ export const useSaveStore = defineStore('save', () => {
     if (!TestStorage()) {
       return
     }
-    const { save: s, history: h } = JSON.parse(
-      localStorage.getItem('save') as string
-    )
-    save.value = s
+    const { history: h } = JSON.parse(localStorage.getItem('save') as string)
     history.value = h
   }
 
@@ -40,7 +35,6 @@ export const useSaveStore = defineStore('save', () => {
   }
 
   return {
-    save,
     history,
     SaveStorage,
     TestStorage,

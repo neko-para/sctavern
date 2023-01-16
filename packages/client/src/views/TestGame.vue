@@ -72,14 +72,13 @@ function undo() {
 }
 
 function saveStorage() {
-  saveStore.save = save()
   saveStore.SaveStorage()
 }
 
 function loadStorage() {
   saveStore.LoadStorage()
-  if (saveStore.save) {
-    load(saveStore.save)
+  if (saveStore.history.length > 0) {
+    load(saveStore.history[saveStore.history.length - 1])
   }
 }
 
