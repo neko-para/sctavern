@@ -3,18 +3,17 @@ import RaceIcon from './RaceIcon.vue'
 import AutoButton from './AutoButton.vue'
 import AutoSpan from './AutoSpan.vue'
 import { ref, computed } from 'vue'
-import type { ClientViewData, GameInstance } from '@sctavern/emulator'
+import type { GameState, GameInstance, Client } from '@sctavern/emulator'
 import type { UnitKey } from '@sctavern/data'
 
 const props = defineProps<{
-  state: ClientViewData
-  game: GameInstance
-  player: number
+  state: GameState
+  client: Client
   place: number
 }>()
 
 const item = computed(() => {
-  return props.state.player[props.player]?.present[props.place] || null
+  return props.state.player[props.client.pos]?.present[props.place] || null
 })
 
 const color = computed(() => {
@@ -120,7 +119,7 @@ function buildUnit(units: UnitKey[]) {
           v-for="(a, i) in item.actions || []"
           :key="`PA-${i}`"
           :disabled="!a.enable"
-          @click="game.post(a.msg)"
+          @click="client.post(a.msg)"
         >
           {{ tr[a.action] }}
         </auto-button>

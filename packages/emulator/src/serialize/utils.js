@@ -9,7 +9,9 @@ export function setId(obj, counter = { id: 0 }) {
       obj['$id$'] = counter.id
       counter.id += 1
       for (const k in obj) {
-        setId(obj[k], counter)
+        if (!k.startsWith('$ignore$')) {
+          setId(obj[k], counter)
+        }
       }
     }
   }
@@ -25,7 +27,9 @@ export function cleanId(obj) {
       }
       delete obj['$id$']
       for (const k in obj) {
-        cleanId(obj[k])
+        if (!k.startsWith('$ignore$')) {
+          cleanId(obj[k])
+        }
       }
     }
   }
@@ -37,10 +41,12 @@ export function remRef(obj) {
       obj.forEach(remRef)
     } else {
       for (const k in obj) {
-        if (k.startsWith('$ref$')) {
-          obj[k] = obj[k]['$id$']
-        } else {
-          remRef(obj[k])
+        if (!k.startsWith('$ignore$')) {
+          if (k.startsWith('$ref$')) {
+            obj[k] = obj[k]['$id$']
+          } else {
+            remRef(obj[k])
+          }
         }
       }
     }
@@ -55,7 +61,9 @@ export function remId(obj, st) {
       st[obj['$id$']] = obj
       delete obj['$id$']
       for (const k in obj) {
-        remId(obj[k], st)
+        if (!k.startsWith('$ignore$')) {
+          remId(obj[k], st)
+        }
       }
     }
   }
@@ -67,10 +75,12 @@ export function setRef(obj, st) {
       obj.forEach(v => setRef(v, st))
     } else {
       for (const k in obj) {
-        if (k.startsWith('$ref$')) {
-          obj[k] = st[obj[k]]
-        } else {
-          setRef(obj[k], st)
+        if (!k.startsWith('$ignore$')) {
+          if (k.startsWith('$ref$')) {
+            obj[k] = st[obj[k]]
+          } else {
+            setRef(obj[k], st)
+          }
         }
       }
     }

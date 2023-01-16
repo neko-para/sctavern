@@ -108,7 +108,7 @@ export interface DiscoverContext {
   nodrop?: boolean
 }
 
-export interface ClientViewData {
+export interface GameState {
   config: GameConfig
 
   round: number

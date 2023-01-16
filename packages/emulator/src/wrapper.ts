@@ -1,37 +1,119 @@
 import { GameInstance } from './game'
-import { ClientViewData } from './types'
+import { Server } from './server'
+import { GameConfig } from './types'
+import defaultManager from './serialize'
 
-const watcher: Map<GameInstance, ((state: ClientViewData) => void)[]> =
-  new Map()
-
-export function Watch(
-  game: GameInstance,
-  func: (state: ClientViewData) => void
-): (state: ClientViewData) => void {
-  if (!watcher.has(game)) {
-    watcher.set(game, [func])
-  } else {
-    watcher.get(game)?.push(func)
-  }
-  return func
+export interface SaveConfig {
+  card?: never
+  unit?: never
+  upgr?: never
+  role?: never
+  muta?: never
+  desc?: never
 }
 
-export function Unwatch(
-  game: GameInstance,
-  func: null | ((state: ClientViewData) => void)
-) {
-  if (func) {
-    const arr = watcher.get(game)?.filter(f => f !== func) || []
-    if (arr.length === 0) {
-      watcher.delete(game)
-    } else {
-      watcher.set(game, arr)
+export interface PortableSave {
+  config: SaveConfig
+  old: string[]
+  new: string[]
+}
+
+export class Wrapper {
+  server: Server
+  game: GameInstance
+  save: PortableSave
+
+  loading: boolean
+
+  saveStateChanged: () => void
+
+  constructor() {
+    this.server = new Server()
+    this.server.notify.push(() => {
+      if (!this.loading) {
+        this.autoSave()
+      }
+    })
+    this.game = new GameInstance(
+      {
+        Pack: ['核心'],
+        Seed: 1,
+        Role: ['白板'],
+        Mutation: [],
+      },
+      this.server
+    )
+    this.save = {
+      config: {},
+      old: [defaultManager.serialize(this.game)],
+      new: [],
     }
-  } else {
-    watcher.delete(game)
-  }
-}
 
-export function PushState(game: GameInstance, state: ClientViewData) {
-  watcher.get(game)?.forEach(f => f(state))
+    this.loading = false
+
+    this.saveStateChanged = () => void 0
+  }
+
+  unbind() {
+    this.game.$ignore$Server = new Server()
+  }
+
+  bind() {
+    this.game.$ignore$Server = this.server
+    this.loading = true
+    this.server.emit(this.game.getState())
+    this.loading = false
+  }
+
+  init(cfg: GameConfig, xcfg: SaveConfig = {}) {
+    this.unbind()
+    this.game = new GameInstance(cfg, this.server)
+    this.save = {
+      config: xcfg,
+      old: [defaultManager.serialize(this.game)],
+      new: [],
+    }
+    this.saveStateChanged()
+  }
+
+  load(save: PortableSave) {
+    this.save = save
+    this.loadActive()
+  }
+
+  loadActive() {
+    this.unbind()
+    this.game = defaultManager.deserialize(
+      this.save.old[this.save.old.length - 1]
+    ) as GameInstance
+    this.bind()
+    this.saveStateChanged()
+  }
+
+  undo() {
+    if (this.save.old.length > 1) {
+      this.save.new.push(this.save.old.pop() as string)
+      this.loadActive()
+    }
+  }
+
+  redo() {
+    if (this.save.new.length > 0) {
+      this.save.old.push(this.save.new.pop() as string)
+      this.loadActive()
+    }
+  }
+
+  getState() {
+    return {
+      canRedo: this.save.new.length > 0,
+      canUndo: this.save.old.length > 1,
+    }
+  }
+
+  autoSave() {
+    this.save.new = []
+    this.save.old.push(defaultManager.serialize(this.game))
+    this.saveStateChanged()
+  }
 }

@@ -1,12 +1,12 @@
 import { InnerMsg } from './events'
 import { PlayerInstance } from './player'
 import { Pool } from './pool'
-import { ClientViewData, GameConfig, PresentAction } from './types'
+import { GameState, GameConfig, PresentAction } from './types'
 import { dup, repX } from './utils'
 import DescriptorTable from './descriptor'
 import { Attribute } from './attrib'
-import { PushState } from './wrapper'
 import { RoleData } from '@sctavern/data'
+import { Server } from './server'
 
 export class LCG {
   seed: number
@@ -40,6 +40,8 @@ export class LCG {
 }
 
 export class GameInstance {
+  $ignore$Server: Server
+
   config: GameConfig
   attrib: Attribute
 
@@ -50,9 +52,9 @@ export class GameInstance {
 
   player: (PlayerInstance | null)[]
 
-  postDep: number
+  constructor(cfg: GameConfig, srv: Server) {
+    this.$ignore$Server = srv
 
-  constructor(cfg: GameConfig) {
     this.config = dup(cfg)
     this.attrib = new Attribute()
     this.lcg = new LCG(this.config.Seed || 1) // prevent 0
@@ -61,11 +63,15 @@ export class GameInstance {
     this.player = repX(null, this.config.Role.length).map((v, i) => {
       return new PlayerInstance(this, this.config.Role[i])
     })
-    this.postDep = 0
+  }
+
+  input(msg: InnerMsg) {
+    console.log(msg)
+    this.post(msg)
+    this.emit()
   }
 
   post(msg: InnerMsg) {
-    this.postDep += 1
     if ('player' in msg) {
       this.player[msg.player]?.answer(msg)
     } else {
@@ -75,15 +81,10 @@ export class GameInstance {
         }
       })
     }
-    this.postDep -= 1
-    if (this.postDep === 0) {
-      console.log(msg)
-      this.emit()
-    }
   }
 
-  getState(): ClientViewData {
-    const state: ClientViewData = {
+  getState(): GameState {
+    const state: GameState = {
       config: dup(this.config),
 
       round: this.round,
@@ -325,12 +326,13 @@ export class GameInstance {
   }
 
   emit() {
-    PushState(this, this.getState())
+    this.$ignore$Server.emit(this.getState())
   }
 
   start() {
     this.round = 0
     this.roundStart()
+    this.emit()
   }
 
   roundEnd() {

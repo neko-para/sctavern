@@ -16,6 +16,9 @@ export class ClassManager {
 
   register(name: string, proto: object) {
     if (name in this.protos) {
+      if (this.protos[name] === proto) {
+        console.log(`[WARN] ${name} already registered. skip`)
+      }
       throw `${name} is already registered!`
     } else if (this.indexs.has(proto)) {
       throw `prototype of ${name} is already registered!`
@@ -35,6 +38,8 @@ export class ClassManager {
     const replacer = (key: string, value: unknown) => {
       if (key.startsWith('$ref$')) {
         return (value as Record<string, string>)['$id$']
+      } else if (key.startsWith('$ignore$')) {
+        return undefined
       }
       if (typeof value === 'object' && value !== null) {
         const p = Object.getPrototypeOf(value)

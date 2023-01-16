@@ -1,45 +1,40 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import type { PortableSave } from '@sctavern/emulator'
 
 export const useSaveStore = defineStore('save', () => {
-  const storageFlag = ref(false)
-  const history = ref<string[]>([])
+  const save = ref<PortableSave | null>(null)
 
-  storageFlag.value = TestStorage()
-
-  function SaveStorage() {
+  function SaveStorage(s: PortableSave) {
+    save.value = s
     localStorage.setItem(
       'save',
       JSON.stringify({
-        history: history.value,
+        save: save.value,
       })
     )
-    storageFlag.value = true
-  }
-
-  function TestStorage() {
-    return !!localStorage.getItem('save')
   }
 
   function LoadStorage() {
-    if (!TestStorage()) {
-      return
+    try {
+      const { save: s } = JSON.parse(localStorage.getItem('save') as string)
+      save.value = s
+      return true
+    } catch {
+      save.value = null
+      return false
     }
-    const { history: h } = JSON.parse(localStorage.getItem('save') as string)
-    history.value = h
   }
 
   function CleanStorage() {
     localStorage.removeItem('save')
-    storageFlag.value = false
+    save.value = null
   }
 
   return {
-    history,
+    save,
     SaveStorage,
-    TestStorage,
     LoadStorage,
     CleanStorage,
-    storageFlag,
   }
 })

@@ -3,17 +3,16 @@ import RaceIcon from './RaceIcon.vue'
 import AutoButton from './AutoButton.vue'
 import { computed } from 'vue'
 import { CardData } from '@sctavern/data'
-import type { ClientViewData, GameInstance } from '@sctavern/emulator'
+import type { GameState, Client } from '@sctavern/emulator'
 
 const props = defineProps<{
-  state: ClientViewData
-  game: GameInstance
-  player: number
+  state: GameState
+  client: Client
   place: number
 }>()
 
 const item = computed(() => {
-  return props.state.player[props.player]?.store[props.place] || null
+  return props.state.player[props.client.pos]?.store[props.place] || null
 })
 
 const tr = {
@@ -26,7 +25,7 @@ const tr = {
 <template>
   <v-card
     class="d-flex flex-column align-self-start KeyCard"
-    :color="item && props.state.player[props.player]?.locked ? 'cyan' : ''"
+    :color="item && props.state.player[props.client.pos]?.locked ? 'cyan' : ''"
   >
     <template v-if="item">
       <div class="d-flex">
@@ -44,7 +43,7 @@ const tr = {
           v-for="(a, i) in item?.actions || []"
           :key="`SA-${i}`"
           :disabled="!a.enable"
-          @click="game.post(a.msg)"
+          @click="client.post(a.msg)"
         >
           {{ tr[a.action] }}
         </auto-button>

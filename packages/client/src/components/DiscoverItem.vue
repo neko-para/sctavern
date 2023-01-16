@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import RaceIcon from './RaceIcon.vue'
 import { computed } from 'vue'
-import type { ClientViewData, GameInstance } from '@sctavern/emulator'
+import type { GameState, Client } from '@sctavern/emulator'
 
 const props = defineProps<{
-  state: ClientViewData
-  game: GameInstance
-  player: number
+  state: GameState
+  client: Client
   place: number
 }>()
 
 const item = computed(() => {
-  return props.state.player[props.player]?.discover?.item[props.place] || null
+  return (
+    props.state.player[props.client.pos]?.discover?.item[props.place] || null
+  )
 })
 </script>
 
@@ -19,11 +20,10 @@ const item = computed(() => {
   <v-card
     class="d-flex flex-column align-self-start KeyCard"
     @click="
-      game.post({
+      client.autoPost({
         msg: '$choice',
         category: 'discover',
         place,
-        player,
       })
     "
   >

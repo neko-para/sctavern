@@ -1,122 +1,81 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { ref } from 'vue'
 import AutoButton from '@/components/AutoButton.vue'
-import {
-  Serialize,
-  Deserialize,
-  Init,
-  GameInstance,
-  Watch,
-  Unwatch,
-  type ClientViewData,
-} from '@sctavern/emulator'
+import { Init, type GameState, Wrapper, Client } from '@sctavern/emulator'
 import GameInstanceVue from '@/components/GameInstance.vue'
-import { Compress, Decompress } from '@/utils'
 import { useSaveStore } from '@/stores/save'
 
 Init()
-
 const saveStore = useSaveStore()
+saveStore.LoadStorage()
 
-let game = new GameInstance({
+const wrapper = new Wrapper()
+const client = new Client(0, wrapper)
+
+wrapper.init({
   Pack: ['核心'],
   Seed: Math.floor(Math.random() * 1000000),
   Role: ['白板'],
   Mutation: [],
 })
 
-game.start()
+wrapper.game.start()
 
-const state = reactive({
-  state: game.getState(),
+const saveState = ref<{
+  canUndo: boolean
+  canRedo: boolean
+}>({
+  canUndo: false,
+  canRedo: false,
 })
 
-const TheWindow = window as unknown as Record<string, unknown>
+const state = ref<GameState>(wrapper.game.getState())
 
-function update(s: ClientViewData) {
-  saveStore.history.push(Compress<Save>({ version: 0, data: Serialize(game) }))
-  state.state = s
-}
+wrapper.server.notify.push(st => {
+  state.value = st
+})
 
-Watch(game, update)
-
-saveStore.history.push(Compress<Save>({ version: 0, data: Serialize(game) }))
-
-interface Save {
-  version: number
-  data: string
-}
-
-function save() {
-  return Compress<Save>({ version: 0, data: Serialize(game) })
-}
-
-TheWindow['save'] = save
-
-function load(data: string) {
-  const sav = Decompress<Save>(data)
-  if (!sav) {
-    return false
-  }
-  Unwatch(game, update)
-  game = Deserialize(sav.data)
-  Watch(game, update)
-  state.state = game.getState()
-}
-
-TheWindow['load'] = load
-
-function undo() {
-  saveStore.history.pop()
-  load(saveStore.history[saveStore.history.length - 1])
-}
-
-function saveStorage() {
-  saveStore.SaveStorage()
-}
-
-function loadStorage() {
-  saveStore.LoadStorage()
-  if (saveStore.history.length > 0) {
-    load(saveStore.history[saveStore.history.length - 1])
-  }
-}
-
-function cleanStorage() {
-  saveStore.CleanStorage()
+wrapper.saveStateChanged = () => {
+  saveState.value = wrapper.getState()
 }
 </script>
 
 <template>
-  <game-instance-vue
-    :state="state.state"
-    :game="game"
-    :player="0"
-  ></game-instance-vue>
+  <game-instance-vue :state="state" :client="client"></game-instance-vue>
   <v-card class="Debug d-flex flex-column">
     <span class="Label mx-auto">调试</span>
     <div class="d-flex flex-column">
       <auto-button
         variant="elevated"
-        :disabled="saveStore.history.length <= 1"
-        @click="undo()"
+        :disabled="!saveState.canUndo"
+        @click="wrapper.undo()"
       >
-        撤销 {{ saveStore.history.length - 1 }}
+        撤销
       </auto-button>
-      <auto-button variant="elevated" @click="saveStorage()">
+      <auto-button
+        variant="elevated"
+        :disabled="!saveState.canRedo"
+        @click="wrapper.redo()"
+      >
+        重做
+      </auto-button>
+      <auto-button
+        variant="elevated"
+        @click="saveStore.SaveStorage(wrapper.save)"
+      >
         保存
       </auto-button>
       <auto-button
         variant="elevated"
-        :disabled="!saveStore.storageFlag"
-        @click="loadStorage()"
+        :disabled="!saveStore.save"
+        @click="saveStore.save ? wrapper.load(saveStore.save) : void 0"
       >
         读取
       </auto-button>
       <auto-button
         variant="elevated"
-        :disabled="!saveStore.storageFlag"
-        @click="cleanStorage()"
+        :disabled="!saveStore.save"
+        @click="saveStore.CleanStorage()"
       >
         清除
       </auto-button>
