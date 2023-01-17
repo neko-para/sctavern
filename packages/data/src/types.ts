@@ -1,5 +1,6 @@
 import { CardKey } from './card'
 import { MutationKey } from './mutation'
+import { ProphesyKey } from './prophesy'
 import { RoleKey } from './role'
 import { UnitKey } from './unit'
 import { UpgradeKey } from './upgrade'
@@ -100,4 +101,11 @@ export interface Mutation {
   name: MutationKey
   pinyin: string
   prevent?: RoleKey
+}
+
+export interface Prophesy {
+  name: ProphesyKey
+  pinyin: string
+  type: RoleKey | 0 | 1 | 2
+  desc: string
 }
