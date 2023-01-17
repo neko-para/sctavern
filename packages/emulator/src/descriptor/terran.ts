@@ -1,8 +1,8 @@
-import { elited, isNormal, UnitData, UnitKey } from '@sctavern/data'
+import { CardData, elited, isNormal, UnitData, UnitKey } from '@sctavern/data'
 import { CardInstance } from '../card'
 import { InnerMsg } from '../events'
 import { Descriptor } from '../types'
-import { rep } from '../utils'
+import { notNull, rep } from '../utils'
 
 export function 任务<T extends InnerMsg['msg']>(
   msg: T,
@@ -216,10 +216,7 @@ export default function (/* config */): Record<string, Descriptor> {
           this.around().forEach(ci => {
             ci.replace(ci.find('歌利亚', this.isg() ? 2 : 1), elited)
             ci.replace(
-              ci.find(
-                u => ['维京战机', '维京战机<机甲>'].includes(u),
-                this.isg() ? 2 : 1
-              ),
+              ci.find(['维京战机', '维京战机<机甲>'], this.isg() ? 2 : 1),
               elited
             )
           })
@@ -362,5 +359,100 @@ export default function (/* config */): Record<string, Descriptor> {
       'instant'
     ),
     帝国舰队1: 科挂(4, '黄昏之翼', 2, 4),
+    黄昏之翼0: 快速生产('黄昏之翼', 1, 2),
+    黄昏之翼1: 反应堆('黄昏之翼'),
+    艾尔游骑兵0: {
+      listener: {
+        'fast-produce'() {
+          this.left()?.obtain_unit(rep('水晶塔', this.isg() ? 2 : 1))
+        },
+      },
+    },
+    艾尔游骑兵1: {
+      listener: {
+        'round-end'() {
+          this.obtain_unit(
+            rep(
+              '陆战队员',
+              (this.isg() ? 8 : 4) *
+                this.around()
+                  .map(ci => {
+                    return ci.filter(u => u === '水晶塔', 1).length
+                  })
+                  .reduce((a, b) => a + b, 0)
+            )
+          )
+        },
+      },
+    },
+    帝国敢死队0: 快速生产('诺娃', 2, 2),
+    帝国敢死队1: 反应堆('诺娃'),
+    帝国敢死队2: {
+      listener: {
+        'task-done'() {
+          this.obtain_unit(rep('诺娃', this.isg() ? 2 : 1))
+        },
+      },
+    },
+    以火治火0: {
+      listener: {
+        'round-end'() {
+          this.$ref$Player.all_of('T').forEach(c => {
+            if (c.infr() === '反应堆') {
+              c.obtain_unit(rep('火蝠', this.isg() ? 2 : 1))
+            }
+          })
+        },
+      },
+    },
+    以火治火1: {
+      listener: {
+        'fast-produce'() {
+          this.$ref$Player.all_of('T').forEach(ci => {
+            ci.replace(ci.find('火蝠', this.isg() ? 3 : 2), elited)
+          })
+        },
+      },
+    },
+    复制中心0: {
+      listener: {
+        'fast-produce'() {
+          const units = this.$ref$Player.hand
+            .filter(notNull)
+            .map(h => CardData[h.card].unit)
+            .map(units => {
+              return Object.keys(units)
+                .map(u => UnitData[u as UnitKey])
+                .filter(u => isNormal(u) && !u.tag.heroic && u.tag.biological)
+                .map(u => rep(u.name, units[u.name] || 0))
+            })
+            .flat(2)
+
+          this.obtain_unit(
+            this.$ref$Player.$ref$Game.lcg
+              .shuffle(units)
+              .slice(0, this.isg() ? 2 : 1)
+          )
+        },
+      },
+    },
+    帝国精锐0: 快速生产('恶蝠游骑兵', 1, 2),
+    帝国精锐1: {
+      listener: {
+        'round-end'() {
+          this.obtain_unit(
+            rep(
+              '恶蝠游骑兵',
+              Math.floor(
+                this.$ref$Player
+                  .all()
+                  .map(c => c.find('反应堆').length)
+                  .reduce((a, b) => a + b, 0) / (this.isg() ? 2 : 3)
+              )
+            )
+          )
+        },
+      },
+    },
   }
 }

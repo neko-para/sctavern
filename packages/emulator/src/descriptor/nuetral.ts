@@ -7,9 +7,8 @@ import {
   UnitData,
   UnitKey,
 } from '@sctavern/data'
-import { CardInstance } from '../card'
 import { Descriptor } from '../types'
-import { mostValueUnit, NotImplementYet, rep } from '../utils'
+import { mostValueUnit, NotImplementYet, notNull, rep } from '../utils'
 
 function 供养(n: number, unit: UnitKey): Descriptor {
   return {
@@ -371,5 +370,198 @@ export default function (/* config */): Record<string, Descriptor> {
       },
     },
     刀锋女王0: NotImplementYet(),
+    虚空构造体0: NotImplementYet(),
+    死亡舰队0: 黑暗容器_获得('毁灭者', 1, 2),
+    死亡舰队1: {
+      listener: {
+        'round-end'() {
+          const consume = this.isg() ? 5 : 10
+          if (this.attrib.get('dark') >= consume) {
+            this.gain_darkness(-consume)
+            this.obtain_unit(['塔达林母舰'])
+          }
+        },
+      },
+    },
+    虚空裂隙0: 黑暗容器_获得('百夫长', 1, 2),
+    虚空裂隙1: 黑暗容器_复活(5),
+    虚空裂隙2: {
+      listener: {
+        'round-end'() {
+          if (this.$ref$Player.mineral >= 1) {
+            this.obtain_unit(rep('百夫长', this.isg() ? 4 : 2))
+          }
+        },
+      },
+    },
+    死亡之翼0: {
+      listener: {
+        seize({ target }) {
+          if (this === target) {
+            this.obtain_unit(rep('天霸', this.isg() ? 2 : 1))
+          }
+        },
+      },
+    },
+    死亡之翼1: {
+      listener: {
+        'card-combined'({ target }) {
+          if (this !== target) {
+            target.seize(this)
+          }
+        },
+      },
+    },
+    虚空援军0: {
+      listener: {
+        'post-enter'() {
+          if (this.$ref$Player.gas < 1) {
+            return
+          }
+          this.$ref$Player.obtain_resource({
+            gas: -1,
+          })
+          this.obtain_upgrade(
+            this.$ref$Player.$ref$Game.lcg.shuffle(
+              AllUpgrade.filter(u => u !== '献祭')
+            )[0]
+          )
+        },
+      },
+    },
+    虚空援军1: {
+      listener: {
+        'round-end'() {
+          const cards = this.$ref$Player
+            .all()
+            .map(card => ({
+              card,
+              value: card.value(),
+            }))
+            .sort((a, b) => b.value - a.value)
+
+          if (cards[0].card !== this) {
+            cards[0].card.seize(this, {
+              withUpgrade: true,
+            })
+          }
+        },
+      },
+    },
+    深渊行者0: {
+      listener: {
+        seize() {
+          this.obtain_unit(rep('先锋', this.isg() ? 2 : 1))
+        },
+      },
+    },
+    黑暗祭坛0: 黑暗容器_获得('凤凰', 1, 2),
+    黑暗祭坛1: {
+      listener: {
+        'round-end'() {
+          const cards = this.$ref$Player
+            .all()
+            .map(card => ({
+              card,
+              value: card.value(),
+            }))
+            .sort((a, b) => a.value - b.value)
+
+          if (cards[0].card !== this) {
+            this.seize(cards[0].card)
+          }
+        },
+      },
+    },
+    混合体巨兽0: {
+      listener: {
+        'round-end'() {
+          const cnt = this.$ref$Player.count()
+          if (cnt.T && cnt.Z && cnt.P && cnt.N) {
+            this.obtain_unit(rep('混合体巨兽', this.isg() ? 2 : 1))
+          }
+        },
+      },
+    },
+    埃蒙仆从0: {
+      listener: {
+        'round-end'() {
+          const zs = this.$ref$Player.all_of('Z')
+          const ps = this.$ref$Player.all_of('P')
+          if (zs[0] === this) {
+            zs.shift()
+          } else if (ps[0] === this) {
+            ps.shift()
+          }
+          if (zs.length > 0 && ps.length > 0) {
+            this.$ref$Player.destroy(zs[0])
+            this.$ref$Player.destroy(ps[0])
+            this.$ref$Player
+              .all()
+              .filter(c => c.attrib.get('void'))
+              .forEach(ci => {
+                ci.obtain_unit(rep('混合体毁灭者', this.isg() ? 3 : 2))
+              })
+          }
+        },
+      },
+    },
+    风暴英雄0: {
+      listener: {
+        'obtain-upgrade'() {
+          this.obtain_unit(
+            this.$ref$Player.$ref$Game.lcg
+              .shuffle<UnitKey>([
+                '马拉什',
+                '阿拉纳克',
+                '利维坦',
+                '虚空构造体',
+                '科罗拉里昂',
+              ])
+              .slice(0, 1)
+          )
+        },
+      },
+    },
+    死亡之握0: {
+      config: {
+        unique: 'normal',
+      },
+      listener: {
+        'round-end'() {
+          this.$ref$Player.store
+            .filter(notNull)
+            .map(s => CardData[s.card].unit)
+            .forEach(units => {
+              this.obtain_unit(
+                this.$ref$Player.$ref$Game.lcg
+                  .shuffle(
+                    Object.keys(units)
+                      .map(u => UnitData[u as UnitKey])
+                      .filter(u => isNormal(u) && !u.tag.heroic)
+                      .map(u => u.name)
+                  )
+                  .slice(0, this.isg() ? 2 : 1)
+              )
+            })
+        },
+      },
+    },
+    死亡之握1: {
+      config: {
+        unique: 'normal',
+      },
+      listener: {
+        'store-refreshed'() {
+          this.obtain_unit(
+            this.$ref$Player.$ref$Game.lcg
+              .shuffle([
+                ...new Set(this.units.filter(u => !UnitData[u].tag.heroic)),
+              ])
+              .slice(0, this.isg() ? 2 : 1)
+          )
+        },
+      },
+    },
   }
 }

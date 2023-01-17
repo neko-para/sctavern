@@ -2,7 +2,8 @@ import { elited, isNormal, UnitData, UnitKey } from '@sctavern/data'
 import { CardInstance } from '../card'
 import { InnerMsg } from '../events'
 import { Descriptor } from '../types'
-import { rep } from '../utils'
+import { mostValueUnit, notNull, rep } from '../utils'
+import { 科挂X } from './terran'
 
 function 孵化X<T extends InnerMsg['msg']>(
   msg: T,
@@ -64,6 +65,36 @@ function 注卵(
 }
 
 export default function (/* config */): Record<string, Descriptor> {
+  function 基因突变0(this: CardInstance) {
+    this.around()
+      .filter(ci => ci.race === 'Z')
+      .forEach(ci => {
+        const units = ci.units
+          .map((unit, index) => ({
+            unit: UnitData[unit],
+            index,
+          }))
+          .sort((a, b) => {
+            if (a.unit.value === b.unit.value) {
+              return a.unit.value - b.unit.value
+            } else {
+              return b.index - a.index
+            }
+          })
+        const into = units.filter(({ unit }) => !unit.tag.heroic)
+        if (into.length === 0) {
+          return
+        }
+        this.replace(
+          units
+            .slice(units.length - (this.isg() ? 2 : 1))
+            .filter(({ unit }) => unit.value < into[0].unit.value)
+            .map(({ index }) => index),
+          into[0].unit.name
+        )
+      })
+  }
+
   return {
     虫卵0: 孵化X(
       'round-start',
@@ -226,10 +257,7 @@ export default function (/* config */): Record<string, Descriptor> {
         'post-enter'() {
           this.around().forEach(ci => {
             ci.replace(
-              ci.find(
-                u => ['蟑螂', '蟑螂(精英)'].includes(u),
-                this.isg() ? 2 : 1
-              ),
+              ci.find(['蟑螂', '蟑螂(精英)'], this.isg() ? 2 : 1),
               '莽兽'
             )
           })
@@ -295,6 +323,78 @@ export default function (/* config */): Record<string, Descriptor> {
                 .map(u => u.name),
               'left'
             )
+          }
+        },
+      },
+    },
+    守卫巢穴0: {
+      listener: {
+        'round-end'() {
+          this.$ref$Player.inject(rep('守卫', this.isg() ? 2 : 1))
+          this.$ref$Player.all().forEach(ci => {
+            ci.replace(
+              ci.find(['异龙', '异龙(精英)'], this.isg() ? 2 : 1),
+              '守卫'
+            )
+          })
+        },
+      },
+    },
+    生化危机0: 科挂X(2, ci => {
+      ci.$ref$Player.inject([
+        ...rep('牛头人陆战队员', ci.isg() ? 2 : 1),
+        ...rep('科技实验室', ci.isg() ? 4 : 2),
+      ])
+    }),
+    雷兽窟0: {
+      listener: {
+        inject() {
+          this.replace(this.find('幼雷兽', this.isg() ? 2 : 1), '雷兽')
+        },
+      },
+    },
+    雷兽窟1: 孵化('round-end', '幼雷兽', 1, 2),
+    优质基因0: {
+      listener: {
+        'round-end'() {
+          const eggs = this.$ref$Player.all().filter(c => c.name === '虫卵')
+          if (eggs.length === 0) {
+            return
+          }
+          const { unit } = mostValueUnit(
+            eggs
+              .map(c => c.units)
+              .flat()
+              .filter(u => this.isg() || !UnitData[u].tag.heroic)
+          )
+          eggs.forEach(e => this.$ref$Player.destroy(e))
+          if (unit) {
+            this.$ref$Player.all_of('Z').forEach(ci => {
+              ci.obtain_unit([unit])
+            })
+          }
+        },
+      },
+    },
+    基因突变0: {
+      listener: {
+        'post-enter': 基因突变0,
+        'post-sell': 基因突变0,
+      },
+    },
+    机械感染0: 孵化('round-end', '被感染的女妖', 1, 2),
+    机械感染1: {
+      config: {
+        unique: 'normal',
+      },
+      listener: {
+        'card-selled'({ target }) {
+          if (
+            target.value() >= 3600 &&
+            target.name !== '虫卵' &&
+            target.race === 'Z'
+          ) {
+            this.obtain_unit(['末日巨兽'])
           }
         },
       },

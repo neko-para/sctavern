@@ -273,12 +273,9 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'post-enter'() {
           this.around().forEach(ci => {
+            ci.replace(ci.find(['狂热者', '使徒']), '旋风狂热者')
             ci.replace(
-              ci.find(u => ['狂热者', '使徒'].includes(u)),
-              '旋风狂热者'
-            )
-            ci.replace(
-              ci.find(u => ['狂热者(精英)', '使徒(精英)'].includes(u)),
+              ci.find(['狂热者(精英)', '使徒(精英)']),
               '旋风狂热者(精英)'
             )
           })
@@ -341,6 +338,65 @@ export default function (/* config */): Record<string, Descriptor> {
           this.$ref$Player.all().forEach(ci => {
             ci.regroup(-1)
           })
+        },
+      },
+    },
+    净化之光0: {
+      listener: {
+        'round-end'() {
+          this.obtain_unit(rep('虚空辉光舰', this.isg() ? 2 : 1))
+        },
+      },
+    },
+    净化之光1: 集结X(4, ci => {
+      ci.$ref$Player.all().forEach(c => {
+        c.replace(c.find('虚空辉光舰', ci.isg() ? 2 : 1), elited)
+      })
+    }),
+    生物质发电0: {
+      listener: {
+        'card-selled'({ target }) {
+          if (target.level >= 3 && target.race === 'Z') {
+            this.obtain_unit(rep('水晶塔', this.isg() ? 2 : 1))
+          }
+        },
+      },
+    },
+    黑暗教长0: {
+      listener: {
+        'post-enter'() {
+          this.obtain_upgrade('暗影战士')
+        },
+      },
+    },
+    黑暗教长1: 集结(3, '黑暗圣堂武士(精英)', 1, 2),
+    六脉神剑0: {
+      listener: {
+        'card-entered'() {
+          if (this.find('先知').length < this.power()) {
+            this.$ref$Player.wrap(rep('先知', this.isg() ? 2 : 1))
+          }
+        },
+      },
+    },
+    晋升仪式0: 集结X(4, ci => {
+      ci.replace(ci.find('不朽者', ci.isg() ? 2 : 1), '英雄不朽者')
+      ci.replace(
+        ci.find(
+          u => u !== '高阶圣堂武士' && !!UnitData[u].tag.biological,
+          ci.isg() ? 2 : 1
+        ),
+        '高阶圣堂武士'
+      )
+    }),
+    英雄叉0: {
+      listener: {
+        'obtain-unit'(m) {
+          if (m.time === 'prev' && m.way === 'wrap') {
+            m.units = m.units.map(u =>
+              u === '狂热者(精英)' ? '卡尔达利斯' : u
+            )
+          }
         },
       },
     },

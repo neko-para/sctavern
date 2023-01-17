@@ -122,8 +122,13 @@ export class CardInstance {
     return [this.left(pos), this.right(pos)].filter(notNull)
   }
 
-  find(u: UnitKey | ((unit: UnitKey) => boolean), maxi?: number) {
-    const pred = typeof u === 'string' ? (unit: UnitKey) => unit === u : u
+  find(u: UnitKey | UnitKey[] | ((unit: UnitKey) => boolean), maxi?: number) {
+    const pred =
+      typeof u === 'string'
+        ? (unit: UnitKey) => unit === u
+        : u instanceof Array
+        ? (unit: UnitKey) => u.includes(unit)
+        : u
     return this.units
       .map((u, i) => ({
         u,

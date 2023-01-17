@@ -1,4 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { Init } from '@sctavern/emulator'
+
+Init()
+</script>
 
 <template>
   <v-app id="root">
