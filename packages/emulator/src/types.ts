@@ -30,16 +30,19 @@ export interface GlobalAction extends Action {
 export interface StoreAction extends Action {
   action: 'enter' | 'combine' | 'stage'
   enable: boolean
+  acckey: 'e' | 'v'
 }
 
 export interface HandAction extends Action {
   action: 'enter' | 'combine' | 'sell'
   enable: boolean
+  acckey: 'e' | 's'
 }
 
 export interface PresentAction extends Action {
   action: 'sell' | 'upgrade' | 'insert' | 'deploy'
   enable: boolean
+  acckey: 's' | 'g' | 'x'
 }
 
 export type PlayerStatus =

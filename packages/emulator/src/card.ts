@@ -24,17 +24,15 @@ const cardBind: GenericListener<CardInstance> = {
     }
   },
   'post-sell': function () {
-    /*
     const n = this.find('虚空水晶塔').length
     if (n > 0) {
       for (const c of this.around()) {
-        if (c.data.race === 'P') {
-          await c.obtain_unit(us('虚空水晶塔', n))
+        if (c.race === 'P') {
+          c.obtain_unit(rep('虚空水晶塔', n))
           break
         }
       }
     }
-    */
   },
 }
 

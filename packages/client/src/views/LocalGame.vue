@@ -44,6 +44,62 @@ wrapper.saveStateChanged = () => {
 function goUp() {
   router.back()
 }
+
+document.onkeydown = ev => {
+  if (ev.shiftKey || ev.altKey) {
+    return
+  }
+  if (ev.ctrlKey) {
+    switch (ev.key) {
+      case 'z':
+        if (saveState.value.canUndo) {
+          wrapper.undo()
+        }
+        break
+      case 'y':
+        if (saveState.value.canRedo) {
+          wrapper.redo()
+        }
+        break
+    }
+    return
+  }
+  switch (ev.key) {
+    case 'w':
+      client.autoPost({
+        msg: '$upgrade',
+      })
+      break
+    case 'z':
+      client.autoPost({
+        msg: '$finish',
+      })
+      break
+    case 'c':
+      client.autoPost({
+        msg: client.getPlayer()?.locked ? '$unlock' : '$lock',
+      })
+      break
+    case 'r':
+      client.autoPost({
+        msg: '$refresh',
+      })
+      break
+    default: {
+      const player = state.value.player[client.pos]
+      if (!player || player.selected.area === 'none') {
+        break
+      }
+      for (const act of player[player.selected.area][player.selected.place]
+        ?.actions || []) {
+        if (ev.key === act.acckey) {
+          client.post(act.msg)
+          break
+        }
+      }
+    }
+  }
+}
 </script>
 
 <template>

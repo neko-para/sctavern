@@ -3,7 +3,7 @@ import RaceIcon from './RaceIcon.vue'
 import AutoButton from './AutoButton.vue'
 import AutoSpan from './AutoSpan.vue'
 import { ref, computed } from 'vue'
-import type { GameState, Client } from '@sctavern/emulator'
+import type { GameState, Client, GameArea } from '@sctavern/emulator'
 import type { UnitKey } from '@sctavern/data'
 import { useMobileStore } from '@/stores/mobile'
 
@@ -22,6 +22,15 @@ const item = computed(() => {
 const color = computed(() => {
   const c = item.value?.card?.color || 'normal'
   return c !== 'normal' ? (c === 'gold' ? 'yellow' : c) : ''
+})
+
+const sel = computed(() => {
+  return (
+    props.state.player[props.client.pos]?.selected || {
+      area: 'none' as GameArea,
+      place: -1,
+    }
+  )
 })
 
 const tr = {
@@ -45,7 +54,18 @@ const units = computed(() => buildUnit(item.value?.card?.units || []))
 </script>
 
 <template>
-  <v-card class="d-flex flex-column align-self-start PresCard" :color="color">
+  <v-card
+    class="d-flex flex-column align-self-start PresCard"
+    :color="color"
+    :class="{ selected: sel.area === 'present' && sel.place === place }"
+    @click="
+      client.autoPost(
+        item?.card
+          ? { msg: '$select', area: 'present', place }
+          : { msg: '$select', area: 'none', place: -1 }
+      )
+    "
+  >
     <template v-if="item">
       <template v-if="item.card">
         <v-dialog v-model="infoDlg" class="w-75">

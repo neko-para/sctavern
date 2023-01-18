@@ -312,20 +312,19 @@ const playerBind: GenericListener<PlayerInstance> = {
       }
     }
   },
-  /*
-  $cheat: async msg => {
+  $cheat: function (msg) {
     switch (msg.type) {
       case 'card':
         if (!this.can_stage()) {
           return
         }
-        this.hand[this.hand.findIndex(v => v === null)] = msg.cardt
+        this.stage(msg.cardt)
         break
       case 'unit':
         if (!this.present[msg.place]) {
           return
         }
-        this.present[msg.place]?.obtain_unit(msg.units)
+        this.present[msg.place]?.card.obtain_unit(msg.units)
         break
       case 'resource':
         this.obtain_resource({
@@ -335,7 +334,7 @@ const playerBind: GenericListener<PlayerInstance> = {
         break
     }
   },
-  */
+
   'round-start': function () {
     if (this.status !== 'middle') {
       return
@@ -373,17 +372,6 @@ const playerBind: GenericListener<PlayerInstance> = {
     }
     this.status = 'middle'
   },
-  /*
-  'card-selled': function ({ target }) {
-    if (target.data.race === 'N') {
-      for (const c of this.present.filter(isCardInstance)) {
-        c.obtain_unit(
-          us('原始异龙', c.data.upgrades.filter(u => u === '原始尖塔').length)
-        )
-      }
-    }
-  },
-  */
 }
 
 export class PlayerInstance {

@@ -66,6 +66,12 @@ export class GameInstance {
   }
 
   input(msg: InnerMsg) {
+    if (msg.msg === '$select') {
+      const pl = this.player[msg.player]
+      if (msg.area === pl?.selected.area && msg.place === pl.selected.place) {
+        return
+      }
+    }
     console.log(msg)
     this.post(msg)
     this.emit()
@@ -180,6 +186,7 @@ export class GameInstance {
                         area: 'store',
                         place: i,
                       },
+                      acckey: 'e',
                     },
                     {
                       action: 'stage',
@@ -194,6 +201,7 @@ export class GameInstance {
                         area: 'store',
                         place: i,
                       },
+                      acckey: 'v',
                     },
                   ],
                 }
@@ -219,6 +227,7 @@ export class GameInstance {
                             area: 'hand',
                             place: i,
                           },
+                          acckey: 'e',
                         },
                         {
                           action: 'sell',
@@ -230,6 +239,7 @@ export class GameInstance {
                             area: 'hand',
                             place: i,
                           },
+                          acckey: 's',
                         },
                       ],
                     }
@@ -247,6 +257,7 @@ export class GameInstance {
                       category: 'insert',
                       place: i,
                     },
+                    acckey: 'x',
                   })
                 } else if (p.status === 'deploy') {
                   acts.push({
@@ -258,6 +269,7 @@ export class GameInstance {
                       category: 'deploy',
                       place: i,
                     },
+                    acckey: 'x',
                   })
                 } else if (p.status === 'normal') {
                   if (pr) {
@@ -271,6 +283,7 @@ export class GameInstance {
                         area: 'present',
                         place: i,
                       },
+                      acckey: 'g',
                     })
                     acts.push({
                       action: 'sell',
@@ -282,6 +295,7 @@ export class GameInstance {
                         area: 'present',
                         place: i,
                       },
+                      acckey: 's',
                     })
                   }
                 }

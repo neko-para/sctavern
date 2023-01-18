@@ -3,7 +3,7 @@ import RaceIcon from './RaceIcon.vue'
 import AutoButton from './AutoButton.vue'
 import { computed } from 'vue'
 import { CardData } from '@sctavern/data'
-import type { GameState, Client } from '@sctavern/emulator'
+import type { GameState, Client, GameArea } from '@sctavern/emulator'
 
 const props = defineProps<{
   state: GameState
@@ -13,6 +13,15 @@ const props = defineProps<{
 
 const item = computed(() => {
   return props.state.player[props.client.pos]?.store[props.place] || null
+})
+
+const sel = computed(() => {
+  return (
+    props.state.player[props.client.pos]?.selected || {
+      area: 'none' as GameArea,
+      place: -1,
+    }
+  )
 })
 
 const tr = {
@@ -26,6 +35,14 @@ const tr = {
   <v-card
     class="d-flex flex-column align-self-start KeyCard"
     :color="item && props.state.player[props.client.pos]?.locked ? 'cyan' : ''"
+    :class="{ selected: sel.area === 'store' && sel.place === place }"
+    @click="
+      client.autoPost(
+        item
+          ? { msg: '$select', area: 'store', place }
+          : { msg: '$select', area: 'none', place: -1 }
+      )
+    "
   >
     <template v-if="item">
       <div class="d-flex">

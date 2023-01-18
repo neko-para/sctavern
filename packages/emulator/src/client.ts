@@ -30,4 +30,8 @@ export class Client {
       player: this.pos,
     })
   }
+
+  getPlayer() {
+    return this.wrapper.game.player[this.pos]
+  }
 }
