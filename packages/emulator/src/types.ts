@@ -63,6 +63,9 @@ export interface GameConfig {
   Seed: number
   Role: RoleKey[]
   Mutation: MutationKey[]
+
+  PoolPack: Pack[]
+  ActivePack: Pack[]
 }
 
 export interface PlayerConfig {

@@ -1,5 +1,4 @@
 import type { Card } from './types'
-
 export type CardKey =
   | '帝国精锐'
   | '英雄叉'
@@ -295,9 +294,7 @@ export const CardData: Record<CardKey, Card> = {
       修理无人机: 2,
       反应堆: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -318,9 +315,7 @@ export const CardData: Record<CardKey, Card> = {
       卡尔达利斯: 1,
       水晶塔: 2,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -339,9 +334,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       被感染的女妖: 4,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -364,9 +357,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       死亡之握水晶: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'virtual',
     type: 'normal',
     desc: [
@@ -391,9 +382,7 @@ export const CardData: Record<CardKey, Card> = {
       女妖: 1,
       反应堆: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -411,9 +400,7 @@ export const CardData: Record<CardKey, Card> = {
       '虚空辉光舰(精英)': 2,
       水晶塔: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -434,9 +421,7 @@ export const CardData: Record<CardKey, Card> = {
       守卫: 2,
       异龙: 4,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -456,9 +441,7 @@ export const CardData: Record<CardKey, Card> = {
       塔达林母舰: 1,
       毁灭者: 2,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -480,9 +463,7 @@ export const CardData: Record<CardKey, Card> = {
       秃鹫: 1,
       科技实验室: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -507,9 +488,7 @@ export const CardData: Record<CardKey, Card> = {
       蟑螂: 2,
       水晶塔: 2,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -529,9 +508,7 @@ export const CardData: Record<CardKey, Card> = {
       牛头人陆战队员: 1,
       '刺蛇(精英)': 4,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -551,9 +528,7 @@ export const CardData: Record<CardKey, Card> = {
       虚空裂隙: 1,
       百夫长: 2,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -575,9 +550,7 @@ export const CardData: Record<CardKey, Card> = {
       火蝠: 6,
       反应堆: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -601,9 +574,7 @@ export const CardData: Record<CardKey, Card> = {
       先知: 4,
       水晶塔: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -624,7 +595,6 @@ export const CardData: Record<CardKey, Card> = {
       雷兽: 1,
     },
     attr: {
-      pool: true,
       insert: true,
     },
     belong: 'none',
@@ -646,9 +616,7 @@ export const CardData: Record<CardKey, Card> = {
       '刺蛇(精英)': 2,
       '旋风狂热者(精英)': 2,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'virtual',
     type: 'normal',
     desc: [
@@ -667,9 +635,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       凤凰: 4,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -689,9 +655,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       攻城坦克: 3,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'virtual',
     type: 'normal',
     desc: [
@@ -715,9 +679,7 @@ export const CardData: Record<CardKey, Card> = {
       先锋: 3,
       不死队: 3,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -735,9 +697,7 @@ export const CardData: Record<CardKey, Card> = {
       黑暗执政官: 2,
       凤凰: 2,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -755,9 +715,7 @@ export const CardData: Record<CardKey, Card> = {
       原始蟑螂: 4,
       精华: 3,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'primal',
     type: 'normal',
     desc: [['供养(1): 原始蟑螂', '供养(1): 原始蟑螂']],
@@ -771,9 +729,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       不死队: 4,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -791,9 +747,7 @@ export const CardData: Record<CardKey, Card> = {
       自动机炮: 4,
       修理无人机: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [],
@@ -807,9 +761,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       原始刺蛇: 7,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'primal',
     type: 'normal',
     desc: [
@@ -829,9 +781,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       原始异龙: 4,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'primal',
     type: 'normal',
     desc: [
@@ -856,9 +806,7 @@ export const CardData: Record<CardKey, Card> = {
       刺蛇: 1,
       龙骑士: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'virtual',
     type: 'normal',
     desc: [
@@ -878,9 +826,7 @@ export const CardData: Record<CardKey, Card> = {
       鲜血猎手: 6,
       浩劫: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -897,9 +843,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       暴掠龙: 2,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'primal',
     type: 'normal',
     desc: [
@@ -919,9 +863,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       亚格卓拉: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -940,9 +882,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       毁灭者: 4,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -962,9 +902,7 @@ export const CardData: Record<CardKey, Card> = {
       原始点火虫: 4,
       精华: 2,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'primal',
     type: 'normal',
     desc: [
@@ -983,9 +921,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       原始雷兽: 3,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'primal',
     type: 'normal',
     desc: [
@@ -1005,9 +941,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       马拉什: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1026,9 +960,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       混合体毁灭者: 3,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'virtual',
     type: 'normal',
     desc: [
@@ -1047,9 +979,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       阿拉纳克: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1068,9 +998,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       天罚行者: 2,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1094,9 +1022,7 @@ export const CardData: Record<CardKey, Card> = {
       德哈卡: 1,
       德哈卡分身: 3,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'primal',
     type: 'normal',
     desc: [
@@ -1115,13 +1041,11 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'wjxm',
     race: 'N',
     level: 6,
-    pack: '核心',
+    pack: '特典',
     unit: {
       征召兵: 20,
     },
     attr: {
-      pool: true,
-      rare: true,
       insert: true,
     },
     belong: 'none',
@@ -1138,13 +1062,11 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'djytK',
     race: 'N',
     level: 6,
-    pack: '核心',
+    pack: '特典',
     unit: {
       武装机器人: 1,
     },
     attr: {
-      pool: true,
-      rare: true,
       insert: true,
     },
     belong: 'none',
@@ -1161,14 +1083,11 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'djyt',
     race: 'N',
     level: 6,
-    pack: '核心',
+    pack: '特典',
     unit: {
       赛兰迪丝: 1,
     },
-    attr: {
-      pool: true,
-      rare: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1183,14 +1102,11 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'zdhj',
     race: 'N',
     level: 6,
-    pack: '核心',
+    pack: '特典',
     unit: {
       '虚空辉光舰(精英)': 4,
     },
-    attr: {
-      pool: true,
-      rare: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1210,7 +1126,6 @@ export const CardData: Record<CardKey, Card> = {
       '莎拉·凯瑞甘': 1,
     },
     attr: {
-      pool: true,
       amber: true,
       insert: true,
     },
@@ -1232,7 +1147,7 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'dfnw',
     race: 'N',
     level: 6,
-    pack: '核心',
+    pack: '核心衍生',
     unit: {
       刀锋女王: 1,
     },
@@ -1258,7 +1173,6 @@ export const CardData: Record<CardKey, Card> = {
       虚空构造体: 1,
     },
     attr: {
-      pool: true,
       insert: true,
     },
     belong: 'virtual',
@@ -1275,7 +1189,7 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'hjkg',
     race: 'N',
     level: 0,
-    pack: '核心',
+    pack: '核心衍生',
     unit: {},
     attr: {},
     belong: 'none',
@@ -1295,9 +1209,7 @@ export const CardData: Record<CardKey, Card> = {
       追猎者: 2,
       狂热者: 2,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1315,9 +1227,7 @@ export const CardData: Record<CardKey, Card> = {
       水晶塔: 1,
       虚空水晶塔: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [],
@@ -1334,7 +1244,6 @@ export const CardData: Record<CardKey, Card> = {
       虚空水晶塔: 1,
     },
     attr: {
-      pool: true,
       insert: true,
     },
     belong: 'none',
@@ -1352,9 +1261,7 @@ export const CardData: Record<CardKey, Card> = {
       零件: 3,
       水晶塔: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1372,9 +1279,7 @@ export const CardData: Record<CardKey, Card> = {
       狂热者: 6,
       水晶塔: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [['集结(2): 获得<1>狂热者', '集结(2): 获得<2>狂热者']],
@@ -1390,9 +1295,7 @@ export const CardData: Record<CardKey, Card> = {
       不朽者: 1,
       水晶塔: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1414,7 +1317,6 @@ export const CardData: Record<CardKey, Card> = {
       水晶塔: 1,
     },
     attr: {
-      pool: true,
       insert: true,
     },
     belong: 'none',
@@ -1437,9 +1339,7 @@ export const CardData: Record<CardKey, Card> = {
       不朽者: 1,
       狂热者: 4,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1457,9 +1357,7 @@ export const CardData: Record<CardKey, Card> = {
       黑暗圣堂武士: 5,
       水晶塔: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1481,9 +1379,7 @@ export const CardData: Record<CardKey, Card> = {
       不朽者: 3,
       水晶塔: 2,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1505,9 +1401,7 @@ export const CardData: Record<CardKey, Card> = {
       '追猎者(精英)': 4,
       水晶塔: 2,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [['任意卡牌折跃时, 获得<1>追猎者', '任意卡牌折跃时, 获得<2>追猎者']],
@@ -1523,9 +1417,7 @@ export const CardData: Record<CardKey, Card> = {
       掠夺者: 2,
       水晶塔: 2,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1546,9 +1438,7 @@ export const CardData: Record<CardKey, Card> = {
       巨像: 1,
       虚空水晶塔: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1569,7 +1459,6 @@ export const CardData: Record<CardKey, Card> = {
       虚空水晶塔: 1,
     },
     attr: {
-      pool: true,
       insert: true,
     },
     belong: 'none',
@@ -1586,9 +1475,7 @@ export const CardData: Record<CardKey, Card> = {
       执政官: 4,
       水晶塔: 2,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1612,9 +1499,7 @@ export const CardData: Record<CardKey, Card> = {
       水晶塔: 1,
       虚空水晶塔: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1631,9 +1516,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       尤尔兰: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1654,9 +1537,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       泰坦棱镜: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1679,7 +1560,6 @@ export const CardData: Record<CardKey, Card> = {
       掠夺者: 1,
     },
     attr: {
-      pool: true,
       insert: true,
     },
     belong: 'none',
@@ -1697,15 +1577,12 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'jghqc',
     race: 'P',
     level: 6,
-    pack: '核心',
+    pack: '特典',
     unit: {
       科罗拉里昂: 1,
       卡尔达利斯: 1,
     },
-    attr: {
-      pool: true,
-      rare: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1726,9 +1603,7 @@ export const CardData: Record<CardKey, Card> = {
       '巨像(精英)': 2,
       水晶塔: 3,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1748,9 +1623,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       仲裁者: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1771,9 +1644,7 @@ export const CardData: Record<CardKey, Card> = {
       掠夺者: 2,
       虚空水晶塔: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1798,9 +1669,7 @@ export const CardData: Record<CardKey, Card> = {
       恶火: 2,
       反应堆: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1820,9 +1689,7 @@ export const CardData: Record<CardKey, Card> = {
       陆战队员: 6,
       反应堆: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1841,7 +1708,6 @@ export const CardData: Record<CardKey, Card> = {
       反应堆: 1,
     },
     attr: {
-      pool: true,
       amber: true,
     },
     belong: 'none',
@@ -1864,9 +1730,7 @@ export const CardData: Record<CardKey, Card> = {
       医疗兵: 3,
       反应堆: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1889,7 +1753,6 @@ export const CardData: Record<CardKey, Card> = {
       反应堆: 1,
     },
     attr: {
-      pool: true,
       insert: true,
     },
     belong: 'none',
@@ -1911,9 +1774,7 @@ export const CardData: Record<CardKey, Card> = {
       恶火: 6,
       反应堆: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1935,9 +1796,7 @@ export const CardData: Record<CardKey, Card> = {
       寡妇雷: 3,
       反应堆: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1957,9 +1816,7 @@ export const CardData: Record<CardKey, Card> = {
       劫掠者: 3,
       反应堆: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -1978,9 +1835,7 @@ export const CardData: Record<CardKey, Card> = {
       飓风: 3,
       科技实验室: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2003,7 +1858,6 @@ export const CardData: Record<CardKey, Card> = {
       科技实验室: 1,
     },
     attr: {
-      pool: true,
       insert: true,
     },
     belong: 'none',
@@ -2030,9 +1884,7 @@ export const CardData: Record<CardKey, Card> = {
       '维京战机<机甲>': 2,
       科技实验室: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2053,9 +1905,7 @@ export const CardData: Record<CardKey, Card> = {
       解放者: 3,
       科技实验室: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2074,9 +1924,7 @@ export const CardData: Record<CardKey, Card> = {
       歌利亚: 3,
       科技实验室: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2098,9 +1946,7 @@ export const CardData: Record<CardKey, Card> = {
       攻城坦克: 2,
       反应堆: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2122,7 +1968,6 @@ export const CardData: Record<CardKey, Card> = {
       高级科技实验室: 1,
     },
     attr: {
-      pool: true,
       insert: true,
     },
     belong: 'none',
@@ -2149,9 +1994,7 @@ export const CardData: Record<CardKey, Card> = {
       黄昏之翼: 1,
       科技实验室: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2171,9 +2014,7 @@ export const CardData: Record<CardKey, Card> = {
       反应堆: 1,
       医疗运输机: 2,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2197,7 +2038,6 @@ export const CardData: Record<CardKey, Card> = {
       反应堆: 1,
     },
     attr: {
-      pool: true,
       insert: true,
     },
     belong: 'none',
@@ -2221,9 +2061,7 @@ export const CardData: Record<CardKey, Card> = {
       战狼: 2,
       科技实验室: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2244,9 +2082,7 @@ export const CardData: Record<CardKey, Card> = {
       '雷诺(指挥官)': 1,
       反应堆: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2268,9 +2104,7 @@ export const CardData: Record<CardKey, Card> = {
       帝盾卫兵: 3,
       科技实验室: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2294,9 +2128,7 @@ export const CardData: Record<CardKey, Card> = {
       战列巡航舰: 4,
       科技实验室: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2320,9 +2152,7 @@ export const CardData: Record<CardKey, Card> = {
       跳虫: 8,
       爆虫: 3,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [['每回合结束时, 获得<2>跳虫', '每回合结束时, 获得<4>跳虫']],
@@ -2337,9 +2167,7 @@ export const CardData: Record<CardKey, Card> = {
       蟑螂: 3,
       爆虫: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2360,9 +2188,7 @@ export const CardData: Record<CardKey, Card> = {
       跳虫: 10,
       刺蛇: 2,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2386,7 +2212,6 @@ export const CardData: Record<CardKey, Card> = {
       刺蛇: 6,
     },
     attr: {
-      pool: true,
       insert: true,
     },
     belong: 'none',
@@ -2402,9 +2227,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       被感染的陆战队员: 7,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2424,9 +2247,7 @@ export const CardData: Record<CardKey, Card> = {
       蟑螂: 4,
       破坏者: 2,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [['每回合结束时, 孵化<1>蟑螂', '每回合结束时, 孵化<2>蟑螂']],
@@ -2440,9 +2261,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       爆虫: 10,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2467,7 +2286,6 @@ export const CardData: Record<CardKey, Card> = {
       异龙: 5,
     },
     attr: {
-      pool: true,
       insert: true,
     },
     belong: 'none',
@@ -2483,9 +2301,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       雷兽: 2,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [['出售时, 注卵<1>雷兽', '出售时, 注卵<2>雷兽']],
@@ -2499,9 +2315,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       虫后: 5,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2523,7 +2337,6 @@ export const CardData: Record<CardKey, Card> = {
       守卫: 2,
     },
     attr: {
-      pool: true,
       insert: true,
     },
     belong: 'none',
@@ -2545,7 +2358,6 @@ export const CardData: Record<CardKey, Card> = {
       潜伏者: 3,
     },
     attr: {
-      pool: true,
       insert: true,
     },
     belong: 'none',
@@ -2562,9 +2374,7 @@ export const CardData: Record<CardKey, Card> = {
       蟑螂: 4,
       '刺蛇(精英)': 3,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2581,9 +2391,7 @@ export const CardData: Record<CardKey, Card> = {
       感染者: 2,
       陆战队员: 3,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2606,9 +2414,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       腐化者: 6,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2630,7 +2436,6 @@ export const CardData: Record<CardKey, Card> = {
       飞蛇: 1,
     },
     attr: {
-      pool: true,
       insert: true,
     },
     belong: 'none',
@@ -2650,9 +2455,7 @@ export const CardData: Record<CardKey, Card> = {
       雷兽: 2,
       刺蛇: 8,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2672,7 +2475,6 @@ export const CardData: Record<CardKey, Card> = {
       莽兽: 2,
     },
     attr: {
-      pool: true,
       insert: true,
     },
     belong: 'none',
@@ -2693,9 +2495,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       利维坦: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2719,9 +2519,7 @@ export const CardData: Record<CardKey, Card> = {
       扎加拉: 1,
       '刺蛇(精英)': 6,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2740,9 +2538,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       斯托科夫: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2780,9 +2576,7 @@ export const CardData: Record<CardKey, Card> = {
       '歌利亚(精英)': 2,
       反应堆: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2804,7 +2598,6 @@ export const CardData: Record<CardKey, Card> = {
       水晶塔: 2,
     },
     attr: {
-      pool: true,
       insert: true,
     },
     belong: 'none',
@@ -2827,7 +2620,6 @@ export const CardData: Record<CardKey, Card> = {
       破坏者: 2,
     },
     attr: {
-      pool: true,
       insert: true,
     },
     belong: 'none',
@@ -2849,7 +2641,6 @@ export const CardData: Record<CardKey, Card> = {
       沃拉尊: 1,
     },
     attr: {
-      pool: true,
       amber: true,
     },
     belong: 'none',
@@ -2871,9 +2662,7 @@ export const CardData: Record<CardKey, Card> = {
       诺娃: 3,
       反应堆: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2892,9 +2681,7 @@ export const CardData: Record<CardKey, Card> = {
       泽拉图: 1,
       虚空水晶塔: 1,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2914,9 +2701,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       幼雷兽: 5,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'none',
     type: 'normal',
     desc: [
@@ -2936,9 +2721,7 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       混合体巨兽: 2,
     },
-    attr: {
-      pool: true,
-    },
+    attr: {},
     belong: 'virtual',
     type: 'normal',
     desc: [
@@ -2953,7 +2736,7 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'mjhx',
     race: 'P',
     level: 1,
-    pack: '核心',
+    pack: '母舰核心衍生',
     unit: {
       母舰核心: 1,
       狂热者: 1,
@@ -2976,7 +2759,7 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'gcyb',
     race: 'N',
     level: 1,
-    pack: '核心',
+    pack: '科学球衍生',
     unit: {},
     attr: {
       amber: true,
@@ -2990,7 +2773,7 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'dqpt',
     race: 'N',
     level: 1,
-    pack: '核心',
+    pack: '要塞衍生',
     unit: {
       自动机炮: 1,
     },
@@ -3010,7 +2793,7 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'kdljs',
     race: 'P',
     level: 1,
-    pack: '核心',
+    pack: '要塞衍生',
     unit: {
       自动机炮: 1,
     },
@@ -3033,7 +2816,7 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'gsjq',
     race: 'N',
     level: 1,
-    pack: '核心',
+    pack: '要塞衍生',
     unit: {
       自动机炮: 1,
     },
@@ -3079,7 +2862,7 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'xm',
     race: 'P',
     level: 1,
-    pack: '核心',
+    pack: '要塞衍生',
     unit: {
       自动机炮: 1,
     },
@@ -3099,7 +2882,7 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'zdjp',
     race: 'Z',
     level: 1,
-    pack: '核心',
+    pack: '要塞衍生',
     unit: {
       自动机炮: 1,
     },
@@ -3119,7 +2902,7 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'zzzx',
     race: 'T',
     level: 1,
-    pack: '核心',
+    pack: '要塞衍生',
     unit: {
       自动机炮: 1,
     },
@@ -3139,7 +2922,7 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'ddjd',
     race: 'N',
     level: 1,
-    pack: '核心',
+    pack: '要塞衍生',
     unit: {
       自动机炮: 1,
     },
@@ -3162,7 +2945,7 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'lzgp',
     race: 'N',
     level: 1,
-    pack: '核心',
+    pack: '要塞衍生',
     unit: {
       自动机炮: 1,
     },
@@ -3182,7 +2965,7 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'zsg',
     race: 'N',
     level: 1,
-    pack: '核心',
+    pack: '要塞衍生',
     unit: {
       自动机炮: 1,
     },
@@ -3205,7 +2988,7 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'bfzt',
     race: 'T',
     level: 1,
-    pack: '核心',
+    pack: '泰凯斯衍生',
     unit: {
       泰凯斯: 1,
     },
@@ -3219,7 +3002,7 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'shsys',
     race: 'N',
     level: 0,
-    pack: '核心',
+    pack: '诺娃衍生',
     unit: {},
     attr: {},
     belong: 'none',
@@ -3236,7 +3019,7 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'jjhs',
     race: 'N',
     level: 0,
-    pack: '核心',
+    pack: '诺娃衍生',
     unit: {},
     attr: {},
     belong: 'none',
@@ -3253,7 +3036,7 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'xlkj',
     race: 'N',
     level: 0,
-    pack: '核心',
+    pack: '诺娃衍生',
     unit: {},
     attr: {},
     belong: 'none',
@@ -3270,7 +3053,7 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'jdkj',
     race: 'N',
     level: 0,
-    pack: '核心',
+    pack: '诺娃衍生',
     unit: {},
     attr: {},
     belong: 'none',
@@ -3287,7 +3070,7 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'cfh',
     race: 'N',
     level: 0,
-    pack: '核心',
+    pack: '诺娃衍生',
     unit: {},
     attr: {},
     belong: 'none',
@@ -3304,7 +3087,7 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'jxgc',
     race: 'T',
     level: 0,
-    pack: '核心',
+    pack: '思旺衍生',
     unit: {
       科技实验室: 1,
     },

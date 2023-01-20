@@ -492,6 +492,7 @@ export class PlayerInstance {
 
   answer(msg: InnerMsg) {
     Dispatch(playerBind, msg, this)
+    Dispatch(this.role_impl().listener, msg, this, this.role)
 
     if ('card' in msg) {
       if (msg.card === -1) {
@@ -743,7 +744,7 @@ export class PlayerInstance {
     }
     const cd = CardData[card]
     const ci = new CardInstance(this, cd)
-    if (cd.attr.pool) {
+    if (this.$ref$Game.config.PoolPack.includes(cd.pack)) {
       ci.occupy.push(card)
     }
     this.present[place] = {
@@ -810,7 +811,7 @@ export class PlayerInstance {
         return !target[0].upgrades.includes(u) || UpgradeData[u].override
       }),
     ]
-    if (cd.attr.pool) {
+    if (this.$ref$Game.config.PoolPack.includes(cd.pack)) {
       ci.occupy.push(card)
     }
     this.present[target[0].index()] = {

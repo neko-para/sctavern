@@ -1,4 +1,4 @@
-import { CardKey, Pack, AllCard, CardData, Card } from '@sctavern/data'
+import { CardKey, Pack, CardData, Card, CardPack } from '@sctavern/data'
 import { LCG } from './game'
 import { repX } from './utils'
 
@@ -14,22 +14,24 @@ const poolCount: Record<number, number> = {
 export class Pool {
   $ref$lcg: LCG
   heap: Partial<Record<CardKey, number>>
+  allow: Pack[]
 
-  constructor(pack: Pack[], lcg: LCG) {
+  constructor(pack: Pack[], lcg: LCG, poolPack: Pack[]) {
     this.$ref$lcg = lcg
     this.heap = {}
+    this.allow = poolPack
 
-    AllCard.forEach(c => {
-      const card = CardData[c]
-      if (card.attr.pool && pack.includes(card.pack)) {
-        if (!card.attr.rare) {
-          this.heap[c] = poolCount[card.level]
-        } else {
+    pack.forEach(p => {
+      CardPack[p].forEach(c => {
+        const card = CardData[c]
+        if (p === '特典') {
           if (this.$ref$lcg.float() <= 0.15) {
             this.heap[c] = 1
           }
+        } else {
+          this.heap[c] = poolCount[card.level]
         }
-      }
+      })
     })
   }
 
@@ -41,7 +43,6 @@ export class Pool {
       const ck = k as CardKey
       const card = CardData[ck]
 
-      // if (pred(card) && Math.random() > 0.5) {
       if (pred(card)) {
         if (unique) {
           f.push(card)
@@ -71,6 +72,9 @@ export class Pool {
 
   drop(card: Card[]) {
     card.forEach(c => {
+      if (!this.allow.includes(c.pack)) {
+        return
+      }
       let cnt = (this.heap[c.name] || 0) + 1
       if (cnt > poolCount[c.level]) {
         cnt = poolCount[c.level]

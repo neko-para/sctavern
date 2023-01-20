@@ -59,7 +59,7 @@ export class GameInstance {
     this.attrib = new Attribute()
     this.lcg = new LCG(this.config.Seed || 1) // prevent 0
     this.round = 0
-    this.pool = new Pool(this.config.Pack, this.lcg)
+    this.pool = new Pool(this.config.Pack, this.lcg, this.config.PoolPack)
     this.player = repX(null, this.config.Role.length).map((v, i) => {
       return new PlayerInstance(this, this.config.Role[i])
     })

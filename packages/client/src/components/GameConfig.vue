@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { AllPack } from '@sctavern/data'
-import type { Pack, RoleKey, MutationKey } from '@sctavern/data'
+import {
+  type Pack,
+  type RoleKey,
+  type MutationKey,
+  ExtPack,
+} from '@sctavern/data'
 import { LCG } from '@sctavern/emulator'
 import { useMobileStore } from '@/stores/mobile'
 
@@ -48,7 +52,7 @@ function genSeed() {
 
 function genPack(): Pack[] {
   const lcg = new LCG(genSeed())
-  return ['核心', ...lcg.shuffle(AllPack.slice(1)).slice(0, 2)]
+  return ['核心', ...lcg.shuffle(ExtPack.slice(1)).slice(0, 2)]
 }
 </script>
 
@@ -73,7 +77,7 @@ function genPack(): Pack[] {
         <v-col cols="4" class="d-flex flex-column">
           <v-checkbox
             v-model="pack"
-            v-for="p in AllPack.slice(0, 4)"
+            v-for="p in ExtPack.slice(0, 4)"
             :key="`Pack-${p}`"
             :label="p"
             :value="p"
@@ -83,7 +87,7 @@ function genPack(): Pack[] {
         ><v-col cols="4" class="d-flex flex-column">
           <v-checkbox
             v-model="pack"
-            v-for="p in AllPack.slice(4)"
+            v-for="p in ExtPack.slice(4)"
             :key="`Pack-${p}`"
             :label="p"
             :value="p"

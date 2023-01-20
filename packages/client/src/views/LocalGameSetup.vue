@@ -3,6 +3,7 @@ import { reactive } from 'vue'
 import GameConfigVue from '@/components/GameConfig.vue'
 import type { GameConfig } from '@sctavern/emulator'
 import { useRouter } from 'vue-router'
+import { PvpPresetActivePack, PvpPresetPoolPack } from '@sctavern/data'
 
 const router = useRouter()
 
@@ -11,6 +12,9 @@ const config = reactive<GameConfig>({
   Seed: Math.round(Math.random() * 100000000),
   Role: ['白板'],
   Mutation: [],
+
+  PoolPack: PvpPresetPoolPack,
+  ActivePack: PvpPresetActivePack,
 })
 
 function startGame() {
