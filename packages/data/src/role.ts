@@ -3,6 +3,7 @@ import type { Role } from './types'
 export type RoleKey =
   | '白板'
   | '执政官'
+  | '狂热者'
   | '陆战队员'
   | '收割者'
   | '感染虫'
@@ -52,6 +53,7 @@ export type RoleKey =
 export const AllRole: RoleKey[] = [
   '白板',
   '执政官',
+  '狂热者',
   '陆战队员',
   '收割者',
   '感染虫',
@@ -111,6 +113,12 @@ export const RoleData: Record<RoleKey, Role> = {
     pinyin: 'zzg',
     ability: '融合完成',
     desc: '每回合, 选择一张卡牌, 让它与右侧卡牌合成为一张卡牌, 两张卡牌必须非金色且为不同种族. 合并会保留两张卡牌的单位, 描述, 升级并变为金色卡牌.',
+  },
+  狂热者: {
+    name: '狂热者',
+    pinyin: 'krz',
+    ability: '冲锋',
+    desc: '你的所有单位在战斗时获得星空提速',
   },
   陆战队员: {
     name: '陆战队员',

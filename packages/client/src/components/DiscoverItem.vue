@@ -44,6 +44,11 @@ const item = computed(() => {
           {{ item.upgrade.name }}
         </span>
       </template>
+      <template v-else-if="item.type === 'prophesy'">
+        <span class="Label">
+          {{ item.prophesy.name }}
+        </span>
+      </template>
       <template v-else>
         <span class="Label">
           {{ item.str }}

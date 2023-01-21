@@ -95,7 +95,7 @@ export const CardPack: Record<Pack, CardKey[]> = {
     '扎加拉',
     '斯托科夫',
   ],
-  核心衍生: ['刀锋女王', '黄金矿工'],
+  核心衍生: ['虫卵', '刀锋女王', '黄金矿工'],
   母舰核心衍生: ['母舰核心'],
   科学球衍生: ['观察样本'],
   要塞衍生: [
@@ -135,7 +135,7 @@ export const ExtPack: Pack[] = [
   '不法之徒',
 ]
 
-export const PvpPresetPoolPack: Pack[] = [
+export const PresetPoolPack: Pack[] = [
   '核心',
   '特典',
   '天空之怒',
@@ -149,6 +149,25 @@ export const PvpPresetPoolPack: Pack[] = [
 ]
 
 export const PvpPresetActivePack: Pack[] = [
+  '核心',
+  '母舰核心衍生',
+  '科学球衍生',
+  '要塞衍生',
+  '泰凯斯衍生',
+  '诺娃衍生',
+  '思旺衍生',
+  '特典',
+  '天空之怒',
+  '并肩作战',
+  '拉克希尔',
+  '短兵相接',
+  '快速启动',
+  '独辟蹊径',
+  '军备竞赛',
+  '不法之徒',
+]
+
+export const PvePresetActivePack: Pack[] = [
   '核心',
   '母舰核心衍生',
   '科学球衍生',

@@ -133,7 +133,7 @@ export default function (/* config */): Record<string, Descriptor> {
     好兄弟0: 快速生产('陆战队员', 4, 6),
     好兄弟1: 反应堆('陆战队员'),
     挖宝奇兵0: 任务('store-refreshed', 5, card => {
-      card.$ref$Player.enter_discover(
+      card.$ref$Player.push_discover(
         card.$ref$Player.$ref$Game.pool
           .discover(c => c.level === card.$ref$Player.level, 3)
           .map(c => ({

@@ -18,6 +18,7 @@ export class ClassManager {
     if (name in this.protos) {
       if (this.protos[name] === proto) {
         console.log(`[WARN] ${name} already registered. skip`)
+        return
       }
       throw `${name} is already registered!`
     } else if (this.indexs.has(proto)) {

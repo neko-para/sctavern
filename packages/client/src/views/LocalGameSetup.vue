@@ -1,9 +1,14 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive, computed } from 'vue'
 import GameConfigVue from '@/components/GameConfig.vue'
 import type { GameConfig } from '@sctavern/emulator'
 import { useRouter } from 'vue-router'
-import { PvpPresetActivePack, PvpPresetPoolPack } from '@sctavern/data'
+import {
+  PvpPresetActivePack,
+  PvePresetActivePack,
+  PresetPoolPack,
+  type Pack,
+} from '@sctavern/data'
 
 const router = useRouter()
 
@@ -13,9 +18,12 @@ const config = reactive<GameConfig>({
   Role: ['白板'],
   Mutation: [],
 
-  PoolPack: PvpPresetPoolPack,
-  ActivePack: PvpPresetActivePack,
-})
+  Pve: false,
+  PoolPack: PresetPoolPack,
+  ActivePack: computed(() => {
+    return config.Pve ? PvePresetActivePack : PvpPresetActivePack
+  }) as unknown as Pack[],
+}) as GameConfig
 
 function startGame() {
   router.push({
@@ -37,6 +45,7 @@ function startGame() {
           v-model:Seed="config.Seed"
           v-model:Role="config.Role"
           v-model:Mutation="config.Mutation"
+          v-model:Pve="config.Pve"
           @ok="startGame()"
         ></game-config-vue>
       </v-col>

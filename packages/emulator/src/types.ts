@@ -9,9 +9,10 @@ import type {
   CardBelong,
   Card,
   Upgrade,
+  Prophesy,
 } from '@sctavern/data'
 import { CardInstance } from './card'
-import { InnerMsg, SpecificListener } from './events'
+import { GenericListener, InnerMsg, SpecificListener } from './events'
 import { PlayerInstance } from './player'
 
 export type DistributiveOmit<T, K extends keyof T> = T extends unknown
@@ -48,7 +49,6 @@ export interface PresentAction extends Action {
 export type PlayerStatus =
   | 'middle'
   | 'normal'
-  | 'finish'
   | 'discover'
   | 'insert'
   | 'deploy'
@@ -64,6 +64,7 @@ export interface GameConfig {
   Role: RoleKey[]
   Mutation: MutationKey[]
 
+  Pve: boolean
   PoolPack: Pack[]
   ActivePack: Pack[]
 }
@@ -98,6 +99,10 @@ export type DiscoverItem =
   | {
       type: 'upgrade'
       upgrade: Upgrade
+    }
+  | {
+      type: 'prophesy'
+      prophesy: Prophesy
     }
   | {
       type: 'custom'
@@ -208,30 +213,20 @@ export interface RoleInstance {
   progress: {
     cur: number
     max: number
-  } | null
+  }
   enhance: boolean
 }
 
 export interface RoleImpl {
-  listener: SpecificListener<PlayerInstance, RoleInstance>
+  init: (this: RoleInstance) => void
 
-  refresh_cost: (this: RoleInstance, player: PlayerInstance) => number
-  refreshed: (this: RoleInstance, player: PlayerInstance) => void
-
-  buy_cost: (
-    this: RoleInstance,
-    player: PlayerInstance,
-    card: CardKey,
-    act: 'enter' | 'combine' | 'stage',
-    place: number
-  ) => number
-  bought: (
-    this: RoleInstance,
-    player: PlayerInstance,
-    card: CardKey,
-    act: 'enter' | 'combine' | 'stage',
-    place: number
-  ) => void
+  listener: SpecificListener<RoleInstance, PlayerInstance>
 
   ability: (this: RoleInstance, player: PlayerInstance) => void
+}
+
+export interface ProphesyImpl {
+  init: (this: PlayerInstance) => void
+
+  listener: GenericListener<PlayerInstance>
 }

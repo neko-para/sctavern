@@ -1,6 +1,10 @@
 import { Prophesy } from './types'
 
 export type ProphesyKey =
+  | '混沌洪流'
+  | '无限融合'
+  | '狂热冲锋'
+  | '能量提速'
   | '地下交易'
   | '补给空投'
   | '挖宝奇兵'
@@ -12,6 +16,10 @@ export type ProphesyKey =
   | '暗影刷新'
 
 export const AllProphesy: ProphesyKey[] = [
+  '混沌洪流',
+  '无限融合',
+  '狂热冲锋',
+  '能量提速',
   '地下交易',
   '补给空投',
   '挖宝奇兵',
@@ -24,6 +32,30 @@ export const AllProphesy: ProphesyKey[] = [
 ]
 
 export const ProphesyData: Record<ProphesyKey, Prophesy> = {
+  混沌洪流: {
+    name: '混沌洪流',
+    pinyin: 'hdhl',
+    type: '执政官',
+    desc: '融合卡牌后获得所有单位的幻象',
+  },
+  无限融合: {
+    name: '无限融合',
+    pinyin: 'wxrh',
+    type: '执政官',
+    desc: '技能不再限制使用次数, 融合完成后获得3晶体矿',
+  },
+  狂热冲锋: {
+    name: '狂热冲锋',
+    pinyin: 'krcf',
+    type: '狂热者',
+    desc: '立即提升酒馆等级至4',
+  },
+  能量提速: {
+    name: '能量提速',
+    pinyin: 'nlts',
+    type: '狂热者',
+    desc: '每拥有1水晶塔, 战斗开始时所有单位额外获得2%星空加速',
+  },
   地下交易: {
     name: '地下交易',
     pinyin: 'dxjy',

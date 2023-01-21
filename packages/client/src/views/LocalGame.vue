@@ -11,6 +11,9 @@ import GameInstanceVue from '@/components/GameInstance.vue'
 import { useSaveStore } from '@/stores/save'
 import { useRouter } from 'vue-router'
 import { AllUnit, CardData, CardPack, UnitData } from '@sctavern/data'
+import { useMobileStore } from '@/stores/mobile'
+
+const mobileStore = useMobileStore()
 
 const router = useRouter()
 const props = defineProps<{
@@ -159,6 +162,7 @@ const getUnitChoice = computed(() => {
       <v-card-text>
         <v-text-field
           hide-details
+          :density="mobileStore.isMobile ? 'compact' : 'default'"
           v-model="getCardKey"
           @keyup.enter="
             getCardChoice.length > 0 &&
@@ -197,6 +201,7 @@ const getUnitChoice = computed(() => {
       <v-card-text>
         <v-text-field
           hide-details
+          :density="mobileStore.isMobile ? 'compact' : 'default'"
           v-model="getUnitKey"
           @keyup.enter="
             getUnitChoice.length > 0 &&
@@ -237,15 +242,33 @@ const getUnitChoice = computed(() => {
     <div class="d-flex">
       <div class="d-flex flex-column">
         <auto-button variant="elevated" @click="goUp()"> 返回 </auto-button>
-        <auto-button variant="elevated" @click="getCardDlg = true">
+        <auto-button
+          variant="elevated"
+          @click="getCardDlg = true"
+          :disabled="player?.status !== 'normal'"
+        >
           卡牌
         </auto-button>
         <auto-button
           variant="elevated"
-          :disabled="player?.selected.area !== 'present'"
+          :disabled="
+            player?.selected.area !== 'present' || player?.status !== 'normal'
+          "
           @click="getUnitDlg = true"
         >
           单位
+        </auto-button>
+        <auto-button
+          variant="elevated"
+          :disabled="player?.status !== 'normal'"
+          @click="
+            client.autoPost({
+              msg: '$cheat',
+              type: 'resource',
+            })
+          "
+        >
+          资源
         </auto-button>
       </div>
       <div class="d-flex flex-column">

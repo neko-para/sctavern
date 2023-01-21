@@ -37,6 +37,10 @@ export class LCG {
     }
     return array
   }
+
+  one_of<T>(array: T[]): T | null {
+    return array.length > 0 ? array[this.int(array.length - 1)] : null
+  }
 }
 
 export class GameInstance {
@@ -102,9 +106,9 @@ export class GameInstance {
               life: p.life,
               level: p.level,
               upgrade_cost: p.upgrade_cost,
-              status: p.status,
+              status: p.curStatus(),
 
-              discover: p.discoverItem,
+              discover: p.discoverItem[0] || null,
 
               mineral: p.mineral,
               mineral_max: p.mineral_max,
@@ -120,14 +124,15 @@ export class GameInstance {
                 desc: RoleData[p.role.name].desc,
                 enable: p.role.enable,
 
-                progress: dup(p.role.progress),
+                progress:
+                  p.role.progress.cur === -1 ? null : dup(p.role.progress),
                 enhance: p.role.enhance,
               },
 
               action: [
                 {
                   action: 'upgrade',
-                  enable: p.can_tavern_upgrade() && p.status === 'normal',
+                  enable: p.can_tavern_upgrade() && p.curStatus() === 'normal',
                   msg: {
                     msg: '$upgrade',
                     player: ip,
@@ -135,7 +140,7 @@ export class GameInstance {
                 },
                 {
                   action: 'refresh',
-                  enable: p.can_refresh() && p.status === 'normal',
+                  enable: p.can_refresh() && p.curStatus() === 'normal',
                   msg: {
                     msg: '$refresh',
                     player: ip,
@@ -143,7 +148,7 @@ export class GameInstance {
                 },
                 {
                   action: p.locked ? 'unlock' : 'lock',
-                  enable: p.status === 'normal',
+                  enable: p.curStatus() === 'normal',
                   msg: {
                     msg: p.locked ? '$unlock' : '$lock',
                     player: ip,
@@ -151,7 +156,7 @@ export class GameInstance {
                 },
                 {
                   action: 'finish',
-                  enable: p.status === 'normal',
+                  enable: p.curStatus() === 'normal',
                   msg: {
                     msg: '$finish',
                     player: ip,
@@ -159,7 +164,7 @@ export class GameInstance {
                 },
                 {
                   action: 'ability',
-                  enable: p.role.enable && p.status === 'normal',
+                  enable: p.role.enable && p.curStatus() === 'normal',
                   msg: {
                     msg: '$ability',
                     player: ip,
@@ -178,7 +183,8 @@ export class GameInstance {
                     {
                       action,
                       enable:
-                        p.can_buy(s.card, action, i) && p.status === 'normal',
+                        p.can_buy(s.card, action, i) &&
+                        p.curStatus() === 'normal',
                       msg: {
                         msg: '$action',
                         player: ip,
@@ -193,7 +199,7 @@ export class GameInstance {
                       enable:
                         p.can_buy(s.card, 'stage', i) &&
                         p.can_stage() &&
-                        p.status === 'normal',
+                        p.curStatus() === 'normal',
                       msg: {
                         msg: '$action',
                         player: ip,
@@ -219,7 +225,7 @@ export class GameInstance {
                           action,
                           enable:
                             (action === 'enter' ? p.can_enter(h.card) : true) &&
-                            p.status === 'normal',
+                            p.curStatus() === 'normal',
                           msg: {
                             msg: '$action',
                             player: ip,
@@ -231,7 +237,7 @@ export class GameInstance {
                         },
                         {
                           action: 'sell',
-                          enable: p.status === 'normal',
+                          enable: p.curStatus() === 'normal',
                           msg: {
                             msg: '$action',
                             player: ip,
@@ -247,7 +253,7 @@ export class GameInstance {
               }),
               present: p.present.map((pr, i) => {
                 const acts: PresentAction[] = []
-                if (p.status === 'insert') {
+                if (p.curStatus() === 'insert') {
                   acts.push({
                     action: 'insert',
                     enable: true,
@@ -259,7 +265,7 @@ export class GameInstance {
                     },
                     acckey: 'x',
                   })
-                } else if (p.status === 'deploy') {
+                } else if (p.curStatus() === 'deploy') {
                   acts.push({
                     action: 'deploy',
                     enable: true,
@@ -271,7 +277,7 @@ export class GameInstance {
                     },
                     acckey: 'x',
                   })
-                } else if (p.status === 'normal') {
+                } else if (p.curStatus() === 'normal') {
                   if (pr) {
                     acts.push({
                       action: 'upgrade',

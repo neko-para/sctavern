@@ -55,7 +55,7 @@ export class Pool {
       }
     })
     if (f.length + mf.length < count) {
-      throw `Heap is not enough!`
+      return null
     }
     this.heap = nh
     this.$ref$lcg.shuffle(f)

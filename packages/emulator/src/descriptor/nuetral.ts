@@ -275,10 +275,10 @@ export default function (/* config */): Record<string, Descriptor> {
         'round-start'() {
           if (this.attrib.get('启用')) {
             this.attrib.set('启用', 0)
-            this.$ref$Player.enter_discover(
+            this.$ref$Player.push_discover(
               this.$ref$Player.$ref$Game.pool
                 .discover(c => c.belong === 'primal' && c.level < 5, 3)
-                .map(card => ({
+                ?.map(card => ({
                   type: 'card',
                   card,
                 }))

@@ -8,6 +8,9 @@ import {
   AllUpgrade,
   UnitKey,
   Upgrade,
+  AllProphesy,
+  ProphesyData,
+  ProphesyKey,
 } from '@sctavern/data'
 import { CardInstance } from './card'
 import { Dispatch } from './dispatch'
@@ -25,49 +28,39 @@ import {
 import { notNull, repX } from './utils'
 import DescriptorTable from './descriptor'
 import RoleTable from './role'
+import ProphesyTable from './prophesy'
 import { Attribute } from './attrib'
 
 const playerBind: GenericListener<PlayerInstance> = {
-  $upgrade: function () {
+  $upgrade() {
     if (this.level < 6 && this.mineral >= this.upgrade_cost) {
       this.mineral -= this.upgrade_cost
-      this.level += 1
-      this.upgrade_cost = this.config.TavernUpgrade[this.level]
-      if (this.store.length < this.config.StoreCount[this.level]) {
-        this.store.push(null)
-      }
-      this.post({
-        msg: 'tavern-upgraded',
-        level: this.level,
-      })
+      this.do_tavern_upgrade()
     }
   },
-  $refresh: function () {
-    if (this.mineral < this.role_refresh_cost()) {
+  $refresh() {
+    if (this.mineral < this.get_refresh_cost()) {
       return
     }
-    this.mineral -= this.role_refresh_cost()
+    this.mineral -= this.get_refresh_cost('real')
     this.do_refresh()
-
-    this.role_refreshed()
   },
-  $finish: function () {
-    if (this.status === 'normal') {
-      this.status = 'finish'
+  $finish() {
+    if (this.curStatus() === 'normal') {
       // TODO: Notify game
       this.$ref$Game.roundEnd()
     }
   },
-  $ability: function () {
+  $ability() {
     if (!this.role.enable) {
       return
     }
     this.role_impl().ability.call(this.role, this)
   },
-  $lock: function () {
+  $lock() {
     this.locked = true
   },
-  $unlock: function () {
+  $unlock() {
     this.locked = false
   },
   $select: function ({ area, place }) {
@@ -78,20 +71,22 @@ const playerBind: GenericListener<PlayerInstance> = {
   },
   $choice: function ({ category, place }) {
     switch (category) {
-      case 'insert':
-        if (!this.insertCard) {
+      case 'insert': {
+        const card = this.insertCard.shift()
+        if (!card) {
           return
         }
-        this.status = 'normal'
-        this.enter(this.insertCard, place)
+        this.status.pop()
+        this.enter(card, place)
         break
+      }
       case 'discover': {
-        if (!this.discoverItem) {
+        const ctx = this.discoverItem.shift()
+        if (!ctx) {
           return
         }
-        this.status = 'normal'
+        this.status.pop()
         const drop: Card[] = []
-        const ctx = this.discoverItem
         if (!ctx.fake) {
           if (!ctx.nodrop) {
             ctx.item.forEach((item, i) => {
@@ -108,18 +103,19 @@ const playerBind: GenericListener<PlayerInstance> = {
             if (result.type === 'card') {
               this.obtain_card(result.card.name, !ctx.nodrop)
             } else if (result.type === 'upgrade') {
-              console.log(ctx)
               if ('target' in ctx) {
                 const ci = this.present[ctx.target as number]?.card
                 if (ci && this.can_obt_upgrade(ci)) {
                   ci.obtain_upgrade(result.upgrade.name)
                 }
               }
+            } else if (result.type === 'prophesy') {
+              const p = ProphesyTable[result.prophesy.name]
+              p.init.call(this)
             }
           }
         }
         this.$ref$Game.pool.drop(drop)
-        this.discoverItem = null
         ctx.choice = place
         this.post({
           msg: 'discover-finish',
@@ -169,14 +165,7 @@ const playerBind: GenericListener<PlayerInstance> = {
             }
             break
         }
-        this.mineral -= this.role_impl().buy_cost.call(
-          this.role,
-          this,
-          ck,
-          action,
-          place
-        )
-
+        this.mineral -= this.get_buy_cost(action, ck, place, 'real')
         switch (action) {
           case 'enter':
             this.require_enter(ck)
@@ -191,9 +180,12 @@ const playerBind: GenericListener<PlayerInstance> = {
 
         this.store[place] = null
 
-        if (action !== 'combine') {
-          this.role_impl().bought.call(this.role, this, ck, action, place)
-        }
+        this.post({
+          msg: 'bought',
+          action,
+          cardt: ck,
+          place,
+        })
         break
       }
       case 'hand': {
@@ -292,7 +284,7 @@ const playerBind: GenericListener<PlayerInstance> = {
               gas: -2,
             })
 
-            const id = this.enter_discover(
+            const id = this.push_discover(
               item.map(u => ({
                 type: 'upgrade',
                 upgrade: u,
@@ -335,11 +327,11 @@ const playerBind: GenericListener<PlayerInstance> = {
     }
   },
 
-  'round-start': function () {
-    if (this.status !== 'middle') {
+  'round-start'() {
+    if (this.curStatus() !== 'middle') {
       return
     }
-    this.status = 'normal'
+    this.status.push('normal')
     this.attrib = this.nextAttrib
     this.nextAttrib = new Attribute()
     if (this.upgrade_cost > 0) {
@@ -366,11 +358,36 @@ const playerBind: GenericListener<PlayerInstance> = {
     this.locked = false
     this.fill_store()
   },
-  'round-leave': function () {
-    if (this.status !== 'finish') {
+  'round-enter'({ round }) {
+    if (this.$ref$Game.config.Pve) {
+      if (round === 1) {
+        if (this.role.name !== '白板') {
+          this.push_discover(
+            AllProphesy.map(p => ProphesyData[p])
+              .filter(p => p.type === this.role.name)
+              .map(prophesy => ({
+                type: 'prophesy',
+                prophesy,
+              }))
+          )
+        }
+      } else if (round === 4) {
+        this.push_discover(
+          AllProphesy.map(p => ProphesyData[p])
+            .filter(p => p.type === 0)
+            .map(prophesy => ({
+              type: 'prophesy',
+              prophesy,
+            }))
+        )
+      }
+    }
+  },
+  'round-leave'() {
+    if (this.curStatus() !== 'normal') {
       return
     }
-    this.status = 'middle'
+    this.status.pop()
   },
 }
 
@@ -385,10 +402,11 @@ export class PlayerInstance {
   level: number
   upgrade_cost: number
 
-  status: PlayerStatus
+  status: PlayerStatus[]
 
-  insertCard: CardKey | null
-  discoverItem: DiscoverContext | null
+  insertCard: CardKey[]
+  deployCard: CardKey[]
+  discoverItem: DiscoverContext[]
 
   mineral: number
   mineral_max: number
@@ -402,6 +420,7 @@ export class PlayerInstance {
   locked: boolean
 
   role: RoleInstance
+  prophesy: ProphesyKey[]
 
   store: ({
     card: CardKey
@@ -441,10 +460,10 @@ export class PlayerInstance {
     this.level = 1
     this.upgrade_cost = 5 + 1
 
-    this.status = 'middle'
-
-    this.insertCard = null
-    this.discoverItem = null
+    this.status = ['middle']
+    this.insertCard = []
+    this.deployCard = []
+    this.discoverItem = []
 
     this.mineral = 0
     this.mineral_max = 3 - 1
@@ -464,14 +483,24 @@ export class PlayerInstance {
       name: rolekey,
       enable: false,
 
-      progress: null,
+      progress: {
+        cur: -1,
+        max: -1,
+      },
       enhance: true,
     }
+    this.prophesy = []
 
     this.store = repX(null, 3)
     this.hand = repX(null, 6)
     this.present = repX(null, 7)
     this.process = null
+
+    this.set_role(rolekey)
+  }
+
+  curStatus(): PlayerStatus {
+    return this.status[this.status.length - 1]
   }
 
   index() {
@@ -492,7 +521,12 @@ export class PlayerInstance {
 
   answer(msg: InnerMsg) {
     Dispatch(playerBind, msg, this)
-    Dispatch(this.role_impl().listener, msg, this, this.role)
+
+    this.prophesy.forEach(p => {
+      Dispatch(ProphesyTable[p].listener, msg, this)
+    })
+
+    Dispatch(this.role_impl().listener, msg, this.role, this)
 
     if ('card' in msg) {
       if (msg.card === -1) {
@@ -564,13 +598,18 @@ export class PlayerInstance {
     return res
   }
 
-  fill_store() {
+  fill_store(spec?: (req: number) => Card[] | null) {
     const nf = this.store.filter(c => !c).length
-    const nc = this.$ref$Game.pool.discover(
-      card => card.level <= this.level,
-      nf,
-      false
-    )
+    const nc = spec
+      ? spec(nf)
+      : this.$ref$Game.pool.discover(
+          card => card.level <= this.level,
+          nf,
+          false
+        )
+    if (!nc) {
+      return
+    }
     for (let i = 0; i < this.store.length; i++) {
       if (!this.store[i]) {
         this.store[i] = {
@@ -581,17 +620,55 @@ export class PlayerInstance {
     }
   }
 
-  do_refresh() {
+  do_tavern_upgrade() {
+    this.level += 1
+    this.upgrade_cost = this.config.TavernUpgrade[this.level]
+    if (this.store.length < this.config.StoreCount[this.level]) {
+      this.store.push(null)
+    }
+    this.post({
+      msg: 'tavern-upgraded',
+      level: this.level,
+    })
+  }
+
+  do_refresh(spec?: (req: number) => Card[] | null) {
     this.$ref$Game.pool.drop(
       (this.store.filter(x => x !== null) as { card: CardKey }[]).map(
         c => CardData[c.card]
       )
     )
     this.store.fill(null)
-    this.fill_store()
+    this.fill_store(spec)
+    this.post({
+      msg: 'refreshed',
+    })
     this.post({
       msg: 'store-refreshed',
     })
+  }
+
+  set_role(role: RoleKey, keepAttrib = false) {
+    this.role = {
+      attrib: keepAttrib ? this.role.attrib : {},
+
+      name: role,
+      enable: false,
+
+      progress: {
+        cur: -1,
+        max: -1,
+      },
+      enhance: true,
+    }
+
+    this.role_impl().init.call(this.role)
+  }
+
+  query_selected_present() {
+    return this.selected.area === 'present'
+      ? this.present[this.selected.place]?.card || null
+      : null
   }
 
   obtain_card(card: CardKey, drop = true) {
@@ -621,14 +698,6 @@ export class PlayerInstance {
     return RoleTable[this.role.name]
   }
 
-  role_refresh_cost() {
-    return this.role_impl().refresh_cost.call(this.role, this) || 1
-  }
-
-  role_refreshed() {
-    this.role_impl().refreshed.call(this.role, this)
-  }
-
   locate_combine_target(card: CardKey) {
     return this.present
       .filter(notNull)
@@ -638,10 +707,7 @@ export class PlayerInstance {
   }
 
   can_buy(card: CardKey, action: 'enter' | 'combine' | 'stage', place: number) {
-    return (
-      this.mineral >=
-      this.role_impl().buy_cost.call(this.role, this, card, action, place)
-    )
+    return this.mineral >= this.get_buy_cost(action, card, place)
   }
 
   can_enter(card: CardKey) {
@@ -674,19 +740,16 @@ export class PlayerInstance {
   }
 
   can_refresh() {
-    return this.mineral >= this.role_impl().refresh_cost.call(this.role, this)
+    return this.mineral >= this.get_refresh_cost()
   }
 
-  enter_insert(card: CardKey) {
-    if (this.status !== 'normal') {
-      return
-    }
-    this.status = 'insert'
-    this.insertCard = card
+  push_insert(card: CardKey) {
+    this.status.push('insert')
+    this.insertCard.push(card)
   }
 
-  enter_discover(
-    item: DiscoverItem[],
+  push_discover(
+    item?: DiscoverItem[],
     cfg?: {
       extra?: string
       fake?: boolean
@@ -694,25 +757,25 @@ export class PlayerInstance {
       nodrop?: boolean
     }
   ) {
-    if (this.status !== 'normal') {
-      return
+    if (!item) {
+      return ''
     }
     const id = this.persisAttrib.get('discover-counter')
     this.persisAttrib.alter('discover-counter', 1)
-    this.status = 'discover'
+    this.status.push('discover')
     const ctx: DiscoverContext = {
       item,
       id,
       ...cfg,
     }
-    this.discoverItem = ctx
+    this.discoverItem.push(ctx)
     return id
   }
 
   require_enter(card: CardKey) {
     const cd = CardData[card]
     if (this.config.AlwaysInsert || cd.attr.insert) {
-      this.enter_insert(card)
+      this.push_insert(card)
     } else {
       this.enter(card)
     }
@@ -839,9 +902,9 @@ export class PlayerInstance {
       msg: 'post-enter',
     })
 
-    const reward: DiscoverItem[] = this.$ref$Game.pool
+    const reward: DiscoverItem[] | undefined = this.$ref$Game.pool
       .discover(c => c.level === Math.min(6, this.level + 1), 3)
-      .map(c => ({
+      ?.map(c => ({
         type: 'card',
         card: c,
       }))
@@ -851,14 +914,14 @@ export class PlayerInstance {
         .filter(u => u.category === 'combine')
         .filter(u => !ci.upgrades.includes(u.name))
       if (us.length > 0) {
-        reward.push({
+        reward?.push({
           type: 'upgrade',
           upgrade: this.$ref$Game.lcg.shuffle(us)[0],
         })
       }
     }
 
-    this.enter_discover(reward, {
+    this.push_discover(reward, {
       target: ci.index(),
     })
 
@@ -989,5 +1052,29 @@ export class PlayerInstance {
     if (m.into) {
       m.into.obtain_unit(units, 'wrap')
     }
+  }
+
+  get_buy_cost(
+    action: 'enter' | 'combine' | 'stage',
+    cardt: CardKey,
+    place: number,
+    time: 'dry' | 'real' = 'dry'
+  ) {
+    return this.post({
+      msg: 'get-buy-cost',
+      time,
+      cost: 3,
+      action,
+      cardt,
+      place,
+    }).cost
+  }
+
+  get_refresh_cost(time: 'dry' | 'real' = 'dry') {
+    return this.post({
+      msg: 'get-refresh-cost',
+      time,
+      cost: 1,
+    }).cost
   }
 }

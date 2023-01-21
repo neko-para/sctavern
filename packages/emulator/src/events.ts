@@ -143,6 +143,28 @@ export type PlayerMsg = ApplyKey<
   | {
       msg: 'discover-finish'
       ctx: DiscoverContext
+    }
+  | {
+      msg: 'get-buy-cost'
+      time: 'dry' | 'real'
+      cost: number
+      action: 'enter' | 'combine' | 'stage'
+      cardt: CardKey
+      place: number
+    }
+  | {
+      msg: 'get-refresh-cost'
+      time: 'dry' | 'real'
+      cost: number
+    }
+  | {
+      msg: 'bought'
+      action: 'enter' | 'combine' | 'stage'
+      cardt: CardKey
+      place: number
+    }
+  | {
+      msg: 'refreshed'
     },
   {
     player: number

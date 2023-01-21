@@ -11,18 +11,22 @@ import { useMobileStore } from '@/stores/mobile'
 
 const mobileStore = useMobileStore()
 
-const section = ref<'packseed' | 'role' | 'mutation'>('packseed')
+const section = ref<'packseed' | 'role' | 'mutation' | 'pve'>('packseed')
 
 const props = defineProps<{
   Pack: Pack[]
   Seed: number
   Role: RoleKey[]
   Mutation: MutationKey[]
+
+  Pve: boolean
 }>()
 
 const emit = defineEmits<{
   (e: 'update:Pack', p: Pack[]): void
   (e: 'update:Seed', s: number): void
+  (e: 'update:Role', r: RoleKey[]): void
+  (e: 'update:Pve', p: boolean): void
   (e: 'ok'): void
 }>()
 
@@ -46,13 +50,42 @@ const pack = computed({
   },
 })
 
+const role = computed({
+  get() {
+    return props.Role
+  },
+
+  set(role: RoleKey[]) {
+    emit('update:Role', role)
+  },
+})
+
+const pve = computed({
+  get() {
+    return props.Pve
+  },
+
+  set(pve: boolean) {
+    emit('update:Pve', pve)
+  },
+})
+
+const lcg = new LCG(genSeed())
+
 function genSeed() {
   return Math.round(Math.random() * 100000000)
 }
 
 function genPack(): Pack[] {
-  const lcg = new LCG(genSeed())
   return ['核心', ...lcg.shuffle(ExtPack.slice(1)).slice(0, 2)]
+}
+
+const AllRoleChoice = computed<RoleKey[]>(() => {
+  return ['白板', '执政官', '狂热者']
+})
+
+function genRole(): RoleKey[] {
+  return lcg.shuffle(AllRoleChoice.value).slice(0, role.value.length)
 }
 </script>
 
@@ -102,7 +135,20 @@ function genPack(): Pack[] {
     </template>
     <template v-if="!mobileStore.isMobile || section === 'role'">
       <v-row>
-        <v-col> 暂时不支持选角色 </v-col>
+        <template v-if="role.length === 1">
+          <v-col cols="1"></v-col>
+          <v-col cols="8">
+            <v-select
+              hide-details
+              density="compact"
+              v-model="role[0]"
+              :items="AllRoleChoice"
+            ></v-select>
+          </v-col>
+          <v-col cols="2">
+            <v-btn @click="role = genRole()"> 随机 </v-btn>
+          </v-col>
+        </template>
       </v-row>
     </template>
     <template v-if="!mobileStore.isMobile || section === 'mutation'">
@@ -110,11 +156,25 @@ function genPack(): Pack[] {
         <v-col> 暂时不支持选突变因子 </v-col>
       </v-row>
     </template>
+    <template v-if="!mobileStore.isMobile || section === 'pve'">
+      <v-row>
+        <v-col cols="1"></v-col>
+        <v-col cols="4">
+          <v-checkbox
+            v-model="pve"
+            density="compact"
+            hide-details
+            label="启用PVE内容"
+          ></v-checkbox>
+        </v-col>
+      </v-row>
+    </template>
     <v-card-actions class="mt-auto">
       <template v-if="mobileStore.isMobile">
         <v-btn @click="section = 'packseed'"> 种子卡包 </v-btn>
         <v-btn @click="section = 'role'"> 角色 </v-btn>
         <v-btn @click="section = 'mutation'"> 突变因子 </v-btn>
+        <v-btn @click="section = 'pve'"> PVE </v-btn>
       </template>
       <v-btn class="ml-auto" color="primary" @click="$emit('ok')"> 启动 </v-btn>
     </v-card-actions>
