@@ -373,8 +373,11 @@ const playerBind: GenericListener<PlayerInstance> = {
         }
       } else if (round === 4) {
         this.push_discover(
-          AllProphesy.map(p => ProphesyData[p])
-            .filter(p => p.type === 0)
+          this.$ref$Game.lcg
+            .shuffle(
+              AllProphesy.map(p => ProphesyData[p]).filter(p => p.type === 0)
+            )
+            .slice(0, 4)
             .map(prophesy => ({
               type: 'prophesy',
               prophesy,
