@@ -2,18 +2,9 @@ import { GameInstance } from './game'
 import { Server } from './server'
 import { GameConfig } from './types'
 import defaultManager from './serialize'
-
-export interface SaveConfig {
-  card?: never
-  unit?: never
-  upgr?: never
-  role?: never
-  muta?: never
-  desc?: never
-}
+import { PresetPoolPack, PvpPresetActivePack } from '@sctavern/data'
 
 export interface PortableSave {
-  config: SaveConfig
   old: string[]
   new: string[]
 }
@@ -40,11 +31,13 @@ export class Wrapper {
         Seed: 1,
         Role: ['白板'],
         Mutation: [],
+        Pve: false,
+        PoolPack: PresetPoolPack,
+        ActivePack: PvpPresetActivePack,
       },
       this.server
     )
     this.save = {
-      config: {},
       old: [defaultManager.serialize(this.game)],
       new: [],
     }
@@ -65,11 +58,10 @@ export class Wrapper {
     this.loading = false
   }
 
-  init(cfg: GameConfig, xcfg: SaveConfig = {}) {
+  init(cfg: GameConfig) {
     this.unbind()
     this.game = new GameInstance(cfg, this.server)
     this.save = {
-      config: xcfg,
       old: [defaultManager.serialize(this.game)],
       new: [],
     }

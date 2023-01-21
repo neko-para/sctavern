@@ -152,6 +152,14 @@ const getUnitChoice = computed(() => {
     .map(({ unit }) => unit)
     .slice(0, 10)
 })
+
+const importDlg = ref(false)
+const importFile = ref<File[]>([])
+
+function doImport() {
+  saveStore.Upload(importFile.value[0])
+  importDlg.value = false
+}
 </script>
 
 <template>
@@ -237,6 +245,24 @@ const getUnitChoice = computed(() => {
     </v-card>
   </v-dialog>
 
+  <v-dialog v-model="importDlg">
+    <v-card>
+      <v-card-title> 导入 </v-card-title>
+      <v-card-text>
+        <v-file-input v-model="importFile" accept=".SCTReplay"></v-file-input>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn
+          color="primary"
+          :disabled="importFile.length !== 1"
+          @click="doImport()"
+        >
+          确定
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
   <v-card class="Debug d-flex flex-column">
     <span class="Label mx-auto">菜单</span>
     <div class="d-flex">
@@ -305,6 +331,16 @@ const getUnitChoice = computed(() => {
           @click="saveStore.CleanStorage()"
         >
           清除
+        </auto-button>
+        <auto-button
+          variant="elevated"
+          :disabled="!saveStore.save"
+          @click="saveStore.Download()"
+        >
+          导出
+        </auto-button>
+        <auto-button variant="elevated" @click="importDlg = true">
+          导入
         </auto-button>
       </div>
     </div>
