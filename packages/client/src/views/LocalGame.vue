@@ -165,7 +165,85 @@ const showMenu = ref(true)
 </script>
 
 <template>
-  <game-instance-vue :state="state" :client="client"></game-instance-vue>
+  <game-instance-vue :state="state" :client="client">
+    <div class="d-flex flex-column">
+      <auto-button variant="elevated" @click="goUp()"> 返回 </auto-button>
+      <auto-button
+        variant="elevated"
+        @click="getCardDlg = true"
+        :disabled="player?.status !== 'normal'"
+      >
+        卡牌
+      </auto-button>
+      <auto-button
+        variant="elevated"
+        :disabled="
+          player?.selected.area !== 'present' || player?.status !== 'normal'
+        "
+        @click="getUnitDlg = true"
+      >
+        单位
+      </auto-button>
+      <auto-button
+        variant="elevated"
+        :disabled="player?.status !== 'normal'"
+        @click="
+          client.autoPost({
+            msg: '$cheat',
+            type: 'resource',
+          })
+        "
+      >
+        资源
+      </auto-button>
+    </div>
+    <div class="d-flex flex-column">
+      <auto-button
+        variant="elevated"
+        :disabled="!saveState.canUndo"
+        @click="wrapper.undo()"
+      >
+        撤销
+      </auto-button>
+      <auto-button
+        variant="elevated"
+        :disabled="!saveState.canRedo"
+        @click="wrapper.redo()"
+      >
+        重做
+      </auto-button>
+      <auto-button
+        variant="elevated"
+        @click="saveStore.SaveStorage(wrapper.save)"
+      >
+        保存
+      </auto-button>
+      <auto-button
+        variant="elevated"
+        :disabled="!saveStore.save"
+        @click="saveStore.save ? wrapper.load(saveStore.save) : void 0"
+      >
+        读取
+      </auto-button>
+      <auto-button
+        variant="elevated"
+        :disabled="!saveStore.save"
+        @click="saveStore.CleanStorage()"
+      >
+        清除
+      </auto-button>
+      <auto-button
+        variant="elevated"
+        :disabled="!saveStore.save"
+        @click="saveStore.Download()"
+      >
+        导出
+      </auto-button>
+      <auto-button variant="elevated" @click="importDlg = true">
+        导入
+      </auto-button>
+    </div>
+  </game-instance-vue>
 
   <v-dialog v-model="getCardDlg">
     <v-card>
@@ -264,95 +342,4 @@ const showMenu = ref(true)
       </v-card-actions>
     </v-card>
   </v-dialog>
-
-  <v-card class="ControlPanel d-flex flex-column">
-    <span v-if="!mobileStore.isMobile" class="Label mx-auto">菜单</span>
-    <auto-button v-else @click="showMenu = !showMenu"> 菜单 </auto-button>
-    <div class="d-flex" v-if="showMenu">
-      <div class="d-flex flex-column">
-        <auto-button variant="elevated" @click="goUp()"> 返回 </auto-button>
-        <auto-button
-          variant="elevated"
-          @click="getCardDlg = true"
-          :disabled="player?.status !== 'normal'"
-        >
-          卡牌
-        </auto-button>
-        <auto-button
-          variant="elevated"
-          :disabled="
-            player?.selected.area !== 'present' || player?.status !== 'normal'
-          "
-          @click="getUnitDlg = true"
-        >
-          单位
-        </auto-button>
-        <auto-button
-          variant="elevated"
-          :disabled="player?.status !== 'normal'"
-          @click="
-            client.autoPost({
-              msg: '$cheat',
-              type: 'resource',
-            })
-          "
-        >
-          资源
-        </auto-button>
-      </div>
-      <div class="d-flex flex-column">
-        <auto-button
-          variant="elevated"
-          :disabled="!saveState.canUndo"
-          @click="wrapper.undo()"
-        >
-          撤销
-        </auto-button>
-        <auto-button
-          variant="elevated"
-          :disabled="!saveState.canRedo"
-          @click="wrapper.redo()"
-        >
-          重做
-        </auto-button>
-        <auto-button
-          variant="elevated"
-          @click="saveStore.SaveStorage(wrapper.save)"
-        >
-          保存
-        </auto-button>
-        <auto-button
-          variant="elevated"
-          :disabled="!saveStore.save"
-          @click="saveStore.save ? wrapper.load(saveStore.save) : void 0"
-        >
-          读取
-        </auto-button>
-        <auto-button
-          variant="elevated"
-          :disabled="!saveStore.save"
-          @click="saveStore.CleanStorage()"
-        >
-          清除
-        </auto-button>
-        <auto-button
-          variant="elevated"
-          :disabled="!saveStore.save"
-          @click="saveStore.Download()"
-        >
-          导出
-        </auto-button>
-        <auto-button variant="elevated" @click="importDlg = true">
-          导入
-        </auto-button>
-      </div>
-    </div>
-  </v-card>
 </template>
-<style>
-.ControlPanel {
-  position: fixed;
-  right: 0;
-  top: 0;
-}
-</style>
