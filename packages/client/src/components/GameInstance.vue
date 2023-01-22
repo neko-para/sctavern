@@ -32,144 +32,140 @@ const showMenu = ref(true)
 </script>
 
 <template>
-  <div class="FullScreen">
-    <div class="d-flex flex-column justify-center">
-      <div class="d-flex">
-        <v-card class="ControlPanel d-flex flex-column">
-          <div class="ml-auto">
-            <auto-button variant="flat" @click="showMenu = !showMenu">
-              菜单
-            </auto-button>
+  <div class="d-flex flex-column justify-center">
+    <div class="d-flex">
+      <v-card class="ControlPanel d-flex flex-column">
+        <div class="ml-auto">
+          <auto-button variant="flat" @click="showMenu = !showMenu">
+            菜单
+          </auto-button>
+        </div>
+        <template v-if="showMenu">
+          <hr />
+          <div class="d-flex" v-if="showMenu">
+            <slot></slot>
           </div>
-          <template v-if="showMenu">
-            <hr />
-            <div class="d-flex" v-if="showMenu">
-              <slot></slot>
-            </div>
-          </template>
-        </v-card>
+        </template>
+      </v-card>
 
-        <div class="d-flex flex-column">
-          <span class="Info">
-            回合 {{ state.round }} 等级 {{ pl?.level }} 生命 {{ pl?.life }} 价值
-            {{
-              pl?.present
-                .map(c => c.card?.value || 0)
-                .reduce((a, b) => a + b, 0)
-            }}
-          </span>
-          <span class="Info">
-            升级 {{ pl?.upgrade_cost }} 晶矿 {{ pl?.mineral }} /
-            {{ pl?.mineral_max }} 瓦斯 {{ pl?.gas }} / {{ pl?.gas_max }}
-          </span>
-          <div class="HandContainer">
-            <div>
-              <hand-item
-                class="mt-1"
-                v-for="i in 3"
-                :key="`Hand${i - 1}`"
-                :state="state"
-                :client="client"
-                :place="i - 1"
-              ></hand-item>
-            </div>
-            <div class="ml-1">
-              <hand-item
-                class="mt-1"
-                v-for="i in 3"
-                :key="`Hand${i + 2}`"
-                :state="state"
-                :client="client"
-                :place="i + 2"
-              ></hand-item>
-            </div>
+      <div class="d-flex flex-column">
+        <span class="Info">
+          回合 {{ state.round }} 等级 {{ pl?.level }} 生命 {{ pl?.life }} 价值
+          {{
+            pl?.present.map(c => c.card?.value || 0).reduce((a, b) => a + b, 0)
+          }}
+        </span>
+        <span class="Info">
+          升级 {{ pl?.upgrade_cost }} 晶矿 {{ pl?.mineral }} /
+          {{ pl?.mineral_max }} 瓦斯 {{ pl?.gas }} / {{ pl?.gas_max }}
+        </span>
+        <div class="HandContainer">
+          <div>
+            <hand-item
+              class="mt-1"
+              v-for="i in 3"
+              :key="`Hand${i - 1}`"
+              :state="state"
+              :client="client"
+              :place="i - 1"
+            ></hand-item>
+          </div>
+          <div class="ml-1">
+            <hand-item
+              class="mt-1"
+              v-for="i in 3"
+              :key="`Hand${i + 2}`"
+              :state="state"
+              :client="client"
+              :place="i + 2"
+            ></hand-item>
           </div>
         </div>
-        <div class="d-flex flex-column">
-          <div class="StoreContainer">
-            <div class="mt-1">
-              <store-item
-                class="ml-2"
-                v-for="(s, i) in pl?.store.slice(0, 3) || []"
-                :key="`Store${i}`"
-                :state="state"
-                :client="client"
-                :place="i"
-              ></store-item>
-            </div>
-            <div v-if="(pl?.store.length || 0) > 3" class="mt-1">
-              <store-item
-                class="ml-2"
-                v-for="(s, i) in pl?.store.slice(3) || []"
-                :key="`Store${i + 3}`"
-                :state="state"
-                :client="client"
-                :place="i + 3"
-              ></store-item>
-            </div>
+      </div>
+      <div class="d-flex flex-column">
+        <div class="StoreContainer">
+          <div class="mt-1">
+            <store-item
+              class="ml-2"
+              v-for="(s, i) in pl?.store.slice(0, 3) || []"
+              :key="`Store${i}`"
+              :state="state"
+              :client="client"
+              :place="i"
+            ></store-item>
           </div>
-          <div
-            v-if="pl?.status === 'discover' && pl.discover"
-            class="d-flex mt-1 DiscoverContainer"
-          >
-            <div class="mt-1">
-              <discover-item
-                class="ml-2"
-                v-for="(d, i) in pl?.discover?.item.slice(0, 3) || []"
-                :key="`Discover${i}`"
-                :state="state"
-                :client="client"
-                :place="i"
-              ></discover-item>
-            </div>
-            <div v-if="pl?.discover?.item.length > 3" class="mt-1">
-              <discover-item
-                class="ml-2"
-                v-for="(d, i) in pl?.discover?.item.slice(3) || []"
-                :key="`Discover${i + 3}`"
-                :state="state"
-                :client="client"
-                :place="i + 3"
-              ></discover-item>
-              <auto-button
-                class="ml-2"
-                v-if="pl?.discover?.extra"
-                @click="
-                  client.autoPost({
-                    msg: '$choice',
-                    category: 'discover',
-                    place: -1,
-                  })
-                "
-              >
-                {{ pl?.discover?.extra }}
-              </auto-button>
-            </div>
+          <div v-if="(pl?.store.length || 0) > 3" class="mt-1">
+            <store-item
+              class="ml-2"
+              v-for="(s, i) in pl?.store.slice(3) || []"
+              :key="`Store${i + 3}`"
+              :state="state"
+              :client="client"
+              :place="i + 3"
+            ></store-item>
           </div>
-          <div class="d-flex mt-auto mb-1">
+        </div>
+        <div
+          v-if="pl?.status === 'discover' && pl.discover"
+          class="d-flex mt-1 DiscoverContainer"
+        >
+          <div class="mt-1">
+            <discover-item
+              class="ml-2"
+              v-for="(d, i) in pl?.discover?.item.slice(0, 3) || []"
+              :key="`Discover${i}`"
+              :state="state"
+              :client="client"
+              :place="i"
+            ></discover-item>
+          </div>
+          <div v-if="pl?.discover?.item.length > 3" class="mt-1">
+            <discover-item
+              class="ml-2"
+              v-for="(d, i) in pl?.discover?.item.slice(3) || []"
+              :key="`Discover${i + 3}`"
+              :state="state"
+              :client="client"
+              :place="i + 3"
+            ></discover-item>
             <auto-button
               class="ml-2"
-              variant="elevated"
-              v-for="(a, i) in pl?.action || []"
-              :key="`GA-${i}`"
-              :disabled="!a.enable"
-              @click="client.post(a.msg)"
+              v-if="pl?.discover?.extra"
+              @click="
+                client.autoPost({
+                  msg: '$choice',
+                  category: 'discover',
+                  place: -1,
+                })
+              "
             >
-              {{ tr[a.action] }}
+              {{ pl?.discover?.extra }}
             </auto-button>
           </div>
         </div>
+        <div class="d-flex mt-auto mb-1">
+          <auto-button
+            class="ml-2"
+            variant="elevated"
+            v-for="(a, i) in pl?.action || []"
+            :key="`GA-${i}`"
+            :disabled="!a.enable"
+            @click="client.post(a.msg)"
+          >
+            {{ tr[a.action] }}
+          </auto-button>
+        </div>
       </div>
-      <div class="PresentContainer">
-        <present-item
-          class="mt-1"
-          v-for="i in 7"
-          :key="`Present${i - 1}`"
-          :state="state"
-          :client="client"
-          :place="i - 1"
-        ></present-item>
-      </div>
+    </div>
+    <div class="PresentContainer">
+      <present-item
+        class="mt-1"
+        v-for="i in 7"
+        :key="`Present${i - 1}`"
+        :state="state"
+        :client="client"
+        :place="i - 1"
+      ></present-item>
     </div>
   </div>
 </template>
@@ -199,14 +195,6 @@ const showMenu = ref(true)
   .DiscoverContainer {
     flex-direction: row;
   }
-}
-.FullScreen {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: space-around;
-  background-color: wheat;
 }
 .ControlPanel {
   z-index: 1;

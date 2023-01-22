@@ -36,19 +36,13 @@ function startGame() {
 </script>
 
 <template>
-  <v-container class="h-100">
-    <v-row>
-      <v-col>
-        <game-config-vue
-          class="h-100"
-          v-model:Pack="config.Pack"
-          v-model:Seed="config.Seed"
-          v-model:Role="config.Role"
-          v-model:Mutation="config.Mutation"
-          v-model:Pve="config.Pve"
-          @ok="startGame()"
-        ></game-config-vue>
-      </v-col>
-    </v-row>
-  </v-container>
+  <game-config-vue
+    class="justify-center"
+    v-model:Pack="config.Pack"
+    v-model:Seed="config.Seed"
+    v-model:Role="config.Role"
+    v-model:Mutation="config.Mutation"
+    v-model:Pve="config.Pve"
+    @ok="startGame()"
+  ></game-config-vue>
 </template>

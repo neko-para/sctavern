@@ -6,7 +6,9 @@ Init()
 
 <template>
   <v-app id="root">
-    <router-view />
+    <div class="FullScreen">
+      <router-view />
+    </div>
   </v-app>
   <v-app id="warn" class="h-100">
     <v-card class="my-auto mx-2 elevation-24">
