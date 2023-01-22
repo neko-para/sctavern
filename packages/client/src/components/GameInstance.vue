@@ -36,11 +36,17 @@ const showMenu = ref(true)
     <div class="d-flex flex-column justify-center">
       <div class="d-flex">
         <v-card class="ControlPanel d-flex flex-column">
-          <span v-if="!browserStore.isMobile" class="Label mx-auto">菜单</span>
-          <auto-button v-else @click="showMenu = !showMenu"> 菜单 </auto-button>
-          <div class="d-flex" v-if="showMenu">
-            <slot></slot>
+          <div class="ml-auto">
+            <auto-button variant="flat" @click="showMenu = !showMenu">
+              菜单
+            </auto-button>
           </div>
+          <template v-if="showMenu">
+            <hr />
+            <div class="d-flex" v-if="showMenu">
+              <slot></slot>
+            </div>
+          </template>
         </v-card>
 
         <div class="d-flex flex-column">
@@ -56,28 +62,6 @@ const showMenu = ref(true)
             升级 {{ pl?.upgrade_cost }} 晶矿 {{ pl?.mineral }} /
             {{ pl?.mineral_max }} 瓦斯 {{ pl?.gas }} / {{ pl?.gas_max }}
           </span>
-          <div class="d-flex">
-            <auto-button
-              variant="elevated"
-              v-for="(a, i) in pl?.action.slice(0, -1) || []"
-              :key="`GA-${i}`"
-              :disabled="!a.enable"
-              @click="client.post(a.msg)"
-            >
-              {{ tr[a.action] }}
-            </auto-button>
-          </div>
-          <div class="d-flex mt-1">
-            <auto-button
-              variant="elevated"
-              v-for="(a, i) in pl?.action.slice(-1) || []"
-              :key="`GA-/${i}`"
-              :disabled="!a.enable"
-              @click="client.post(a.msg)"
-            >
-              {{ tr[a.action] }}
-            </auto-button>
-          </div>
           <div class="HandContainer">
             <div>
               <hand-item
@@ -161,6 +145,18 @@ const showMenu = ref(true)
                 {{ pl?.discover?.extra }}
               </auto-button>
             </div>
+          </div>
+          <div class="d-flex mt-auto mb-1">
+            <auto-button
+              class="ml-2"
+              variant="elevated"
+              v-for="(a, i) in pl?.action || []"
+              :key="`GA-${i}`"
+              :disabled="!a.enable"
+              @click="client.post(a.msg)"
+            >
+              {{ tr[a.action] }}
+            </auto-button>
           </div>
         </div>
       </div>

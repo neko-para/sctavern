@@ -165,19 +165,16 @@ function doImport() {
 <template>
   <game-instance-vue :state="state" :client="client">
     <div class="d-flex flex-column">
-      <auto-button variant="elevated" @click="browserStore.toggleFullScreen()">
-        {{ browserStore.isFullScreen ? '窗口' : '全屏' }}
-      </auto-button>
-      <auto-button variant="elevated" @click="goUp()"> 返回 </auto-button>
+      <auto-button variant="flat" @click="goUp()"> 返回 </auto-button>
       <auto-button
-        variant="elevated"
+        variant="flat"
         @click="getCardDlg = true"
         :disabled="player?.status !== 'normal'"
       >
         卡牌
       </auto-button>
       <auto-button
-        variant="elevated"
+        variant="flat"
         :disabled="
           player?.selected.area !== 'present' || player?.status !== 'normal'
         "
@@ -186,7 +183,7 @@ function doImport() {
         单位
       </auto-button>
       <auto-button
-        variant="elevated"
+        variant="flat"
         :disabled="player?.status !== 'normal'"
         @click="
           client.autoPost({
@@ -197,52 +194,54 @@ function doImport() {
       >
         资源
       </auto-button>
+      <auto-button
+        variant="flat"
+        class="mt-auto"
+        @click="browserStore.toggleFullScreen()"
+      >
+        {{ browserStore.isFullScreen ? '窗口' : '全屏' }}
+      </auto-button>
     </div>
     <div class="d-flex flex-column">
       <auto-button
-        variant="elevated"
+        variant="flat"
         :disabled="!saveState.canUndo"
         @click="wrapper.undo()"
       >
         撤销
       </auto-button>
       <auto-button
-        variant="elevated"
+        variant="flat"
         :disabled="!saveState.canRedo"
         @click="wrapper.redo()"
       >
         重做
       </auto-button>
-      <auto-button
-        variant="elevated"
-        @click="saveStore.SaveStorage(wrapper.save)"
-      >
+      <auto-button variant="flat" @click="saveStore.SaveStorage(wrapper.save)">
         保存
       </auto-button>
       <auto-button
-        variant="elevated"
+        variant="flat"
         :disabled="!saveStore.save"
         @click="saveStore.save ? wrapper.load(saveStore.save) : void 0"
       >
         读取
       </auto-button>
       <auto-button
-        variant="elevated"
+        variant="flat"
         :disabled="!saveStore.save"
         @click="saveStore.CleanStorage()"
       >
         清除
       </auto-button>
       <auto-button
-        variant="elevated"
+        variant="flat"
         :disabled="!saveStore.save"
         @click="saveStore.Download()"
       >
         导出
       </auto-button>
-      <auto-button variant="elevated" @click="importDlg = true">
-        导入
-      </auto-button>
+      <auto-button variant="flat" @click="importDlg = true"> 导入 </auto-button>
     </div>
   </game-instance-vue>
 

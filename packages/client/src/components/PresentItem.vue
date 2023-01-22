@@ -2,7 +2,7 @@
 import RaceIcon from './RaceIcon.vue'
 import AutoButton from './AutoButton.vue'
 import AutoSpan from './AutoSpan.vue'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import type { GameState, Client, GameArea } from '@sctavern/emulator'
 import type { UnitKey } from '@sctavern/data'
 import { useBrowserStore } from '@/stores/browser'
@@ -69,7 +69,7 @@ const units = computed(() => buildUnit(item.value?.card?.units || []))
     <template v-if="item">
       <template v-if="item.card">
         <v-dialog v-model="infoDlg" class="w-75">
-          <v-card class="d-flex flex-row InfoCard pa-2 justify-space-between">
+          <v-card class="d-flex InfoCard pa-2 justify-space-between">
             <div class="d-flex flex-column DescCol overflow-y-auto">
               <span class="Label">
                 {{ item.card.name }}
