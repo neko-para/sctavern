@@ -11,6 +11,7 @@ import {
   AllProphesy,
   ProphesyData,
   ProphesyKey,
+  UnitData,
 } from '@sctavern/data'
 import { CardInstance } from './card'
 import { Dispatch } from './dispatch'
@@ -110,8 +111,15 @@ const playerBind: GenericListener<PlayerInstance> = {
                 }
               }
             } else if (result.type === 'prophesy') {
+              if (
+                result.prophesy.unique &&
+                this.prophesy.includes(result.prophesy.name)
+              ) {
+                return
+              }
               const p = ProphesyTable[result.prophesy.name]
               p.init.call(this)
+              this.prophesy.push(result.prophesy.name)
             }
           }
         }
@@ -165,7 +173,7 @@ const playerBind: GenericListener<PlayerInstance> = {
             }
             break
         }
-        this.mineral -= this.get_buy_cost(action, ck, place, 'real')
+        this.do_buy(ck, action, place)
         switch (action) {
           case 'enter':
             this.require_enter(ck)
@@ -383,6 +391,18 @@ const playerBind: GenericListener<PlayerInstance> = {
               prophesy,
             }))
         )
+      } else if (round === 8) {
+        this.push_discover(
+          this.$ref$Game.lcg
+            .shuffle(
+              AllProphesy.map(p => ProphesyData[p]).filter(p => p.type === 1)
+            )
+            .slice(0, 4)
+            .map(prophesy => ({
+              type: 'prophesy',
+              prophesy,
+            }))
+        )
       }
     }
   },
@@ -448,6 +468,10 @@ export class PlayerInstance {
 
       ZergEggCount: 1,
       ZergEggCard: '虫卵',
+      ZergEggRestrictBiological: true,
+      ZergIncubateRestrictBiological: true,
+
+      BuyResource: 'mineral',
 
       StoreCount: [0, 3, 4, 4, 5, 5, 6],
       TavernUpgrade: [0, 5, 7, 8, 9, 11, 0],
@@ -665,7 +689,7 @@ export class PlayerInstance {
       enhance: true,
     }
 
-    this.role_impl().init.call(this.role)
+    this.role_impl().init.call(this.role, this)
   }
 
   query_selected_present() {
@@ -710,7 +734,27 @@ export class PlayerInstance {
   }
 
   can_buy(card: CardKey, action: 'enter' | 'combine' | 'stage', place: number) {
-    return this.mineral >= this.get_buy_cost(action, card, place)
+    const cost = this.get_buy_cost(action, card, place)
+    switch (this.config.BuyResource) {
+      case 'mineral':
+        return this.mineral >= cost
+      case 'life':
+        return this.life > cost
+    }
+  }
+
+  do_buy(card: CardKey, action: 'enter' | 'combine' | 'stage', place: number) {
+    const cost = this.get_buy_cost(action, card, place, 'real')
+    switch (this.config.BuyResource) {
+      case 'mineral':
+        this.obtain_resource({
+          mineral: -cost,
+        })
+        break
+      case 'life':
+        this.life -= cost
+        break
+    }
   }
 
   can_enter(card: CardKey) {
@@ -986,6 +1030,9 @@ export class PlayerInstance {
   }
 
   incubate(from: CardInstance, units: UnitKey[]) {
+    if (this.config.ZergIncubateRestrictBiological) {
+      units = units.filter(u => UnitData[u].tag.biological)
+    }
     if (units.length === 0) {
       return
     }

@@ -1,4 +1,5 @@
-import { RoleKey } from '@sctavern/data'
+import { CardData, RoleKey } from '@sctavern/data'
+import { listenerCount } from 'process'
 import { RoleImpl } from '../types'
 
 export function CreateRoleTable() {
@@ -61,6 +62,57 @@ export function CreateRoleTable() {
       },
     },
     狂热者: {},
+    陆战队员: {
+      init() {
+        this.enable = true
+      },
+      listener: {
+        'round-enter'() {
+          this.enable = true
+        },
+      },
+      ability(player) {
+        if (!this.enable) {
+          return
+        }
+        if (player.mineral < 2) {
+          return
+        }
+        player.obtain_resource({
+          mineral: -2,
+        })
+        if (this.attrib.mode === 2) {
+          player.$ref$Game.pool
+            .discover(c => c.level === Math.max(1, player.level - 1), 2)
+            ?.forEach(c => player.stage(c.name))
+        } else {
+          player.push_discover(
+            player.$ref$Game.pool
+              .discover(c => c.level === Math.max(1, player.level - 1), 3)
+              ?.map(card => ({
+                type: 'card',
+                card,
+              }))
+          )
+        }
+        if (this.attrib.mode !== 1) {
+          this.enable = false
+        }
+      },
+    },
+    收割者: {
+      init(player) {
+        player.config.AlwaysInsert = true
+      },
+      listener: {
+        'get-buy-cost'(m) {
+          const card = CardData[m.cardt]
+          if (card.attr.insert) {
+            m.cost = Math.min(this.attrib.mode === 1 ? 1 : 2, m.cost)
+          }
+        },
+      },
+    },
   }
   for (const r in res) {
     const impl = res[r as keyof typeof res] as Partial<RoleImpl>

@@ -101,7 +101,11 @@ export default function (/* config */): Record<string, Descriptor> {
       ci =>
         ci.units
           .map(u => UnitData[u])
-          .filter(u => isNormal(u) && u.tag.biological)
+          .filter(
+            ci.$ref$Player.config.ZergEggRestrictBiological
+              ? u => isNormal(u) && u.tag.biological
+              : u => isNormal(u)
+          )
           .map(u => u.name),
       ci => {
         return (

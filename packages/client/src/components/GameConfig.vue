@@ -81,7 +81,7 @@ function genPack(): Pack[] {
 }
 
 const AllRoleChoice = computed<RoleKey[]>(() => {
-  return ['白板', '执政官', '狂热者']
+  return ['白板', '执政官', '狂热者', '陆战队员', '收割者']
 })
 
 function genRole(): RoleKey[] {

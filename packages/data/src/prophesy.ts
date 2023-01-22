@@ -5,6 +5,10 @@ export type ProphesyKey =
   | '无限融合'
   | '狂热冲锋'
   | '能量提速'
+  | '自动装填'
+  | '紧急征召'
+  | '收割行动'
+  | '强化药剂'
   | '地下交易'
   | '补给空投'
   | '挖宝奇兵'
@@ -14,12 +18,28 @@ export type ProphesyKey =
   | '人海战术'
   | '时间停止'
   | '暗影刷新'
+  | '过量补给'
+  | '终极发现'
+  | '精英学院'
+  | '强化升级'
+  | '水晶聚能'
+  | '研发计划'
+  | '基因改造'
+  | '净化数据网'
+  | '机械感染'
+  | '虚空风暴'
+  | '能量预兆'
+  | '鲜血仪式'
 
 export const AllProphesy: ProphesyKey[] = [
   '混沌洪流',
   '无限融合',
   '狂热冲锋',
   '能量提速',
+  '自动装填',
+  '紧急征召',
+  '收割行动',
+  '强化药剂',
   '地下交易',
   '补给空投',
   '挖宝奇兵',
@@ -29,6 +49,18 @@ export const AllProphesy: ProphesyKey[] = [
   '人海战术',
   '时间停止',
   '暗影刷新',
+  '过量补给',
+  '终极发现',
+  '精英学院',
+  '强化升级',
+  '水晶聚能',
+  '研发计划',
+  '基因改造',
+  '净化数据网',
+  '机械感染',
+  '虚空风暴',
+  '能量预兆',
+  '鲜血仪式',
 ]
 
 export const ProphesyData: Record<ProphesyKey, Prophesy> = {
@@ -55,6 +87,30 @@ export const ProphesyData: Record<ProphesyKey, Prophesy> = {
     pinyin: 'nlts',
     type: '狂热者',
     desc: '每拥有1水晶塔, 战斗开始时所有单位额外获得2%星空加速',
+  },
+  自动装填: {
+    name: '自动装填',
+    pinyin: 'zdzt',
+    type: '陆战队员',
+    desc: '技能不再限制使用次数',
+  },
+  紧急征召: {
+    name: '紧急征召',
+    pinyin: 'jjzz',
+    type: '陆战队员',
+    desc: '技能会获得两张低于酒馆等级1级的卡牌',
+  },
+  收割行动: {
+    name: '收割行动',
+    pinyin: 'sgxd',
+    type: '收割者',
+    desc: '定点部署卡牌现在只需要1晶体矿',
+  },
+  强化药剂: {
+    name: '强化药剂',
+    pinyin: 'qhyj',
+    type: '收割者',
+    desc: '每次战斗胜利时, 所有生物单位获得12%攻速提升(可以叠加)',
   },
   地下交易: {
     name: '地下交易',
@@ -109,5 +165,82 @@ export const ProphesyData: Record<ProphesyKey, Prophesy> = {
     pinyin: 'aysx',
     type: 0,
     desc: '刷新酒馆, 陈列当前酒馆等级+1星级的卡牌',
+  },
+  过量补给: {
+    name: '过量补给',
+    pinyin: 'glbj',
+    type: 1,
+    desc: '获得随机晶体矿补给(最多20)',
+  },
+  终极发现: {
+    name: '终极发现',
+    pinyin: 'zjfx',
+    type: 1,
+    desc: '发现一张6星卡牌',
+  },
+  精英学院: {
+    name: '精英学院',
+    pinyin: 'jyxy',
+    type: 1,
+    desc: '每回合结束时, 将场上所有单位精英化',
+  },
+  强化升级: {
+    name: '强化升级',
+    pinyin: 'qhsj',
+    type: 1,
+    desc: '立即升级酒馆等级至6',
+  },
+  水晶聚能: {
+    name: '水晶聚能',
+    pinyin: 'sjjn',
+    type: 1,
+    desc: '本局游戏中, 若出售卡牌内拥有水晶塔或虚空水晶塔, 额外获得1晶体矿(无法叠加)',
+    unique: true,
+  },
+  研发计划: {
+    name: '研发计划',
+    pinyin: 'yfjh',
+    type: 1,
+    desc: '本局游戏中, 每进场4张卡牌, 发现一张人族卡牌(无法叠加)',
+    unique: true,
+  },
+  基因改造: {
+    name: '基因改造',
+    pinyin: 'jygz',
+    type: 1,
+    desc: '本局游戏中, 虫卵牌孵化时额外获得6晶体矿(无法叠加)',
+    unique: true,
+  },
+  净化数据网: {
+    name: '净化数据网',
+    pinyin: 'jhsjw',
+    type: 1,
+    desc: '下回合开始时, 将7号位非金色卡牌变为金色并获得三连效果',
+  },
+  机械感染: {
+    name: '机械感染',
+    pinyin: 'jxgr',
+    type: 1,
+    desc: '机械单位可以被孵化',
+  },
+  虚空风暴: {
+    name: '虚空风暴',
+    pinyin: 'xkfb',
+    type: 1,
+    desc: '每刷新3次酒馆, 具有虚空投影的1-5星卡牌复制卡牌内1个随机单位(无法叠加)',
+    unique: true,
+  },
+  能量预兆: {
+    name: '能量预兆',
+    pinyin: 'nlyz',
+    type: 1,
+    desc: '战斗阶段召唤随机单位加入战斗(无法叠加)',
+    unique: true,
+  },
+  鲜血仪式: {
+    name: '鲜血仪式',
+    pinyin: 'xxys',
+    type: 1,
+    desc: '本回合, 购买卡牌不再消耗晶体矿, 改为消耗生命值',
   },
 }

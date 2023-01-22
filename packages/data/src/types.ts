@@ -115,4 +115,5 @@ export interface Prophesy {
   pinyin: string
   type: RoleKey | 0 | 1 | 2
   desc: string
+  unique?: true
 }

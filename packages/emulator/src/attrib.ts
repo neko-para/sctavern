@@ -19,6 +19,7 @@ export class Attribute {
 
   alter(key: string, dlt: number) {
     this.value[key] = this.get(key) + dlt
+    return this.value[key]
   }
 
   load(attrib: Attribute, ignore: string[]) {

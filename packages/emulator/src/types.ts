@@ -78,6 +78,10 @@ export interface PlayerConfig {
 
   ZergEggCount: number
   ZergEggCard: CardKey
+  ZergEggRestrictBiological: boolean
+  ZergIncubateRestrictBiological: boolean
+
+  BuyResource: 'mineral' | 'life'
 
   StoreCount: number[]
   TavernUpgrade: number[]
@@ -218,7 +222,7 @@ export interface RoleInstance {
 }
 
 export interface RoleImpl {
-  init: (this: RoleInstance) => void
+  init: (this: RoleInstance, player: PlayerInstance) => void
 
   listener: SpecificListener<RoleInstance, PlayerInstance>
 

@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import RootMenu from '@/views/RootMenu.vue'
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -6,7 +7,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'index',
-      component: () => import('@/views/RootMenu.vue'),
+      component: RootMenu,
     },
     {
       path: '/local/config',
