@@ -6,6 +6,7 @@ export type RoleKey =
   | '狂热者'
   | '陆战队员'
   | '收割者'
+  | '幽灵'
   | '感染虫'
   | 'SCV'
   | '阿巴瑟'
@@ -131,6 +132,12 @@ export const RoleData: Record<RoleKey, Role> = {
     pinyin: 'sgz',
     ability: '精准落地',
     desc: '你进场的所有卡牌都将定点部署, 而购买自带定点部署的卡牌只需要2晶体矿',
+  },
+  幽灵: {
+    name: '幽灵',
+    pinyin: 'yl',
+    ability: '幽灵行动',
+    desc: '可以切换为任意一种模式\n1隐身: 战斗阶段, 你的所有单位获得暗影战士升级\n2超级EMP: 战斗阶段, 你和敌方所有单位失去所有升级',
   },
   感染虫: {
     name: '感染虫',

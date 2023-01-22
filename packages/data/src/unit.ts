@@ -186,6 +186,9 @@ export type UnitKey =
   | '原始守卫'
   | '毒裂兽'
   | '王兽'
+  | 'SCV'
+  | '掠食者'
+  | '幽灵'
 
 export const AllUnit: UnitKey[] = [
   '塔达林母舰',
@@ -373,6 +376,9 @@ export const AllUnit: UnitKey[] = [
   '原始守卫',
   '毒裂兽',
   '王兽',
+  'SCV',
+  '掠食者',
+  '幽灵',
 ]
 
 export const UnitData: Record<UnitKey, Unit> = {
@@ -2783,5 +2789,42 @@ export const UnitData: Record<UnitKey, Unit> = {
       heroic: true,
     },
     health: 2400,
+  },
+  SCV: {
+    name: 'SCV',
+    pinyin: 'scv',
+    race: 'T',
+    value: 50,
+    type: 'normal',
+    tag: {
+      light: true,
+      biological: true,
+      mechanical: true,
+    },
+    health: 45,
+  },
+  掠食者: {
+    name: '掠食者',
+    pinyin: 'lsz',
+    race: 'T',
+    value: 120,
+    type: 'normal',
+    tag: {
+      light: true,
+      mechanical: true,
+    },
+    health: 135,
+  },
+  幽灵: {
+    name: '幽灵',
+    pinyin: 'yl',
+    race: 'T',
+    value: 275,
+    type: 'normal',
+    tag: {
+      light: true,
+      psionic: true,
+    },
+    health: 100,
   },
 }

@@ -6,9 +6,6 @@ import HandItem from './HandItem.vue'
 import PresentItem from './PresentItem.vue'
 import DiscoverItem from './DiscoverItem.vue'
 import type { GameState, Client } from '@sctavern/emulator'
-import { useBrowserStore } from '@/stores/browser'
-
-const browserStore = useBrowserStore()
 
 const props = defineProps<{
   state: GameState
@@ -19,14 +16,20 @@ const pl = computed(() => {
   return props.state.player[props.client.pos]
 })
 
-const tr = computed(() => ({
-  upgrade: '升级',
-  refresh: '刷新',
-  lock: '锁定',
-  unlock: '解锁',
-  finish: '结束',
-  ability: pl.value?.role.ability || '魂姿',
-}))
+const tr = computed(() => {
+  const r = pl.value?.role
+
+  return {
+    upgrade: '升级',
+    refresh: '刷新',
+    lock: '锁定',
+    unlock: '解锁',
+    finish: '结束',
+    ability: r
+      ? r.ability + (r.progress ? ` ${r.progress.cur} / ${r.progress.max}` : '')
+      : '魂姿',
+  }
+})
 
 const showMenu = ref(true)
 </script>

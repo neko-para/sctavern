@@ -117,3 +117,5 @@ export interface Prophesy {
   desc: string
   unique?: true
 }
+
+export type Difficulty = '普通' | '困难' | '残酷' | '折磨'

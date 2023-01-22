@@ -113,6 +113,132 @@ export function CreateRoleTable() {
         },
       },
     },
+    幽灵: {
+      init() {
+        this.progress.cur = 1
+        this.progress.max = 2
+      },
+      ability(player) {
+        if (this.attrib.mode !== 1) {
+          this.progress.cur = 3 - this.progress.cur
+        } else {
+          if (player.mineral < 2) {
+            return
+          }
+          // TODO
+        }
+      },
+    },
+    感染虫: {
+      init() {
+        this.enable = true
+      },
+      listener: {
+        'round-enter'() {
+          this.enable = true
+        },
+      },
+      ability(player) {
+        if (!this.enable) {
+          return
+        }
+        const ci = player.query_selected_present()
+        if (!ci) {
+          return
+        }
+        if (this.attrib.mode !== 1 && ci.race !== 'T') {
+          return
+        }
+        ci.filter(u => u === '反应堆')
+        ci.name = `被感染的${ci.name}`
+        ci.color = 'amber'
+        ci.descs = [this.attrib.mode === 2 ? '被感染的3' : '被感染的']
+        this.enable = false
+      },
+    },
+    SCV: {
+      init() {
+        this.enable = true
+      },
+      listener: {
+        'round-start'() {
+          if (this.attrib.mode === 1) {
+            this.progress.cur = 3
+          }
+          this.enable = true
+        },
+      },
+      ability(player) {
+        if (!this.enable) {
+          return
+        }
+        const ci = player.query_selected_present()
+        if (
+          !ci ||
+          ci.race !== 'T' ||
+          [false, '高级科技实验室'].includes(ci.infr())
+        ) {
+          return
+        }
+        ci.switch_infr()
+        if (this.attrib.mode === 1) {
+          this.progress.cur -= 1
+          this.enable = this.progress.cur > 0
+        } else {
+          this.enable = false
+          if (this.attrib.mode === 2) {
+            if (player.mineral >= 1) {
+              player.obtain_resource({
+                mineral: -1,
+              })
+              this.enable = true
+            }
+          }
+        }
+      },
+    },
+    阿巴瑟: {
+      init() {
+        this.enable = true
+      },
+      listener: {
+        'round-start'() {
+          this.enable = true
+        },
+      },
+      ability(player) {
+        if (!this.enable) {
+          return
+        }
+        const ci = player.query_selected_present()
+        if (!ci) {
+          return
+        }
+        if (this.attrib.mode !== 2) {
+          if (player.mineral < 3) {
+            return
+          } else {
+            player.obtain_resource({
+              mineral: -3,
+            })
+          }
+        }
+        if (ci.occupy.length > 0 && this.attrib.mode === 1) {
+          player.stage(ci.occupy[0])
+        }
+        const lv = Math.min(6, ci.level + 1)
+        player.destroy(ci)
+        player.push_discover(
+          player.$ref$Game.pool
+            .discover(c => c.level === lv, 3)
+            ?.map(card => ({
+              type: 'card',
+              card,
+            }))
+        )
+        this.enable = false
+      },
+    },
   }
   for (const r in res) {
     const impl = res[r as keyof typeof res] as Partial<RoleImpl>

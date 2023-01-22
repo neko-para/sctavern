@@ -57,6 +57,49 @@ export function CreateProphesyTable() {
         this.role.attrib.mode = 2
       },
     },
+    幽灵报道: {
+      init() {
+        this.role.attrib.mode = 1
+      },
+    },
+    暗影猎杀: {
+      init() {
+        this.role.attrib.mode = 2
+      },
+    },
+    寄生细胞: {
+      init() {
+        this.role.attrib.mode = 1
+      },
+    },
+    双生虫卵: {
+      init() {
+        this.role.attrib.mode = 2
+      },
+    },
+    备用钻头: {
+      init() {
+        this.role.attrib.mode = 1
+        this.role.progress.cur = 3
+        this.role.progress.max = 3
+      },
+    },
+    自动修理: {
+      init() {
+        this.role.attrib.mode = 2
+      },
+    },
+    进化分支: {
+      init() {
+        this.role.attrib.mode = 1
+      },
+    },
+    改造突变: {
+      init() {
+        this.role.attrib.mode = 2
+      },
+    },
+
     地下交易: {
       init() {
         this.obtain_resource({
@@ -131,6 +174,7 @@ export function CreateProphesyTable() {
         )
       },
     },
+
     过量补给: {
       init() {
         this.obtain_resource({
@@ -263,6 +307,7 @@ export function CreateProphesyTable() {
         },
       },
     },
+
     灵能特训: {
       init() {
         this.attrib.set('灵能特训', 10)

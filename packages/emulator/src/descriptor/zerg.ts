@@ -117,17 +117,6 @@ export default function (/* config */): Record<string, Descriptor> {
         ci.$ref$Player.destroy(ci)
       }
     ),
-    '虫卵<跳虫>0': {
-      listener: {
-        'post-sell'() {
-          const eggs = this.$ref$Player.all().filter(c => c.name === '虫卵')
-          if (eggs.length > 1) {
-            // 最后一个是出售的卡
-            eggs[0].obtain_unit(this.units)
-          }
-        },
-      },
-    },
     虫群先锋0: {
       listener: {
         'round-end'() {
