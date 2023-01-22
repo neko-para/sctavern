@@ -30,6 +30,14 @@ export type ProphesyKey =
   | '虚空风暴'
   | '能量预兆'
   | '鲜血仪式'
+  | '灵能特训'
+  | '作战资源方案'
+  | '达拉姆的荣耀'
+  | '废弃试验品'
+  | '战术装备'
+  | '死亡阴影'
+  | '相位提速'
+  | '点石成金'
 
 export const AllProphesy: ProphesyKey[] = [
   '混沌洪流',
@@ -61,9 +69,21 @@ export const AllProphesy: ProphesyKey[] = [
   '虚空风暴',
   '能量预兆',
   '鲜血仪式',
+  '灵能特训',
+  '作战资源方案',
+  '达拉姆的荣耀',
+  '废弃试验品',
+  '战术装备',
+  '死亡阴影',
+  '相位提速',
+  '点石成金',
 ]
 
-export const ProphesyData: Record<ProphesyKey, Prophesy> = {
+export const ProphesyData: {
+  [key in ProphesyKey]: Prophesy & {
+    name: key
+  }
+} = {
   混沌洪流: {
     name: '混沌洪流',
     pinyin: 'hdhl',
@@ -242,5 +262,53 @@ export const ProphesyData: Record<ProphesyKey, Prophesy> = {
     pinyin: 'xxys',
     type: 1,
     desc: '本回合, 购买卡牌不再消耗晶体矿, 改为消耗生命值',
+  },
+  灵能特训: {
+    name: '灵能特训',
+    pinyin: 'lntx',
+    type: 2,
+    desc: '每回合获得10次免费刷新(只在当前回合生效)',
+  },
+  作战资源方案: {
+    name: '作战资源方案',
+    pinyin: 'zzzyfa',
+    type: 2,
+    desc: '本局游戏中, 每张卡的费用都变为2晶体矿',
+  },
+  达拉姆的荣耀: {
+    name: '达拉姆的荣耀',
+    pinyin: 'dlmdry',
+    type: 2,
+    desc: '为所有卡牌添加2阿塔尼斯并触发2次集结',
+  },
+  废弃试验品: {
+    name: '废弃试验品',
+    pinyin: 'fqsyp',
+    type: 2,
+    desc: '发现两个中级预言',
+  },
+  战术装备: {
+    name: '战术装备',
+    pinyin: 'zszb',
+    type: 2,
+    desc: '卡牌升级上限增加3, 并为场上所有卡牌添加3个随机升级',
+  },
+  死亡阴影: {
+    name: '死亡阴影',
+    pinyin: 'swyy',
+    type: 2,
+    desc: '为所有卡牌添加虚空投影和虚空能量',
+  },
+  相位提速: {
+    name: '相位提速',
+    pinyin: 'xwts',
+    type: 2,
+    desc: '出售的卡牌每有一个单位, 当前回合战斗开始时所有单位都获得1%攻速提升(最高100%)',
+  },
+  点石成金: {
+    name: '点石成金',
+    pinyin: 'dscj',
+    type: 2,
+    desc: '将所有非金色卡牌变为金色, 并获得三连效果与金光闪闪升级',
   },
 }

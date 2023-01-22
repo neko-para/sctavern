@@ -1,6 +1,14 @@
-import { canElite, elited } from '@sctavern/data'
-import { ProphesyKey } from 'packages/data/src/prophesy'
+import {
+  canElite,
+  elited,
+  AllProphesy,
+  type ProphesyKey,
+  ProphesyData,
+  AllUpgrade,
+  UpgradeKey,
+} from '@sctavern/data'
 import { ProphesyImpl } from '../types'
+import { rep } from '../utils'
 
 export function CreateProphesyTable() {
   const res: {
@@ -253,6 +261,98 @@ export function CreateProphesyTable() {
             this.config.BuyResource = 'mineral'
           }
         },
+      },
+    },
+    灵能特训: {
+      init() {
+        this.attrib.set('灵能特训', 10)
+      },
+      listener: {
+        'round-enter'() {
+          this.attrib.set('灵能特训', 10)
+        },
+        'get-refresh-cost'(m) {
+          if (m.cost > 0 && this.attrib.get('灵能特训')) {
+            m.cost = 0
+            if (m.time === 'real') {
+              this.attrib.alter('灵能特训', -1)
+            }
+          }
+        },
+      },
+    },
+    作战资源方案: {
+      listener: {
+        'get-buy-cost'(m) {
+          m.cost = Math.min(2, m.cost)
+        },
+      },
+    },
+    达拉姆的荣耀: {
+      init() {
+        this.all().forEach(ci => {
+          ci.obtain_unit(rep('阿塔尼斯', 2))
+          ci.regroup(-1)
+          ci.regroup(-1)
+        })
+      },
+    },
+    废弃试验品: {
+      init() {
+        const ps = AllProphesy.map(p => ProphesyData[p]).filter(
+          p => p.type === 1
+        )
+        this.push_discover(
+          this.$ref$Game.lcg
+            .shuffle(ps)
+            .slice(0, 4)
+            .map(prophesy => ({
+              type: 'prophesy',
+              prophesy,
+            }))
+        )
+
+        this.push_discover(
+          this.$ref$Game.lcg
+            .shuffle(ps)
+            .slice(0, 4)
+            .map(prophesy => ({
+              type: 'prophesy',
+              prophesy,
+            }))
+        )
+      },
+    },
+    战术装备: {
+      init() {
+        this.config.MaxUpgradePerCard += 3
+        this.all().forEach(ci => {
+          ci.config.MaxUpgrade += 3
+          for (let i = 0; i < 3; i++) {
+            ci.obtain_upgrade(
+              this.$ref$Game.lcg.one_of(AllUpgrade) as UpgradeKey
+            )
+          }
+        })
+      },
+    },
+    死亡阴影: {
+      init() {
+        this.all().forEach(ci => {
+          ci.set_void()
+          ci.obtain_upgrade('虚空能量')
+        })
+      },
+    },
+    相位提速: {},
+    点石成金: {
+      init() {
+        this.all()
+          .filter(ci => ci.color !== 'gold')
+          .forEach(ci => {
+            ci.color = 'gold'
+            ci.obtain_upgrade('金光闪闪')
+          })
       },
     },
   }
