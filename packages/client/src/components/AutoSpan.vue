@@ -22,6 +22,11 @@ defineProps<{
 .ASRow {
   margin-bottom: 2px;
 }
+@media (max-height: 599px) {
+  .ASRow {
+    margin-bottom: 0px;
+  }
+}
 .ASRow:last-child {
   margin-bottom: 0px;
 }

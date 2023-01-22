@@ -40,7 +40,7 @@ span {
   }
   .PresCard {
     height: 450px;
-    width: 250px;
+    width: 255px;
   }
   .InfoCard {
     height: 500px;
@@ -53,12 +53,18 @@ span {
     width: 100px;
   }
   .PresCard {
-    height: 160px;
-    width: 90px;
+    height: 150px;
+    width: 85px;
   }
   .InfoCard {
     height: 200px;
   }
+}
+.PresCard {
+  margin-right: 6px;
+}
+.PresCard:last-child {
+  margin-right: 0px;
 }
 
 .selected {

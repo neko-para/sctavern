@@ -56,11 +56,22 @@ const showMenu = ref(true)
             升级 {{ pl?.upgrade_cost }} 晶矿 {{ pl?.mineral }} /
             {{ pl?.mineral_max }} 瓦斯 {{ pl?.gas }} / {{ pl?.gas_max }}
           </span>
-          <div class="d-flex mt-auto">
+          <div class="d-flex">
             <auto-button
               variant="elevated"
-              v-for="(a, i) in pl?.action || []"
+              v-for="(a, i) in pl?.action.slice(0, -1) || []"
               :key="`GA-${i}`"
+              :disabled="!a.enable"
+              @click="client.post(a.msg)"
+            >
+              {{ tr[a.action] }}
+            </auto-button>
+          </div>
+          <div class="d-flex mt-1">
+            <auto-button
+              variant="elevated"
+              v-for="(a, i) in pl?.action.slice(-1) || []"
+              :key="`GA-/${i}`"
               :disabled="!a.enable"
               @click="client.post(a.msg)"
             >
@@ -92,9 +103,9 @@ const showMenu = ref(true)
         </div>
         <div class="d-flex flex-column">
           <div class="StoreContainer">
-            <div>
+            <div class="mt-1">
               <store-item
-                class="ml-2 mt-1"
+                class="ml-2"
                 v-for="(s, i) in pl?.store.slice(0, 3) || []"
                 :key="`Store${i}`"
                 :state="state"
@@ -102,11 +113,11 @@ const showMenu = ref(true)
                 :place="i"
               ></store-item>
             </div>
-            <div v-if="(pl?.store.length || 0) > 3">
+            <div v-if="(pl?.store.length || 0) > 3" class="mt-1">
               <store-item
-                class="ml-2 mt-1"
+                class="ml-2"
                 v-for="(s, i) in pl?.store.slice(3) || []"
-                :key="`Store${i}`"
+                :key="`Store${i + 3}`"
                 :state="state"
                 :client="client"
                 :place="i + 3"
@@ -115,28 +126,41 @@ const showMenu = ref(true)
           </div>
           <div
             v-if="pl?.status === 'discover' && pl.discover"
-            class="d-flex mt-2"
+            class="d-flex mt-1 DiscoverContainer"
           >
-            <discover-item
-              class="ml-2"
-              v-for="(d, i) in pl?.discover?.item || []"
-              :key="`Discover${i}`"
-              :state="state"
-              :client="client"
-              :place="i"
-            ></discover-item>
-            <auto-button
-              v-if="pl?.discover?.extra"
-              @click="
-                client.autoPost({
-                  msg: '$choice',
-                  category: 'discover',
-                  place: -1,
-                })
-              "
-            >
-              {{ pl?.discover?.extra }}
-            </auto-button>
+            <div class="mt-1">
+              <discover-item
+                class="ml-2"
+                v-for="(d, i) in pl?.discover?.item.slice(0, 3) || []"
+                :key="`Discover${i}`"
+                :state="state"
+                :client="client"
+                :place="i"
+              ></discover-item>
+            </div>
+            <div v-if="pl?.discover?.item.length > 3" class="mt-1">
+              <discover-item
+                class="ml-2"
+                v-for="(d, i) in pl?.discover?.item.slice(3) || []"
+                :key="`Discover${i + 3}`"
+                :state="state"
+                :client="client"
+                :place="i + 3"
+              ></discover-item>
+              <auto-button
+                class="ml-2"
+                v-if="pl?.discover?.extra"
+                @click="
+                  client.autoPost({
+                    msg: '$choice',
+                    category: 'discover',
+                    place: -1,
+                  })
+                "
+              >
+                {{ pl?.discover?.extra }}
+              </auto-button>
+            </div>
           </div>
         </div>
       </div>
@@ -155,11 +179,13 @@ const showMenu = ref(true)
 </template>
 
 <style>
-.StoreContainer {
+.StoreContainer,
+.DiscoverContainer {
   display: flex;
   flex-direction: column;
 }
-.StoreContainer > div {
+.StoreContainer > div,
+.DiscoverContainer > div {
   display: flex;
 }
 .HandContainer {
@@ -173,7 +199,8 @@ const showMenu = ref(true)
   display: flex;
 }
 @media (min-height: 600px) {
-  .StoreContainer {
+  .StoreContainer,
+  .DiscoverContainer {
     flex-direction: row;
   }
 }
@@ -183,8 +210,10 @@ const showMenu = ref(true)
   height: 100%;
   display: flex;
   justify-content: space-around;
+  background-color: wheat;
 }
 .ControlPanel {
+  z-index: 1;
   position: absolute;
   right: 0;
   top: 0;
