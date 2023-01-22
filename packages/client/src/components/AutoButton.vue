@@ -26,10 +26,4 @@ withDefaults(
   </v-btn>
 </template>
 
-<style>
-@media (min-height: 600px) {
-  .auto-button > span ::after {
-    /* content: attr(_acc); */
-  }
-}
-</style>
+<style></style>

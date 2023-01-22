@@ -177,7 +177,6 @@ const showMenu = ref(true)
 .StoreContainer,
 .DiscoverContainer {
   display: flex;
-  flex-direction: column;
 }
 .StoreContainer > div,
 .DiscoverContainer > div {
@@ -193,10 +192,10 @@ const showMenu = ref(true)
 .PresentContainer {
   display: flex;
 }
-@media (min-height: 600px) {
+@media (max-height: 899px) or (max-width: 1899px) {
   .StoreContainer,
   .DiscoverContainer {
-    flex-direction: row;
+    flex-direction: column;
   }
 }
 .ControlPanel {

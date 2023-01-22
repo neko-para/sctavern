@@ -22,7 +22,7 @@ defineProps<{
 .ASRow {
   margin-bottom: 2px;
 }
-@media (max-height: 599px) {
+@media (max-height: 899px) {
   .ASRow {
     margin-bottom: 0px;
   }

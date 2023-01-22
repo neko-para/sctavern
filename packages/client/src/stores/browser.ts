@@ -19,7 +19,7 @@ export const useBrowserStore = defineStore('browser', () => {
   }
 
   function init() {
-    const mm = matchMedia('(max-height: 599px)')
+    const mm = matchMedia('(max-height: 899px) or (max-width: 1899px)')
     setMobile(mm.matches)
     mm.addEventListener('change', () => {
       setMobile(mm.matches)

@@ -20,7 +20,7 @@ defineProps<{
   display: flex;
 }
 
-@media (max-height: 599px) {
+@media (max-height: 899px) or (max-width: 1899px) {
   .raceIconRoot {
     width: 18px;
     height: 18px;

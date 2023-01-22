@@ -23,7 +23,7 @@ Init()
   display: none;
 }
 
-@media (max-width: 600px) and (orientation: portrait) {
+@media (orientation: portrait) {
   #root {
     display: none;
   }
