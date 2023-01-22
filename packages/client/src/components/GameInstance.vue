@@ -78,7 +78,7 @@ const tr = computed(() => ({
         <div class="StoreContainer">
           <div>
             <store-item
-              class="ml-4 mt-1"
+              class="ml-2 mt-1"
               v-for="(s, i) in pl?.store.slice(0, 3) || []"
               :key="`Store${i}`"
               :state="state"
@@ -88,7 +88,7 @@ const tr = computed(() => ({
           </div>
           <div v-if="(pl?.store.length || 0) > 3">
             <store-item
-              class="ml-4 mt-1"
+              class="ml-2 mt-1"
               v-for="(s, i) in pl?.store.slice(3) || []"
               :key="`Store${i}`"
               :state="state"
@@ -102,7 +102,7 @@ const tr = computed(() => ({
           class="d-flex mt-2"
         >
           <discover-item
-            class="ml-4"
+            class="ml-2"
             v-for="(d, i) in pl?.discover?.item || []"
             :key="`Discover${i}`"
             :state="state"

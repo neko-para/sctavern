@@ -160,6 +160,8 @@ function doImport() {
   saveStore.Upload(importFile.value[0])
   importDlg.value = false
 }
+
+const showMenu = ref(true)
 </script>
 
 <template>
@@ -263,9 +265,10 @@ function doImport() {
     </v-card>
   </v-dialog>
 
-  <v-card class="Debug d-flex flex-column">
-    <span class="Label mx-auto">菜单</span>
-    <div class="d-flex">
+  <v-card class="ControlPanel d-flex flex-column">
+    <span v-if="!mobileStore.isMobile" class="Label mx-auto">菜单</span>
+    <auto-button v-else @click="showMenu = !showMenu"> 菜单 </auto-button>
+    <div class="d-flex" v-if="showMenu">
       <div class="d-flex flex-column">
         <auto-button variant="elevated" @click="goUp()"> 返回 </auto-button>
         <auto-button
@@ -347,7 +350,7 @@ function doImport() {
   </v-card>
 </template>
 <style>
-.Debug {
+.ControlPanel {
   position: fixed;
   right: 0;
   top: 0;
