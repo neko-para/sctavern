@@ -5,9 +5,9 @@ import AutoSpan from './AutoSpan.vue'
 import { ref, computed } from 'vue'
 import type { GameState, Client, GameArea } from '@sctavern/emulator'
 import type { UnitKey } from '@sctavern/data'
-import { useMobileStore } from '@/stores/mobile'
+import { useBrowserStore } from '@/stores/browser'
 
-const mobileStore = useMobileStore()
+const browserStore = useBrowserStore()
 
 const props = defineProps<{
   state: GameState
@@ -125,7 +125,7 @@ const units = computed(() => buildUnit(item.value?.card?.units || []))
         <auto-span :text="item.card.notes"></auto-span>
         <div class="d-flex flex-column mt-auto">
           <div
-            v-if="!mobileStore.isMobile"
+            v-if="!browserStore.isMobile"
             class="d-flex justify-space-between Info"
           >
             <div class="d-flex flex-column">

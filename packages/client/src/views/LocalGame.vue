@@ -11,9 +11,9 @@ import GameInstanceVue from '@/components/GameInstance.vue'
 import { useSaveStore } from '@/stores/save'
 import { useRouter } from 'vue-router'
 import { AllUnit, CardData, CardPack, UnitData } from '@sctavern/data'
-import { useMobileStore } from '@/stores/mobile'
+import { useBrowserStore } from '@/stores/browser'
 
-const mobileStore = useMobileStore()
+const browserStore = useBrowserStore()
 
 const router = useRouter()
 const props = defineProps<{
@@ -160,13 +160,14 @@ function doImport() {
   saveStore.Upload(importFile.value[0])
   importDlg.value = false
 }
-
-const showMenu = ref(true)
 </script>
 
 <template>
   <game-instance-vue :state="state" :client="client">
     <div class="d-flex flex-column">
+      <auto-button variant="elevated" @click="browserStore.toggleFullScreen()">
+        {{ browserStore.isFullScreen ? '窗口' : '全屏' }}
+      </auto-button>
       <auto-button variant="elevated" @click="goUp()"> 返回 </auto-button>
       <auto-button
         variant="elevated"
@@ -250,7 +251,7 @@ const showMenu = ref(true)
       <v-card-text>
         <v-text-field
           hide-details
-          :density="mobileStore.isMobile ? 'compact' : 'default'"
+          :density="browserStore.isMobile ? 'compact' : 'default'"
           v-model="getCardKey"
           @keyup.enter="
             getCardChoice.length > 0 &&
@@ -289,7 +290,7 @@ const showMenu = ref(true)
       <v-card-text>
         <v-text-field
           hide-details
-          :density="mobileStore.isMobile ? 'compact' : 'default'"
+          :density="browserStore.isMobile ? 'compact' : 'default'"
           v-model="getUnitKey"
           @keyup.enter="
             getUnitChoice.length > 0 &&

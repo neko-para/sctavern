@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useMobileStore } from '@/stores/mobile'
-const mobile = useMobileStore()
+import { useBrowserStore } from '@/stores/browser'
+const mobile = useBrowserStore()
 
 withDefaults(
   defineProps<{

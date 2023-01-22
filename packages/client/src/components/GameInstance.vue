@@ -6,9 +6,9 @@ import HandItem from './HandItem.vue'
 import PresentItem from './PresentItem.vue'
 import DiscoverItem from './DiscoverItem.vue'
 import type { GameState, Client } from '@sctavern/emulator'
-import { useMobileStore } from '@/stores/mobile'
+import { useBrowserStore } from '@/stores/browser'
 
-const mobileStore = useMobileStore()
+const browserStore = useBrowserStore()
 
 const props = defineProps<{
   state: GameState
@@ -36,7 +36,7 @@ const showMenu = ref(true)
     <div class="d-flex flex-column justify-center">
       <div class="d-flex">
         <v-card class="ControlPanel d-flex flex-column">
-          <span v-if="!mobileStore.isMobile" class="Label mx-auto">菜单</span>
+          <span v-if="!browserStore.isMobile" class="Label mx-auto">菜单</span>
           <auto-button v-else @click="showMenu = !showMenu"> 菜单 </auto-button>
           <div class="d-flex" v-if="showMenu">
             <slot></slot>

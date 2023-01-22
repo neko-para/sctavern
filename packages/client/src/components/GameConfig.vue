@@ -7,9 +7,9 @@ import {
   ExtPack,
 } from '@sctavern/data'
 import { LCG } from '@sctavern/emulator'
-import { useMobileStore } from '@/stores/mobile'
+import { useBrowserStore } from '@/stores/browser'
 
-const mobileStore = useMobileStore()
+const browserStore = useBrowserStore()
 
 const section = ref<'packseed' | 'role' | 'mutation' | 'pve'>('packseed')
 
@@ -91,7 +91,7 @@ function genRole(): RoleKey[] {
 
 <template>
   <v-card class="d-flex flex-column">
-    <template v-if="!mobileStore.isMobile || section === 'packseed'">
+    <template v-if="!browserStore.isMobile || section === 'packseed'">
       <v-row>
         <v-col cols="1"></v-col>
         <v-col cols="8">
@@ -133,7 +133,7 @@ function genRole(): RoleKey[] {
         </v-col>
       </v-row>
     </template>
-    <template v-if="!mobileStore.isMobile || section === 'role'">
+    <template v-if="!browserStore.isMobile || section === 'role'">
       <v-row>
         <template v-if="role.length === 1">
           <v-col cols="1"></v-col>
@@ -151,12 +151,12 @@ function genRole(): RoleKey[] {
         </template>
       </v-row>
     </template>
-    <template v-if="!mobileStore.isMobile || section === 'mutation'">
+    <template v-if="!browserStore.isMobile || section === 'mutation'">
       <v-row>
         <v-col> 暂时不支持选突变因子 </v-col>
       </v-row>
     </template>
-    <template v-if="!mobileStore.isMobile || section === 'pve'">
+    <template v-if="!browserStore.isMobile || section === 'pve'">
       <v-row>
         <v-col cols="1"></v-col>
         <v-col cols="4">
@@ -170,7 +170,7 @@ function genRole(): RoleKey[] {
       </v-row>
     </template>
     <v-card-actions class="mt-auto">
-      <template v-if="mobileStore.isMobile">
+      <template v-if="browserStore.isMobile">
         <v-btn @click="section = 'packseed'"> 种子卡包 </v-btn>
         <v-btn @click="section = 'role'"> 角色 </v-btn>
         <v-btn @click="section = 'mutation'"> 突变因子 </v-btn>

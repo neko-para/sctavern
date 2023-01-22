@@ -11,11 +11,7 @@ import './assets/main.css'
 
 createApp(App).use(createPinia()).use(router).use(vuetify).mount('#app')
 
-import { useMobileStore } from '@/stores/mobile'
+import { useBrowserStore } from '@/stores/browser'
 
-const mobile = useMobileStore()
-const mm = matchMedia('(max-height: 599px)')
-mobile.setMobile(mm.matches)
-mm.addEventListener('change', () => {
-  mobile.setMobile(mm.matches)
-})
+const mobile = useBrowserStore()
+mobile.init()
