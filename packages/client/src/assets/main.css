@@ -80,7 +80,19 @@ span.Label {
   }
 }
 
+@media (min-height: 1000px) and (min-width: 500px) {
+  .FullScreen > div > .MiddleScale {
+    transform: translate(-50%, -50%) scale(1.5) translate(33.33%, 33.33%);
+  }
+}
+
 @media (min-height: 900px) and (min-width: 1900px) {
+  .FullScreen > div > .MiddleScale {
+    transform: inherit;
+  }
+}
+
+@media (min-height: 1900px) and (min-width: 900px) {
   .FullScreen > div > .MiddleScale {
     transform: inherit;
   }
