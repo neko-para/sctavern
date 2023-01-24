@@ -163,7 +163,7 @@ function doImport() {
 </script>
 
 <template>
-  <game-instance-vue :state="state" :client="client">
+  <game-instance-vue class="MiddleScale" :state="state" :client="client">
     <div class="d-flex flex-column">
       <auto-button variant="flat" @click="goUp()"> 返回 </auto-button>
       <auto-button

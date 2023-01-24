@@ -70,17 +70,18 @@ span.Label {
   height: 100%;
   display: flex;
   justify-content: space-around;
+  align-items: center;
   background-color: wheat;
 }
 
 @media (min-height: 500px) and (min-width: 1000px) {
-  .FullScreen > * {
+  .FullScreen > div > .MiddleScale {
     transform: translate(-50%, -50%) scale(1.5) translate(33.33%, 33.33%);
   }
 }
 
 @media (min-height: 900px) and (min-width: 1900px) {
-  .FullScreen > * {
+  .FullScreen > div > .MiddleScale {
     transform: inherit;
   }
 }

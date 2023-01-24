@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { Init } from '@sctavern/emulator'
+import { useBrowserStore } from './stores/browser'
+
+const browserStore = useBrowserStore()
 
 Init()
 </script>
@@ -7,28 +10,19 @@ Init()
 <template>
   <v-app id="root">
     <div class="FullScreen">
-      <router-view />
+      <div
+        :class="{
+          PortraitRotate: browserStore.isPortrait,
+        }"
+      >
+        <router-view />
+      </div>
     </div>
-  </v-app>
-  <v-app id="warn" class="h-100">
-    <v-card class="my-auto mx-2 elevation-24">
-      <v-card-title>警告</v-card-title>
-      <v-card-text>为了您的体验, 请横屏使用!</v-card-text>
-    </v-card>
   </v-app>
 </template>
 
 <style>
-#warn {
-  display: none;
-}
-
-@media (orientation: portrait) {
-  #root {
-    display: none;
-  }
-  #warn {
-    display: block;
-  }
+.PortraitRotate {
+  transform: rotate(90deg);
 }
 </style>

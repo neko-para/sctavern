@@ -8,6 +8,8 @@ export const useBrowserStore = defineStore('browser', () => {
     isMobile.value = im
   }
 
+  const isPortrait = ref(false)
+
   const isFullScreen = ref(false)
 
   function toggleFullScreen() {
@@ -19,10 +21,16 @@ export const useBrowserStore = defineStore('browser', () => {
   }
 
   function init() {
-    const mm = matchMedia('(max-height: 899px) or (max-width: 1899px)')
-    setMobile(mm.matches)
-    mm.addEventListener('change', () => {
-      setMobile(mm.matches)
+    const ms = matchMedia('(max-height: 899px) or (max-width: 1899px)')
+    setMobile(ms.matches)
+    ms.addEventListener('change', () => {
+      setMobile(ms.matches)
+    })
+
+    const mo = matchMedia('(orientation: portrait)')
+    isPortrait.value = mo.matches
+    mo.addEventListener('change', () => {
+      isPortrait.value = mo.matches
     })
 
     isFullScreen.value = !!document.fullscreenElement
@@ -31,5 +39,12 @@ export const useBrowserStore = defineStore('browser', () => {
     })
   }
 
-  return { isMobile, setMobile, isFullScreen, toggleFullScreen, init }
+  return {
+    isMobile,
+    setMobile,
+    isPortrait,
+    isFullScreen,
+    toggleFullScreen,
+    init,
+  }
 })
