@@ -1014,7 +1014,7 @@ export class PlayerInstance {
         mineral: 1,
       })
       if (ci.name !== '虫卵') {
-        ci.around().forEach(c => {
+        ci.around(pos).forEach(c => {
           c.gain_darkness(dark)
         })
       }
@@ -1035,7 +1035,7 @@ export class PlayerInstance {
     this.$ref$Game.pool.drop(ci.occupy.map(c => CardData[c]))
 
     if (doPostEffect) {
-      ci.around().forEach(c => {
+      ci.around(pos).forEach(c => {
         c.gain_darkness(dark)
       })
     }
@@ -1055,7 +1055,7 @@ export class PlayerInstance {
       from: from,
       units,
     })
-    from.around().forEach(ci => {
+    from.around(from.attrib.get('oldpos', -1)).forEach(ci => {
       if (ci.race === 'Z' || this.config.AlwaysIncubate) {
         ci.obtain_unit(m.units, 'incubate')
       }

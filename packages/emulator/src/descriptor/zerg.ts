@@ -2,7 +2,7 @@ import { elited, isNormal, UnitData, UnitKey } from '@sctavern/data'
 import { CardInstance } from '../card'
 import { InnerMsg } from '../events'
 import { Descriptor } from '../types'
-import { mostValueUnit, notNull, rep } from '../utils'
+import { mostValueUnit, rep } from '../utils'
 import { 科挂X } from './terran'
 
 function 孵化X<T extends InnerMsg['msg']>(

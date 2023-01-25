@@ -2,7 +2,7 @@
 import RaceIcon from './RaceIcon.vue'
 import AutoButton from './AutoButton.vue'
 import AutoSpan from './AutoSpan.vue'
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import type { GameState, Client, GameArea } from '@sctavern/emulator'
 import type { UnitKey } from '@sctavern/data'
 import { useBrowserStore } from '@/stores/browser'

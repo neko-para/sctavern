@@ -122,7 +122,7 @@ const showMenu = ref(true)
               :place="i"
             ></discover-item>
           </div>
-          <div v-if="pl?.discover?.item.length > 3" class="mt-1">
+          <div v-if="pl?.discover?.item.length > 3" class="mt-1 mb-1">
             <discover-item
               class="ml-2"
               v-for="(d, i) in pl?.discover?.item.slice(3) || []"
