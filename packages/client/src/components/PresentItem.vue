@@ -51,13 +51,17 @@ function buildUnit(units: UnitKey[]) {
 }
 
 const units = computed(() => buildUnit(item.value?.card?.units || []))
+
+const isSel = computed(() => {
+  return sel.value.area === 'present' && sel.value.place === props.place
+})
 </script>
 
 <template>
   <v-card
     class="d-flex flex-column align-self-start PresCard"
     :color="color"
-    :class="{ selected: sel.area === 'present' && sel.place === place }"
+    :class="{ selected: isSel, unselected: !isSel }"
     @click="
       client.autoPost(
         item?.card

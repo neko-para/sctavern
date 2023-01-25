@@ -18,12 +18,17 @@ span {
 .PresCard {
   margin-right: 6px;
 }
+
 .PresCard:last-child {
   margin-right: 0px;
 }
 
 .selected {
-  border: 1px solid black;
+  border: 1px solid black !important;
+}
+
+.unselected {
+  padding: 1px !important;
 }
 
 .FullScreen {

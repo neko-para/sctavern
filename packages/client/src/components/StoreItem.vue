@@ -29,13 +29,17 @@ const tr = {
   combine: '三连',
   stage: '暂存',
 }
+
+const isSel = computed(() => {
+  return sel.value.area === 'store' && sel.value.place === props.place
+})
 </script>
 
 <template>
   <v-card
     class="d-flex flex-column align-self-start KeyCard"
     :color="item && props.state.player[props.client.pos]?.locked ? 'cyan' : ''"
-    :class="{ selected: sel.area === 'store' && sel.place === place }"
+    :class="{ selected: isSel, unselected: !isSel }"
     @click="
       client.autoPost(
         item
