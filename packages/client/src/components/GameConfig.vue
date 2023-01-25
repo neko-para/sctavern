@@ -91,6 +91,10 @@ const AllRoleChoice = computed<RoleKey[]>(() => {
     '感染虫',
     'SCV',
     '阿巴瑟',
+    '工蜂',
+    '王虫',
+    '蟑螂',
+    '副官',
   ]
 })
 
@@ -100,97 +104,95 @@ function genRole(): RoleKey[] {
 </script>
 
 <template>
-  <div class="d-flex flex-column w-75">
-    <v-card class="d-flex flex-column">
-      <template v-if="!browserStore.isMobile || section === 'packseed'">
-        <div class="d-flex">
+  <v-card>
+    <template v-if="!browserStore.isMobile || section === 'packseed'">
+      <div class="d-flex">
+        <v-col cols="1"></v-col>
+        <v-col cols="8">
+          <v-text-field
+            v-model="seed"
+            density="compact"
+            hide-details
+          ></v-text-field>
+        </v-col>
+        <v-col cols="2">
+          <v-btn @click="seed = genSeed()"> 随机 </v-btn>
+        </v-col>
+      </div>
+      <div class="d-flex">
+        <v-col cols="1"></v-col>
+        <v-col cols="4" class="d-flex flex-column">
+          <v-checkbox
+            v-model="pack"
+            v-for="p in ExtPack.slice(0, 4)"
+            :key="`Pack-${p}`"
+            :label="p"
+            :value="p"
+            density="compact"
+            hide-details
+          ></v-checkbox> </v-col
+        ><v-col cols="4" class="d-flex flex-column">
+          <v-checkbox
+            v-model="pack"
+            v-for="p in ExtPack.slice(4)"
+            :key="`Pack-${p}`"
+            :label="p"
+            :value="p"
+            density="compact"
+            hide-details
+          ></v-checkbox>
+        </v-col>
+        <v-col cols="2">
+          <v-btn @click="pack = genPack()"> 随机 </v-btn>
+        </v-col>
+      </div>
+    </template>
+    <template v-if="!browserStore.isMobile || section === 'role'">
+      <div class="d-flex">
+        <template v-if="role.length === 1">
           <v-col cols="1"></v-col>
           <v-col cols="8">
-            <v-text-field
-              v-model="seed"
-              density="compact"
+            <v-select
               hide-details
-            ></v-text-field>
+              density="compact"
+              v-model="role[0]"
+              :items="AllRoleChoice"
+            ></v-select>
           </v-col>
           <v-col cols="2">
-            <v-btn @click="seed = genSeed()"> 随机 </v-btn>
+            <v-btn @click="role = genRole()"> 随机 </v-btn>
           </v-col>
-        </div>
-        <div class="d-flex">
-          <v-col cols="1"></v-col>
-          <v-col cols="4" class="d-flex flex-column">
-            <v-checkbox
-              v-model="pack"
-              v-for="p in ExtPack.slice(0, 4)"
-              :key="`Pack-${p}`"
-              :label="p"
-              :value="p"
-              density="compact"
-              hide-details
-            ></v-checkbox> </v-col
-          ><v-col cols="4" class="d-flex flex-column">
-            <v-checkbox
-              v-model="pack"
-              v-for="p in ExtPack.slice(4)"
-              :key="`Pack-${p}`"
-              :label="p"
-              :value="p"
-              density="compact"
-              hide-details
-            ></v-checkbox>
-          </v-col>
-          <v-col cols="2">
-            <v-btn @click="pack = genPack()"> 随机 </v-btn>
-          </v-col>
-        </div>
-      </template>
-      <template v-if="!browserStore.isMobile || section === 'role'">
-        <div class="d-flex">
-          <template v-if="role.length === 1">
-            <v-col cols="1"></v-col>
-            <v-col cols="8">
-              <v-select
-                hide-details
-                density="compact"
-                v-model="role[0]"
-                :items="AllRoleChoice"
-              ></v-select>
-            </v-col>
-            <v-col cols="2">
-              <v-btn @click="role = genRole()"> 随机 </v-btn>
-            </v-col>
-          </template>
-        </div>
-      </template>
-      <template v-if="!browserStore.isMobile || section === 'mutation'">
-        <div class="d-flex">
-          <v-col> 暂时不支持选突变因子 </v-col>
-        </div>
-      </template>
-      <template v-if="!browserStore.isMobile || section === 'pve'">
-        <div class="d-flex">
-          <v-col cols="1"></v-col>
-          <v-col cols="4">
-            <v-checkbox
-              v-model="pve"
-              density="compact"
-              hide-details
-              label="启用PVE内容"
-            ></v-checkbox>
-          </v-col>
-        </div>
-      </template>
-      <v-card-actions>
-        <template v-if="browserStore.isMobile">
-          <v-btn @click="section = 'packseed'"> 种子卡包 </v-btn>
-          <v-btn @click="section = 'role'"> 角色 </v-btn>
-          <v-btn @click="section = 'mutation'"> 突变因子 </v-btn>
-          <v-btn @click="section = 'pve'"> PVE </v-btn>
         </template>
-        <v-btn class="ml-auto" color="primary" @click="$emit('ok')">
-          启动
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </div>
+      </div>
+    </template>
+    <template v-if="!browserStore.isMobile || section === 'mutation'">
+      <div class="d-flex">
+        <v-col cols="1"></v-col>
+        <v-col cols="8"> 暂时不支持选突变因子 </v-col>
+      </div>
+    </template>
+    <template v-if="!browserStore.isMobile || section === 'pve'">
+      <div class="d-flex">
+        <v-col cols="1"></v-col>
+        <v-col cols="8">
+          <v-checkbox
+            v-model="pve"
+            density="compact"
+            hide-details
+            label="启用PVE内容"
+          ></v-checkbox>
+        </v-col>
+      </div>
+    </template>
+    <div style="min-width: 500px"></div>
+    <v-card-actions>
+      <template v-if="browserStore.isMobile">
+        <v-btn @click="section = 'packseed'"> 种子卡包 </v-btn>
+        <v-btn @click="section = 'role'"> 角色 </v-btn>
+        <v-btn @click="section = 'mutation'"> 突变因子 </v-btn>
+        <v-btn @click="section = 'pve'"> PVE </v-btn>
+      </template>
+      <v-btn class="ml-auto" color="primary" @click="$emit('ok')"> 启动 </v-btn>
+    </v-card-actions>
+  </v-card>
 </template>

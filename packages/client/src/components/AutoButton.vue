@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useBrowserStore } from '@/stores/browser'
-const mobile = useBrowserStore()
+const browserStore = useBrowserStore()
 
 withDefaults(
   defineProps<{
@@ -15,11 +15,7 @@ withDefaults(
 </script>
 
 <template>
-  <v-btn
-    class="auto-button"
-    :variant="variant"
-    :size="mobile.isMobile ? 'x-small' : 'large'"
-  >
+  <v-btn :variant="variant" :size="browserStore.isMobile ? 'x-small' : 'large'">
     <span :_acc="accelerator ? `[${accelerator}]` : ''">
       <slot></slot>
     </span>

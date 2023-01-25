@@ -15,44 +15,6 @@ span {
   font-family: 'Helvetica Neue', Helvetica, Arial, 'Microsoft Yahei', 'Hiragino Sans GB', 'Heiti SC', 'WenQuanYi Micro Hei', sans-serif;
 }
 
-span.Info {
-  font-size: 16pt;
-}
-span.Label {
-  font-size: 18pt;
-}
-.KeyCard {
-  height: 80px;
-  width: 200px;
-}
-.PresCard {
-  height: 450px;
-  width: 255px;
-}
-.InfoCard {
-  height: 500px;
-}
-
-@media (max-height: 899px) or (max-width: 1899px) {
-  span.Info {
-    font-size: 8pt;
-  }
-  span.Label {
-    font-size: 8pt;
-  }
-  .KeyCard {
-    height: 40px;
-    width: 100px;
-  }
-  .PresCard {
-    height: 150px;
-    width: 85px;
-  }
-  .InfoCard {
-    height: 200px;
-  }
-}
-
 .PresCard {
   margin-right: 6px;
 }
@@ -74,26 +36,47 @@ span.Label {
   background-color: wheat;
 }
 
-@media (min-height: 500px) and (min-width: 1000px) {
-  .FullScreen > div > .MiddleScale {
-    transform: translate(-50%, -50%) scale(1.5) translate(33.33%, 33.33%);
-  }
+
+span.Info {
+  font-size: 16pt;
+}
+span.Label {
+  font-size: 18pt;
+}
+.KeyCard {
+  height: 80px;
+  width: 200px;
+}
+.PresCard {
+  height: 450px;
+  width: 255px;
+}
+.InfoCard {
+  height: 500px;
 }
 
-@media (min-height: 1000px) and (min-width: 500px) {
-  .FullScreen > div > .MiddleScale {
-    transform: translate(-50%, -50%) scale(1.5) translate(33.33%, 33.33%);
-  }
+/*
+  Mobile
+*/
+
+.Mobile span.Info {
+  font-size: 8pt;
+}
+.Mobile span.Label {
+  font-size: 8pt;
+}
+.Mobile .KeyCard {
+  height: 40px;
+  width: 100px;
+}
+.Mobile .PresCard {
+  height: 150px;
+  width: 85px;
+}
+.Mobile .InfoCard {
+  height: 200px;
 }
 
-@media (min-height: 900px) and (min-width: 1900px) {
-  .FullScreen > div > .MiddleScale {
-    transform: inherit;
-  }
-}
-
-@media (min-height: 1900px) and (min-width: 900px) {
-  .FullScreen > div > .MiddleScale {
-    transform: inherit;
-  }
+.Pad .FullScreen > div > .MiddleScale {
+  transform: translate(-50%, -50%) scale(1.5) translate(33.33%, 33.33%);
 }

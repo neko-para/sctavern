@@ -1,12 +1,14 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useBrowserStore = defineStore('browser', () => {
   const isMobile = ref(false)
 
-  function setMobile(im: boolean) {
-    isMobile.value = im
-  }
+  const checkPad = ref(false)
+
+  const isPad = computed(() => {
+    return isMobile.value && checkPad.value
+  })
 
   const isPortrait = ref(false)
 
@@ -21,10 +23,20 @@ export const useBrowserStore = defineStore('browser', () => {
   }
 
   function init() {
-    const ms = matchMedia('(max-height: 899px) or (max-width: 1899px)')
-    setMobile(ms.matches)
+    const ms = matchMedia(`
+(orientation: landscape) and (min-height: 900px) and (min-width: 1900px),
+(orientation: portrait) and (min-width: 900px) and (min-height: 1900px)`)
+    isMobile.value = !ms.matches
     ms.addEventListener('change', () => {
-      setMobile(ms.matches)
+      isMobile.value = !ms.matches
+    })
+
+    const ms2 = matchMedia(`
+(orientation: landscape) and (min-height: 500px) and (min-width: 1000px),
+(orientation: portrait) and (min-width: 500px) and (min-height: 1000px)`)
+    checkPad.value = ms2.matches
+    ms2.addEventListener('change', () => {
+      checkPad.value = ms2.matches
     })
 
     const mo = matchMedia('(orientation: portrait)')
@@ -41,7 +53,7 @@ export const useBrowserStore = defineStore('browser', () => {
 
   return {
     isMobile,
-    setMobile,
+    isPad,
     isPortrait,
     isFullScreen,
     toggleFullScreen,

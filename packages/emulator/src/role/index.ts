@@ -1,5 +1,4 @@
 import { CardData, RoleKey } from '@sctavern/data'
-import { listenerCount } from 'process'
 import { RoleImpl } from '../types'
 
 export function CreateRoleTable() {
@@ -237,6 +236,99 @@ export function CreateRoleTable() {
             }))
         )
         this.enable = false
+      },
+    },
+    工蜂: {
+      listener: {
+        'round-enter'({ round }, player) {
+          if (round % 2 === 1) {
+            player.obtain_resource({
+              gas: 1,
+            })
+          } else {
+            player.obtain_resource({
+              mineral: 1,
+            })
+          }
+        },
+        'tavern-upgraded'({ level }, player) {
+          if (this.attrib.mode === 1) {
+            player.obtain_resource({
+              mineral: level,
+              gas: level,
+            })
+          }
+        },
+      },
+      ability(player) {
+        if (this.attrib.mode === 2 && player.gas >= 1) {
+          player.obtain_resource({
+            mineral: 4,
+            gas: -1,
+          })
+        }
+      },
+    },
+    王虫: {
+      init() {
+        this.progress.cur = 0
+        this.progress.max = 1
+      },
+      listener: {
+        'round-start'() {
+          if (this.attrib.mode !== 1) {
+            this.progress.cur = 0
+          }
+        },
+        'card-selled'({ target }, player) {
+          if (this.attrib.mode !== 1) {
+            this.progress.cur += 1
+          }
+          if (
+            this.progress.cur === 1 &&
+            this.attrib.mode === 2 &&
+            target.occupy.length > 0
+          ) {
+            player.stage(target.occupy[0])
+          }
+        },
+      },
+    },
+    蟑螂: {},
+    副官: {
+      init() {
+        this.progress.cur = 1
+        this.progress.max = 1
+      },
+      listener: {
+        'round-enter'(m, player) {
+          this.progress.cur = 1
+          if (this.attrib.mode === 1) {
+            player.obtain_resource({
+              mineral: player.attrib.get('副官'),
+            })
+          } else {
+            player.obtain_resource({
+              mineral: player.attrib.get('副官') ? 1 : 0,
+            })
+          }
+        },
+        'round-leave'(m, player) {
+          player.nextAttrib.set('副官', player.mineral)
+        },
+        'get-refresh-cost'(m, player) {
+          if (m.cost > 0 && this.progress.cur > 0) {
+            m.cost = 0
+            if (m.time === 'real') {
+              this.progress.cur -= 1
+              if (this.attrib.mode === 2) {
+                player.obtain_resource({
+                  mineral: 1,
+                })
+              }
+            }
+          }
+        },
       },
     },
   }

@@ -99,6 +99,59 @@ export function CreateProphesyTable() {
         this.role.attrib.mode = 2
       },
     },
+    过量采集: {
+      init() {
+        this.role.attrib.mode = 1
+      },
+    },
+    采集蜂群: {
+      init() {
+        this.role.attrib.mode = 2
+        this.role.enable = true
+      },
+    },
+    充气甲壳: {
+      init() {
+        this.role.attrib.mode = 1
+      },
+    },
+    超距视界: {
+      init() {
+        this.role.attrib.mode = 2
+      },
+    },
+    再生护甲: {
+      init() {
+        this.role.attrib.mode = 1
+      },
+      listener: {
+        'round-end'() {
+          this.life = Math.min(100, this.life + 10)
+        },
+      },
+    },
+    荆棘外壳: {
+      init() {
+        this.role.attrib.mode = 2
+      },
+    },
+    护盾封存: {
+      init() {
+        this.role.attrib.mode = 1
+      },
+      listener: {
+        'round-enter'() {
+          this.obtain_resource({
+            mineral: 1,
+          })
+        },
+      },
+    },
+    能量视界: {
+      init() {
+        this.role.attrib.mode = 2
+      },
+    },
 
     地下交易: {
       init() {

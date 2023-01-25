@@ -11,6 +11,8 @@ export type RoleKey =
   | 'SCV'
   | '阿巴瑟'
   | '工蜂'
+  | '王虫'
+  | '蟑螂'
   | '副官'
   | '追猎者'
   | '使徒'
@@ -61,6 +63,8 @@ export const AllRole: RoleKey[] = [
   'SCV',
   '阿巴瑟',
   '工蜂',
+  '王虫',
+  '蟑螂',
   '副官',
   '追猎者',
   '使徒',
@@ -162,6 +166,18 @@ export const RoleData: Record<RoleKey, Role> = {
     pinyin: 'gf',
     ability: '采集萃取',
     desc: '技术会和开始额外获得1点瓦斯, 偶数回合开始额外获得1晶体矿',
+  },
+  王虫: {
+    name: '王虫',
+    pinyin: 'wc',
+    ability: '长程监视',
+    desc: '你出售的单位会被添加到下一场战斗中, 并且出售的第一张卡牌兵力增加50%',
+  },
+  蟑螂: {
+    name: '蟑螂',
+    pinyin: 'zl',
+    ability: '断智',
+    desc: '启用技能后对战时, 单位生命值增加40%但无法操作(自动模式时增加30%)',
   },
   副官: {
     name: '副官',

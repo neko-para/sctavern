@@ -13,5 +13,5 @@ createApp(App).use(createPinia()).use(router).use(vuetify).mount('#app')
 
 import { useBrowserStore } from '@/stores/browser'
 
-const mobile = useBrowserStore()
-mobile.init()
+const browserStore = useBrowserStore()
+browserStore.init()

@@ -8,7 +8,10 @@ Init()
 </script>
 
 <template>
-  <v-app id="root">
+  <v-app
+    id="root"
+    :class="{ Mobile: browserStore.isMobile, Pad: browserStore.isPad }"
+  >
     <div class="FullScreen">
       <div
         :class="{

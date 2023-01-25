@@ -43,7 +43,9 @@ const playerBind: GenericListener<PlayerInstance> = {
     if (this.mineral < this.get_refresh_cost()) {
       return
     }
-    this.mineral -= this.get_refresh_cost('real')
+    // 这里不能直接一行写, 由于存在副官2预言这种刷新时获得晶体矿的情况, 会数据错误
+    const cost = this.get_refresh_cost('real')
+    this.mineral -= cost
     this.do_refresh()
   },
   $finish() {

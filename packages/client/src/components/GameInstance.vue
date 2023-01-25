@@ -192,12 +192,12 @@ const showMenu = ref(true)
 .PresentContainer {
   display: flex;
 }
-@media (max-height: 899px) or (max-width: 1899px) {
-  .StoreContainer,
-  .DiscoverContainer {
-    flex-direction: column;
-  }
+
+.Mobile .StoreContainer,
+.Mobile .DiscoverContainer {
+  flex-direction: column;
 }
+
 .ControlPanel {
   z-index: 1;
   position: absolute;

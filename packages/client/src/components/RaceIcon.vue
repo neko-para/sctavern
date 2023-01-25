@@ -20,15 +20,14 @@ defineProps<{
   display: flex;
 }
 
-@media (max-height: 899px) or (max-width: 1899px) {
-  .raceIconRoot {
-    width: 18px;
-    height: 18px;
-  }
-  .raceIconRoot > img {
-    width: 18px;
-    height: 18px;
-    object-fit: scale-down;
-  }
+.Mobile .raceIconRoot {
+  width: 18px;
+  height: 18px;
+}
+
+.Mobile .raceIconRoot > img {
+  width: 18px;
+  height: 18px;
+  object-fit: scale-down;
 }
 </style>
