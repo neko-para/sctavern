@@ -457,7 +457,8 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    深渊行者0: {
+    深渊行者0: 黑暗容器_复活(10),
+    深渊行者1: {
       listener: {
         seize() {
           this.obtain_unit(rep('先锋', this.isg() ? 2 : 1))
