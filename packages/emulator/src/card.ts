@@ -67,7 +67,7 @@ export class CardInstance {
     this.color = card.attr.amber ? 'amber' : card.attr.gold ? 'gold' : 'normal'
     this.belong = card.belong
     if (this.belong === 'virtual') {
-      this.attrib.set('virtual', 1)
+      this.attrib.set('void', 1)
     }
     if (card.type === 'structure') {
       this.attrib.set('structure', 1)
@@ -238,7 +238,7 @@ export class CardInstance {
         }
         if (this.units.length <= 1) {
           this.attrib.set('sacrifice', 0)
-          this.attrib.set('sacrificeValue', 0)
+          this.attrib.set('extraValue', 0)
         } else {
           const { index } = mostValueUnit(this.units, (a, b) => a > b, vo)
           const res = this.filter((u, i) => i !== index).map(u => UnitData[u])
@@ -250,7 +250,7 @@ export class CardInstance {
           const vsum = res.map(u => u.value).reduce((a, b) => a + b, 0)
 
           this.attrib.set('sacrifice', sum)
-          this.attrib.set('sacrificeValue', vsum)
+          this.attrib.set('extraValue', vsum)
         }
         this.add_desc('献祭')
         break
@@ -413,7 +413,7 @@ export class CardInstance {
   value() {
     return this.units
       .map(u => UnitData[u].value)
-      .reduce((a, b) => a + b, this.attrib.get('sacrificeValue'))
+      .reduce((a, b) => a + b, this.attrib.get('extraValue'))
   }
 
   extraNote() {
@@ -447,13 +447,15 @@ export class CardInstance {
       res.push(`黑暗值: ${this.attrib.get('dark')}`)
     }
 
-    if (this.attrib.get('virtual')) {
+    if (this.attrib.get('void')) {
       const cnt = this.$ref$Player.count()
       res.push(
         `虚空投影: ${
           Object.keys(cnt)
             .map(r => (cnt[r as Race] ? 1 : 0))
-            .reduce((a, b) => a + b, -1) * 15
+            .reduce((a, b) => a + b, -1) *
+            15 +
+          this.$ref$Player.get_extra_void()
         }%`
       )
     }

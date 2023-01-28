@@ -1,5 +1,15 @@
-import { CardData, RoleKey } from '@sctavern/data'
+import { CardData, RoleKey, UnitKey } from '@sctavern/data'
+import { CardInstance } from '../card'
 import { RoleImpl } from '../types'
+
+const hybrid: Record<number, UnitKey> = {
+  1: '混合体掠夺者',
+  2: '混合体天罚者',
+  3: '混合体毁灭者',
+  4: '混合体巨兽',
+  5: '混合体支配者',
+  6: '混合体实验体',
+}
 
 export function CreateRoleTable() {
   const res: {
@@ -330,6 +340,41 @@ export function CreateRoleTable() {
             }
           }
         },
+      },
+    },
+    混合体: {
+      listener: {
+        'round-leave'(m, player) {
+          for (let i = 1; i <= 6; i++) {
+            const ps = player.all_of('P').filter(c => c.level === i)
+            const zs = player.all_of('Z').filter(c => c.level === i)
+            while (ps.length > 0 && zs.length > 0) {
+              player.$ref$Game.lcg
+                .one_of([
+                  ps.shift() as CardInstance,
+                  zs.shift() as CardInstance,
+                ])
+                ?.obtain_unit([hybrid[i]])
+            }
+          }
+        },
+      },
+      ability(player) {
+        if (!this.enable) {
+          return
+        }
+        const ci = player.query_selected_present()
+        if (!ci) {
+          return
+        }
+        switch (this.attrib.mode) {
+          case 1:
+            ci.set_void()
+            ci.obtain_upgrade('虚空能量')
+            break
+          case 2:
+            ci.obtain_unit([hybrid[player.level]])
+        }
       },
     },
   }

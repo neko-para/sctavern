@@ -1141,4 +1141,11 @@ export class PlayerInstance {
       cost: 1,
     }).cost
   }
+
+  get_extra_void() {
+    return this.post({
+      msg: 'get-extra-void',
+      void: 0,
+    }).void
+  }
 }

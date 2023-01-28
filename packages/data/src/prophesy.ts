@@ -25,6 +25,8 @@ export type ProphesyKey =
   | '荆棘外壳'
   | '护盾封存'
   | '能量视界'
+  | '虚空意志'
+  | '形体降临'
   | '地下交易'
   | '补给空投'
   | '挖宝奇兵'
@@ -80,6 +82,8 @@ export const AllProphesy: ProphesyKey[] = [
   '荆棘外壳',
   '护盾封存',
   '能量视界',
+  '虚空意志',
+  '形体降临',
 
   '地下交易',
   '补给空投',
@@ -263,6 +267,18 @@ export const ProphesyData: {
     pinyin: 'nlsj',
     type: '副官',
     desc: '免费刷新后, 获得1晶体矿',
+  },
+  虚空意志: {
+    name: '虚空意志',
+    pinyin: 'xkyz',
+    type: '混合体',
+    desc: '获得主动技能: 每回合, 为选择卡牌添加虚空投影和虚空能量',
+  },
+  形体降临: {
+    name: '形体降临',
+    pinyin: 'xtjl',
+    type: '混合体',
+    desc: '每回合, 为选择卡牌添加1个当前酒馆等级的混合体',
   },
 
   地下交易: {

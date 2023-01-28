@@ -370,7 +370,16 @@ export default function (/* config */): Record<string, Descriptor> {
       },
     },
     刀锋女王0: NotImplementYet(),
-    虚空构造体0: NotImplementYet(),
+    虚空构造体0: {
+      config: {
+        unique: 'normal',
+      },
+      listener: {
+        'get-extra-void'(m) {
+          m.void += this.isg() ? 40 : 20
+        },
+      },
+    },
     死亡舰队0: 黑暗容器_获得('毁灭者', 1, 2),
     死亡舰队1: {
       listener: {

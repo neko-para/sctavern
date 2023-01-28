@@ -156,6 +156,28 @@ export function CreateProphesyTable() {
         this.role.attrib.mode = 2
       },
     },
+    虚空意志: {
+      init() {
+        this.role.attrib.mode = 1
+        this.role.enable = true
+      },
+      listener: {
+        'round-enter'() {
+          this.role.enable = true
+        },
+      },
+    },
+    形体降临: {
+      init() {
+        this.role.attrib.mode = 2
+        this.role.enable = true
+      },
+      listener: {
+        'round-enter'() {
+          this.role.enable = true
+        },
+      },
+    },
 
     地下交易: {
       init() {

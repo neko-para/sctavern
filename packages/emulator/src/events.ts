@@ -165,6 +165,10 @@ export type PlayerMsg = ApplyKey<
     }
   | {
       msg: 'refreshed'
+    }
+  | {
+      msg: 'get-extra-void'
+      void: number
     },
   {
     player: number
