@@ -181,7 +181,7 @@ export default function (/* config */): Record<string, Descriptor> {
     势不可挡0: {
       listener: {
         'post-enter'() {
-          this.$ref$Player.wrap(['执政官(精英)'])
+          this.$ref$Player.wrap(rep('执政官(精英)', this.isg() ? 2 : 1))
         },
       },
     },
