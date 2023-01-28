@@ -225,11 +225,11 @@ export function CreateRoleTable() {
           return
         }
         if (this.attrib.mode !== 2) {
-          if (player.mineral < 3) {
+          if (player.mineral < 2) {
             return
           } else {
             player.obtain_resource({
-              mineral: -3,
+              mineral: -2,
             })
           }
         }

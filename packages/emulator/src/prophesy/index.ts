@@ -356,19 +356,23 @@ export function CreateProphesyTable() {
     虚空风暴: {
       init() {
         this.persisAttrib.set('虚空风暴', 0)
-        if (this.persisAttrib.alter('虚空风暴', 1) === 3) {
-          this.persisAttrib.set('虚空风暴', 0)
-          this.all()
-            .filter(
-              ci => ci.attrib.get('void') && ci.level >= 1 && ci.level <= 5
-            )
-            .forEach(ci => {
-              const u = this.$ref$Game.lcg.one_of(ci.units)
-              if (u) {
-                ci.obtain_unit([u])
-              }
-            })
-        }
+      },
+      listener: {
+        refreshed() {
+          if (this.persisAttrib.alter('虚空风暴', 1) === 3) {
+            this.persisAttrib.set('虚空风暴', 0)
+            this.all()
+              .filter(
+                ci => ci.attrib.get('void') && ci.level >= 1 && ci.level <= 5
+              )
+              .forEach(ci => {
+                const u = this.$ref$Game.lcg.one_of(ci.units)
+                if (u) {
+                  ci.obtain_unit([u])
+                }
+              })
+          }
+        },
       },
     },
     能量预兆: {},
