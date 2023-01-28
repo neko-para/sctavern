@@ -127,7 +127,7 @@ export type PlayerMsg = ApplyKey<
       from: CardInstance
     }
   | {
-      msg: 'incubate'
+      msg: 'hatch'
       units: UnitKey[]
       from: CardInstance
     }
@@ -190,7 +190,7 @@ export type CardMsg = ApplyKey<
       msg: 'fast-produce'
     }
   | {
-      msg: 'req-incubate'
+      msg: 'req-hatch'
       id: number
     }
   | {

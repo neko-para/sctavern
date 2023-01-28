@@ -56,7 +56,7 @@ export type PlayerStatus =
 
 export type GameArea = 'none' | 'hand' | 'store' | 'present'
 
-export type ObtainUnitWay = 'normal' | 'incubate' | 'warp'
+export type ObtainUnitWay = 'normal' | 'hatch' | 'warp'
 
 export interface GameConfig {
   Pack: Pack[]

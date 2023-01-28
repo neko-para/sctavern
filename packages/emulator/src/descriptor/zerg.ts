@@ -19,12 +19,12 @@ function 孵化X<T extends InnerMsg['msg']>(
     listener: {
       [msg](this: CardInstance, m: Extract<InnerMsg, { msg: T }>) {
         if (pred(this, m)) {
-          this.incubate(id)
+          this.hatch(id)
         }
       },
-      'req-incubate'({ id: i }) {
+      'req-hatch'({ id: i }) {
         if (i === -1 || i === id) {
-          this.$ref$Player.incubate(this, unit(this))
+          this.$ref$Player.hatch(this, unit(this))
           post(this)
         }
       },
@@ -189,7 +189,7 @@ export default function (/* config */): Record<string, Descriptor> {
       },
       listener: {
         'obtain-unit'({ time, units, way }) {
-          if (time !== 'post' || way !== 'incubate') {
+          if (time !== 'post' || way !== 'hatch') {
             return
           }
           this.obtain_unit(rep(units[units.length - 1], this.isg() ? 3 : 2))
@@ -285,8 +285,8 @@ export default function (/* config */): Record<string, Descriptor> {
         unique: 'normal',
       },
       listener: {
-        incubate({ units }) {
-          this.obtain_unit(units, 'incubate')
+        hatch({ units }) {
+          this.obtain_unit(units, 'hatch')
           if (this.isg()) {
             this.obtain_unit(['巢虫领主'])
           }

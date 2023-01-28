@@ -1034,7 +1034,7 @@ export class PlayerInstance {
     this.process = null
   }
 
-  incubate(from: CardInstance, units: UnitKey[]) {
+  hatch(from: CardInstance, units: UnitKey[]) {
     if (this.config.ZergIncubateRestrictBiological) {
       units = units.filter(u => UnitData[u].tag.biological)
     }
@@ -1042,13 +1042,13 @@ export class PlayerInstance {
       return
     }
     const m = this.post({
-      msg: 'incubate',
+      msg: 'hatch',
       from: from,
       units,
     })
     from.around(from.attrib.get('oldpos', -1)).forEach(ci => {
       if (ci.race === 'Z' || this.config.AlwaysIncubate) {
-        ci.obtain_unit(m.units, 'incubate')
+        ci.obtain_unit(m.units, 'hatch')
       }
     })
   }

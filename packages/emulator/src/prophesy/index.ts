@@ -323,7 +323,7 @@ export function CreateProphesyTable() {
     },
     基因改造: {
       listener: {
-        incubate({ from }) {
+        hatch({ from }) {
           if (from.name === '虫卵') {
             this.obtain_resource({
               mineral: 6,

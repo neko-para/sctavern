@@ -326,9 +326,9 @@ export class CardInstance {
     }
   }
 
-  incubate(id: number) {
+  hatch(id: number) {
     this.post({
-      msg: 'req-incubate',
+      msg: 'req-hatch',
       id,
     })
   }
