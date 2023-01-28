@@ -139,6 +139,7 @@ export type CardKey =
   | '尖端科技'
   | '超负荷'
   | '机械工厂'
+  | '幽灵报道'
 
 export const AllCard: CardKey[] = [
   '帝国精锐',
@@ -280,6 +281,7 @@ export const AllCard: CardKey[] = [
   '尖端科技',
   '超负荷',
   '机械工厂',
+  '幽灵报道',
 ]
 
 export const CardData: Record<CardKey, Card> = {
@@ -3091,7 +3093,9 @@ export const CardData: Record<CardKey, Card> = {
     unit: {
       科技实验室: 1,
     },
-    attr: {},
+    attr: {
+      gold: true,
+    },
     belong: 'none',
     type: 'normal',
     desc: [
@@ -3099,6 +3103,29 @@ export const CardData: Record<CardKey, Card> = {
       ['制造(45): 获得9战列巡航舰', '制造(45): 获得9战列巡航舰'],
       ['制造(30): 获得6雷神', '制造(30): 获得6雷神'],
       ['制造(16): 获得6攻城坦克', '制造(16): 获得6攻城坦克'],
+    ],
+  },
+  幽灵报道: {
+    name: '幽灵报道',
+    pinyin: 'ylbd',
+    race: 'N',
+    level: 7,
+    pack: '幽灵衍生',
+    unit: {
+      幽灵: 2,
+    },
+    attr: {
+      gold: true,
+    },
+    belong: 'none',
+    type: 'normal',
+    desc: [
+      ['每回合结束时, 获得2幽灵', '每回合结束时, 获得2幽灵'],
+      [
+        '任意卡牌进场时, 幽灵报道的种族变更为场上最多数量的种族',
+        '任意卡牌进场时, 幽灵报道的种族变更为场上最多数量的种族',
+      ],
+      // 幽灵来点专属升级只在己方战场神效
     ],
   },
 }

@@ -124,7 +124,7 @@ export function CreateRoleTable() {
           if (player.mineral < 2) {
             return
           }
-          // TODO
+          // TODO: Support upgrade
         }
       },
     },

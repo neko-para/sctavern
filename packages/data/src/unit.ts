@@ -189,6 +189,7 @@ export type UnitKey =
   | 'SCV'
   | '掠食者'
   | '幽灵'
+  | '幽灵<埃蒙>'
 
 export const AllUnit: UnitKey[] = [
   '塔达林母舰',
@@ -379,6 +380,7 @@ export const AllUnit: UnitKey[] = [
   'SCV',
   '掠食者',
   '幽灵',
+  '幽灵<埃蒙>',
 ]
 
 export const UnitData: Record<UnitKey, Unit> = {
@@ -2818,7 +2820,19 @@ export const UnitData: Record<UnitKey, Unit> = {
   幽灵: {
     name: '幽灵',
     pinyin: 'yl',
-    race: 'T',
+    race: 'N',
+    value: 50,
+    type: 'normal',
+    tag: {
+      light: true,
+      psionic: true,
+    },
+    health: 100,
+  },
+  '幽灵<埃蒙>': {
+    name: '幽灵<埃蒙>',
+    pinyin: 'yl',
+    race: 'N',
     value: 275,
     type: 'normal',
     tag: {

@@ -1,4 +1,4 @@
-import { isNormal, rep, UnitData } from '@sctavern/data'
+import { isNormal, Race, rep, UnitData } from '@sctavern/data'
 import { Descriptor } from '../types'
 
 export default function (/* config */): Record<string, Descriptor> {
@@ -100,6 +100,30 @@ export default function (/* config */): Record<string, Descriptor> {
         '无法三连, 每回合结束时注卵随机一个单位三次',
         '无法三连, 每回合结束时注卵随机一个单位三次',
       ],
+    },
+    幽灵报道0: {
+      listener: {
+        'round-end'() {
+          this.obtain_unit(rep('幽灵', 2))
+        },
+      },
+    },
+    幽灵报道1: {
+      listener: {
+        'card-entered'() {
+          const rs: Race[] = ['T', 'P', 'Z', 'N']
+          const c = this.$ref$Player.count()
+          const m = Math.max(...rs.map(r => c[r]))
+          if (c[this.race] !== m) {
+            for (const ci of this.$ref$Player.all()) {
+              if (c[ci.race] === m) {
+                this.race = ci.race
+                break
+              }
+            }
+          }
+        },
+      },
     },
   }
 }

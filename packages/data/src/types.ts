@@ -35,6 +35,7 @@ export type Pack =
   | '独辟蹊径'
   | '军备竞赛'
   | '不法之徒'
+  | '幽灵衍生'
 
 export type CardBelong = 'none' | 'primal' | 'virtual'
 
@@ -81,6 +82,7 @@ export interface Card {
   }
   attr: {
     amber?: true
+    gold?: true
     insert?: true
   }
   belong: CardBelong

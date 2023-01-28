@@ -122,6 +122,7 @@ export const CardPack: Record<Pack, CardKey[]> = {
   独辟蹊径: ['复制中心', '晋升仪式', '基因突变', '风暴英雄'],
   军备竞赛: ['帝国精锐', '英雄叉', '机械感染', '死亡之握'],
   不法之徒: [],
+  幽灵衍生: ['幽灵报道'],
 }
 
 export const ExtPack: Pack[] = [
@@ -184,4 +185,5 @@ export const PvePresetActivePack: Pack[] = [
   '独辟蹊径',
   '军备竞赛',
   '不法之徒',
+  '幽灵衍生',
 ]

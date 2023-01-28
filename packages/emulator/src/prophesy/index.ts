@@ -60,6 +60,10 @@ export function CreateProphesyTable() {
     幽灵报道: {
       init() {
         this.role.attrib.mode = 1
+        this.role.progress.max = -1
+        this.role.progress.cur = -1
+        this.role.enable = true
+        this.enter('幽灵报道')
       },
     },
     暗影猎杀: {

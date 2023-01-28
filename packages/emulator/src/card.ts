@@ -64,7 +64,7 @@ export class CardInstance {
     this.name = card.name
     this.race = card.race
     this.level = card.level
-    this.color = card.attr.amber ? 'amber' : 'normal'
+    this.color = card.attr.amber ? 'amber' : card.attr.gold ? 'gold' : 'normal'
     this.belong = card.belong
     if (this.belong === 'virtual') {
       this.attrib.set('virtual', 1)
