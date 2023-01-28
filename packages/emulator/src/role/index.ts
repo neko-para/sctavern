@@ -374,7 +374,9 @@ export function CreateRoleTable() {
             break
           case 2:
             ci.obtain_unit([hybrid[player.level]])
+            break
         }
+        this.enable = false
       },
     },
   }
