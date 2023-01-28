@@ -2553,7 +2553,7 @@ export const CardData: Record<CardKey, Card> = {
     pinyin: 'cl',
     race: 'Z',
     level: 0,
-    pack: '核心',
+    pack: '核心衍生',
     unit: {},
     attr: {},
     belong: 'none',

@@ -136,7 +136,7 @@ export default function (/* config */): Record<string, Descriptor> {
       card.$ref$Player.push_discover(
         card.$ref$Player.$ref$Game.pool
           .discover(c => c.level === card.$ref$Player.level, 3)
-          .map(c => ({
+          ?.map(c => ({
             type: 'card',
             card: c,
           }))

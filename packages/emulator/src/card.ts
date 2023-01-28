@@ -295,6 +295,14 @@ export class CardInstance {
       .reduce((a, b) => a + b, 0)
   }
 
+  infr_changed() {
+    this.$ref$Player.post({
+      msg: 'infr-changed',
+      target: this,
+    })
+    this.fast_prod()
+  }
+
   fast_prod() {
     this.post({
       msg: 'fast-produce',
@@ -306,7 +314,7 @@ export class CardInstance {
     if (u && u !== '高级科技实验室') {
       this.units[this.units.indexOf(u)] =
         u === '反应堆' ? '科技实验室' : '反应堆'
-      this.fast_prod()
+      this.infr_changed()
     }
   }
 
@@ -314,7 +322,7 @@ export class CardInstance {
     const u = this.infr()
     if (u && u !== '高级科技实验室') {
       this.units[this.units.indexOf(u)] = '高级科技实验室'
-      this.fast_prod()
+      this.infr_changed()
     }
   }
 
