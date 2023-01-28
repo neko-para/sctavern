@@ -406,7 +406,7 @@ export const UnitData: Record<UnitKey, Unit> = {
     pinyin: 'xklx',
     race: 'N',
     value: 0,
-    type: 'special structure',
+    type: 'normal',
     tag: {},
     health: 1500,
   },

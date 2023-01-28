@@ -73,7 +73,7 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'round-end'() {
           const u = this.$ref$Player.$ref$Game.lcg.one_of(
-            this.units.filter(u => isNormal(UnitData[u]) || u === '虚空裂隙')
+            this.units.filter(u => isNormal(UnitData[u]))
           )
           if (u) {
             this.$ref$Player.inject([u])
@@ -89,7 +89,7 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'round-end'() {
           const u = this.$ref$Player.$ref$Game.lcg.one_of(
-            this.units.filter(u => isNormal(UnitData[u]) || u === '虚空裂隙')
+            this.units.filter(u => isNormal(UnitData[u]))
           )
           if (u) {
             this.$ref$Player.inject(rep(u, 3))
