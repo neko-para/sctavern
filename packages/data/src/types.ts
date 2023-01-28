@@ -1,5 +1,6 @@
 import { CardKey } from './card'
 import { MutationKey } from './mutation'
+import { PackKey } from './pack'
 import { ProphesyKey } from './prophesy'
 import { RoleKey } from './role'
 import { UnitKey } from './unit'
@@ -16,26 +17,6 @@ export type UpgradeCategory =
   | 'public'
   | 'virtual'
   | 'primal'
-
-export type Pack =
-  | '核心'
-  | '核心衍生'
-  | '母舰核心衍生'
-  | '科学球衍生'
-  | '要塞衍生'
-  | '泰凯斯衍生'
-  | '诺娃衍生'
-  | '思旺衍生'
-  | '特典'
-  | '天空之怒'
-  | '并肩作战'
-  | '拉克希尔'
-  | '短兵相接'
-  | '快速启动'
-  | '独辟蹊径'
-  | '军备竞赛'
-  | '不法之徒'
-  | '幽灵衍生'
 
 export type CardBelong = 'none' | 'primal' | 'virtual'
 
@@ -76,7 +57,7 @@ export interface Card {
   pinyin: string
   race: Race
   level: number
-  pack: Pack
+  pack: PackKey
   unit: {
     [key in UnitKey]?: number
   }

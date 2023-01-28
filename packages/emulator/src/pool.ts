@@ -1,4 +1,4 @@
-import { CardKey, Pack, CardData, Card, CardPack } from '@sctavern/data'
+import { CardKey, PackKey, CardData, Card, CardPack } from '@sctavern/data'
 import { LCG } from './game'
 import { repX } from './utils'
 
@@ -14,9 +14,9 @@ const poolCount: Record<number, number> = {
 export class Pool {
   $ref$lcg: LCG
   heap: Partial<Record<CardKey, number>>
-  allow: Pack[]
+  allow: PackKey[]
 
-  constructor(pack: Pack[], lcg: LCG, poolPack: Pack[]) {
+  constructor(pack: PackKey[], lcg: LCG, poolPack: PackKey[]) {
     this.$ref$lcg = lcg
     this.heap = {}
     this.allow = poolPack

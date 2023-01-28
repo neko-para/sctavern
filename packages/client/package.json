@@ -29,7 +29,6 @@
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
     "@types/file-saver": "^2.0.5",
-    "@types/jszip": "^3.4.1",
     "@types/node": "^18.11.12",
     "@types/pako": "^2.0.0",
     "@types/webfontloader": "^1.0.0",

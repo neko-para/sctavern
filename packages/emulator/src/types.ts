@@ -1,7 +1,7 @@
 import type {
   MutationKey,
   RoleKey,
-  Pack,
+  PackKey,
   CardKey,
   Race,
   UnitKey,
@@ -59,14 +59,14 @@ export type GameArea = 'none' | 'hand' | 'store' | 'present'
 export type ObtainUnitWay = 'normal' | 'hatch' | 'warp'
 
 export interface GameConfig {
-  Pack: Pack[]
+  Pack: PackKey[]
   Seed: number
   Role: RoleKey[]
   Mutation: MutationKey[]
 
   Pve: boolean
-  PoolPack: Pack[]
-  ActivePack: Pack[]
+  PoolPack: PackKey[]
+  ActivePack: PackKey[]
 }
 
 export interface PlayerConfig {

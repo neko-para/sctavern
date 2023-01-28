@@ -1,63 +1,11 @@
 import type { Role } from './types'
 
-export type RoleKey =
-  | '白板'
-  | '执政官'
-  | '狂热者'
-  | '陆战队员'
-  | '收割者'
-  | '幽灵'
-  | '感染虫'
-  | 'SCV'
-  | '阿巴瑟'
-  | '工蜂'
-  | '王虫'
-  | '蟑螂'
-  | '副官'
-  | '追猎者'
-  | '使徒'
-  | '矿骡'
-  | '斯台特曼'
-  | '雷诺'
-  | '阿塔尼斯'
-  | '科学球'
-  | '母舰核心'
-  | '行星要塞'
-  | '拟态虫'
-  | '探机'
-  | '泰凯斯'
-  | '诺娃'
-  | '思旺'
-  | '跳虫'
-  | '蒙斯克'
-  | '雷神'
-  | '机械哨兵'
-  | '异龙'
-  | '医疗兵'
-  | '分裂池'
-  | '响尾蛇'
-  | '混合体'
-  | '德哈卡'
-  | '星港'
-  | '进化腔'
-  | '锻炉'
-  | '扎加拉'
-  | '大力神'
-  | '凯瑞甘'
-  | '凯瑞甘(异虫形态)'
-  | '米拉'
-  | '先知'
-  | '阿尔达瑞斯'
-  | '斯托科夫'
-  | '解放者'
-  | '解放者(防卫模式)'
-  | '干扰者'
-
-export const AllRole: RoleKey[] = [
+export const AllRole = [
   '白板',
   '执政官',
   '狂热者',
   '陆战队员',
+  '幽灵',
   '收割者',
   '感染虫',
   'SCV',
@@ -104,9 +52,13 @@ export const AllRole: RoleKey[] = [
   '解放者',
   '解放者(防卫模式)',
   '干扰者',
-]
+] as const
 
-export const RoleData: Record<RoleKey, Role> = {
+export type RoleKey = (typeof AllRole)[number]
+
+export const RoleData: {
+  [key in RoleKey]: Role & { name: key }
+} = {
   白板: {
     name: '白板',
     pinyin: 'bb',

@@ -6,11 +6,9 @@
     "run": "npm run build & node index.js"
   },
   "dependencies": {
-    "uuid": "^9.0.0",
     "@sctavern/data": "*"
   },
   "devDependencies": {
-    "@types/uuid": "^9.0.0",
     "esbuild": "^0.16.16"
   }
 }

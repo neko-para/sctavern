@@ -1,48 +1,6 @@
 import type { Upgrade } from './types'
 
-export type UpgradeKey =
-  | '反甲'
-  | '力大砖飞'
-  | '金光闪闪'
-  | '狙击镜'
-  | '重构之壳'
-  | '黄金矿工'
-  | '修理无人机'
-  | '内在潜力'
-  | '阳光滋润'
-  | '吸血'
-  | '顽强生命力'
-  | '毒质变'
-  | '电磁加速器'
-  | '灼热打击'
-  | '重力炸弹'
-  | '刚毅护盾'
-  | '缩小光束'
-  | '原始尖塔'
-  | '原始甲壳'
-  | '原始尖刺'
-  | '折跃援军'
-  | '星空加速'
-  | '聚能器'
-  | '虚空水晶'
-  | '护盾充能'
-  | '献祭'
-  | '轨道空降'
-  | '暗影战士'
-  | '完美冻结'
-  | '强化药剂'
-  | '合金护甲'
-  | '火力压制'
-  | '玻璃大炮'
-  | '重型装甲'
-  | '虚空能量'
-  | '吞噬'
-  | '狂暴'
-  | '深槽脊刺'
-  | '几丁质甲壳'
-  | '硬化外壳'
-
-export const AllUpgrade: UpgradeKey[] = [
+export const AllUpgrade = [
   '反甲',
   '力大砖飞',
   '金光闪闪',
@@ -83,9 +41,13 @@ export const AllUpgrade: UpgradeKey[] = [
   '深槽脊刺',
   '几丁质甲壳',
   '硬化外壳',
-]
+] as const
 
-export const UpgradeData: Record<UpgradeKey, Upgrade> = {
+export type UpgradeKey = (typeof AllUpgrade)[number]
+
+export const UpgradeData: {
+  [key in UpgradeKey]: Upgrade & { name: key }
+} = {
   反甲: {
     name: '反甲',
     pinyin: 'fj',

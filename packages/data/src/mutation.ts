@@ -1,21 +1,18 @@
 import type { Mutation } from './types'
 
-export type MutationKey =
-  | '辅助角色-诺娃'
-  | '辅助角色-星港'
-  | '辅助角色-泰凯斯'
-  | '地嗪外溢'
-  | '作战规划'
-
-export const AllMutation: MutationKey[] = [
+export const AllMutation = [
   '辅助角色-诺娃',
   '辅助角色-星港',
   '辅助角色-泰凯斯',
   '地嗪外溢',
   '作战规划',
-]
+] as const
 
-export const MutationData: Record<MutationKey, Mutation> = {
+export type MutationKey = (typeof AllMutation)[number]
+
+export const MutationData: {
+  [key in MutationKey]: Mutation & { name: key }
+} = {
   '辅助角色-诺娃': {
     name: '辅助角色-诺娃',
     pinyin: 'fzjs-nw',

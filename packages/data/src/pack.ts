@@ -1,7 +1,26 @@
 import { CardKey } from './card'
-import { Pack } from './types'
 
-export const CardPack: Record<Pack, CardKey[]> = {
+export type PackKey =
+  | '核心'
+  | '核心衍生'
+  | '母舰核心衍生'
+  | '科学球衍生'
+  | '要塞衍生'
+  | '泰凯斯衍生'
+  | '诺娃衍生'
+  | '思旺衍生'
+  | '特典'
+  | '天空之怒'
+  | '并肩作战'
+  | '拉克希尔'
+  | '短兵相接'
+  | '快速启动'
+  | '独辟蹊径'
+  | '军备竞赛'
+  | '不法之徒'
+  | '幽灵衍生'
+
+export const CardPack: Record<PackKey, CardKey[]> = {
   核心: [
     // 中立
     '原始蟑螂',
@@ -125,7 +144,7 @@ export const CardPack: Record<Pack, CardKey[]> = {
   幽灵衍生: ['幽灵报道'],
 }
 
-export const ExtPack: Pack[] = [
+export const ExtPack: PackKey[] = [
   '天空之怒',
   '并肩作战',
   '拉克希尔',
@@ -136,7 +155,7 @@ export const ExtPack: Pack[] = [
   '不法之徒',
 ]
 
-export const PresetPoolPack: Pack[] = [
+export const PresetPoolPack: PackKey[] = [
   '核心',
   '特典',
   '天空之怒',
@@ -149,7 +168,7 @@ export const PresetPoolPack: Pack[] = [
   '不法之徒',
 ]
 
-export const PvpPresetActivePack: Pack[] = [
+export const PvpPresetActivePack: PackKey[] = [
   '核心',
   '母舰核心衍生',
   '科学球衍生',
@@ -168,7 +187,7 @@ export const PvpPresetActivePack: Pack[] = [
   '不法之徒',
 ]
 
-export const PvePresetActivePack: Pack[] = [
+export const PvePresetActivePack: PackKey[] = [
   '核心',
   '母舰核心衍生',
   '科学球衍生',
