@@ -33,13 +33,17 @@ function 集结(
   way: 'normal' | 'warp' = 'normal',
   id = 0
 ) {
-  return 集结X(power, ci => {
-    if (way === 'normal') {
-      ci.obtain_unit(rep(unit, ci.isg() ? gold : normal))
-    } else {
-      ci.$ref$Player.warp(rep(unit, ci.isg() ? gold : normal))
-    }
-  })
+  return 集结X(
+    power,
+    ci => {
+      if (way === 'normal') {
+        ci.obtain_unit(rep(unit, ci.isg() ? gold : normal))
+      } else {
+        ci.$ref$Player.warp(rep(unit, ci.isg() ? gold : normal))
+      }
+    },
+    id
+  )
 }
 
 export default function (/* config */): Record<string, Descriptor> {
