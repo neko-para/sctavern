@@ -136,7 +136,7 @@ export type PlayerMsg = ApplyKey<
       units: UnitKey[]
     }
   | {
-      msg: 'wrap'
+      msg: 'warp'
       units: UnitKey[]
       into: CardInstance | null
     }

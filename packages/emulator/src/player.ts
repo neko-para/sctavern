@@ -1087,12 +1087,12 @@ export class PlayerInstance {
     }
   }
 
-  wrap(units: UnitKey[]) {
+  warp(units: UnitKey[]) {
     if (units.length === 0) {
       return
     }
     const m = this.post({
-      msg: 'wrap',
+      msg: 'warp',
       units,
       into: null as CardInstance | null,
     })
@@ -1105,7 +1105,7 @@ export class PlayerInstance {
       m.into = targets[0]
     }
     if (m.into) {
-      m.into.obtain_unit(units, 'wrap')
+      m.into.obtain_unit(units, 'warp')
     }
   }
 

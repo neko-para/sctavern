@@ -30,14 +30,14 @@ function 集结(
   unit: UnitKey,
   normal: number,
   gold: number,
-  way: 'normal' | 'wrap' = 'normal',
+  way: 'normal' | 'warp' = 'normal',
   id = 0
 ) {
   return 集结X(power, ci => {
     if (way === 'normal') {
       ci.obtain_unit(rep(unit, ci.isg() ? gold : normal))
     } else {
-      ci.$ref$Player.wrap(rep(unit, ci.isg() ? gold : normal))
+      ci.$ref$Player.warp(rep(unit, ci.isg() ? gold : normal))
     }
   })
 }
@@ -47,7 +47,7 @@ export default function (/* config */): Record<string, Descriptor> {
     折跃援军0: {
       listener: {
         'post-sell'() {
-          this.$ref$Player.wrap([
+          this.$ref$Player.warp([
             ...rep('狂热者', this.isg() ? 2 : 1),
             ...rep('追猎者', this.isg() ? 4 : 2),
           ])
@@ -71,7 +71,7 @@ export default function (/* config */): Record<string, Descriptor> {
     龙骑兵团1: {
       listener: {
         'post-sell'() {
-          this.$ref$Player.wrap(rep('龙骑士', this.find('零件').length))
+          this.$ref$Player.warp(rep('龙骑士', this.find('零件').length))
         },
       },
     },
@@ -82,7 +82,7 @@ export default function (/* config */): Record<string, Descriptor> {
       },
       note: (ci, act) => [act ? '启用' : '停用'],
       listener: {
-        wrap(m) {
+        warp(m) {
           m.into = this
         },
       },
@@ -99,14 +99,14 @@ export default function (/* config */): Record<string, Descriptor> {
     折跃部署0: {
       listener: {
         'round-end'() {
-          this.$ref$Player.wrap(rep('追猎者', this.isg() ? 3 : 2))
+          this.$ref$Player.warp(rep('追猎者', this.isg() ? 3 : 2))
         },
       },
     },
     折跃部署1: {
       listener: {
         'round-start'() {
-          this.$ref$Player.wrap(rep('狂热者', this.isg() ? 2 : 1))
+          this.$ref$Player.warp(rep('狂热者', this.isg() ? 2 : 1))
         },
       },
     },
@@ -142,13 +142,13 @@ export default function (/* config */): Record<string, Descriptor> {
     重回战场1: {
       listener: {
         'post-sell'() {
-          this.$ref$Player.wrap(rep('不朽者', this.isg() ? 2 : 1))
+          this.$ref$Player.warp(rep('不朽者', this.isg() ? 2 : 1))
         },
       },
     },
     折跃攻势0: {
       listener: {
-        wrap() {
+        warp() {
           this.obtain_unit(rep('追猎者', this.isg() ? 2 : 1))
         },
       },
@@ -161,12 +161,12 @@ export default function (/* config */): Record<string, Descriptor> {
         const tran = idx.slice(0, ci.isg() ? 2 : 1)
         us.push(...c.filter((u, i) => tran.includes(i)).map(elited))
       })
-      ci.$ref$Player.wrap(us)
+      ci.$ref$Player.warp(us)
     }),
     凯拉克斯0: {
       listener: {
         'round-end'() {
-          this.$ref$Player.wrap(
+          this.$ref$Player.warp(
             rep(
               (['不朽者', '巨像', '掠夺者'] as UnitKey[])[
                 this.$ref$Player.$ref$Game.lcg.int(2)
@@ -177,20 +177,20 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    虚空舰队0: 集结(5, '虚空辉光舰', 1, 2, 'wrap'),
+    虚空舰队0: 集结(5, '虚空辉光舰', 1, 2, 'warp'),
     势不可挡0: {
       listener: {
         'post-enter'() {
-          this.$ref$Player.wrap(rep('执政官(精英)', this.isg() ? 2 : 1))
+          this.$ref$Player.warp(rep('执政官(精英)', this.isg() ? 2 : 1))
         },
       },
     },
-    势不可挡1: 集结(5, '执政官', 1, 2, 'wrap'),
+    势不可挡1: 集结(5, '执政官', 1, 2, 'warp'),
     势不可挡2: {
       listener: {
         'round-end'() {
           if (this.power() >= 15) {
-            this.$ref$Player.wrap(['执政官(精英)'])
+            this.$ref$Player.warp(['执政官(精英)'])
           }
         },
       },
@@ -223,7 +223,7 @@ export default function (/* config */): Record<string, Descriptor> {
     尤尔兰2: {
       listener: {
         'obtain-unit'(m) {
-          if (m.time === 'prev' && m.way === 'wrap') {
+          if (m.time === 'prev' && m.way === 'warp') {
             m.units = m.units.map(u =>
               UnitData[u].tag.mechanical ? '尤尔兰' : u
             )
@@ -293,11 +293,11 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    净化一切0: 集结(4, '狂热者(精英)', 1, 2, 'wrap'),
+    净化一切0: 集结(4, '狂热者(精英)', 1, 2, 'warp'),
     净化一切1: {
       listener: {
         'round-end'() {
-          this.$ref$Player.wrap(
+          this.$ref$Player.warp(
             rep(
               '巨像(精英)',
               (this.isg() ? 2 : 1) * Math.min(2, Math.floor(this.power() / 7))
@@ -374,7 +374,7 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'card-entered'() {
           if (this.find('先知').length < this.power()) {
-            this.$ref$Player.wrap(rep('先知', this.isg() ? 2 : 1))
+            this.$ref$Player.warp(rep('先知', this.isg() ? 2 : 1))
           }
         },
       },
@@ -392,7 +392,7 @@ export default function (/* config */): Record<string, Descriptor> {
     英雄叉0: {
       listener: {
         'obtain-unit'(m) {
-          if (m.time === 'prev' && m.way === 'wrap') {
+          if (m.time === 'prev' && m.way === 'warp') {
             m.units = m.units.map(u =>
               u === '狂热者(精英)' ? '卡尔达利斯' : u
             )
