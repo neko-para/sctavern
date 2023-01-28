@@ -57,7 +57,7 @@ function 注卵(
     listener: {
       [msg](this: CardInstance) {
         if (pred(this)) {
-          this.$ref$Player.inject(unit(this))
+          this.$ref$Player.spawn(unit(this))
         }
       },
     },
@@ -149,7 +149,7 @@ export default function (/* config */): Record<string, Descriptor> {
     埋地刺蛇0: 注卵('post-sell', ci => rep('刺蛇', ci.isg() ? 6 : 3)),
     变异军团0: {
       listener: {
-        inject() {
+        spawn() {
           this.obtain_unit(rep('被感染的陆战队员', this.isg() ? 2 : 1))
         },
       },
@@ -201,7 +201,7 @@ export default function (/* config */): Record<string, Descriptor> {
     感染深渊0: {
       listener: {
         'round-end'() {
-          this.$ref$Player.inject(
+          this.$ref$Player.spawn(
             rep(
               '被感染的陆战队员',
               this.$ref$Player
@@ -243,7 +243,7 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'round-end'() {
           if (this.$ref$Player.all_of('Z').length >= 4) {
-            this.$ref$Player.inject(rep('雷兽', this.isg() ? 2 : 1))
+            this.$ref$Player.spawn(rep('雷兽', this.isg() ? 2 : 1))
           }
         },
       },
@@ -312,7 +312,7 @@ export default function (/* config */): Record<string, Descriptor> {
           const v = this.$ref$Player.persisAttrib.get('斯托科夫')
           this.$ref$Player.persisAttrib.set('斯托科夫', this.isg() ? 0 : 1 - v)
           if (this.isg() || v === 1) {
-            this.$ref$Player.inject(
+            this.$ref$Player.spawn(
               target.units
                 .map(u => UnitData[u])
                 .filter(u => isNormal(u) && !u.tag.heroic)
@@ -326,7 +326,7 @@ export default function (/* config */): Record<string, Descriptor> {
     守卫巢穴0: {
       listener: {
         'round-end'() {
-          this.$ref$Player.inject(rep('守卫', this.isg() ? 2 : 1))
+          this.$ref$Player.spawn(rep('守卫', this.isg() ? 2 : 1))
           this.$ref$Player.all().forEach(ci => {
             ci.replace(
               ci.find(['异龙', '异龙(精英)'], this.isg() ? 2 : 1),
@@ -337,14 +337,14 @@ export default function (/* config */): Record<string, Descriptor> {
       },
     },
     生化危机0: 科挂X(2, ci => {
-      ci.$ref$Player.inject([
+      ci.$ref$Player.spawn([
         ...rep('牛头人陆战队员', ci.isg() ? 2 : 1),
         ...rep('科技实验室', ci.isg() ? 4 : 2),
       ])
     }),
     雷兽窟0: {
       listener: {
-        inject() {
+        spawn() {
           this.replace(this.find('幼雷兽', this.isg() ? 2 : 1), '雷兽')
         },
       },

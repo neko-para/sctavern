@@ -1053,7 +1053,7 @@ export class PlayerInstance {
     })
   }
 
-  inject(units: UnitKey[], into: 'all' | 'left' = 'all') {
+  spawn(units: UnitKey[], into: 'all' | 'left' = 'all') {
     if (units.length === 0) {
       return
     }
@@ -1081,7 +1081,7 @@ export class PlayerInstance {
         })
       }
       this.post({
-        msg: 'inject',
+        msg: 'spawn',
         units,
       })
     }

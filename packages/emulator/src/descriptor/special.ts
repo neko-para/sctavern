@@ -76,7 +76,7 @@ export default function (/* config */): Record<string, Descriptor> {
             this.units.filter(u => isNormal(UnitData[u]))
           )
           if (u) {
-            this.$ref$Player.inject([u])
+            this.$ref$Player.spawn([u])
           }
         },
       },
@@ -92,7 +92,7 @@ export default function (/* config */): Record<string, Descriptor> {
             this.units.filter(u => isNormal(UnitData[u]))
           )
           if (u) {
-            this.$ref$Player.inject(rep(u, 3))
+            this.$ref$Player.spawn(rep(u, 3))
           }
         },
       },

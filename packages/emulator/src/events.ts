@@ -132,7 +132,7 @@ export type PlayerMsg = ApplyKey<
       from: CardInstance
     }
   | {
-      msg: 'inject'
+      msg: 'spawn'
       units: UnitKey[]
     }
   | {
