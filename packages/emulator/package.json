@@ -6,7 +6,8 @@
     "run": "npm run build & node index.js"
   },
   "dependencies": {
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "@sctavern/data": "*"
   },
   "devDependencies": {
     "@types/uuid": "^9.0.0",

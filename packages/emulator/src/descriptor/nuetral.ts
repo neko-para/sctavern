@@ -519,17 +519,15 @@ export default function (/* config */): Record<string, Descriptor> {
     风暴英雄0: {
       listener: {
         'obtain-upgrade'() {
-          this.obtain_unit(
-            this.$ref$Player.$ref$Game.lcg
-              .shuffle<UnitKey>([
-                '马拉什',
-                '阿拉纳克',
-                '利维坦',
-                '虚空构造体',
-                '科罗拉里昂',
-              ])
-              .slice(0, 1)
-          )
+          this.obtain_unit([
+            this.$ref$Player.$ref$Game.lcg.one_of([
+              '马拉什',
+              '阿拉纳克',
+              '利维坦',
+              '虚空构造体',
+              '科罗拉里昂',
+            ] as UnitKey[]) as UnitKey,
+          ])
         },
       },
     },

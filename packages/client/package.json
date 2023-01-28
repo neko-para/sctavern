@@ -22,7 +22,9 @@
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
     "vuetify": "^3.0.0-beta.0",
-    "webfontloader": "^1.0.0"
+    "webfontloader": "^1.0.0",
+    "@sctavern/data": "*",
+    "@sctavern/emulator": "*"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
