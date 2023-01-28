@@ -1301,10 +1301,7 @@ export const CardData: Record<CardKey, Card> = {
     belong: 'none',
     type: 'normal',
     desc: [
-      [
-        '唯一: 你的折跃效果总是添加到这张牌上',
-        '唯一: 你的折跃效果总是添加到这张牌上',
-      ],
+      ['你的折跃效果总是添加到这张牌上', '你的折跃效果总是添加到这张牌上'],
     ],
   },
   艾尔之刃: {
