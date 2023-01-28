@@ -943,16 +943,6 @@ export class PlayerInstance {
     }
     this.present[target[1].index()] = null
     ci.load_desc(cd)
-    ci.upgrades.forEach(u => {
-      switch (u) {
-        case '原始尖塔':
-          ci.add_desc('原始尖塔')
-          break
-        case '献祭':
-          ci.add_desc('献祭')
-          break
-      }
-    })
 
     this.post({
       msg: 'card-combined',

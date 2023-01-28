@@ -53,7 +53,8 @@ export function CreateRoleTable() {
           fake: true,
           withUpgrade: true,
         })
-        right.descs.push(...leftDesc)
+        right.attrib.load(left.attrib, ['任务'])
+        leftDesc.forEach(d => right.add_desc(d))
         switch (this.attrib.mode || 0) {
           case 0:
             this.enable = false
@@ -162,7 +163,9 @@ export function CreateRoleTable() {
         ci.name = `被感染的${ci.name}`
         ci.color = 'amber'
         ci.race = 'Z'
-        ci.descs = [this.attrib.mode === 2 ? '被感染的3' : '被感染的']
+        ci.clear_desc()
+        ci.add_desc(this.attrib.mode === 2 ? '被感染的3' : '被感染的')
+        ci.fix_upgrade()
         this.enable = false
       },
     },

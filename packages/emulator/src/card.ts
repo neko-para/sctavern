@@ -390,12 +390,28 @@ export class CardInstance {
     }
   }
 
-  load_desc(cd: Card) {
+  fix_upgrade() {
+    this.upgrades.forEach(u => {
+      switch (u) {
+        case '献祭':
+          this.add_desc('献祭')
+          break
+        case '原始尖塔':
+          this.add_desc('原始尖塔')
+          break
+      }
+    })
+  }
+
+  load_desc(cd: Card, fixUpgrade = true) {
     cd.desc
       .map((d, i) => `${cd.name}${i}`)
       .forEach(d => {
         this.add_desc(d)
       })
+    if (fixUpgrade) {
+      this.fix_upgrade()
+    }
   }
 
   clear_desc() {
