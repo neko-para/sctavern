@@ -221,7 +221,10 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'round-start'() {
           this.$ref$Player.all().forEach(ci => {
-            ci.replace(ci.find('陆战队员', this.isg() ? 2 : 1), '畸变体')
+            ci.replace(
+              ci.find('被感染的陆战队员', this.isg() ? 2 : 1),
+              '畸变体'
+            )
           })
         },
       },
