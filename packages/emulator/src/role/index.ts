@@ -151,6 +151,7 @@ export function CreateRoleTable() {
         ci.filter(u => u === '反应堆')
         ci.name = `被感染的${ci.name}`
         ci.color = 'amber'
+        ci.race = 'Z'
         ci.descs = [this.attrib.mode === 2 ? '被感染的3' : '被感染的']
         this.enable = false
       },

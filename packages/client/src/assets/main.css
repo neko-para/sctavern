@@ -25,10 +25,11 @@ span {
 
 .selected {
   border: 1px solid black !important;
+  padding: 1px !important;
 }
 
 .unselected {
-  padding: 1px !important;
+  padding: 2px !important;
 }
 
 .FullScreen {
