@@ -995,7 +995,8 @@ export class PlayerInstance {
     this.present[pos] = null
     this.process = ci
 
-    const doPostEffect = ci.level > 0 || ci.name === '虫卵'
+    const doPostEffect =
+      ci.level > 0 || ci.name === '虫卵' || ci.name === '被感染的虫卵'
     const dark = ci.level >= 4 ? 2 : 1
     if (doPostEffect) {
       ci.post({

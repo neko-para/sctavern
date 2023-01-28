@@ -524,7 +524,7 @@ export const UnitData: Record<UnitKey, Unit> = {
     pinyin: 'lj',
     race: 'N',
     value: 0,
-    type: 'normal',
+    type: 'special unit',
     tag: {},
     health: 0,
   },

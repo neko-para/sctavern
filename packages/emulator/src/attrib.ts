@@ -23,7 +23,7 @@ export class Attribute {
   }
 
   load(attrib: Attribute, ignore: string[]) {
-    for (const key in Object.keys(attrib.value).filter(
+    for (const key of Object.keys(attrib.value).filter(
       s => !ignore.includes(s)
     )) {
       this.alter(key, attrib.get(key))
