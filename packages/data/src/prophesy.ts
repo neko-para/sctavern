@@ -1,6 +1,6 @@
 import { Prophesy } from './types'
 
-export const AllProphesy = [
+const $AllProphesy = [
   '混沌洪流',
   '无限融合',
   '狂热冲锋',
@@ -61,7 +61,9 @@ export const AllProphesy = [
   '点石成金',
 ] as const
 
-export type ProphesyKey = (typeof AllProphesy)[number]
+export type ProphesyKey = (typeof $AllProphesy)[number]
+
+export const AllProphesy: readonly ProphesyKey[] = $AllProphesy
 
 export const ProphesyData: {
   [key in ProphesyKey]: Prophesy & {

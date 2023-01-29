@@ -1,6 +1,6 @@
 import type { Mutation } from './types'
 
-export const AllMutation = [
+const $AllMutation = [
   '辅助角色-诺娃',
   '辅助角色-星港',
   '辅助角色-泰凯斯',
@@ -8,7 +8,9 @@ export const AllMutation = [
   '作战规划',
 ] as const
 
-export type MutationKey = (typeof AllMutation)[number]
+export type MutationKey = (typeof $AllMutation)[number]
+
+export const AllMutation: readonly MutationKey[] = $AllMutation
 
 export const MutationData: {
   [key in MutationKey]: Mutation & { name: key }

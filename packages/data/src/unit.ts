@@ -1,6 +1,6 @@
 import type { Unit } from './types'
 
-export const AllUnit = [
+const $AllUnit = [
   '塔达林母舰',
   '虚空裂隙',
   '百夫长',
@@ -192,7 +192,9 @@ export const AllUnit = [
   '幽灵<埃蒙>',
 ] as const
 
-export type UnitKey = (typeof AllUnit)[number]
+export type UnitKey = (typeof $AllUnit)[number]
+
+export const AllUnit: readonly UnitKey[] = $AllUnit
 
 export const UnitData: {
   [key in UnitKey]: Unit & { name: key }

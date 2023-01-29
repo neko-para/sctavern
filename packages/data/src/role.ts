@@ -1,6 +1,6 @@
 import type { Role } from './types'
 
-export const AllRole = [
+const $AllRole = [
   '白板',
   '执政官',
   '狂热者',
@@ -54,7 +54,9 @@ export const AllRole = [
   '干扰者',
 ] as const
 
-export type RoleKey = (typeof AllRole)[number]
+export type RoleKey = (typeof $AllRole)[number]
+
+export const AllRole: readonly RoleKey[] = $AllRole
 
 export const RoleData: {
   [key in RoleKey]: Role & { name: key }

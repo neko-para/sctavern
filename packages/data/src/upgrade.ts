@@ -1,6 +1,6 @@
 import type { Upgrade } from './types'
 
-export const AllUpgrade = [
+const $AllUpgrade = [
   '反甲',
   '力大砖飞',
   '金光闪闪',
@@ -43,7 +43,9 @@ export const AllUpgrade = [
   '硬化外壳',
 ] as const
 
-export type UpgradeKey = (typeof AllUpgrade)[number]
+export type UpgradeKey = (typeof $AllUpgrade)[number]
+
+export const AllUpgrade: readonly UpgradeKey[] = $AllUpgrade
 
 export const UpgradeData: {
   [key in UpgradeKey]: Upgrade & { name: key }

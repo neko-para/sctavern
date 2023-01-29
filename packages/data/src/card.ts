@@ -1,6 +1,6 @@
 import type { Card } from './types'
 
-export const AllCard = [
+const $AllCard = [
   '帝国精锐',
   '英雄叉',
   '机械感染',
@@ -143,7 +143,9 @@ export const AllCard = [
   '幽灵报道',
 ] as const
 
-export type CardKey = (typeof AllCard)[number]
+export type CardKey = (typeof $AllCard)[number]
+
+export const AllCard: readonly CardKey[] = $AllCard
 
 export const CardData: {
   [key in CardKey]: Card & { name: key }

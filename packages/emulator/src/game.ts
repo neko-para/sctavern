@@ -38,7 +38,7 @@ export class LCG {
     return array
   }
 
-  one_of<T>(array: T[]): T | null {
+  one_of<T>(array: readonly T[]): T | null {
     return array.length > 0 ? array[this.int(array.length - 1)] : null
   }
 }
