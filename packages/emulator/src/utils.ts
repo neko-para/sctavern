@@ -74,7 +74,7 @@ export function mostValueUnit(
       }
     },
     {
-      index: -1,
+      index: 0,
       value: uv[0],
     }
   )
