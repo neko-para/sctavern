@@ -75,10 +75,13 @@ export class Pool {
       if (!this.allow.includes(c.pack)) {
         return
       }
+      const cnt = (this.heap[c.name] || 0) + 1
+      /*
       let cnt = (this.heap[c.name] || 0) + 1
       if (cnt > poolCount[c.level]) {
         cnt = poolCount[c.level]
       }
+      */
       this.heap[c.name] = cnt
     })
   }
