@@ -195,7 +195,10 @@ const $PveExtraUnit = [
   '掠食者',
   '幽灵',
   '幽灵<埃蒙>',
-  /* '守卫(精英)', '侦察机(精英)', '风暴战舰(精英)' */
+  '怨灵战机(精英)',
+  '侦察机(精英)',
+  '风暴战舰(精英)',
+  '守卫(精英)',
 ] as const
 
 export type UnitKey = (typeof $AllUnit)[number] | (typeof $PveExtraUnit)[number]
@@ -2693,5 +2696,60 @@ export const UnitData: {
       psionic: true,
     },
     health: 100,
+  },
+  '怨灵战机(精英)': {
+    name: '怨灵战机(精英)',
+    pinyin: 'ylzj(jy)',
+    race: 'T',
+    value: 350,
+    type: 'normal',
+    tag: {
+      armored: true,
+      mechanical: true,
+      air: true,
+    },
+    health: 225,
+  },
+  '侦察机(精英)': {
+    name: '侦察机(精英)',
+    pinyin: 'zcj(jy)',
+    race: 'P',
+    value: 400,
+    type: 'normal',
+    tag: {
+      armored: true,
+      mechanical: true,
+      air: true,
+    },
+    health: 250,
+    shield: 100,
+  },
+  '风暴战舰(精英)': {
+    name: '风暴战舰(精英)',
+    pinyin: 'fbzj(jy)',
+    race: 'P',
+    value: 600,
+    type: 'normal',
+    tag: {
+      armored: true,
+      mechanical: true,
+      massive: true,
+      air: true,
+    },
+    health: 300,
+    shield: 150,
+  },
+  '守卫(精英)': {
+    name: '守卫(精英)',
+    pinyin: 'sw(jy)',
+    race: 'Z',
+    value: 350,
+    type: 'normal',
+    tag: {
+      armored: true,
+      biological: true,
+      air: true,
+    },
+    health: 250,
   },
 }
