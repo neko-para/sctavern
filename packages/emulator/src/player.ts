@@ -83,6 +83,15 @@ const playerBind: GenericListener<PlayerInstance> = {
         this.enter(card, place)
         break
       }
+      case 'deploy': {
+        const card = this.deployCard.shift()
+        if (!card) {
+          return
+        }
+        this.status.pop()
+        this.enter(card, place)
+        break
+      }
       case 'discover': {
         const ctx = this.discoverItem.shift()
         if (!ctx) {
@@ -809,6 +818,11 @@ export class PlayerInstance {
     this.insertCard.push(card)
   }
 
+  push_deploy(card: CardKey) {
+    this.status.push('deploy')
+    this.deployCard.push(card)
+  }
+
   push_discover(
     item?: DiscoverItem[],
     cfg?: {
@@ -835,7 +849,9 @@ export class PlayerInstance {
 
   require_enter(card: CardKey) {
     const cd = CardData[card]
-    if (this.config.AlwaysInsert || cd.attr.insert) {
+    if (cd.type === 'support') {
+      this.push_deploy(card)
+    } else if (this.config.AlwaysInsert || cd.attr.insert) {
       this.push_insert(card)
     } else {
       this.enter(card)
@@ -849,6 +865,23 @@ export class PlayerInstance {
   }
 
   enter(card: CardKey, place = -1) {
+    const cd = CardData[card]
+    if (cd.type === 'support') {
+      const target = this.present[place]?.card
+      if (target) {
+        const ci = new CardInstance(this, cd)
+        ci.load_desc(cd)
+        this.process = ci
+        ci.post({
+          msg: 'post-deploy',
+          target,
+        })
+        ci.clear_desc()
+        this.process = null
+        return null
+      }
+    }
+
     if (place === -1) {
       place = this.present.findIndex(x => !x)
       if (place === -1) {
@@ -866,7 +899,6 @@ export class PlayerInstance {
         this.present.splice(place, 0, null)
       }
     }
-    const cd = CardData[card]
     const ci = new CardInstance(this, cd)
     if (this.$ref$Game.config.PoolPack.includes(cd.pack)) {
       ci.occupy.push(card)
@@ -1014,11 +1046,17 @@ export class PlayerInstance {
     this.process = null
   }
 
-  destroy(ci: CardInstance) {
+  destroy(ci: CardInstance, config?: { extraEnter?: true }) {
     const pos = ci.index()
     ci.attrib.set('oldpos', pos)
     this.present[pos] = null
     this.process = ci
+
+    if (config?.extraEnter) {
+      ci.post({
+        msg: 'post-enter',
+      })
+    }
 
     const doPostEffect = ci.level > 0
     const dark = ci.level >= 4 ? 2 : 1

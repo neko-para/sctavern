@@ -395,5 +395,25 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
+    基因编辑0: {
+      listener: {
+        'post-enter'() {
+          const ci = this.left()
+          if (!ci || ci.occupy.length === 0 || ci.level < 1 || ci.level > 6) {
+            return
+          }
+          const tl = ci.level
+          this.$ref$Player.destroy(ci)
+          this.$ref$Player.push_discover(
+            this.$ref$Player.$ref$Game.pool
+              .discover(c => c.level === tl, 3)
+              ?.map(card => ({
+                type: 'card',
+                card,
+              }))
+          )
+        },
+      },
+    },
   }
 }

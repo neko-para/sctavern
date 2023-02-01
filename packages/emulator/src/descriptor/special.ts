@@ -125,5 +125,64 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
+    生化实验室0: {
+      listener: {
+        'post-deploy'({ target }) {
+          this.$ref$Player.spawn(
+            rep(
+              '被感染的陆战队员',
+              target.filter(
+                u => u !== '被感染的陆战队员' && !!UnitData[u].tag.biological
+              ).length
+            )
+          )
+        },
+      },
+    },
+    紧急回收0: {
+      listener: {
+        'post-deploy'({ target }) {
+          const units = target.findu(
+            u => isNormal(UnitData[u]) && !UnitData[u].tag.heroic
+          )
+          const into = target
+            .around()
+            .filter(ci => ci.name !== '虫卵' && ci.name !== '被感染的虫卵') // ?
+          this.$ref$Player.destroy(target)
+          if (into.length > 0) {
+            into[0].obtain_unit(units)
+          }
+        },
+      },
+    },
+    星灵科技: {
+      listener: {
+        'round-end'() {
+          this.$ref$Player.warp(rep('陆战队员', this.isg() ? 2 : 1))
+        },
+      },
+      text: ['每回合结束时, 折跃1陆战队员', '每回合结束时, 折跃2陆战队员'],
+    },
+    星灵科技0: {
+      listener: {
+        'post-deploy'({ target }) {
+          target.add_desc('星灵科技')
+        },
+      },
+    },
+    尖端科技0: {
+      listener: {
+        'post-deploy'({ target }) {
+          target.obtain_upgrade('轨道空降')
+        },
+      },
+    },
+    超负荷0: {
+      listener: {
+        'post-deploy'({ target }) {
+          this.$ref$Player.destroy(target, { extraEnter: true })
+        },
+      },
+    },
   }
 }

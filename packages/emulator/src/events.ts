@@ -209,7 +209,7 @@ export type CardMsg = ApplyKey<
     }
   | {
       msg: 'post-deploy'
-      target: number
+      target: CardInstance
     },
   {
     player: number

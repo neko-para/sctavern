@@ -1,4 +1,12 @@
-import { CardData, elited, isNormal, UnitData, UnitKey } from '@sctavern/data'
+import {
+  CardData,
+  CardPack,
+  elited,
+  isNormal,
+  isRoyalized,
+  UnitData,
+  UnitKey,
+} from '@sctavern/data'
 import { CardInstance } from '../card'
 import { InnerMsg } from '../events'
 import { Descriptor } from '../types'
@@ -359,6 +367,22 @@ export default function (/* config */): Record<string, Descriptor> {
       'instant'
     ),
     帝国舰队1: 科挂(4, '黄昏之翼', 2, 4),
+    cloudplayer0: {
+      listener: {
+        'post-enter'() {
+          while (
+            this.$ref$Player.all().filter(ci => ci.value() > this.value())
+              .length > 2
+          ) {
+            this.obtain_unit([
+              this.$ref$Player.$ref$Game.lcg.one_of(
+                this.$ref$Player.$ref$Game.config.ActiveUnit.filter(isRoyalized)
+              ),
+            ] as UnitKey[])
+          }
+        },
+      },
+    },
     黄昏之翼0: 快速生产('黄昏之翼', 1, 2),
     黄昏之翼1: 反应堆('黄昏之翼'),
     艾尔游骑兵0: {
@@ -450,6 +474,24 @@ export default function (/* config */): Record<string, Descriptor> {
                   .reduce((a, b) => a + b, 0) / (this.isg() ? 2 : 3)
               )
             )
+          )
+        },
+      },
+    },
+    黑市商人0: {
+      listener: {
+        'post-enter'() {
+          const sc = this.$ref$Player.$ref$Game.lcg
+            .shuffle(CardPack.诺娃衍生.map(c => CardData[c]))
+            .slice(0, 2)
+          this.$ref$Player.push_discover(
+            sc.map(card => ({
+              type: 'card',
+              card,
+            })),
+            {
+              nodrop: true,
+            }
           )
         },
       },

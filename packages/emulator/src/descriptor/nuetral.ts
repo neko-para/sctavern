@@ -4,6 +4,7 @@ import {
   CardData,
   elited,
   isNormal,
+  Race,
   UnitData,
   UnitKey,
 } from '@sctavern/data'
@@ -42,7 +43,7 @@ function 黑暗容器_获得(
   }
 }
 
-function 黑暗容器_复活(req: number) {
+function 黑暗容器_强化(req: number) {
   return NotImplementYet()
 }
 
@@ -50,7 +51,14 @@ export default function (/* config */): Record<string, Descriptor> {
   return {
     原始蟑螂0: 供养(1, '原始蟑螂'),
     不死队0: 黑暗容器_获得('不死队', 1, 2),
-    不死队1: 黑暗容器_复活(8),
+    不死队1: 黑暗容器_强化(8),
+    小捞油水0: {
+      listener: {
+        'post-sell'() {
+          this.$ref$Player.do_refresh()
+        },
+      },
+    },
     原始刺蛇0: 供养(1, '原始刺蛇'),
     原始刺蛇1: {
       listener: {
@@ -103,7 +111,7 @@ export default function (/* config */): Record<string, Descriptor> {
       },
     },
     鲜血猎手0: 黑暗容器_获得('鲜血猎手', 1, 2),
-    鲜血猎手1: 黑暗容器_复活(5),
+    鲜血猎手1: 黑暗容器_强化(5),
     暴掠龙0: 供养(2, '暴掠龙'),
     暴掠龙1: {
       listener: {
@@ -395,9 +403,9 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    虚空裂隙0: 黑暗容器_获得('百夫长', 1, 2),
-    虚空裂隙1: 黑暗容器_复活(5),
-    虚空裂隙2: {
+    虚空裂痕0: 黑暗容器_获得('百夫长', 1, 2),
+    虚空裂痕1: 黑暗容器_强化(5),
+    虚空裂痕2: {
       listener: {
         'round-end'() {
           if (this.$ref$Player.mineral >= 1) {
@@ -460,7 +468,7 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    深渊行者0: 黑暗容器_复活(10),
+    深渊行者0: 黑暗容器_强化(10),
     深渊行者1: {
       listener: {
         seize() {
@@ -571,6 +579,19 @@ export default function (/* config */): Record<string, Descriptor> {
               ])
               .slice(0, this.isg() ? 2 : 1)
           )
+        },
+      },
+    },
+    秘密实验0: {
+      listener: {
+        'post-enter'() {
+          const rs = ['T', 'P', 'Z'] as Race[]
+          rs.map(r => this.$ref$Player.all_of(r))
+            .filter(cs => cs.length > 0)
+            .map(cs => cs[0])
+            .forEach(ci => {
+              ci.obtain_unit(['混合体掠夺者'])
+            })
         },
       },
     },

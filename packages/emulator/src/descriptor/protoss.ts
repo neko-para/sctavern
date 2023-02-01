@@ -408,5 +408,14 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
+    人格上传0: {
+      listener: {
+        'card-selled'({ target }) {
+          if (target.value() > this.value()) {
+            this.obtain_unit(rep('菲尼克斯', this.isg() ? 3 : 1))
+          }
+        },
+      },
+    },
   }
 }

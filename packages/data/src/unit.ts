@@ -122,6 +122,7 @@ const $AllUnit = [
   '沃菲尔德将军',
   '帝盾卫兵',
   '战列巡航舰',
+  '易爆感染体',
   '陆战队员(精英)',
   '劫掠者(精英)',
   '歌利亚(精英)',
@@ -186,13 +187,14 @@ const $AllUnit = [
   '原始守卫',
   '毒裂兽',
   '王兽',
+  '赫克',
+] as const
+
+const $PveExtraUnit = [
   'SCV',
   '掠食者',
   '幽灵',
   '幽灵<埃蒙>',
-] as const
-
-const $PveExtraUnit = [
   /* '守卫(精英)', '侦察机(精英)', '风暴战舰(精英)' */
 ] as const
 
@@ -1786,6 +1788,18 @@ export const UnitData: {
     },
     health: 550,
   },
+  易爆感染体: {
+    name: '易爆感染体',
+    pinyin: 'ybgrt',
+    race: 'Z',
+    value: 100,
+    type: 'normal',
+    tag: {
+      light: true,
+      biological: true,
+    },
+    health: 75,
+  },
   '陆战队员(精英)': {
     name: '陆战队员(精英)',
     pinyin: 'lzdy(jy)',
@@ -2618,6 +2632,19 @@ export const UnitData: {
     },
     health: 2400,
   },
+  赫克: {
+    name: '赫克',
+    pinyin: 'hk',
+    race: 'T',
+    value: 150,
+    type: 'normal',
+    tag: {
+      armored: true,
+      biological: true,
+    },
+    health: 200,
+  },
+
   SCV: {
     name: 'SCV',
     pinyin: 'scv',

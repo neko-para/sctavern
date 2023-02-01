@@ -137,6 +137,16 @@ export class CardInstance {
       .slice(0, maxi)
   }
 
+  findu(u: UnitKey | UnitKey[] | ((unit: UnitKey) => boolean), maxi?: number) {
+    const pred =
+      typeof u === 'string'
+        ? (unit: UnitKey) => unit === u
+        : u instanceof Array
+        ? (unit: UnitKey) => u.includes(unit)
+        : u
+    return this.units.filter(u => pred(u)).slice(0, maxi)
+  }
+
   filter(pred: (unit: UnitKey, pos: number) => boolean, maxi = -1) {
     const taked: UnitKey[] = []
     if (maxi === -1) {
