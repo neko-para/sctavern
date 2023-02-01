@@ -188,13 +188,21 @@ const $AllUnit = [
   '毒裂兽',
   '王兽',
   '赫克',
+  '探机',
 ] as const
 
 const $PveExtraUnit = [
   'SCV',
+  '光子炮台',
+  '工蜂',
+  '脊针爬虫',
   '掠食者',
   '幽灵',
   '幽灵<埃蒙>',
+  '后虫',
+  '科学船',
+  '海盗船',
+
   '怨灵战机(精英)',
   '侦察机(精英)',
   '风暴战舰(精英)',
@@ -2647,6 +2655,19 @@ export const UnitData: {
     },
     health: 200,
   },
+  探机: {
+    name: '探机',
+    pinyin: 'tj',
+    race: 'P',
+    value: 50,
+    type: 'normal',
+    tag: {
+      light: true,
+      mechanical: true,
+    },
+    health: 20,
+    shield: 20,
+  },
 
   SCV: {
     name: 'SCV',
@@ -2660,6 +2681,44 @@ export const UnitData: {
       mechanical: true,
     },
     health: 45,
+  },
+  光子炮台: {
+    name: '光子炮台',
+    pinyin: 'gzpt',
+    race: 'P',
+    value: 150,
+    type: 'normal',
+    tag: {
+      armored: true,
+      structure: true,
+    },
+    health: 150,
+    shield: 150,
+  },
+  工蜂: {
+    name: '工蜂',
+    pinyin: 'gf',
+    race: 'Z',
+    value: 50,
+    type: 'normal',
+    tag: {
+      light: true,
+      biological: true,
+    },
+    health: 40,
+  },
+  脊针爬虫: {
+    name: '脊针爬虫',
+    pinyin: 'jzpc',
+    race: 'Z',
+    value: 150,
+    type: 'normal',
+    tag: {
+      armored: true,
+      biological: true,
+      structure: true,
+    },
+    health: 300,
   },
   掠食者: {
     name: '掠食者',
@@ -2697,6 +2756,46 @@ export const UnitData: {
     },
     health: 100,
   },
+  后虫: {
+    name: '后虫',
+    pinyin: 'hc',
+    race: 'Z',
+    value: 300,
+    type: 'normal',
+    tag: {
+      biological: true,
+      air: true,
+    },
+    health: 120,
+  },
+  科学船: {
+    name: '科学船',
+    pinyin: 'kxq',
+    race: 'T',
+    value: 0,
+    type: 'normal',
+    tag: {
+      light: true,
+      mechanical: true,
+      air: true,
+    },
+    health: 200,
+  },
+  海盗船: {
+    name: '海盗船',
+    pinyin: 'hdc',
+    race: 'P',
+    value: 250,
+    type: 'normal',
+    tag: {
+      light: true,
+      mechanical: true,
+      air: true,
+    },
+    health: 120,
+    shield: 60,
+  },
+
   '怨灵战机(精英)': {
     name: '怨灵战机(精英)',
     pinyin: 'ylzj(jy)',
