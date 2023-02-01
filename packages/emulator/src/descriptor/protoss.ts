@@ -160,7 +160,11 @@ export default function (/* config */): Record<string, Descriptor> {
     净化者军团0: 集结X(5, ci => {
       const us: UnitKey[] = []
       ci.$ref$Player.all_of('P').forEach(c => {
-        const idx = c.find(u => canElite(u) && !!UnitData[u].tag.massive)
+        const idx = c.find(
+          u =>
+            canElite(ci.$ref$Player.$ref$Game.config.ActiveUnit, u) &&
+            !!UnitData[u].tag.massive
+        )
         ci.$ref$Player.$ref$Game.lcg.shuffle(idx)
         const tran = idx.slice(0, ci.isg() ? 2 : 1)
         us.push(...c.filter((u, i) => tran.includes(i)).map(elited))

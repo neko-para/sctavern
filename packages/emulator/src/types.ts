@@ -67,6 +67,7 @@ export interface GameConfig {
   Pve: boolean
   PoolPack: PackKey[]
   ActivePack: PackKey[]
+  ActiveUnit: UnitKey[]
 }
 
 export interface PlayerConfig {

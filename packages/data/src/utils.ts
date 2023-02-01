@@ -5,16 +5,16 @@ export function elited(key: UnitKey): UnitKey {
   return `${key}(精英)` as UnitKey
 }
 
-export function canElite(key: UnitKey): boolean {
-  return AllUnit.includes(elited(key))
+export function canElite(units: UnitKey[], key: UnitKey): boolean {
+  return units.includes(elited(key))
 }
 
 export function royalized(key: UnitKey): UnitKey {
   return `${key}(皇家卫队)` as UnitKey
 }
 
-export function canRoyalize(key: UnitKey): boolean {
-  return AllUnit.includes(royalized(key))
+export function canRoyalize(units: UnitKey[], key: UnitKey): boolean {
+  return units.includes(royalized(key))
 }
 
 export function isNormal(unit: Unit): boolean {

@@ -192,9 +192,20 @@ const $AllUnit = [
   '幽灵<埃蒙>',
 ] as const
 
-export type UnitKey = (typeof $AllUnit)[number]
+const $PveExtraUnit = [
+  /* '守卫(精英)', '侦察机(精英)', '风暴战舰(精英)' */
+] as const
+
+export type UnitKey = (typeof $AllUnit)[number] | (typeof $PveExtraUnit)[number]
 
 export const AllUnit: readonly UnitKey[] = $AllUnit
+
+export const PvpPresetActiveUnit: readonly UnitKey[] = $AllUnit
+
+export const PvePresetActiveUnit: readonly UnitKey[] = [
+  ...$AllUnit,
+  ...$PveExtraUnit,
+]
 
 export const UnitData: {
   [key in UnitKey]: Unit & { name: key }

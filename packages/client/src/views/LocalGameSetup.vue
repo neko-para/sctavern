@@ -7,7 +7,10 @@ import {
   PvpPresetActivePack,
   PvePresetActivePack,
   PresetPoolPack,
-  type Pack,
+  type PackKey,
+  PvePresetActiveUnit,
+  PvpPresetActiveUnit,
+  type UnitKey,
 } from '@sctavern/data'
 
 const router = useRouter()
@@ -22,7 +25,10 @@ const config = reactive<GameConfig>({
   PoolPack: PresetPoolPack,
   ActivePack: computed(() => {
     return config.Pve ? PvePresetActivePack : PvpPresetActivePack
-  }) as unknown as Pack[],
+  }) as unknown as PackKey[],
+  ActiveUnit: computed(() => {
+    return config.Pve ? PvePresetActiveUnit : PvpPresetActiveUnit
+  }) as unknown as UnitKey[],
 }) as GameConfig
 
 function startGame() {

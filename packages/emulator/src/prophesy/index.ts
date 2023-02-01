@@ -276,9 +276,11 @@ export function CreateProphesyTable() {
     精英学院: {
       listener: {
         'round-end'() {
-          console.log(1)
           this.all().forEach(ci => {
-            ci.replace(ci.find(canElite), elited)
+            ci.replace(
+              ci.find(u => canElite(this.$ref$Game.config.ActiveUnit, u)),
+              elited
+            )
           })
         },
       },

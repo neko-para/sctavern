@@ -130,7 +130,10 @@ export default function (/* config */): Record<string, Descriptor> {
                   info =>
                     isNormal(info.unit) &&
                     info.unit.tag.biological &&
-                    canElite(info.unit.name)
+                    canElite(
+                      this.$ref$Player.$ref$Game.config.ActiveUnit,
+                      info.unit.name
+                    )
                 )
                 .map(info => ({
                   card: ci,
