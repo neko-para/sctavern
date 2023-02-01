@@ -135,7 +135,7 @@ const getCardChoice = computed(() => {
 const getUnitDlg = ref(false)
 const getUnitKey = ref('')
 const getUnitChoice = computed(() => {
-  return AllUnit.map(u => UnitData[u])
+  return state.value.config.ActiveUnit.map(u => UnitData[u])
     .map((unit, index) => ({
       unit,
       find: unit.pinyin.indexOf(getUnitKey.value),
