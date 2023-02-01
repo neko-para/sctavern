@@ -163,7 +163,7 @@ export default function (/* config */): Record<string, Descriptor> {
         const idx = c.find(
           u =>
             canElite(ci.$ref$Player.$ref$Game.config.ActiveUnit, u) &&
-            !!UnitData[u].tag.massive
+            !UnitData[u].tag.massive
         )
         ci.$ref$Player.$ref$Game.lcg.shuffle(idx)
         const tran = idx.slice(0, ci.isg() ? 2 : 1)
