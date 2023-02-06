@@ -16,7 +16,7 @@
       "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/data",
+        "outputPath": "node_modules/@sctavern/data",
         "tsConfig": "packages/data/tsconfig.lib.json",
         "packageJson": "packages/data/package.json",
         "main": "packages/data/src/index.ts",

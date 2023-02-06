@@ -23,8 +23,8 @@
     "vue-router": "^4.1.6",
     "vuetify": "^3.0.0-beta.0",
     "webfontloader": "^1.0.0",
-    "@sctavern/data": "*",
-    "@sctavern/emulator": "*"
+    "@sctavern/data": "file:../../node_modules/@sctavern/data",
+    "@sctavern/emulator": "file:../../node_modules/@sctavern/emulator"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",

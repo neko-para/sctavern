@@ -11,7 +11,7 @@
       "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/emulator",
+        "outputPath": "node_modules/@sctavern/emulator",
         "tsConfig": "packages/emulator/tsconfig.lib.json",
         "packageJson": "packages/emulator/package.json",
         "main": "packages/emulator/src/index.ts",
