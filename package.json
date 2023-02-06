@@ -37,6 +37,11 @@
     "vite-tsconfig-paths": "^4.0.2",
     "vitest": "^0.25.8"
   },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
   "dependencies": {
     "core-js": "^3.6.5",
     "regenerator-runtime": "0.13.7",
