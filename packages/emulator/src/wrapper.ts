@@ -1,6 +1,6 @@
 import { GameInstance } from './game'
 import { Server } from './server'
-import { GameConfig } from './types'
+import type { GameConfig } from './types'
 import defaultManager from './serialize'
 import { AllUnit, PresetPoolPack, PvpPresetActivePack } from '@sctavern/data'
 

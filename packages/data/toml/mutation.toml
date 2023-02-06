@@ -1,0 +1,24 @@
+
+[[mutation]]
+name = '辅助角色-诺娃'
+pinyin = 'fzjs-nw'
+prevent = '诺娃'
+
+[[mutation]]
+name = '辅助角色-星港'
+pinyin = 'fzjs-xg'
+prevent = '星港'
+
+[[mutation]]
+name = '辅助角色-泰凯斯'
+pinyin = 'fzjs-tks'
+prevent = '泰凯斯'
+
+[[mutation]]
+name = '地嗪外溢'
+pinyin = 'dqwy'
+prevent = '斯台特曼'
+
+[[mutation]]
+name = '作战规划'
+pinyin = 'zzgh'

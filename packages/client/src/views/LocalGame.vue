@@ -10,7 +10,7 @@ import {
 import GameInstanceVue from '@/components/GameInstance.vue'
 import { useSaveStore } from '@/stores/save'
 import { useRouter } from 'vue-router'
-import { AllUnit, CardData, CardPack, UnitData } from '@sctavern/data'
+import { CardData, PackData, UnitData } from '@sctavern/data'
 import { useBrowserStore } from '@/stores/browser'
 
 const browserStore = useBrowserStore()
@@ -112,7 +112,7 @@ document.onkeydown = ev => {
 const getCardDlg = ref(false)
 const getCardKey = ref('')
 const getCardChoice = computed(() => {
-  return state.value.config.ActivePack.map(p => CardPack[p])
+  return state.value.config.ActivePack.map(p => PackData[p])
     .reduce((r, x) => r.concat(x), [])
     .map(c => CardData[c])
     .map((card, index) => ({

@@ -4,11 +4,10 @@ import {
   CardData,
   elited,
   isNormal,
-  Race,
   UnitData,
-  UnitKey,
 } from '@sctavern/data'
-import { Descriptor } from '../types'
+import type { Race, UnitKey } from '@sctavern/data'
+import type { Descriptor } from '../types'
 import { mostValueUnit, NotImplementYet, notNull, rep } from '../utils'
 
 function 供养(n: number, unit: UnitKey): Descriptor {

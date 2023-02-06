@@ -1,5 +1,5 @@
 {
-  "name": "@sctavern-emulator",
+  "name": "@sctavern/emulator",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/emulator/src",
   "projectType": "library",

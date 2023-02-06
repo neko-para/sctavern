@@ -11,9 +11,9 @@ import type {
   Upgrade,
   Prophesy,
 } from '@sctavern/data'
-import { CardInstance } from './card'
-import { GenericListener, InnerMsg, SpecificListener } from './events'
-import { PlayerInstance } from './player'
+import type { CardInstance } from './card'
+import type { GenericListener, InnerMsg, SpecificListener } from './events'
+import type { PlayerInstance } from './player'
 
 export type DistributiveOmit<T, K extends keyof T> = T extends unknown
   ? Omit<T, K>

@@ -1,0 +1,3375 @@
+
+[[card]]
+name = '帝国精锐'
+pinyin = 'dgjr'
+race = 'T'
+level = 4
+pack = '军备竞赛'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'快速生产: 获得<1>恶蝠游骑兵',
+		'快速生产: 获得<2>恶蝠游骑兵',
+	],
+	[
+		'每回合结束时, 每拥有<3>反应堆获得1恶蝠游骑兵',
+		'每回合结束时, 每拥有<2>反应堆获得1恶蝠游骑兵',
+	],
+]
+
+[card.unit]
+'恶蝠游骑兵' = 2
+'修理无人机' = 2
+'反应堆' = 1
+
+[card.attr]
+
+[[card]]
+name = '英雄叉'
+pinyin = 'yxc'
+race = 'P'
+level = 2
+pack = '军备竞赛'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'折跃单位到此卡牌时, 将所有折跃的狂热者(精英)变为卡尔达利斯',
+		'折跃单位到此卡牌时, 将所有折跃的狂热者(精英)变为卡尔达利斯',
+	],
+]
+
+[card.unit]
+'卡尔达利斯' = 1
+'水晶塔' = 2
+
+[card.attr]
+
+[[card]]
+name = '机械感染'
+pinyin = 'jxgr'
+race = 'Z'
+level = 3
+pack = '军备竞赛'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 孵化<1>被感染的女妖',
+		'每回合结束时, 孵化<2>被感染的女妖',
+	],
+	[
+		'唯一: 任意价值达到3600的非虫卵虫族卡牌出售时, 此卡牌获得1末日巨兽',
+		'唯一: 任意价值达到3600的非虫卵虫族卡牌出售时, 此卡牌获得1末日巨兽',
+	],
+]
+
+[card.unit]
+'被感染的女妖' = 4
+
+[card.attr]
+
+[[card]]
+name = '死亡之握'
+pinyin = 'swzw'
+race = 'N'
+level = 6
+pack = '军备竞赛'
+belong = 'virtual'
+type = 'normal'
+desc = [
+	[
+		'唯一: 每回合结束时, 获得每张当前未购买卡牌中的<1>非英雄单位',
+		'唯一: 每回合结束时, 获得每张当前未购买卡牌中的<2>非英雄单位',
+	],
+	[
+		'唯一: 刷新时, 复制此卡牌<1>非英雄单位',
+		'唯一: 刷新时, 复制此卡牌<2>非英雄单位',
+	],
+]
+
+[card.unit]
+'死亡之握水晶' = 1
+
+[card.attr]
+
+[[card]]
+name = '黄昏之翼'
+pinyin = 'hhzy'
+race = 'T'
+level = 3
+pack = '天空之怒'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'快速生产: 获得<1>黄昏之翼',
+		'快速生产: 获得<2>黄昏之翼',
+	],
+	[
+		'反应堆生产女妖',
+		'反应堆生产女妖',
+	],
+]
+
+[card.unit]
+'黄昏之翼' = 2
+'女妖' = 1
+'反应堆' = 1
+
+[card.attr]
+
+[[card]]
+name = '净化之光'
+pinyin = 'jhzg'
+race = 'P'
+level = 5
+pack = '天空之怒'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 获得<1>虚空辉光舰',
+		'每回合结束时, 获得<2>虚空辉光舰',
+	],
+	[
+		'集结(4): 所有卡牌将<1>虚空辉光舰精英化',
+		'集结(4): 所有卡牌将<2>虚空辉光舰精英化',
+	],
+]
+
+[card.unit]
+'虚空辉光舰(精英)' = 2
+'水晶塔' = 1
+
+[card.attr]
+
+[[card]]
+name = '守卫巢穴'
+pinyin = 'swcx'
+race = 'Z'
+level = 4
+pack = '天空之怒'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 注卵<1>守卫, 并将所有卡牌的各<1>异龙变为守卫',
+		'每回合结束时, 注卵<2>守卫, 并将所有卡牌的各<2>异龙变为守卫',
+	],
+]
+
+[card.unit]
+'守卫' = 2
+'异龙' = 4
+
+[card.attr]
+
+[[card]]
+name = '死亡舰队'
+pinyin = 'swjd'
+race = 'N'
+level = 6
+pack = '天空之怒'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'获得黑暗值时, 获得<1>毁灭者',
+		'获得黑暗值时, 获得<2>毁灭者',
+	],
+	[
+		'每回合结束时, 尝试消耗<10>黑暗值, 获得1塔达林母舰',
+		'每回合结束时, 尝试消耗<5>黑暗值, 获得1塔达林母舰',
+	],
+]
+
+[card.unit]
+'塔达林母舰' = 1
+'毁灭者' = 2
+
+[card.attr]
+
+[[card]]
+name = '艾尔游骑兵'
+pinyin = 'aeyqb'
+race = 'T'
+level = 2
+pack = '并肩作战'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'快速生产: 相邻左侧卡牌获得<1>水晶塔',
+		'快速生产: 相邻左侧卡牌获得<2>水晶塔',
+	],
+	[
+		'每回合结束时, 相邻两侧卡牌各摧毁1水晶塔, 每摧毁1水晶塔, 此卡牌获得<4>陆战队员',
+		'每回合结束时, 相邻两侧卡牌各摧毁1水晶塔, 每摧毁1水晶塔, 此卡牌获得<8>陆战队员',
+	],
+]
+
+[card.unit]
+'陆战队员(精英)' = 3
+'秃鹫' = 1
+'科技实验室' = 1
+
+[card.attr]
+
+[[card]]
+name = '生物质发电'
+pinyin = 'swzfd'
+race = 'P'
+level = 2
+pack = '并肩作战'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'出售任意三星及以上的虫族牌时, 此卡牌获得<1>水晶塔',
+		'出售任意三星及以上的虫族牌时, 此卡牌获得<2>水晶塔',
+	],
+]
+
+[card.unit]
+'使徒(精英)' = 2
+'蟑螂' = 2
+'水晶塔' = 2
+
+[card.attr]
+
+[[card]]
+name = '生化危机'
+pinyin = 'shwj'
+race = 'Z'
+level = 5
+pack = '并肩作战'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 若拥有至少2科技挂件, 则注卵<1>牛头人陆战队员和<2>科技实验室',
+		'每回合结束时, 若拥有至少2科技挂件, 则注卵<2>牛头人陆战队员和<4>科技实验室',
+	],
+]
+
+[card.unit]
+'牛头人陆战队员' = 1
+'刺蛇(精英)' = 4
+
+[card.attr]
+
+[[card]]
+name = '虚空裂痕'
+pinyin = 'xklh'
+race = 'N'
+level = 5
+pack = '并肩作战'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'获得黑暗值时, 获得<1>百夫长',
+		'获得黑暗值时, 获得<2>百夫长',
+	],
+	[
+		'5黑暗值时单位在战斗中获得强化',
+		'5黑暗值时单位在战斗中获得强化',
+	],
+	[
+		'每回合结束时, 若晶体矿数量≥1, 则获得<2>百夫长',
+		'每回合结束时, 若晶体矿数量≥1, 则获得<4>百夫长',
+	],
+]
+
+[card.unit]
+'虚空裂隙' = 1
+'百夫长' = 2
+
+[card.attr]
+
+[[card]]
+name = '以火治火'
+pinyin = 'yhzh'
+race = 'T'
+level = 3
+pack = '快速启动'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合开始时, 所有具有反应堆的人族卡牌获得<1>火蝠',
+		'每回合开始时, 所有具有反应堆的人族卡牌获得<2>火蝠',
+	],
+	[
+		'快速生产: 所有人族卡牌将<2>火蝠精英化',
+		'快速生产: 所有人族卡牌将<3>火蝠精英化',
+	],
+]
+
+[card.unit]
+'火蝠' = 6
+'反应堆' = 1
+
+[card.attr]
+
+[[card]]
+name = '六脉神剑'
+pinyin = 'lmsj'
+race = 'P'
+level = 3
+pack = '快速启动'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'任意卡牌进场时, 若先知数量小于能量强度, 则折跃<1>先知',
+		'任意卡牌进场时, 若先知数量小于能量强度, 则折跃<2>先知',
+	],
+]
+
+[card.unit]
+'先知' = 4
+'水晶塔' = 1
+
+[card.attr]
+
+[[card]]
+name = '优质基因'
+pinyin = 'yzjy'
+race = 'Z'
+level = 4
+pack = '快速启动'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 摧毁所有虫卵牌并且所有虫族卡牌获得1虫卵牌中价值最高的<非英雄>单位',
+		'每回合结束时, 摧毁所有虫卵牌并且所有虫族卡牌获得1虫卵牌中价值最高的单位',
+	],
+]
+
+[card.unit]
+'巢虫领主' = 2
+'雷兽' = 1
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '埃蒙仆从'
+pinyin = 'ampc'
+race = 'N'
+level = 4
+pack = '快速启动'
+belong = 'virtual'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 尝试同时摧毁1张虫族和神族卡牌, 使所有具有虚空投影的卡牌获得<2>混合体毁灭者',
+		'每回合结束时, 尝试同时摧毁1张虫族和神族卡牌, 使所有具有虚空投影的卡牌获得<3>混合体毁灭者',
+	],
+]
+
+[card.unit]
+'刺蛇(精英)' = 2
+'旋风狂热者(精英)' = 2
+
+[card.attr]
+
+[[card]]
+name = '死亡之翼'
+pinyin = 'swzy'
+race = 'N'
+level = 2
+pack = '拉克希尔'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'被夺取时, 获得<1>天霸',
+		'被夺取时, 获得<2>天霸',
+	],
+	[
+		'任意卡牌三连时, 三连卡牌夺取此卡牌',
+		'任意卡牌三连时, 三连卡牌夺取此卡牌',
+	],
+]
+
+[card.unit]
+'凤凰' = 4
+
+[card.attr]
+
+[[card]]
+name = '虚空援军'
+pinyin = 'xkyj'
+race = 'N'
+level = 3
+pack = '拉克希尔'
+belong = 'virtual'
+type = 'normal'
+desc = [
+	[
+		'进场时, 此卡牌尝试消耗1瓦斯获得随机升级',
+		'进场时, 此卡牌尝试消耗1瓦斯获得随机升级',
+	],
+	[
+		'每回合结束时, 价值最高的卡牌夺取此卡牌, 保留升级',
+		'每回合结束时, 价值最高的卡牌夺取此卡牌, 保留升级',
+	],
+]
+
+[card.unit]
+'攻城坦克' = 3
+
+[card.attr]
+
+[[card]]
+name = '深渊行者'
+pinyin = 'syxz'
+race = 'N'
+level = 4
+pack = '拉克希尔'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'10黑暗值时单位在战斗中获得强化',
+		'10黑暗值时单位在战斗中获得强化',
+	],
+	[
+		'任意卡牌被夺取时, 获得<1>先锋',
+		'任意卡牌被夺取时, 获得<2>先锋',
+	],
+]
+
+[card.unit]
+'先锋' = 3
+'不死队' = 3
+
+[card.attr]
+
+[[card]]
+name = '黑暗祭坛'
+pinyin = 'hajt'
+race = 'N'
+level = 4
+pack = '拉克希尔'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'获得黑暗值时, 获得<1>凤凰',
+		'获得黑暗值时, 获得<2>凤凰',
+	],
+	[
+		'每回合结束时, 夺取价值最低的卡牌',
+		'每回合结束时, 夺取价值最低的卡牌',
+	],
+]
+
+[card.unit]
+'黑暗执政官' = 2
+'凤凰' = 2
+
+[card.attr]
+
+[[card]]
+name = '原始蟑螂'
+pinyin = 'yszl'
+race = 'N'
+level = 1
+pack = '核心'
+belong = 'primal'
+type = 'normal'
+desc = [
+	[
+		'供养(1): 原始蟑螂',
+		'供养(1): 原始蟑螂',
+	],
+]
+
+[card.unit]
+'原始蟑螂' = 4
+'精华' = 3
+
+[card.attr]
+
+[[card]]
+name = '不死队'
+pinyin = 'bsd'
+race = 'N'
+level = 1
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'获得黑暗值时, 获得<1>不死队',
+		'获得黑暗值时, 获得<2>不死队',
+	],
+	[
+		'8黑暗值时单位在战斗中获得强化',
+		'8黑暗值时单位在战斗中获得强化',
+	],
+]
+
+[card.unit]
+'不死队' = 4
+
+[card.attr]
+
+[[card]]
+name = '小捞油水'
+pinyin = 'xlys'
+race = 'N'
+level = 2
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'出售时, 刷新你的酒馆',
+		'出售时, 刷新你的酒馆',
+	],
+]
+
+[card.unit]
+'自动机炮' = 3
+'修理无人机' = 1
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '原始刺蛇'
+pinyin = 'yscs'
+race = 'N'
+level = 2
+pack = '核心'
+belong = 'primal'
+type = 'normal'
+desc = [
+	[
+		'供养(1): 原始刺蛇',
+		'供养(1): 原始刺蛇',
+	],
+	[
+		'每回合结束时, 获得<1>原始刺蛇和<2>精华',
+		'每回合结束时, 获得<2>原始刺蛇和<4>精华',
+	],
+]
+
+[card.unit]
+'原始刺蛇' = 7
+
+[card.attr]
+
+[[card]]
+name = '原始异龙'
+pinyin = 'ysyl'
+race = 'N'
+level = 3
+pack = '核心'
+belong = 'primal'
+type = 'normal'
+desc = [
+	[
+		'任意卡牌进场时, 相邻右侧卡牌获得<1>精华',
+		'任意卡牌进场时, 相邻右侧卡牌获得<2>精华',
+	],
+	[
+		'每回合结束时, 若晶体矿数量≥1, 则摧毁所有卡牌中的精华, 每摧毁2精华, 获得1原始异龙',
+		'每回合结束时, 若晶体矿数量≥1, 则摧毁所有卡牌中的精华, 每摧毁2精华, 获得1原始异龙',
+	],
+]
+
+[card.unit]
+'原始异龙' = 4
+
+[card.attr]
+
+[[card]]
+name = '虚空大军'
+pinyin = 'xkdj'
+race = 'N'
+level = 3
+pack = '核心'
+belong = 'virtual'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 若你拥有人族卡牌, 则获得<1>歌利亚; 若你拥有虫族卡牌, 则获得<1>刺蛇; 若你拥有神族卡牌, 则获得<1>龙骑士',
+		'每回合结束时, 若你拥有人族卡牌, 则获得<2>歌利亚; 若你拥有虫族卡牌, 则获得<2>刺蛇; 若你拥有神族卡牌, 则获得<2>龙骑士',
+	],
+]
+
+[card.unit]
+'歌利亚' = 1
+'刺蛇' = 1
+'龙骑士' = 1
+
+[card.attr]
+
+[[card]]
+name = '鲜血猎手'
+pinyin = 'xxls'
+race = 'N'
+level = 3
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'获得黑暗值时, 获得<1>鲜血猎手',
+		'获得黑暗值时, 获得<2>鲜血猎手',
+	],
+	[
+		'5黑暗值时单位在战斗中获得强化',
+		'5黑暗值时单位在战斗中获得强化',
+	],
+]
+
+[card.unit]
+'鲜血猎手' = 6
+'浩劫' = 1
+
+[card.attr]
+
+[[card]]
+name = '暴掠龙'
+pinyin = 'bll'
+race = 'N'
+level = 3
+pack = '核心'
+belong = 'primal'
+type = 'normal'
+desc = [
+	[
+		'供养(2): 暴掠龙',
+		'供养(2): 暴掠龙',
+	],
+	[
+		'每回合结束时, 获得<1>暴掠龙和<2>精华',
+		'每回合结束时, 获得<2>暴掠龙和<4>精华',
+	],
+]
+
+[card.unit]
+'暴掠龙' = 2
+
+[card.attr]
+
+[[card]]
+name = '适者生存'
+pinyin = 'szsc'
+race = 'N'
+level = 4
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 将场上随机<5>个生物单位精英化',
+		'每回合结束时, 将场上随机<8>个生物单位精英化',
+	],
+]
+
+[card.unit]
+'亚格卓拉' = 1
+
+[card.attr]
+
+[[card]]
+name = '毁灭者'
+pinyin = 'hmz'
+race = 'N'
+level = 4
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'出售时, 相邻左侧卡牌获得等于黑暗值数量的毁灭者(不超过<10>)',
+		'出售时, 相邻左侧卡牌获得等于黑暗值数量的毁灭者(不超过<30>)',
+	],
+]
+
+[card.unit]
+'毁灭者' = 4
+
+[card.attr]
+
+[[card]]
+name = '原始点火虫'
+pinyin = 'ysdhc'
+race = 'N'
+level = 4
+pack = '核心'
+belong = 'primal'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 补充原始点火虫至精华数量的两倍, 最多补充到20',
+		'每回合结束时, 补充原始点火虫至精华数量的两倍, 最多补充到20',
+	],
+]
+
+[card.unit]
+'原始点火虫' = 4
+'精华' = 2
+
+[card.attr]
+
+[[card]]
+name = '原始雷兽'
+pinyin = 'ysls'
+race = 'N'
+level = 4
+pack = '核心'
+belong = 'primal'
+type = 'normal'
+desc = [
+	[
+		'供养(4): 原始暴龙兽',
+		'供养(4): 原始暴龙兽',
+	],
+	[
+		'每回合结束时, 获得<1>原始雷兽并每有1张中立卡牌获得1精华',
+		'每回合结束时, 获得<2>原始雷兽并每有1张中立卡牌获得1精华',
+	],
+]
+
+[card.unit]
+'原始雷兽' = 3
+
+[card.attr]
+
+[[card]]
+name = '马拉什'
+pinyin = 'mls'
+race = 'N'
+level = 5
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 相邻两侧卡牌获得虚空投影增益',
+		'每回合结束时, 相邻两侧卡牌获得虚空投影增益',
+	],
+]
+
+[card.unit]
+'马拉什' = 1
+
+[card.attr]
+
+[[card]]
+name = '黑暗预兆'
+pinyin = 'hayz'
+race = 'N'
+level = 5
+pack = '核心'
+belong = 'virtual'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 若场上有4个种族的卡牌, 则获得<2>混合体毁灭者',
+		'每回合结束时, 若场上有4个种族的卡牌, 则获得<4>混合体毁灭者',
+	],
+]
+
+[card.unit]
+'混合体毁灭者' = 3
+
+[card.attr]
+
+[[card]]
+name = '阿拉纳克'
+pinyin = 'alnk'
+race = 'N'
+level = 5
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 夺取除自身随机两张卡牌, 保留升级',
+		'进场时, 夺取除自身随机两张卡牌, 保留升级',
+	],
+]
+
+[card.unit]
+'阿拉纳克' = 1
+
+[card.attr]
+
+[[card]]
+name = '天罚行者'
+pinyin = 'tfxz'
+race = 'N'
+level = 5
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 夺取4星及以下所有卡牌的黑暗值, 每夺取5点获得1天罚行者',
+		'进场时, 夺取4星及以下所有卡牌的黑暗值, 每夺取5点获得1天罚行者',
+	],
+	[
+		'每回合结束时, 每有10黑暗值, 获得<1>天罚行者, 最多获得<2>',
+		'每回合结束时, 每有10黑暗值, 获得<2>天罚行者, 最多获得<4>',
+	],
+]
+
+[card.unit]
+'天罚行者' = 2
+
+[card.attr]
+
+[[card]]
+name = '德哈卡'
+pinyin = 'dhk'
+race = 'N'
+level = 5
+pack = '核心'
+belong = 'primal'
+type = 'normal'
+desc = [
+	[
+		'任意卡牌出售时, 若其中精华数量≥3, 则获得<2>德哈卡分身',
+		'任意卡牌出售时, 若其中精华数量≥3, 则获得<4>德哈卡分身',
+	],
+	[
+		'唯一: 每回合结束时, 若晶体矿数量≥1, 则下回合发现1张星级低于5星的原始虫群卡牌',
+		'唯一: 每回合结束时, 若晶体矿数量≥1, 则下回合发现1张星级低于5星的原始虫群卡牌',
+	],
+]
+
+[card.unit]
+'德哈卡' = 1
+'德哈卡分身' = 3
+
+[card.attr]
+
+[[card]]
+name = '我叫小明'
+pinyin = 'wjxm'
+race = 'N'
+level = 6
+pack = '特典'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 复制左侧相邻1-6星的卡牌到暂存区并被其夺取, 并使其获得星空加速',
+		'进场时, 复制左侧相邻1-6星的卡牌到暂存区并被其夺取, 并使其获得星空加速',
+	],
+]
+
+[card.unit]
+'征召兵' = 20
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '豆浆油条KT1'
+pinyin = 'djytK'
+race = 'N'
+level = 6
+pack = '特典'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 此卡牌和相邻卡牌获得随机升级',
+		'进场时, 此卡牌和相邻卡牌获得随机升级',
+	],
+]
+
+[card.unit]
+'武装机器人' = 1
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '豆浆油条'
+pinyin = 'djyt'
+race = 'N'
+level = 6
+pack = '特典'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 右侧所有卡牌获得虚空投影增益',
+		'每回合结束时, 右侧所有卡牌获得虚空投影增益',
+	],
+]
+
+[card.unit]
+'赛兰迪丝' = 1
+
+[card.attr]
+
+[[card]]
+name = '战斗号角'
+pinyin = 'zdhj'
+race = 'N'
+level = 6
+pack = '特典'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'任意六星以下卡牌出售时, 获得其中价值最高的单位',
+		'任意六星以下卡牌出售时, 获得其中价值最高的单位',
+	],
+]
+
+[card.unit]
+'虚空辉光舰(精英)' = 4
+
+[card.attr]
+
+[[card]]
+name = '凯瑞甘'
+pinyin = 'krg'
+race = 'N'
+level = 6
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 吞噬左侧卡牌所有单位, 获得这些单位150%的生命和护盾',
+		'进场时, 吞噬左侧卡牌所有单位, 获得这些单位150%的生命和护盾',
+	],
+	[
+		'进场时, 若两张凯瑞甘相邻, 合并为刀锋女王',
+		'进场时, 若两张凯瑞甘相邻, 合并为刀锋女王',
+	],
+]
+
+[card.unit]
+'莎拉·凯瑞甘' = 1
+
+[card.attr]
+amber = true
+insert = true
+
+[[card]]
+name = '刀锋女王'
+pinyin = 'dfnw'
+race = 'N'
+level = 6
+pack = '核心衍生'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'唯一: 与你战斗的玩家虚空投影加成效果降低30%(最低为0)',
+		'唯一: 与你战斗的玩家虚空投影加成效果降低30%(最低为0)',
+	],
+]
+
+[card.unit]
+'刀锋女王' = 1
+
+[card.attr]
+amber = true
+
+[[card]]
+name = '虚空构造体'
+pinyin = 'xkgzt'
+race = 'N'
+level = 6
+pack = '核心'
+belong = 'virtual'
+type = 'normal'
+desc = [
+	[
+		'唯一: 在场时, 虚空投影获得额外<20>%加成',
+		'唯一: 在场时, 虚空投影获得额外<40>%加成',
+	],
+]
+
+[card.unit]
+'虚空构造体' = 1
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '黄金矿工'
+pinyin = 'hjkg'
+race = 'N'
+level = 0
+pack = '核心衍生'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合开始时, 获得1晶体矿',
+		'每回合开始时, 获得1晶体矿',
+	],
+	[
+		'出售时, 获得3晶体矿',
+		'出售时, 获得3晶体矿',
+	],
+]
+
+[card.unit]
+
+[card.attr]
+
+[[card]]
+name = '折跃援军'
+pinyin = 'zyyj'
+race = 'P'
+level = 1
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'出售时, 折跃<1>狂热者和<2>追猎者',
+		'出售时, 折跃<2>狂热者和<4>追猎者',
+	],
+]
+
+[card.unit]
+'追猎者' = 2
+'狂热者' = 2
+
+[card.attr]
+
+[[card]]
+name = '发电站'
+pinyin = 'fdz'
+race = 'P'
+level = 1
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+]
+
+[card.unit]
+'使徒' = 4
+'水晶塔' = 1
+'虚空水晶塔' = 1
+
+[card.attr]
+
+[[card]]
+name = '供能中心'
+pinyin = 'gnzx'
+race = 'P'
+level = 2
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'提升酒馆等级时, 获得<1>水晶塔',
+		'提升酒馆等级时, 获得<2>水晶塔',
+	],
+]
+
+[card.unit]
+'使徒(精英)' = 3
+'追猎者' = 2
+'虚空水晶塔' = 1
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '龙骑兵团'
+pinyin = 'lqbt'
+race = 'P'
+level = 2
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 获得<2>零件',
+		'每回合结束时, 获得<4>零件',
+	],
+	[
+		'出售时, 折跃n龙骑士(n=零件数量)',
+		'出售时, 折跃n龙骑士(n=零件数量)',
+	],
+]
+
+[card.unit]
+'龙骑士' = 5
+'零件' = 3
+'水晶塔' = 1
+
+[card.attr]
+
+[[card]]
+name = '万叉奔腾'
+pinyin = 'wcbt'
+race = 'P'
+level = 2
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'集结(2): 获得<1>狂热者',
+		'集结(2): 获得<2>狂热者',
+	],
+]
+
+[card.unit]
+'狂热者' = 6
+'水晶塔' = 1
+
+[card.attr]
+
+[[card]]
+name = '折跃信标'
+pinyin = 'zyxb'
+race = 'P'
+level = 2
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'你的折跃效果总是添加到这张牌上',
+		'你的折跃效果总是添加到这张牌上',
+	],
+]
+
+[card.unit]
+'机械哨兵' = 4
+'不朽者' = 1
+'水晶塔' = 1
+
+[card.attr]
+
+[[card]]
+name = '艾尔之刃'
+pinyin = 'aezr'
+race = 'P'
+level = 3
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 相邻两侧神族卡牌获得<1>水晶塔',
+		'进场时, 相邻两侧神族卡牌获得<2>水晶塔',
+	],
+]
+
+[card.unit]
+'狂热者' = 6
+'高阶圣堂武士' = 2
+'水晶塔' = 1
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '折跃部署'
+pinyin = 'zybs'
+race = 'P'
+level = 3
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 折跃<2>追猎者',
+		'每回合结束时, 折跃<3>追猎者',
+	],
+	[
+		'每回合开始时, 折跃<1>狂热者',
+		'每回合开始时, 折跃<2>狂热者',
+	],
+]
+
+[card.unit]
+'折跃棱镜' = 1
+'不朽者' = 1
+'狂热者' = 4
+
+[card.attr]
+
+[[card]]
+name = '暗影卫队'
+pinyin = 'aywd'
+race = 'P'
+level = 3
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 获得暗影战士升级',
+		'进场时, 获得暗影战士升级',
+	],
+	[
+		'集结(3): 获得<1>黑暗圣堂武士',
+		'集结(3): 获得<2>黑暗圣堂武士',
+	],
+	[
+		'能量强度≥6时, 额外获得1黑暗圣堂武士',
+		'能量强度≥6时, 额外获得1黑暗圣堂武士',
+	],
+]
+
+[card.unit]
+'黑暗圣堂武士' = 5
+'水晶塔' = 1
+
+[card.attr]
+
+[[card]]
+name = '重回战场'
+pinyin = 'chzc'
+race = 'P'
+level = 3
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 所有神族卡牌将<1>生物单位变为不朽者',
+		'进场时, 所有神族卡牌将<2>生物单位变为不朽者',
+	],
+	[
+		'出售时, 折跃<1>不朽者',
+		'出售时, 折跃<2>不朽者',
+	],
+]
+
+[card.unit]
+'不朽者' = 3
+'水晶塔' = 2
+
+[card.attr]
+
+[[card]]
+name = '折跃攻势'
+pinyin = 'zygs'
+race = 'P'
+level = 4
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'任意卡牌折跃时, 获得<1>追猎者',
+		'任意卡牌折跃时, 获得<2>追猎者',
+	],
+]
+
+[card.unit]
+'折跃棱镜' = 1
+'追猎者(精英)' = 4
+'水晶塔' = 2
+
+[card.attr]
+
+[[card]]
+name = '净化者军团'
+pinyin = 'jhzjt'
+race = 'P'
+level = 4
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'集结(5): 所有神族卡牌将<1>地面非重型单位精英化, 并一同折跃他们',
+		'集结(5): 所有神族卡牌将<2>地面非重型单位精英化, 并一同折跃他们',
+	],
+]
+
+[card.unit]
+'狂热者(精英)' = 3
+'掠夺者' = 2
+'水晶塔' = 2
+
+[card.attr]
+
+[[card]]
+name = '凯拉克斯'
+pinyin = 'klks'
+race = 'P'
+level = 4
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 随机折跃<1>个不朽者/掠夺者/巨像',
+		'每回合结束时, 随机折跃<2>个不朽者/掠夺者/巨像',
+	],
+]
+
+[card.unit]
+'凯拉克斯' = 1
+'巨像' = 1
+'虚空水晶塔' = 1
+
+[card.attr]
+
+[[card]]
+name = '虚空舰队'
+pinyin = 'xkjd'
+race = 'P'
+level = 4
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'集结(5): 折跃<1>虚空辉光舰',
+		'集结(5): 折跃<2>虚空辉光舰',
+	],
+]
+
+[card.unit]
+'虚空辉光舰' = 4
+'虚空水晶塔' = 1
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '势不可挡'
+pinyin = 'sbkd'
+race = 'P'
+level = 4
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 折跃1执政官(精英)',
+		'进场时, 折跃2执政官(精英)',
+	],
+	[
+		'集结(5): 折跃<1>执政官',
+		'集结(5): 折跃<2>执政官',
+	],
+	[
+		'若能量强度≥15, 额外折跃1执政官(精英)',
+		'若能量强度≥15, 额外折跃1执政官(精英)',
+	],
+]
+
+[card.unit]
+'执政官' = 4
+'水晶塔' = 2
+
+[card.attr]
+
+[[card]]
+name = '黄金舰队'
+pinyin = 'hjjd'
+race = 'P'
+level = 5
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'集结(5): 获得<1>侦察机',
+		'集结(5): 获得<2>侦察机',
+	],
+	[
+		'集结(7): 获得<1>风暴战舰',
+		'集结(7): 获得<2>风暴战舰',
+	],
+]
+
+[card.unit]
+'航母' = 2
+'风暴战舰' = 1
+'水晶塔' = 1
+'虚空水晶塔' = 1
+
+[card.attr]
+
+[[card]]
+name = '尤尔兰'
+pinyin = 'yel'
+race = 'P'
+level = 5
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'为自身和相邻卡牌提供<5>能量强度',
+		'为自身和相邻卡牌提供<8>能量强度',
+	],
+	[
+		'获得水晶塔时, 获得<1>莫汗达尔',
+		'获得水晶塔时, 获得<2>莫汗达尔',
+	],
+	[
+		'将所有折跃到此卡牌的机械单位变为尤尔兰',
+		'将所有折跃到此卡牌的机械单位变为尤尔兰',
+	],
+]
+
+[card.unit]
+'尤尔兰' = 1
+
+[card.attr]
+
+[[card]]
+name = '光复艾尔'
+pinyin = 'gfae'
+race = 'P'
+level = 5
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'获得升级时, 展开泰坦棱镜',
+		'获得升级时, 展开泰坦棱镜',
+	],
+	[
+		'泰坦棱镜展开时, 获得出售的神族卡牌的<非英雄>单位和水晶塔(不包括虚空水晶塔), 同时收起',
+		'泰坦棱镜展开时, 获得出售的神族卡牌的单位和水晶塔(不包括虚空水晶塔), 同时收起',
+	],
+]
+
+[card.unit]
+'泰坦棱镜' = 1
+
+[card.attr]
+
+[[card]]
+name = '菲尼克斯'
+pinyin = 'fnks'
+race = 'P'
+level = 5
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 将两侧卡牌的狂热者和使徒变为旋风狂热者',
+		'进场时, 将两侧卡牌的狂热者和使徒变为旋风狂热者',
+	],
+	[
+		'集结(5): 获得<1>掠夺者',
+		'集结(5): 获得<2>掠夺者',
+	],
+]
+
+[card.unit]
+'菲尼克斯' = 1
+'旋风狂热者(精英)' = 3
+'掠夺者' = 1
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '酒馆后勤处'
+pinyin = 'jghqc'
+race = 'P'
+level = 6
+pack = '特典'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'我们需要集结更多观众!',
+		'我们需要集结更多观众!',
+	],
+	[
+		'进场时, 所有神族卡牌无条件触发2次集结效果',
+		'进场时, 所有神族卡牌无条件触发2次集结效果',
+	],
+]
+
+[card.unit]
+'科罗拉里昂' = 1
+'卡尔达利斯' = 1
+
+[card.attr]
+
+[[card]]
+name = '净化一切'
+pinyin = 'jhyq'
+race = 'P'
+level = 6
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'集结(4): 折跃<1>狂热者(精英)',
+		'集结(4): 折跃<2>狂热者(精英)',
+	],
+	[
+		'每回合结束时, 每有7能量强度折跃<1>巨像(精英), 最多<2>',
+		'每回合结束时, 每有7能量强度折跃<2>巨像(精英), 最多<4>',
+	],
+]
+
+[card.unit]
+'巨像(精英)' = 2
+'水晶塔' = 3
+
+[card.attr]
+
+[[card]]
+name = '阿尔达瑞斯'
+pinyin = 'aedrs'
+race = 'P'
+level = 6
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'唯一: 每回合结束时, 若拥有至少5张神族卡牌, 获得<1>英雄不朽者',
+		'唯一: 每回合结束时, 若拥有至少5张神族卡牌, 获得<2>英雄不朽者',
+	],
+]
+
+[card.unit]
+'仲裁者' = 1
+
+[card.attr]
+
+[[card]]
+name = '阿塔尼斯'
+pinyin = 'atns'
+race = 'P'
+level = 6
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 获得2旋风狂热者(精英)',
+		'每回合结束时, 获得2旋风狂热者(精英)<和2阿塔尼斯>',
+	],
+	[
+		'唯一: 你的所有集结卡牌每回合无条件额外集结一次',
+		'唯一: 你的所有集结卡牌每回合无条件额外集结一次',
+	],
+]
+
+[card.unit]
+'阿塔尼斯' = 1
+'掠夺者' = 2
+'虚空水晶塔' = 1
+
+[card.attr]
+
+[[card]]
+name = '死神火车'
+pinyin = 'sshc'
+race = 'T'
+level = 1
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		"任务: 让<1>张卡牌进场\n奖励: 获得<1>晶体矿",
+		"任务: 让<2>张卡牌进场\n奖励: 获得<2>晶体矿",
+	],
+]
+
+[card.unit]
+'收割者' = 3
+'恶火' = 2
+'反应堆' = 1
+
+[card.attr]
+
+[[card]]
+name = '好兄弟'
+pinyin = 'hxd'
+race = 'T'
+level = 1
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'快速生产: 获得<4>陆战队员',
+		'快速生产: 获得<6>陆战队员',
+	],
+	[
+		'反应堆生产陆战队员',
+		'反应堆生产陆战队员',
+	],
+]
+
+[card.unit]
+'陆战队员' = 6
+'反应堆' = 1
+
+[card.attr]
+
+[[card]]
+name = '挖宝奇兵'
+pinyin = 'wbqb'
+race = 'T'
+level = 2
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		"任务: 刷新5次\n奖励: 发现1张等同于你当前酒馆星级的卡牌",
+		"任务: 刷新5次\n奖励: 发现1张等同于你当前酒馆星级的卡牌",
+	],
+]
+
+[card.unit]
+'响尾蛇战车' = 3
+'反应堆' = 1
+
+[card.attr]
+amber = true
+
+[[card]]
+name = '实验室安保'
+pinyin = 'sysab'
+race = 'T'
+level = 2
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'反应堆生产陆战队员',
+		'反应堆生产陆战队员',
+	],
+	[
+		'进场时, 相邻两侧人族卡牌的挂件类型改变',
+		'进场时, 相邻两侧人族卡牌的挂件类型改变',
+	],
+]
+
+[card.unit]
+'陆战队员' = 6
+'医疗兵' = 3
+'反应堆' = 1
+
+[card.attr]
+
+[[card]]
+name = '征兵令'
+pinyin = 'zbl'
+race = 'T'
+level = 2
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 抽取两侧人族卡牌三分之二的单位',
+		'进场时, 抽取两侧人族卡牌三分之二的单位',
+	],
+]
+
+[card.unit]
+'陆战队员(精英)' = 4
+'陆战队员' = 3
+'反应堆' = 1
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '恶火小队'
+pinyin = 'ehxd'
+race = 'T'
+level = 2
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'快速生产: 获得1攻城坦克',
+		'快速生产: 获得1攻城坦克',
+	],
+	[
+		'反应堆生产恶火',
+		'反应堆生产恶火',
+	],
+	[
+		'每回合结束时, 若拥有至少2科技挂件, 则获得<1>歌利亚',
+		'每回合结束时, 若拥有至少2科技挂件, 则获得<2>歌利亚',
+	],
+]
+
+[card.unit]
+'恶火' = 6
+'反应堆' = 1
+
+[card.attr]
+
+[[card]]
+name = '空投地雷'
+pinyin = 'ktdl'
+race = 'T'
+level = 3
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'任意卡牌进场时, 获得<1>寡妇雷',
+		'任意卡牌进场时, 获得<2>寡妇雷',
+	],
+	[
+		'快速生产: 获得<2>寡妇雷',
+		'快速生产: 获得<3>寡妇雷',
+	],
+]
+
+[card.unit]
+'寡妇雷' = 3
+'反应堆' = 1
+
+[card.attr]
+
+[[card]]
+name = '步兵连队'
+pinyin = 'bbld'
+race = 'T'
+level = 3
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'快速生产: 获得<3>劫掠者',
+		'快速生产: 获得<5>劫掠者',
+	],
+	[
+		'反应堆生产劫掠者',
+		'反应堆生产劫掠者',
+	],
+]
+
+[card.unit]
+'陆战队员' = 5
+'医疗运输机' = 2
+'劫掠者' = 3
+'反应堆' = 1
+
+[card.attr]
+
+[[card]]
+name = '飙车流'
+pinyin = 'bcl'
+race = 'T'
+level = 3
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'快速生产: 获得<3>秃鹫',
+		'快速生产: 获得<5>秃鹫',
+	],
+	[
+		"任务: 让3张人族卡牌进场\n奖励: 相邻左侧人族卡牌的挂件类型变为高级科技实验室",
+		"任务: 让3张人族卡牌进场\n奖励: 相邻左侧人族卡牌的挂件类型变为高级科技实验室",
+	],
+]
+
+[card.unit]
+'秃鹫' = 4
+'飓风' = 3
+'科技实验室' = 1
+
+[card.attr]
+
+[[card]]
+name = '科考小队'
+pinyin = 'kkxd'
+race = 'T'
+level = 3
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 相邻两侧人族卡牌的挂件类型改变',
+		'进场时, 相邻两侧人族卡牌的挂件类型改变',
+	],
+	[
+		"任务: 刷新2次\n奖励: 获得<1>歌利亚\n每回合结束时, 重置此任务",
+		"任务: 刷新2次\n奖励: 获得<2>歌利亚\n每回合结束时, 重置此任务",
+	],
+]
+
+[card.unit]
+'歌利亚' = 4
+'铁鸦' = 2
+'科技实验室' = 1
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '陆军学院'
+pinyin = 'ljxy'
+race = 'T'
+level = 4
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'快速生产: 获得<3>维京战机',
+		'快速生产: 获得<5>维京战机',
+	],
+	[
+		'每回合结束时, 若拥有至少3科技挂件, 则获得<1>战狼',
+		'每回合结束时, 若拥有至少3科技挂件, 则获得<2>战狼',
+	],
+]
+
+[card.unit]
+'战狼' = 3
+'维京战机<机甲>' = 2
+'科技实验室' = 1
+
+[card.attr]
+
+[[card]]
+name = '空军学院'
+pinyin = 'kjxy'
+race = 'T'
+level = 4
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'快速生产: 获得<3>维京战机',
+		'快速生产: 获得<5>维京战机',
+	],
+	[
+		'任意任务完成时, 获得<1>解放者',
+		'任意任务完成时, 获得<2>解放者',
+	],
+]
+
+[card.unit]
+'解放者' = 3
+'科技实验室' = 1
+
+[card.attr]
+
+[[card]]
+name = '交叉火力'
+pinyin = 'jchl'
+race = 'T'
+level = 4
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'快速生产: 获得<3>歌利亚',
+		'快速生产: 获得<5>歌利亚',
+	],
+	[
+		'每回合结束时, 若拥有至少4科技挂件, 则获得<1>攻城坦克',
+		'每回合结束时, 若拥有至少4科技挂件, 则获得<2>攻城坦克',
+	],
+]
+
+[card.unit]
+'攻城坦克' = 2
+'歌利亚' = 3
+'科技实验室' = 1
+
+[card.attr]
+
+[[card]]
+name = '枪兵坦克'
+pinyin = 'qbtk'
+race = 'T'
+level = 4
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 所有具有反应堆的人族卡牌获得<2>陆战队员',
+		'每回合结束时, 所有具有反应堆的人族卡牌获得<4>陆战队员',
+	],
+]
+
+[card.unit]
+'陆战队员' = 8
+'攻城坦克' = 2
+'反应堆' = 1
+
+[card.attr]
+
+[[card]]
+name = '斯台特曼'
+pinyin = 'sttm'
+race = 'T'
+level = 4
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'快速生产: 相邻两侧卡牌将<1>歌利亚和<1>维京战机精英化',
+		'快速生产: 相邻两侧卡牌将<2>歌利亚和<2>维京战机精英化',
+	],
+	[
+		'进场时, 相邻左侧人族卡牌的挂件类型变为高级科技实验室',
+		'进场时, 相邻左侧人族卡牌的挂件类型变为高级科技实验室',
+	],
+]
+
+[card.unit]
+'斯台特曼' = 1
+'思旺' = 1
+'高级科技实验室' = 1
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '护航中队'
+pinyin = 'hhzd'
+race = 'T'
+level = 5
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'快速生产: 获得<1>黄昏之翼',
+		'快速生产: 获得<2>黄昏之翼',
+	],
+	[
+		'任意卡牌进场时, 获得<1>怨灵战机',
+		'任意卡牌进场时, 获得<2>怨灵战机',
+	],
+]
+
+[card.unit]
+'怨灵战机' = 3
+'黄昏之翼' = 1
+'科技实验室' = 1
+
+[card.attr]
+
+[[card]]
+name = '泰凯斯'
+pinyin = 'tks'
+race = 'T'
+level = 5
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'反应堆生产陆战队员(精英)',
+		'反应堆生产陆战队员(精英)',
+	],
+	[
+		'每回合结束时, 所有人族卡牌将<3>陆战队员和<3>劫掠者精英化',
+		'每回合结束时, 所有人族卡牌将<5>陆战队员和<5>劫掠者精英化',
+	],
+	[
+		'每回合结束时, 获得<1>医疗运输机',
+		'每回合结束时, 获得<2>医疗运输机',
+	],
+]
+
+[card.unit]
+'泰凯斯' = 1
+'陆战队员(精英)' = 6
+'反应堆' = 1
+'医疗运输机' = 2
+
+[card.attr]
+
+[[card]]
+name = '外籍军团'
+pinyin = 'wjjt'
+race = 'T'
+level = 5
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'反应堆生产牛头人陆战队员',
+		'反应堆生产牛头人陆战队员',
+	],
+	[
+		'进场时, 相邻两侧卡牌将每6个陆战队员变为1牛头人陆战队员(精英则只需要3个)',
+		'进场时, 相邻两侧卡牌将每6个陆战队员变为1牛头人陆战队员(精英则只需要3个)',
+	],
+]
+
+[card.unit]
+'牛头人陆战队员' = 2
+'鱼人陆战队员' = 1
+'反应堆' = 1
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '钢铁洪流'
+pinyin = 'gthl'
+race = 'T'
+level = 5
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'快速生产: 获得<1>雷神',
+		'快速生产: 获得<2>雷神',
+	],
+	[
+		'每回合结束时, 若拥有5科技挂件, 则所有卡牌将<1>攻城坦克和<1>战狼精英化',
+		'每回合结束时, 若拥有5科技挂件, 则所有卡牌将<2>攻城坦克和<2>战狼精英化',
+	],
+]
+
+[card.unit]
+'雷神' = 3
+'战狼' = 2
+'科技实验室' = 1
+
+[card.attr]
+
+[[card]]
+name = '游骑兵'
+pinyin = 'yqb'
+race = 'T'
+level = 6
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'任意卡牌挂件变更时, 相应卡牌获得<1>雷诺(狙击手)',
+		'任意卡牌挂件变更时, 相应卡牌获得<2>雷诺(狙击手)',
+	],
+	[
+		'反应堆生产雷诺(狙击手)',
+		'反应堆生产雷诺(狙击手)',
+	],
+]
+
+[card.unit]
+'雷诺(指挥官)' = 1
+'反应堆' = 1
+
+[card.attr]
+
+[[card]]
+name = '沃菲尔德'
+pinyin = 'wfed'
+race = 'T'
+level = 6
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 所有卡牌将<1>陆战队员(精英)变为帝盾卫兵',
+		'每回合结束时, 所有卡牌将<2>陆战队员(精英)变为帝盾卫兵',
+	],
+	[
+		'唯一: 获得每回合出售的<第一>张人族卡牌的单位',
+		'唯一: 获得每回合出售的<前两>张人族卡牌的单位',
+	],
+]
+
+[card.unit]
+'沃菲尔德将军' = 1
+'帝盾卫兵' = 3
+'科技实验室' = 1
+
+[card.attr]
+
+[[card]]
+name = '帝国舰队'
+pinyin = 'dgjd'
+race = 'T'
+level = 6
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		"任务: 出售3张卡牌\n奖励: 获得<1>战列巡航舰并重置此任务",
+		"任务: 出售3张卡牌\n奖励: 获得<2>战列巡航舰并重置此任务",
+	],
+	[
+		'每回合结束时, 若拥有至少4科技挂件, 则获得<2>黄昏之翼',
+		'每回合结束时, 若拥有至少4科技挂件, 则获得<4>黄昏之翼',
+	],
+]
+
+[card.unit]
+'战列巡航舰' = 4
+'科技实验室' = 1
+
+[card.attr]
+
+[[card]]
+name = 'cloudplayer'
+pinyin = 'ywj'
+race = 'T'
+level = 6
+pack = '特典'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 重复获得皇家单位, 直到价值成为你卡牌前三',
+		'进场时, 重复获得皇家单位, 直到价值成为你卡牌前三',
+	],
+]
+
+[card.unit]
+'战列巡航舰(皇家卫队)' = 1
+'暴掠龙' = 1
+'医疗兵' = 1
+'易爆感染体' = 1
+'反应堆' = 1
+
+[card.attr]
+
+[[card]]
+name = '虫群先锋'
+pinyin = 'cqxf'
+race = 'Z'
+level = 1
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 获得<2>跳虫',
+		'每回合结束时, 获得<4>跳虫',
+	],
+]
+
+[card.unit]
+'跳虫' = 8
+'爆虫' = 3
+
+[card.attr]
+
+[[card]]
+name = '蟑螂小队'
+pinyin = 'zlxd'
+race = 'Z'
+level = 1
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合开始时, 将<1>蟑螂变为破坏者',
+		'每回合开始时, 将<2>蟑螂变为破坏者',
+	],
+	[
+		'出售时, 注卵<2>蟑螂',
+		'出售时, 注卵<4>蟑螂',
+	],
+]
+
+[card.unit]
+'蟑螂' = 3
+'爆虫' = 1
+
+[card.attr]
+
+[[card]]
+name = '屠猎者'
+pinyin = 'tlz'
+race = 'Z'
+level = 2
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 将所有刺蛇变为刺蛇(精英)',
+		'每回合结束时, 将所有刺蛇变为刺蛇(精英)',
+	],
+	[
+		'提升酒馆等级时, 获得<1>刺蛇(精英)',
+		'提升酒馆等级时, 获得<2>刺蛇(精英)',
+	],
+]
+
+[card.unit]
+'跳虫' = 10
+'刺蛇' = 2
+
+[card.attr]
+
+[[card]]
+name = '埋地刺蛇'
+pinyin = 'mdcs'
+race = 'Z'
+level = 2
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'出售时, 注卵<3>刺蛇',
+		'出售时, 注卵<6>刺蛇',
+	],
+]
+
+[card.unit]
+'刺蛇' = 6
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '变异军团'
+pinyin = 'byjt'
+race = 'Z'
+level = 2
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'任意卡牌注卵时, 获得<1>被感染的陆战队员',
+		'任意卡牌注卵时, 获得<2>被感染的陆战队员',
+	],
+]
+
+[card.unit]
+'被感染的陆战队员' = 7
+
+[card.attr]
+
+[[card]]
+name = '孵化蟑螂'
+pinyin = 'fhzl'
+race = 'Z'
+level = 2
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 孵化<1>蟑螂',
+		'每回合结束时, 孵化<2>蟑螂',
+	],
+]
+
+[card.unit]
+'蟑螂' = 4
+'破坏者' = 2
+
+[card.attr]
+
+[[card]]
+name = '爆虫滚滚'
+pinyin = 'bcgg'
+race = 'Z'
+level = 3
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 每有<20>爆虫孵化1爆虫',
+		'每回合结束时, 每有<15>爆虫孵化1爆虫',
+	],
+	[
+		'唯一: 获得任意出售卡牌中的跳虫, 并将其变为爆虫',
+		'唯一: 获得任意出售卡牌中的跳虫, 并将其变为爆虫',
+	],
+]
+
+[card.unit]
+'爆虫' = 10
+
+[card.attr]
+
+[[card]]
+name = '飞龙骑脸'
+pinyin = 'flql'
+race = 'Z'
+level = 3
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'出售时, 孵化<2>异龙',
+		'出售时, 孵化<4>异龙',
+	],
+]
+
+[card.unit]
+'跳虫' = 15
+'异龙' = 5
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '凶残巨兽'
+pinyin = 'xcjs'
+race = 'Z'
+level = 3
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'出售时, 注卵<1>雷兽',
+		'出售时, 注卵<2>雷兽',
+	],
+]
+
+[card.unit]
+'雷兽' = 2
+
+[card.attr]
+
+[[card]]
+name = '注卵虫后'
+pinyin = 'zlch'
+race = 'Z'
+level = 3
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合开始时, 注卵<1>蟑螂和<1>刺蛇',
+		'每回合开始时, 注卵<2>蟑螂和<2>刺蛇',
+	],
+]
+
+[card.unit]
+'虫后' = 5
+
+[card.attr]
+
+[[card]]
+name = '孵化所'
+pinyin = 'fhs'
+race = 'Z'
+level = 4
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'唯一: 任意卡牌孵化至此卡牌时, 额外孵化<2>单位',
+		'唯一: 任意卡牌孵化至此卡牌时, 额外孵化<3>单位',
+	],
+]
+
+[card.unit]
+'菌毯肿瘤' = 1
+'虫后' = 2
+'守卫' = 2
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '地底伏击'
+pinyin = 'ddfj'
+race = 'Z'
+level = 4
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 孵化<1>潜伏者',
+		'进场时, 孵化<2>潜伏者',
+	],
+]
+
+[card.unit]
+'潜伏者' = 3
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '孵化刺蛇'
+pinyin = 'fhcs'
+race = 'Z'
+level = 4
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 孵化<1>刺蛇(精英)',
+		'每回合结束时, 孵化<2>刺蛇(精英)',
+	],
+]
+
+[card.unit]
+'蟑螂' = 4
+'刺蛇(精英)' = 3
+
+[card.attr]
+
+[[card]]
+name = '感染深渊'
+pinyin = 'grsy'
+race = 'Z'
+level = 4
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 所有卡牌将<2>陆战队员变为被感染的陆战队员, 并将他们注卵',
+		'每回合结束时, 所有卡牌将<4>陆战队员变为被感染的陆战队员, 并将他们注卵',
+	],
+	[
+		'每回合开始时, 所有卡牌将<1>被感染的陆战队员变为畸变体',
+		'每回合开始时, 所有卡牌将<2>被感染的陆战队员变为畸变体',
+	],
+]
+
+[card.unit]
+'感染者' = 2
+'陆战队员' = 3
+
+[card.attr]
+
+[[card]]
+name = '腐化大龙'
+pinyin = 'fhdl'
+race = 'Z'
+level = 5
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 将<2>腐化者变为巢虫领主',
+		'每回合结束时, 将<4>腐化者变为巢虫领主',
+	],
+	[
+		'出售时, 注卵<2>巢虫领主',
+		'出售时, 注卵<4>巢虫领主',
+	],
+]
+
+[card.unit]
+'腐化者' = 6
+
+[card.attr]
+
+[[card]]
+name = '空中管制'
+pinyin = 'kzgz'
+race = 'Z'
+level = 5
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 孵化<3>爆蚊',
+		'进场时, 孵化<6>爆蚊',
+	],
+	[
+		'每回合结束时, 孵化<1>异龙(精英)',
+		'每回合结束时, 孵化<2>异龙(精英)',
+	],
+]
+
+[card.unit]
+'异龙(精英)' = 4
+'飞蛇' = 1
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '虫群大军'
+pinyin = 'cqdj'
+race = 'Z'
+level = 5
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 若拥有至少4张虫族卡牌, 则注卵<1>雷兽',
+		'每回合结束时, 若拥有至少4张虫族卡牌, 则注卵<2>雷兽',
+	],
+]
+
+[card.unit]
+'雷兽' = 2
+'刺蛇' = 8
+
+[card.attr]
+
+[[card]]
+name = '终极进化'
+pinyin = 'zjjh'
+race = 'Z'
+level = 5
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 相邻两侧卡牌将<1>蟑螂变为莽兽',
+		'进场时, 相邻两侧卡牌将<2>蟑螂变为莽兽',
+	],
+]
+
+[card.unit]
+'莽兽' = 2
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '凶猛巨兽'
+pinyin = 'xmjs'
+race = 'Z'
+level = 6
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 所有虫族卡牌获得<2>腐化者',
+		'进场时, 所有虫族卡牌获得<4>腐化者',
+	],
+	[
+		'每回合结束时, 相邻两侧虫族卡牌获得<2>守卫',
+		'每回合结束时, 相邻两侧虫族卡牌获得<4>守卫',
+	],
+]
+
+[card.unit]
+'利维坦' = 1
+
+[card.attr]
+
+[[card]]
+name = '扎加拉'
+pinyin = 'zjl'
+race = 'Z'
+level = 6
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'唯一: 任意卡牌进行孵化时, 单位额外孵化到此卡牌',
+		'唯一: 任意卡牌进行孵化时, 单位额外孵化到此卡牌<, 并且此卡牌获得1巢虫领主>',
+	],
+]
+
+[card.unit]
+'扎加拉' = 1
+'刺蛇(精英)' = 6
+
+[card.attr]
+
+[[card]]
+name = '斯托科夫'
+pinyin = 'stkf'
+race = 'Z'
+level = 6
+pack = '核心'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'唯一: 每进场<两>张六星以下的非虫族卡牌, 注卵<第二张>卡牌的非英雄单位到最左侧虫卵牌',
+		'唯一: 每进场<一>张六星以下的非虫族卡牌, 注卵<进场>卡牌的非英雄单位到最左侧虫卵牌',
+	],
+]
+
+[card.unit]
+'斯托科夫' = 1
+
+[card.attr]
+
+[[card]]
+name = '虫卵'
+pinyin = 'cl'
+race = 'Z'
+level = 0
+pack = '核心衍生'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合开始时, 如果相邻两侧的卡牌是虫族卡牌, 摧毁这张牌, 获得1晶体矿并孵化其中的生物单位',
+		'每回合开始时, 如果相邻两侧的卡牌是虫族卡牌, 摧毁这张牌, 获得1晶体矿并孵化其中的生物单位',
+	],
+]
+
+[card.unit]
+
+[card.attr]
+
+[[card]]
+name = '复制中心'
+pinyin = 'fzzx'
+race = 'T'
+level = 4
+pack = '独辟蹊径'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'快速生产: 获得每张暂存卡牌的<1>非英雄生物单位',
+		'快速生产: 获得每张暂存卡牌的<2>非英雄生物单位',
+	],
+]
+
+[card.unit]
+'幽魂' = 2
+'歌利亚(精英)' = 2
+'反应堆' = 1
+
+[card.attr]
+
+[[card]]
+name = '晋升仪式'
+pinyin = 'jsys'
+race = 'P'
+level = 4
+pack = '独辟蹊径'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'集结(4): 将<1>不朽者变为英雄不朽者并将<1>生物单位变为高阶圣堂武士',
+		'集结(4): 将<2>不朽者变为英雄不朽者并将<2>生物单位变为高阶圣堂武士',
+	],
+]
+
+[card.unit]
+'不朽者' = 2
+'狂热者(精英)' = 2
+'水晶塔' = 2
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '基因突变'
+pinyin = 'jytb'
+race = 'Z'
+level = 3
+pack = '独辟蹊径'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场和出售时, 相邻两侧虫族卡牌将价值最低的<1>个单位变为价值最高的非英雄单位',
+		'进场和出售时, 相邻两侧虫族卡牌将价值最低的<2>个单位变为价值最高的非英雄单位',
+	],
+]
+
+[card.unit]
+'破坏者(精英)' = 1
+'破坏者' = 2
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '风暴英雄'
+pinyin = 'fbyx'
+race = 'N'
+level = 5
+pack = '独辟蹊径'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'获得升级时, 随机获得1英雄(包含: 马拉什, 阿拉纳克, 利维坦, 虚空构造体, 科罗拉里昂)',
+		'获得升级时, 随机获得1英雄(包含: 马拉什, 阿拉纳克, 利维坦, 虚空构造体, 科罗拉里昂)',
+	],
+]
+
+[card.unit]
+'沃拉尊' = 1
+
+[card.attr]
+amber = true
+
+[[card]]
+name = '帝国敢死队'
+pinyin = 'dggsd'
+race = 'T'
+level = 5
+pack = '短兵相接'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'快速生产: 获得2诺娃',
+		'快速生产: 获得2诺娃',
+	],
+	[
+		'反应堆生产诺娃',
+		'反应堆生产诺娃',
+	],
+	[
+		'任意任务完成时, 获得<1>诺娃',
+		'任意任务完成时, 获得<2>诺娃',
+	],
+]
+
+[card.unit]
+'诺娃' = 3
+'反应堆' = 1
+
+[card.attr]
+
+[[card]]
+name = '黑暗教长'
+pinyin = 'hajc'
+race = 'P'
+level = 5
+pack = '短兵相接'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 获得暗影战士升级',
+		'进场时, 获得暗影战士升级',
+	],
+	[
+		'集结(5): 获得<1>黑暗圣堂武士(精英)',
+		'集结(5): 获得<2>黑暗圣堂武士(精英)',
+	],
+]
+
+[card.unit]
+'泽拉图' = 1
+'虚空水晶塔' = 1
+
+[card.attr]
+
+[[card]]
+name = '雷兽窟'
+pinyin = 'lsk'
+race = 'Z'
+level = 3
+pack = '短兵相接'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'任意卡牌注卵时, 此卡牌将<1>幼雷兽变为雷兽',
+		'任意卡牌注卵时, 此卡牌将<2>幼雷兽变为雷兽',
+	],
+	[
+		'每回合结束时, 孵化<1>幼雷兽',
+		'每回合结束时, 孵化<2>幼雷兽',
+	],
+]
+
+[card.unit]
+'幼雷兽' = 5
+
+[card.attr]
+
+[[card]]
+name = '混合体巨兽'
+pinyin = 'hhtjs'
+race = 'N'
+level = 6
+pack = '短兵相接'
+belong = 'virtual'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 若场上有4个种族的卡牌, 则获得<1>混合体巨兽',
+		'每回合结束时, 若场上有4个种族的卡牌, 则获得<2>混合体巨兽',
+	],
+]
+
+[card.unit]
+'混合体巨兽' = 2
+
+[card.attr]
+
+[[card]]
+name = '黑市商人'
+pinyin = 'hssr'
+race = 'T'
+level = 2
+pack = '不法之徒'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 发现一张辅助卡',
+		'进场时, 发现一张辅助卡',
+	],
+]
+
+[card.unit]
+'赫克' = 3
+
+[card.attr]
+
+[[card]]
+name = '秘密实验'
+pinyin = 'mmsy'
+race = 'N'
+level = 3
+pack = '不法之徒'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 所有种族最左侧的卡牌获得1个混合体掠夺者',
+		'进场时, 所有种族最左侧的卡牌获得1个混合体掠夺者',
+	],
+]
+
+[card.unit]
+'混合体掠夺者' = 2
+
+[card.attr]
+
+[[card]]
+name = '基因编辑'
+pinyin = 'jybj'
+race = 'Z'
+level = 4
+pack = '不法之徒'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 摧毁相邻左侧1-6星非衍生卡牌, 发现一张同等星级的卡牌',
+		'进场时, 摧毁相邻左侧1-6星非衍生卡牌, 发现一张同等星级的卡牌',
+	],
+]
+
+[card.unit]
+'毒裂兽' = 3
+
+[card.attr]
+insert = true
+
+[[card]]
+name = '人格上传'
+pinyin = 'rgsc'
+race = 'P'
+level = 4
+pack = '不法之徒'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'任意卡牌出售时, 若其价值大于本卡牌价值, 获得1菲尼克斯',
+		'任意卡牌出售时, 若其价值大于本卡牌价值, 获得3菲尼克斯',
+	],
+]
+
+[card.unit]
+'菲尼克斯' = 1
+
+[card.attr]
+
+[[card]]
+name = '母舰核心'
+pinyin = 'mjhx'
+race = 'P'
+level = 1
+pack = '母舰核心衍生'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'玩家进行两次三连此卡牌变为母舰',
+		'玩家进行两次三连此卡牌变为母舰',
+	],
+	[
+		'三连时, 获得数量等你酒馆等级的虚空辉光舰',
+		'三连时, 获得数量等你酒馆等级的虚空辉光舰',
+	],
+]
+
+[card.unit]
+'母舰核心' = 1
+'狂热者' = 1
+'虚空水晶塔' = 2
+'追猎者' = 2
+
+[card.attr]
+
+[[card]]
+name = '观察样本'
+pinyin = 'gcyb'
+race = 'N'
+level = 1
+pack = '科学球衍生'
+belong = 'none'
+type = 'normal'
+desc = [
+]
+
+[card.unit]
+
+[card.attr]
+amber = true
+
+[[card]]
+name = '毒气炮塔'
+pinyin = 'dqpt'
+race = 'N'
+level = 1
+pack = '要塞衍生'
+belong = 'none'
+type = 'structure'
+desc = [
+	[
+		'每回合结束时, 将每<3>自动机炮变为毒气炮塔',
+		'每回合结束时, 将每<2>自动机炮变为毒气炮塔',
+	],
+	[
+		'出售时, 获得<1>晶体矿',
+		'出售时, 获得<2>晶体矿',
+	],
+]
+
+[card.unit]
+'自动机炮' = 1
+
+[card.attr]
+
+[[card]]
+name = '凯达琳巨石'
+pinyin = 'kdljs'
+race = 'P'
+level = 1
+pack = '要塞衍生'
+belong = 'none'
+type = 'structure'
+desc = [
+	[
+		'每回合结束时, 将每<5>自动机炮变为1凯达琳巨石',
+		'每回合结束时, 将每<4>自动机炮变为1凯达琳巨石',
+	],
+	[
+		'每回合结束时, 每有一张神族卡牌, 此卡牌获得1自动机炮',
+		'每回合结束时, 每有一张神族卡牌, 此卡牌获得1自动机炮',
+	],
+]
+
+[card.unit]
+'自动机炮' = 1
+
+[card.attr]
+
+[[card]]
+name = '岗哨机枪'
+pinyin = 'gsjq'
+race = 'N'
+level = 1
+pack = '要塞衍生'
+belong = 'none'
+type = 'structure'
+desc = [
+	[
+		'每回合结束时, 将每个自动机炮变为2岗哨机枪',
+		'每回合结束时, 将每个自动机炮变为2岗哨机枪',
+	],
+	[
+		'任意卡牌进场时, 此卡牌获得<2>岗哨机枪',
+		'任意卡牌进场时, 此卡牌获得<3>岗哨机枪',
+	],
+]
+
+[card.unit]
+'自动机炮' = 1
+
+[card.attr]
+
+[[card]]
+name = '行星要塞'
+pinyin = 'xxys'
+race = 'N'
+level = 1
+pack = '核心'
+belong = 'none'
+type = 'structure'
+desc = [
+	[
+		'每回合结束时, 将每<5>自动机炮变为1行星要塞',
+		'每回合结束时, 将每<4>自动机炮变为1行星要塞',
+	],
+	[
+		'唯一: 任意中立卡牌出售时, 获得其中所有的非特殊建筑单位',
+		'唯一: 任意中立卡牌出售时, 获得其中所有的非特殊建筑单位',
+	],
+]
+
+[card.unit]
+'自动机炮' = 1
+
+[card.attr]
+
+[[card]]
+name = '星门'
+pinyin = 'xm'
+race = 'P'
+level = 1
+pack = '要塞衍生'
+belong = 'none'
+type = 'structure'
+desc = [
+	[
+		'每回合结束时, 获得<1>零件并将每1自动机炮变为1零件',
+		'每回合结束时, 获得<2>零件并将每1自动机炮变为1零件',
+	],
+	[
+		'制造(6): 获得1星门',
+		'制造(6): 获得1星门',
+	],
+]
+
+[card.unit]
+'自动机炮' = 1
+
+[card.attr]
+
+[[card]]
+name = '自动机炮'
+pinyin = 'zdjp'
+race = 'Z'
+level = 1
+pack = '要塞衍生'
+belong = 'none'
+type = 'structure'
+desc = [
+	[
+		'每回合结束时, 获得<1>自动机炮',
+		'每回合结束时, 获得<2>自动机炮',
+	],
+	[
+		'出售时, 相邻(优先左侧)卡牌获得此卡牌的所有自动机炮',
+		'出售时, 相邻(优先左侧)卡牌获得此卡牌的所有自动机炮',
+	],
+]
+
+[card.unit]
+'自动机炮' = 1
+
+[card.attr]
+
+[[card]]
+name = '作战中心'
+pinyin = 'zzzx'
+race = 'T'
+level = 1
+pack = '要塞衍生'
+belong = 'none'
+type = 'structure'
+desc = [
+	[
+		'制造(6): 获得1作战指挥中心',
+		'制造(6): 获得1作战指挥中心',
+	],
+	[
+		"任务: 进场2张卡牌\n奖励: 获得<1>零件\n每回合结束时, 重置任务",
+		"任务: 进场2张卡牌\n奖励: 获得<2>零件\n每回合结束时, 重置任务",
+	],
+]
+
+[card.unit]
+'自动机炮' = 1
+
+[card.attr]
+
+[[card]]
+name = '导弹基地'
+pinyin = 'ddjd'
+race = 'N'
+level = 1
+pack = '要塞衍生'
+belong = 'none'
+type = 'structure'
+desc = [
+	[
+		'每回合结束时, 将每个自动机炮变为2风暴对地导弹塔',
+		'每回合结束时, 将每个自动机炮变为2风暴对地导弹塔',
+	],
+	[
+		'任意任务完成时, 获得<2>风暴对地导弹塔',
+		'任意任务完成时, 获得<3>风暴对地导弹塔',
+	],
+]
+
+[card.unit]
+'自动机炮' = 1
+
+[card.attr]
+
+[[card]]
+name = '粒子光炮'
+pinyin = 'lzgp'
+race = 'N'
+level = 1
+pack = '要塞衍生'
+belong = 'none'
+type = 'structure'
+desc = [
+	[
+		'每回合结束时, 抽取相邻两侧卡牌<1>自动机炮并将每1自动机炮变为1零件',
+		'每回合结束时, 抽取相邻两侧卡牌<2>自动机炮并将每1自动机炮变为1零件',
+	],
+	[
+		'制造(9): 获得1粒子光炮',
+		'制造(9): 获得1粒子光炮',
+	],
+]
+
+[card.unit]
+'自动机炮' = 1
+
+[card.attr]
+
+[[card]]
+name = '再生钢'
+pinyin = 'zsg'
+race = 'N'
+level = 1
+pack = '要塞衍生'
+belong = 'none'
+type = 'structure'
+desc = [
+	[
+		'每回合结束时, 将每2自动机炮变为1热辣贝蒂',
+		'每回合结束时, 将每2自动机炮变为1热辣贝蒂',
+	],
+	[
+		'获得升级时, 发现1张建筑卡并获得1热辣贝蒂',
+		'获得升级时, 发现1张建筑卡并获得2热辣贝蒂',
+	],
+]
+
+[card.unit]
+'自动机炮' = 1
+
+[card.attr]
+
+[[card]]
+name = '不法之徒'
+pinyin = 'bfzt'
+race = 'T'
+level = 1
+pack = '泰凯斯衍生'
+belong = 'none'
+type = 'normal'
+desc = [
+]
+
+[card.unit]
+'泰凯斯' = 1
+
+[card.attr]
+
+[[card]]
+name = '生化实验室'
+pinyin = 'shsys'
+race = 'N'
+level = 0
+pack = '诺娃衍生'
+belong = 'none'
+type = 'support'
+desc = [
+	[
+		'部署时, 将指定卡牌的5生物单位变为5被感染的陆战队员并注卵',
+		'部署时, 将指定卡牌的5生物单位变为5被感染的陆战队员并注卵',
+	],
+]
+
+[card.unit]
+
+[card.attr]
+
+[[card]]
+name = '紧急回收'
+pinyin = 'jjhs'
+race = 'N'
+level = 0
+pack = '诺娃衍生'
+belong = 'none'
+type = 'support'
+desc = [
+	[
+		'部署时, 摧毁指定卡牌, 将其中的非英雄单位转移到相邻非虫卵牌中(优先左侧卡牌)',
+		'部署时, 摧毁指定卡牌, 将其中的非英雄单位转移到相邻非虫卵牌中(优先左侧卡牌)',
+	],
+]
+
+[card.unit]
+
+[card.attr]
+
+[[card]]
+name = '星灵科技'
+pinyin = 'xlkj'
+race = 'N'
+level = 0
+pack = '诺娃衍生'
+belong = 'none'
+type = 'support'
+desc = [
+	[
+		"部署时, 为指定非神族卡牌添加描述:\n每回合结束时, 折跃1陆战队员\n三连后还原",
+		"部署时, 为指定非神族卡牌添加描述:\n每回合结束时, 折跃1陆战队员\n三连后还原",
+	],
+]
+
+[card.unit]
+
+[card.attr]
+
+[[card]]
+name = '尖端科技'
+pinyin = 'jdkj'
+race = 'N'
+level = 0
+pack = '诺娃衍生'
+belong = 'none'
+type = 'support'
+desc = [
+	[
+		"部署时, 指定卡牌获得轨道空降升级\n其能让单位能空降到敌人后方",
+		"部署时, 指定卡牌获得轨道空降升级\n其能让单位能空降到敌人后方",
+	],
+]
+
+[card.unit]
+
+[card.attr]
+
+[[card]]
+name = '超负荷'
+pinyin = 'cfh'
+race = 'N'
+level = 0
+pack = '诺娃衍生'
+belong = 'none'
+type = 'support'
+desc = [
+	[
+		'部署时, 摧毁指定卡牌, 并再次触发它的进场特效',
+		'部署时, 摧毁指定卡牌, 并再次触发它的进场特效',
+	],
+]
+
+[card.unit]
+
+[card.attr]
+
+[[card]]
+name = '机械工厂'
+pinyin = 'jxgc'
+race = 'T'
+level = 0
+pack = '思旺衍生'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'制造(70): 获得1休伯利安号',
+		'制造(70): 获得1休伯利安号',
+	],
+	[
+		'制造(45): 获得9战列巡航舰',
+		'制造(45): 获得9战列巡航舰',
+	],
+	[
+		'制造(30): 获得6雷神',
+		'制造(30): 获得6雷神',
+	],
+	[
+		'制造(16): 获得6攻城坦克',
+		'制造(16): 获得6攻城坦克',
+	],
+]
+
+[card.unit]
+'科技实验室' = 1
+
+[card.attr]
+gold = true
+
+[[card]]
+name = '幽灵报道'
+pinyin = 'ylbd'
+race = 'N'
+level = 7
+pack = '幽灵衍生'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 获得2幽灵',
+		'每回合结束时, 获得2幽灵',
+	],
+	[
+		'任意卡牌进场时, 幽灵报道的种族变更为场上最多数量的种族',
+		'任意卡牌进场时, 幽灵报道的种族变更为场上最多数量的种族',
+	],
+]
+
+[card.unit]
+'幽灵' = 2
+
+[card.attr]
+gold = true

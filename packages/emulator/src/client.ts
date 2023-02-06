@@ -1,6 +1,6 @@
-import { InnerMsg } from './events'
-import { DistributiveOmit } from './types'
-import { Wrapper } from './wrapper'
+import type { InnerMsg } from './events'
+import type { DistributiveOmit } from './types'
+import type { Wrapper } from './wrapper'
 
 export class Client {
   pos: number

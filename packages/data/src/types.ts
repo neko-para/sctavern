@@ -1,10 +1,13 @@
-import { CardKey } from './card'
-import { MutationKey } from './mutation'
-import { PackKey } from './pack'
-import { ProphesyKey } from './prophesy'
-import { RoleKey } from './role'
-import { UnitKey } from './unit'
-import { UpgradeKey } from './upgrade'
+import type {
+  UnitKey,
+  CardKey,
+  PackKey,
+  UpgradeKey,
+  RoleKey,
+  MutationKey,
+  ProphesyKey,
+  AmonKey,
+} from './data'
 
 export type Race = 'T' | 'Z' | 'P' | 'N'
 
@@ -99,6 +102,11 @@ export interface Prophesy {
   type: RoleKey | 0 | 1 | 2
   desc: string
   unique?: true
+}
+
+export interface Amon {
+  name: AmonKey
+  unit: Partial<Record<UnitKey, number>>
 }
 
 export type Difficulty = '普通' | '困难' | '残酷' | '折磨'

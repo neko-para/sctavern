@@ -1,7 +1,8 @@
-import { UnitData, UnitKey } from '@sctavern/data'
-import { GameInstance } from './game'
+import { UnitData } from '@sctavern/data'
+import type { UnitKey } from '@sctavern/data'
+import type { GameInstance } from './game'
 import cm from './serialize'
-import { Descriptor } from './types'
+import type { Descriptor } from './types'
 
 export function rep(v: UnitKey, n: number) {
   return Array.from({ length: n }, () => v)

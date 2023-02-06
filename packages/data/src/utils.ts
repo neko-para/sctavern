@@ -1,5 +1,5 @@
-import { Unit } from './types'
-import { AllUnit, UnitKey } from './unit'
+import type { Unit } from './types'
+import type { UnitKey } from './data'
 
 export function elited(key: UnitKey): UnitKey {
   return `${key}(精英)` as UnitKey

@@ -1,15 +1,15 @@
 import {
   CardData,
-  CardPack,
+  PackData,
   elited,
   isNormal,
   isRoyalized,
   UnitData,
-  UnitKey,
 } from '@sctavern/data'
-import { CardInstance } from '../card'
-import { InnerMsg } from '../events'
-import { Descriptor } from '../types'
+import type { UnitKey } from '@sctavern/data'
+import type { CardInstance } from '../card'
+import type { InnerMsg } from '../events'
+import type { Descriptor } from '../types'
 import { notNull, rep } from '../utils'
 
 export function 任务<T extends InnerMsg['msg']>(
@@ -482,7 +482,7 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'post-enter'() {
           const sc = this.$ref$Player.$ref$Game.lcg
-            .shuffle(CardPack.诺娃衍生.map(c => CardData[c]))
+            .shuffle(PackData.诺娃衍生.map(c => CardData[c]))
             .slice(0, 2)
           this.$ref$Player.push_discover(
             sc.map(card => ({

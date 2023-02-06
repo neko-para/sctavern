@@ -1,7 +1,8 @@
-import { elited, isNormal, UnitData, UnitKey } from '@sctavern/data'
-import { CardInstance } from '../card'
-import { InnerMsg } from '../events'
-import { Descriptor } from '../types'
+import { elited, isNormal, UnitData } from '@sctavern/data'
+import type { UnitKey } from '@sctavern/data'
+import type { CardInstance } from '../card'
+import type { InnerMsg } from '../events'
+import type { Descriptor } from '../types'
 import { mostValueUnit, rep } from '../utils'
 import { 科挂X } from './terran'
 

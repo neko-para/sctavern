@@ -2,8 +2,6 @@
   "name": "@sctavern/emulator",
   "main": "src/index.ts",
   "scripts": {
-    "build": "esbuild --platform=node --bundle test/index.ts --outfile=index.js",
-    "run": "npm run build & node index.js"
   },
   "dependencies": {
     "@sctavern/data": "*"

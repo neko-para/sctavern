@@ -1,0 +1,335 @@
+
+[[prophesy]]
+name = '混沌洪流'
+pinyin = 'hdhl'
+type = '执政官'
+desc = '融合卡牌后获得所有单位的幻象'
+
+[[prophesy]]
+name = '无限融合'
+pinyin = 'wxrh'
+type = '执政官'
+desc = '技能不再限制使用次数, 融合完成后获得3晶体矿'
+
+[[prophesy]]
+name = '狂热冲锋'
+pinyin = 'krcf'
+type = '狂热者'
+desc = '立即提升酒馆等级至4'
+
+[[prophesy]]
+name = '能量提速'
+pinyin = 'nlts'
+type = '狂热者'
+desc = '每拥有1水晶塔, 战斗开始时所有单位额外获得2%星空加速'
+
+[[prophesy]]
+name = '自动装填'
+pinyin = 'zdzt'
+type = '陆战队员'
+desc = '技能不再限制使用次数'
+
+[[prophesy]]
+name = '紧急征召'
+pinyin = 'jjzz'
+type = '陆战队员'
+desc = '技能会获得两张低于酒馆等级1级的卡牌'
+
+[[prophesy]]
+name = '收割行动'
+pinyin = 'sgxd'
+type = '收割者'
+desc = '定点部署卡牌现在只需要1晶体矿'
+
+[[prophesy]]
+name = '强化药剂'
+pinyin = 'qhyj'
+type = '收割者'
+desc = '每次战斗胜利时, 所有生物单位获得12%攻速提升(可以叠加)'
+
+[[prophesy]]
+name = '幽灵报道'
+pinyin = 'ylbd'
+type = '幽灵'
+desc = "获得卡牌幽灵报道\n变更主动技能: 每回合, 消耗2晶体矿发现一个幽灵专属升级"
+
+[[prophesy]]
+name = '暗影猎杀'
+pinyin = 'ayls'
+type = '幽灵'
+desc = '战斗开始时, 隐身形态的所有友方单位获得狙击镜升级, 超级EMP形态的所有敌方单位虚空投影降至0'
+
+[[prophesy]]
+name = '寄生细胞'
+pinyin = 'jsxb'
+type = '感染虫'
+desc = '技能可以感染所有种族的卡牌'
+
+[[prophesy]]
+name = '双生虫卵'
+pinyin = 'sscl'
+type = '感染虫'
+desc = '感染的卡牌会注卵三次'
+
+[[prophesy]]
+name = '备用钻头'
+pinyin = 'byzt'
+type = 'SCV'
+desc = '每回合可以额外使用两次技能'
+
+[[prophesy]]
+name = '自动修理'
+pinyin = 'zdxl'
+type = 'SCV'
+desc = '使用技能后, 自动消耗1晶体矿使技能复原, 晶体矿不足时无法复原'
+
+[[prophesy]]
+name = '进化分支'
+pinyin = 'jhfz'
+type = '阿巴瑟'
+desc = '用于进化的卡牌会返回暂存区'
+
+[[prophesy]]
+name = '改造突变'
+pinyin = 'gztb'
+type = '阿巴瑟'
+desc = '技能不再消耗晶体矿'
+
+[[prophesy]]
+name = '过量采集'
+pinyin = 'glcj'
+type = '工蜂'
+desc = '升级酒馆等级时, 获得对应酒馆等级的晶体矿和瓦斯'
+
+[[prophesy]]
+name = '采集蜂群'
+pinyin = 'cjfq'
+type = '工蜂'
+desc = '获得主动技能: 消耗1点瓦斯获得4点晶体矿'
+
+[[prophesy]]
+name = '充气甲壳'
+pinyin = 'cqjq'
+type = '王虫'
+desc = '出售的所有卡牌兵力都会增加50%'
+
+[[prophesy]]
+name = '超距视界'
+pinyin = 'cjsj'
+type = '王虫'
+desc = '每回合出售的第一张卡牌会返回暂存区(虫卵卡牌无法返回)'
+
+[[prophesy]]
+name = '再生护甲'
+pinyin = 'zshj'
+type = '蟑螂'
+desc = "回合结束时, 恢复所有玩家的生命值10点\n每战败一次, 所有生物单位战斗开始时获得3点护甲"
+
+[[prophesy]]
+name = '荆棘外壳'
+pinyin = 'jjwk'
+type = '蟑螂'
+desc = '战斗开始时, 所有单位获得反甲升级'
+
+[[prophesy]]
+name = '护盾封存'
+pinyin = 'hdfc'
+type = '副官'
+desc = '每回合获得1晶体矿, 所有剩余晶体矿都会保留至下回合'
+
+[[prophesy]]
+name = '能量视界'
+pinyin = 'nlsj'
+type = '副官'
+desc = '免费刷新后, 获得1晶体矿'
+
+[[prophesy]]
+name = '虚空意志'
+pinyin = 'xkyz'
+type = '混合体'
+desc = '获得主动技能: 每回合, 为选择卡牌添加虚空投影和虚空能量'
+
+[[prophesy]]
+name = '形体降临'
+pinyin = 'xtjl'
+type = '混合体'
+desc = '每回合, 为选择卡牌添加1个当前酒馆等级的混合体'
+
+[[prophesy]]
+name = '地下交易'
+pinyin = 'dxjy'
+type = 0
+desc = '获得3晶体矿'
+
+[[prophesy]]
+name = '补给空投'
+pinyin = 'bjkt'
+type = 0
+desc = '随机获得一张当前酒馆等级的卡牌'
+
+[[prophesy]]
+name = '挖宝奇兵'
+pinyin = 'wbqb'
+type = 0
+desc = '获得卡牌挖宝奇兵'
+
+[[prophesy]]
+name = '升变'
+pinyin = 'sb'
+type = 0
+desc = '降低酒馆升级费用4'
+
+[[prophesy]]
+name = '黄金矿工'
+pinyin = 'hjkg'
+type = 0
+desc = '为随机卡牌添加黄金矿工'
+
+[[prophesy]]
+name = '能量扩散'
+pinyin = 'nlks'
+type = 0
+desc = '获得10次免费刷新(只在本回合生效)'
+
+[[prophesy]]
+name = '人海战术'
+pinyin = 'rhzs'
+type = 0
+desc = '发现一张1星卡牌'
+
+[[prophesy]]
+name = '时间停止'
+pinyin = 'sjzt'
+type = 0
+desc = '下次战斗开始时, 所有敌对单位冻结在时空中, 无法移动或攻击, 持续15秒'
+
+[[prophesy]]
+name = '暗影刷新'
+pinyin = 'aysx'
+type = 0
+desc = '刷新酒馆, 陈列当前酒馆等级+1星级的卡牌'
+
+[[prophesy]]
+name = '过量补给'
+pinyin = 'glbj'
+type = 1
+desc = '获得随机晶体矿补给(最多20)'
+
+[[prophesy]]
+name = '终极发现'
+pinyin = 'zjfx'
+type = 1
+desc = '发现一张6星卡牌'
+
+[[prophesy]]
+name = '精英学院'
+pinyin = 'jyxy'
+type = 1
+desc = '每回合结束时, 将场上所有单位精英化'
+
+[[prophesy]]
+name = '强化升级'
+pinyin = 'qhsj'
+type = 1
+desc = '立即升级酒馆等级至6'
+
+[[prophesy]]
+name = '水晶聚能'
+pinyin = 'sjjn'
+type = 1
+desc = '本局游戏中, 若出售卡牌内拥有水晶塔或虚空水晶塔, 额外获得1晶体矿(无法叠加)'
+unique = true
+
+[[prophesy]]
+name = '研发计划'
+pinyin = 'yfjh'
+type = 1
+desc = '本局游戏中, 每进场4张卡牌, 发现一张人族卡牌(无法叠加)'
+unique = true
+
+[[prophesy]]
+name = '基因改造'
+pinyin = 'jygz'
+type = 1
+desc = '本局游戏中, 虫卵牌孵化时额外获得6晶体矿(无法叠加)'
+unique = true
+
+[[prophesy]]
+name = '净化数据网'
+pinyin = 'jhsjw'
+type = 1
+desc = '下回合开始时, 将7号位非金色卡牌变为金色并获得三连效果'
+
+[[prophesy]]
+name = '机械感染'
+pinyin = 'jxgr'
+type = 1
+desc = '机械单位可以被孵化'
+
+[[prophesy]]
+name = '虚空风暴'
+pinyin = 'xkfb'
+type = 1
+desc = '每刷新3次酒馆, 具有虚空投影的1-5星卡牌复制卡牌内1个随机单位(无法叠加)'
+unique = true
+
+[[prophesy]]
+name = '能量预兆'
+pinyin = 'nlyz'
+type = 1
+desc = '战斗阶段召唤随机单位加入战斗(无法叠加)'
+unique = true
+
+[[prophesy]]
+name = '鲜血仪式'
+pinyin = 'xxys'
+type = 1
+desc = '本回合, 购买卡牌不再消耗晶体矿, 改为消耗生命值'
+
+[[prophesy]]
+name = '灵能特训'
+pinyin = 'lntx'
+type = 2
+desc = '每回合获得10次免费刷新(只在当前回合生效)'
+
+[[prophesy]]
+name = '作战资源方案'
+pinyin = 'zzzyfa'
+type = 2
+desc = '本局游戏中, 每张卡的费用都变为2晶体矿'
+
+[[prophesy]]
+name = '达拉姆的荣耀'
+pinyin = 'dlmdry'
+type = 2
+desc = '为所有卡牌添加2阿塔尼斯并触发2次集结'
+
+[[prophesy]]
+name = '废弃试验品'
+pinyin = 'fqsyp'
+type = 2
+desc = '发现两个中级预言'
+
+[[prophesy]]
+name = '战术装备'
+pinyin = 'zszb'
+type = 2
+desc = '卡牌升级上限增加3, 并为场上所有卡牌添加3个随机升级'
+
+[[prophesy]]
+name = '死亡阴影'
+pinyin = 'swyy'
+type = 2
+desc = '为所有卡牌添加虚空投影和虚空能量'
+
+[[prophesy]]
+name = '相位提速'
+pinyin = 'xwts'
+type = 2
+desc = '出售的卡牌每有一个单位, 当前回合战斗开始时所有单位都获得1%攻速提升(最高100%)'
+
+[[prophesy]]
+name = '点石成金'
+pinyin = 'dscj'
+type = 2
+desc = '将所有非金色卡牌变为金色, 并获得三连效果与金光闪闪升级'

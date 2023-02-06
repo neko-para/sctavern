@@ -1,18 +1,16 @@
-import {
+import type {
   Race,
   CardBelong,
   UnitKey,
   UpgradeKey,
   CardKey,
   Card,
-  UnitData,
-  UpgradeData,
-  CardData,
 } from '@sctavern/data'
+import { UnitData, UpgradeData, CardData } from '@sctavern/data'
 import { Dispatch } from './dispatch'
-import { GenericListener, InnerMsg } from './events'
-import { PlayerInstance } from './player'
-import { CardConfig, DistributiveOmit, ObtainUnitWay } from './types'
+import type { GenericListener, InnerMsg } from './events'
+import type { PlayerInstance } from './player'
+import type { CardConfig, DistributiveOmit, ObtainUnitWay } from './types'
 import { mostValueUnit, notNull, rep } from './utils'
 import DescriptorTable from './descriptor'
 import { Attribute } from './attrib'

@@ -1,10 +1,18 @@
 {
-  "name": "@sctavern-data",
+  "name": "@sctavern/data",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/@sctavern/data/src",
   "projectType": "library",
   "targets": {
+    "prebuild":{
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "packages/data",
+        "command": "npm run prebuild"
+      }
+    },
     "build": {
+      "dependsOn": ["prebuild"],
       "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {

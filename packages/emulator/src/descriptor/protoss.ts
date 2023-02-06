@@ -1,6 +1,7 @@
-import { canElite, elited, isNormal, UnitData, UnitKey } from '@sctavern/data'
-import { CardInstance } from '../card'
-import { Descriptor } from '../types'
+import { canElite, elited, isNormal, UnitData } from '@sctavern/data'
+import type { UnitKey } from '@sctavern/data'
+import type { CardInstance } from '../card'
+import type { Descriptor } from '../types'
 import { rep } from '../utils'
 
 function 集结X(

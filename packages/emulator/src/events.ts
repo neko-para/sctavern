@@ -1,6 +1,6 @@
-import { CardKey, UnitKey, UpgradeKey } from '@sctavern/data'
-import { CardInstance } from './card'
-import { DiscoverContext, GameArea, ObtainUnitWay } from './types'
+import type { CardKey, UnitKey, UpgradeKey } from '@sctavern/data'
+import type { CardInstance } from './card'
+import type { DiscoverContext, GameArea, ObtainUnitWay } from './types'
 
 type ApplyKey<T, I> = T extends unknown ? T & I : never
 

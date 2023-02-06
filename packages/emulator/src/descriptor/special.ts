@@ -1,5 +1,7 @@
-import { isNormal, Race, rep, UnitData } from '@sctavern/data'
-import { Descriptor } from '../types'
+import { isNormal, UnitData } from '@sctavern/data'
+import type { Race } from '@sctavern/data'
+import type { Descriptor } from '../types'
+import { rep } from '../utils'
 
 export default function (/* config */): Record<string, Descriptor> {
   return {

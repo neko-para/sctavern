@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import {
-  type Pack,
+  type PackKey,
   type RoleKey,
   type MutationKey,
   ExtPack,
@@ -14,7 +14,7 @@ const browserStore = useBrowserStore()
 const section = ref<'packseed' | 'role' | 'mutation' | 'pve'>('packseed')
 
 const props = defineProps<{
-  Pack: Pack[]
+  Pack: PackKey[]
   Seed: number
   Role: RoleKey[]
   Mutation: MutationKey[]
@@ -23,7 +23,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'update:Pack', p: Pack[]): void
+  (e: 'update:Pack', p: PackKey[]): void
   (e: 'update:Seed', s: number): void
   (e: 'update:Role', r: RoleKey[]): void
   (e: 'update:Pve', p: boolean): void
@@ -45,7 +45,7 @@ const pack = computed({
     return props.Pack
   },
 
-  set(pack: Pack[]) {
+  set(pack: PackKey[]) {
     emit('update:Pack', pack)
   },
 })
@@ -76,7 +76,7 @@ function genSeed() {
   return Math.round(Math.random() * 100000000)
 }
 
-function genPack(): Pack[] {
+function genPack(): PackKey[] {
   return ['核心', ...lcg.shuffle(ExtPack.slice(1)).slice(0, 2)]
 }
 

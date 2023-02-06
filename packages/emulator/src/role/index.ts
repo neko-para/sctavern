@@ -1,6 +1,7 @@
-import { CardData, RoleKey, UnitKey } from '@sctavern/data'
-import { CardInstance } from '../card'
-import { RoleImpl } from '../types'
+import { CardData } from '@sctavern/data'
+import type { RoleKey, UnitKey } from '@sctavern/data'
+import type { CardInstance } from '../card'
+import type { RoleImpl } from '../types'
 
 const hybrid: Record<number, UnitKey> = {
   1: '混合体掠夺者',

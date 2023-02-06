@@ -144,14 +144,14 @@ type PackKey = /* ... */
 ```
 
 ```typescript
-export const CardPack: Record<PackKey, CardKey[]>
+export const PackData: Record<PackKey, CardKey[]>
 export const ExtPack: PackKey[]
 export const PresetPoolPack: PackKey[]
 export const PvpPresetActivePack: PackKey[]
 export const PvePresetActivePack: PackKey[]
 ```
 
-* `CardPack`
+* `PackData`
   * 每个卡牌包包含的卡牌
 * `ExtPack`
   * 所有扩展包的名称

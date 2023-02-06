@@ -1,23 +1,25 @@
 import {
-  RoleKey,
-  CardKey,
   CardData,
   UpgradeData,
-  Card,
-  Race,
   AllUpgrade,
-  UnitKey,
-  Upgrade,
   AllProphesy,
   ProphesyData,
-  ProphesyKey,
   UnitData,
+} from '@sctavern/data'
+import type {
+  RoleKey,
+  CardKey,
+  UnitKey,
+  Card,
+  Race,
+  Upgrade,
+  ProphesyKey,
 } from '@sctavern/data'
 import { CardInstance } from './card'
 import { Dispatch } from './dispatch'
-import { InnerMsg, GenericListener } from './events'
-import { GameInstance } from './game'
-import {
+import type { InnerMsg, GenericListener } from './events'
+import type { GameInstance } from './game'
+import type {
   PlayerConfig,
   GameArea,
   PlayerStatus,

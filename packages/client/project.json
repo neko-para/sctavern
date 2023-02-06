@@ -1,7 +1,7 @@
 {
-  "name": "@sctavern-client",
+  "name": "@sctavern/client",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "root": "packages/@sctavern-client",
+  "root": "packages/@sctavern/client",
   "sourceRoot": "packages/client/src",
   "projectType": "library",
   "targets": {
@@ -20,7 +20,7 @@
       "executor": "@nrwl/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "@sctavern-client:build",
+        "buildTarget": "@sctavern/client:build",
         "configFile": "packages/@sctavern/client/vite.config.ts"
       }
     },

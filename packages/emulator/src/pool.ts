@@ -1,5 +1,6 @@
-import { CardKey, PackKey, CardData, Card, CardPack } from '@sctavern/data'
-import { LCG } from './game'
+import { CardData, PackData } from '@sctavern/data'
+import type { CardKey, PackKey, Card } from '@sctavern/data'
+import type { LCG } from './game'
 import { repX } from './utils'
 
 const poolCount: Record<number, number> = {
@@ -22,7 +23,7 @@ export class Pool {
     this.allow = poolPack
 
     pack.forEach(p => {
-      CardPack[p].forEach(c => {
+      PackData[p].forEach(c => {
         const card = CardData[c]
         if (p === '特典') {
           if (this.$ref$lcg.float() <= 0.15) {

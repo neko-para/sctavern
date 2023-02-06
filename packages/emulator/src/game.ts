@@ -1,12 +1,12 @@
-import { InnerMsg } from './events'
+import { RoleData } from '@sctavern/data'
+import type { InnerMsg } from './events'
 import { PlayerInstance } from './player'
 import { Pool } from './pool'
-import { GameState, GameConfig, PresentAction } from './types'
+import type { GameState, GameConfig, PresentAction } from './types'
 import { dup, repX } from './utils'
 import DescriptorTable from './descriptor'
 import { Attribute } from './attrib'
-import { RoleData } from '@sctavern/data'
-import { Server } from './server'
+import type { Server } from './server'
 
 export class LCG {
   seed: number

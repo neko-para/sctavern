@@ -2,12 +2,11 @@ import {
   canElite,
   elited,
   AllProphesy,
-  type ProphesyKey,
   ProphesyData,
   AllUpgrade,
-  UpgradeKey,
 } from '@sctavern/data'
-import { ProphesyImpl } from '../types'
+import type { UpgradeKey, ProphesyKey } from '@sctavern/data'
+import type { ProphesyImpl } from '../types'
 import { rep } from '../utils'
 
 export function CreateProphesyTable() {

@@ -1,5 +1,6 @@
-import { CardData, CardKey } from '@sctavern/data'
-import { Descriptor } from '../types'
+import type { CardKey } from '@sctavern/data'
+import { CardData } from '@sctavern/data'
+import type { Descriptor } from '../types'
 import TD from './terran'
 import ZD from './zerg'
 import PD from './protoss'
