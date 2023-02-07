@@ -13,18 +13,17 @@
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
+    "@sctavern/data": "file:../../node_modules/@sctavern/data",
+    "@sctavern/emulator": "file:../../node_modules/@sctavern/emulator",
     "buffer": "^6.0.3",
     "file-saver": "^2.0.5",
     "jszip": "^3.10.1",
-    "pako": "^2.1.0",
     "pinia": "^2.0.28",
     "roboto-fontface": "*",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
     "vuetify": "^3.0.0-beta.0",
-    "webfontloader": "^1.0.0",
-    "@sctavern/data": "file:../../node_modules/@sctavern/data",
-    "@sctavern/emulator": "file:../../node_modules/@sctavern/emulator"
+    "webfontloader": "^1.0.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",

@@ -1,6 +1,6 @@
 {
   "name": "@sctavern/data",
-  "main": "src/index.js",
+  "main": "./src/index.js",
   "scripts": {
     "2xlsx": "esbuild --platform=node --bundle script/2xlsx.ts --outfile=index.js & node index.js",
     "2toml": "esbuild --platform=node --bundle script/2toml.ts --outfile=index.js & node index.js",

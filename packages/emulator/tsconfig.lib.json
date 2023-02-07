@@ -6,8 +6,11 @@
     "rootDir": "./",
     "outDir": "../../node_modules/@sctavern/emulator",
     "declaration": true,
-    "types": ["node"]
+    "types": ["node"],
+    "paths": {
+      "@sctavern/data": ["packages/data"]
+    }
   },
   "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"],
-  "include": ["src/**/*.ts", "./package.json"]
+  "include": ["src/**/*.ts", "./package.json", "src/**/*.js"]
 }
