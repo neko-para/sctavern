@@ -8,7 +8,13 @@ import {
 } from '@sctavern/data'
 import type { Race, UnitKey } from '@sctavern/data'
 import type { Descriptor } from '../types'
-import { mostValueUnit, NotImplementYet, notNull, rep } from '../utils'
+import {
+  mostValueUnit,
+  NotImplementYet,
+  notNull,
+  randomUpgrade,
+  rep,
+} from '../utils'
 
 function 供养(n: number, unit: UnitKey): Descriptor {
   return {
@@ -440,11 +446,7 @@ export default function (/* config */): Record<string, Descriptor> {
           this.$ref$Player.obtain_resource({
             gas: -1,
           })
-          this.obtain_upgrade(
-            this.$ref$Player.$ref$Game.lcg.shuffle(
-              AllUpgrade.filter(u => u !== '献祭')
-            )[0]
-          )
+          this.obtain_upgrade(randomUpgrade(this.$ref$Player.$ref$Game.lcg))
         },
       },
     },

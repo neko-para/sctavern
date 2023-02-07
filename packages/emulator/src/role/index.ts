@@ -1,7 +1,8 @@
-import { CardData } from '@sctavern/data'
+import { CardData, UpgradeData } from '@sctavern/data'
 import type { RoleKey, UnitKey } from '@sctavern/data'
-import type { CardInstance } from '../card'
+import { CardInstance } from '../card'
 import type { RoleImpl } from '../types'
+import { randomUpgrades } from '../utils'
 
 const hybrid: Record<number, UnitKey> = {
   1: '混合体掠夺者',
@@ -422,6 +423,75 @@ export function CreateRoleTable() {
           })
           this.enable = false
           this.attrib.used = 1
+        },
+      },
+    },
+    斯台特曼: {
+      listener: {
+        'round-enter'(m, player) {
+          if (m.round > 1) {
+            player.obtain_resource({
+              gas: -1,
+            })
+          }
+        },
+        'tavern-upgraded'(m, player) {
+          player.obtain_resource({
+            gas: 1,
+          })
+        },
+        'card-entered'({ target }, player) {
+          player.push_discover(
+            randomUpgrades(player.$ref$Game.lcg, 3)
+              .map(u => UpgradeData[u])
+              .map(upgrade => ({
+                type: 'upgrade',
+                upgrade,
+              })),
+            {
+              target: target.index(),
+            }
+          )
+        },
+      },
+    },
+    雷诺: {
+      init() {
+        this.enable = true
+      },
+      listener: {
+        $ability(m, player) {
+          if (!this.enable) {
+            return
+          }
+          const ci = player.query_selected_present()
+          if (!ci || ci.color === 'gold') {
+            return
+          }
+          ci.color = 'gold'
+          ci.obtain_upgrade('金光闪闪')
+          this.enable = false
+        },
+      },
+    },
+    阿塔尼斯: {
+      init() {
+        this.progress.cur = 0
+        this.progress.max = 9
+      },
+      listener: {
+        'card-entered'({ target }, player) {
+          if (this.progress.cur < this.progress.max && target.race === 'P') {
+            this.progress.cur += 1
+            if (this.progress.cur === this.progress.max) {
+              this.progress.cur = -1
+              target.name = `大主教的卫队`
+              target.level = 7
+              target.color = 'amber'
+              target.load_desc(CardData['阿塔尼斯'])
+              target.load_unit(CardData['阿塔尼斯'])
+            }
+          }
         },
       },
     },

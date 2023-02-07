@@ -72,14 +72,13 @@ export class CardInstance {
     }
 
     this.occupy = []
-
-    this.units = setupUnits
-      ? (Object.keys(card.unit) as UnitKey[])
-          .map(u => rep(u, card.unit[u] as number))
-          .flat()
-      : []
+    this.units = []
     this.upgrades = []
     this.descs = []
+
+    if (setupUnits) {
+      this.load_unit(card)
+    }
   }
 
   rindex() {
@@ -419,6 +418,17 @@ export class CardInstance {
       })
     if (fixUpgrade) {
       this.fix_upgrade()
+    }
+  }
+
+  load_unit(cd: Card, fake = true) {
+    const us = (Object.keys(cd.unit) as UnitKey[])
+      .map(u => rep(u, cd.unit[u] as number))
+      .flat()
+    if (fake) {
+      this.units = [...this.units, ...us].slice(0, this.config.MaxUnit)
+    } else {
+      this.obtain_unit(us)
     }
   }
 

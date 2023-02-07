@@ -98,6 +98,9 @@ const AllRoleChoice = computed<RoleKey[]>(() => {
     '追猎者',
     '使徒',
     '矿骡',
+    '斯台特曼',
+    '雷诺',
+    '阿塔尼斯',
     '混合体',
   ]
 })
