@@ -184,6 +184,7 @@ export class GameInstance {
                       action,
                       enable:
                         p.can_buy(s.card, action, i) &&
+                        (p.can_combine(s.card) || p.can_enter(s.card)) &&
                         p.curStatus() === 'normal',
                       msg: {
                         msg: '$action',

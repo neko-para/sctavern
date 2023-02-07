@@ -159,6 +159,7 @@ const showMenu = ref(true)
             :key="`GA-${i}`"
             :disabled="!a.enable"
             @click="client.post(a.msg)"
+            :color="a.msg.msg === '$ability' && pl?.role.enhance ? 'red' : ''"
           >
             {{ tr[a.action] }}
           </auto-button>

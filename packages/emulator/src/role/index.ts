@@ -340,9 +340,88 @@ export function CreateRoleTable() {
                 player.obtain_resource({
                   mineral: 1,
                 })
+                // TODO: 免费刷新应该是专门的机制
               }
             }
           }
+        },
+      },
+    },
+    // 下面的PVE都没做
+    追猎者: {
+      init() {
+        this.progress.cur = 0
+        this.progress.max = 5
+      },
+      listener: {
+        'round-enter'() {
+          if (!this.enhance) {
+            this.attrib.first = 1
+          }
+        },
+        refreshed() {
+          if (!this.enhance) {
+            this.progress.cur += 1
+            if (this.progress.cur === this.progress.max) {
+              this.progress.cur = -1
+              this.enhance = true
+            }
+          }
+        },
+        bought(m, player) {
+          if (this.enhance || this.attrib.first) {
+            this.attrib.first = 0
+            player.do_refresh()
+          }
+        },
+      },
+    },
+    使徒: {
+      init() {
+        this.progress.max = 2
+      },
+      listener: {
+        'round-enter'() {
+          this.progress.cur = 0
+        },
+        bought(m) {
+          if (m.action !== 'combine') {
+            this.progress.cur += 1
+            this.enhance = this.progress.cur === this.progress.max
+          }
+        },
+        'get-buy-cost'(m) {
+          if (m.action === 'combine') {
+            return
+          }
+          if (this.progress.cur === this.progress.max && m.cost > 1) {
+            m.cost = 1
+          }
+        },
+      },
+    },
+    矿骡: {
+      init() {
+        this.attrib.used = 0
+      },
+      listener: {
+        'round-enter'(m, player) {
+          if (this.attrib.used) {
+            player.mineral -= player.mineral_max - 2
+            this.attrib.used = 0
+          } else {
+            this.enable = true
+          }
+        },
+        $ability(m, player) {
+          if (!this.enable || player.mineral >= player.mineral_max) {
+            return
+          }
+          player.obtain_resource({
+            mineral: player.mineral_max - player.mineral,
+          })
+          this.enable = false
+          this.attrib.used = 1
         },
       },
     },

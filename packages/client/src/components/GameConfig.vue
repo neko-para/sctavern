@@ -95,6 +95,9 @@ const AllRoleChoice = computed<RoleKey[]>(() => {
     '王虫',
     '蟑螂',
     '副官',
+    '追猎者',
+    '使徒',
+    '矿骡',
     '混合体',
   ]
 })

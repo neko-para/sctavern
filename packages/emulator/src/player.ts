@@ -711,7 +711,7 @@ export class PlayerInstance {
         cur: -1,
         max: -1,
       },
-      enhance: true,
+      enhance: false,
     }
 
     this.role_impl().init.call(this.role, this)
