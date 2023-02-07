@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build:data": "cd packages/data & npm run build",
-    "build:client": "cd packages/client & npm run build",
-    "dev:client": "cd packages/client & npm run dev"
+    "build:data": "cd packages/data && npm run build",
+    "build:client": "cd packages/client && npm run build",
+    "dev:client": "cd packages/client && npm run dev"
   },
   "workspaces": {
     "packages": [
