@@ -15,7 +15,7 @@ jobs:
       - name: Build
         run: |
           npm install
-          npx nx build @sctavern/client
+          npx nx build client
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
