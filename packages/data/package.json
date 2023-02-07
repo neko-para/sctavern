@@ -1,6 +1,6 @@
 {
   "name": "@sctavern/data",
-  "main": "src/index.ts",
+  "main": "src/index.js",
   "scripts": {
     "2xlsx": "esbuild --platform=node --bundle script/2xlsx.ts --outfile=index.js & node index.js",
     "2toml": "esbuild --platform=node --bundle script/2toml.ts --outfile=index.js & node index.js",
@@ -8,7 +8,7 @@
     "prebuild": "npm run ftoml"
   },
   "devDependencies": {
-    "@ltd/j-toml": "^1.38.0",
-    "esbuild": "^0.17.5"
+    "@ltd/j-toml": "*",
+    "esbuild": "*"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@sctavern/data",
+  "name": "data",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/@sctavern/data/src",
   "projectType": "library",
@@ -27,14 +27,14 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/@sctavern/data/**/*.ts"]
+        "lintFilePatterns": ["packages/data/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "packages/@sctavern/data/jest.config.ts",
+        "jestConfig": "packages/data/jest.config.ts",
         "passWithNoTests": true
       }
     }
