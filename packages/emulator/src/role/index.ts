@@ -177,7 +177,7 @@ export function CreateRoleTable() {
       listener: {
         'round-start'() {
           if (this.attrib.mode === 1) {
-            this.progress.cur = 3
+            this.progress.cur += 3
           }
           this.enable = true
         },

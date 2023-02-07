@@ -26,7 +26,12 @@ const tr = computed(() => {
     unlock: '解锁',
     finish: '结束',
     ability: r
-      ? r.ability + (r.progress ? ` ${r.progress.cur} / ${r.progress.max}` : '')
+      ? r.ability +
+        (r.progress
+          ? r.progress.max === -1
+            ? ` ${r.progress.cur}`
+            : ` ${r.progress.cur} / ${r.progress.max}`
+          : '')
       : '魂姿',
   }
 })

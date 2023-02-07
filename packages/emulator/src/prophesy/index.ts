@@ -84,7 +84,6 @@ export function CreateProphesyTable() {
       init() {
         this.role.attrib.mode = 1
         this.role.progress.cur = 3
-        this.role.progress.max = 3
       },
     },
     自动修理: {
