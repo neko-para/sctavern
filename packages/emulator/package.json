@@ -1,12 +1,7 @@
 {
   "name": "@sctavern/emulator",
-  "main": "./src/index.js",
-  "scripts": {
-  },
+  "main": "./src/index.ts",
   "dependencies": {
-    "@sctavern/data": "file:../../node_modules/@sctavern/data"
-  },
-  "devDependencies": {
-    "esbuild": "*"
+    "@sctavern/data": "*"
   }
 }

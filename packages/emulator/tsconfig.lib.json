@@ -4,7 +4,7 @@
     "module": "commonjs",
     "baseUrl": "./",
     "rootDir": "./",
-    "outDir": "../../node_modules/@sctavern/emulator",
+    "outDir": "../../dist/@sctavern/emulator",
     "declaration": true,
     "types": ["node"],
     "paths": {
