@@ -8,7 +8,7 @@ import {
 import type { UnitKey, Race } from '@sctavern/data'
 import type { Descriptor } from '../types'
 import { NotImplementYet, rep } from '../utils'
-import { 任务 } from './terran'
+import { 任务, 反应堆 } from './terran'
 
 function 自动机炮转换(
   eachn: number,
@@ -286,6 +286,110 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
+    不法之徒_反应堆_0: 反应堆('陆战队员'),
+    不法之徒_反应堆_1: 反应堆('陆战队员(精英)'),
+    不法之徒0: 任务(
+      'store-refreshed',
+      4,
+      ci => {
+        ci.descs = ci.descs.map(s => (s === '不法之徒0' ? '不法之徒1' : s))
+        ci.$ref$Player.upgrade_cost = Math.max(
+          0,
+          ci.$ref$Player.upgrade_cost - 4
+        )
+        ci.obtain_unit(['反应堆'])
+        ci.add_desc('不法之徒_反应堆_0')
+      },
+      () => true,
+      'instant',
+      '任务: 刷新4次酒馆\n奖励: 酒馆升级费用降低4并获得反应堆, 生产陆战队员'
+    ),
+    不法之徒1: 任务(
+      'card-entered',
+      2,
+      ci => {
+        ci.descs = ci.descs.map(s => (s === '不法之徒1' ? '不法之徒2' : s))
+        ci.obtain_unit(rep('陆战队员', 4))
+      },
+      () => true,
+      'instant',
+      '任务: 进场2张卡牌\n奖励: 获得4个陆战队员'
+    ),
+    不法之徒2: 任务(
+      'store-refreshed',
+      4,
+      ci => {
+        ci.descs = ci.descs.map(s => (s === '不法之徒2' ? '不法之徒3' : s))
+        ci.obtain_upgrade('强化药剂')
+        ci.$ref$Player.push_discover(
+          ci.$ref$Player.$ref$Game.pool
+            .discover(c => c.level === ci.$ref$Player.level, 3)
+            ?.map(card => ({
+              type: 'card',
+              card,
+            }))
+        )
+      },
+      () => true,
+      'instant',
+      '任务: 刷新4次酒馆\n奖励: 获得强化药剂升级, 获得当前酒馆等级的卡牌'
+    ),
+    不法之徒3: 任务(
+      'store-refreshed',
+      6,
+      ci => {
+        ci.descs = ci.descs.map(s => (s === '不法之徒3' ? '不法之徒4' : s))
+        ci.descs = ci.descs.map(s =>
+          s === '不法之徒_反应堆_0' ? '不法之徒_反应堆_1' : s
+        )
+        ci.$ref$Player.push_discover(
+          ci.$ref$Player.$ref$Game.pool
+            .discover(c => c.level === ci.$ref$Player.level, 3)
+            ?.map(card => ({
+              type: 'card',
+              card,
+            }))
+        )
+      },
+      () => true,
+      'instant',
+      '任务: 刷新6次酒馆\n奖励: 获得当前酒馆等级的卡牌, 反应堆生产陆战队员(精英)'
+    ),
+    不法之徒4: 任务(
+      'card-entered',
+      4,
+      ci => {
+        ci.descs = ci.descs.map(s => (s === '不法之徒4' ? '不法之徒5' : s))
+        ci.$ref$Player.obtain_resource({
+          mineral: 4,
+        })
+        ci.obtain_unit(rep('攻城坦克', 2))
+      },
+      () => true,
+      'instant',
+      '任务: 进场4张卡牌\n奖励: 获得4晶体矿和2攻城坦克'
+    ),
+    不法之徒5: 任务(
+      'card-entered',
+      6,
+      ci => {
+        ci.descs = ci.descs.map(s => (s === '不法之徒5' ? '不法之徒6' : s))
+        ci.obtain_unit(['奥丁'])
+      },
+      () => true,
+      'instant',
+      '任务: 进场6张卡牌\n奖励: 获得1奥丁'
+    ),
+    不法之徒6: 任务(
+      'card-entered',
+      4,
+      ci => {
+        ci.obtain_unit(['雷神'])
+      },
+      () => true,
+      'instant',
+      '任务: 进场4张卡牌\n奖励: 获得1雷神'
+    ),
     生化实验室0: {
       listener: {
         'post-deploy'({ target }) {

@@ -106,6 +106,7 @@ const AllRoleChoice = computed<RoleKey[]>(() => {
     '行星要塞',
     '拟态虫',
     '探机',
+    '泰凯斯',
     '混合体',
   ]
 })

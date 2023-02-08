@@ -20,7 +20,8 @@ export function 任务<T extends InnerMsg['msg']>(
     card: CardInstance,
     msg: Extract<InnerMsg, { msg: T }>
   ) => boolean = () => true,
-  policy: 'never' | 'roundend' | 'instant' = 'never'
+  policy: 'never' | 'roundend' | 'instant' = 'never',
+  text: string | [string, string] | undefined = undefined
 ): Descriptor {
   return {
     config: {
@@ -33,14 +34,14 @@ export function 任务<T extends InnerMsg['msg']>(
         if (this.attrib.get('task') < count && predict(this, msg)) {
           this.attrib.alter('task', 1)
           if (this.attrib.get('task') === count) {
+            if (policy === 'instant') {
+              this.attrib.set('task', 0)
+            }
             reward(this)
             this.$ref$Player.post({
               msg: 'task-done',
               target: this,
             })
-            if (policy === 'instant') {
-              this.attrib.set('task', 0)
-            }
           }
         }
       },
@@ -53,6 +54,7 @@ export function 任务<T extends InnerMsg['msg']>(
     note: card => {
       return [`任务进度: ${card.attrib.get('task')} / ${count}`]
     },
+    text: typeof text === 'string' ? [text, text] : text,
   }
 }
 
@@ -79,6 +81,7 @@ export function 反应堆(unit: UnitKey): Descriptor {
         }
       },
     },
+    text: [`反应堆生产${unit}`, `反应堆生产${unit}`],
   }
 }
 

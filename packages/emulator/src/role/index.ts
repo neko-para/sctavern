@@ -664,6 +664,19 @@ export function CreateRoleTable() {
         },
       },
     },
+    泰凯斯: {
+      listener: {
+        'round-enter'({ round }, player) {
+          if (round === 1) {
+            player.obtain_resource({
+              mineral: -3,
+            })
+            const ci = player.enter('不法之徒')
+            ci?.add_desc('不法之徒0')
+          }
+        },
+      },
+    },
     混合体: {
       listener: {
         'round-leave'(m, player) {

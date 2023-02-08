@@ -358,7 +358,7 @@ export function CreateProphesyTable() {
         this.persisAttrib.set('虚空风暴', 0)
       },
       listener: {
-        refreshed() {
+        'store-refreshed'() {
           if (this.persisAttrib.alter('虚空风暴', 1) === 3) {
             this.persisAttrib.set('虚空风暴', 0)
             this.all()
