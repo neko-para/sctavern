@@ -1,8 +1,8 @@
-import { CardData, UpgradeData } from '@sctavern/data'
+import { CardData, PackData, UpgradeData } from '@sctavern/data'
 import type { RoleKey, UnitKey } from '@sctavern/data'
 import { CardInstance } from '../card'
 import type { RoleImpl } from '../types'
-import { randomUpgrades } from '../utils'
+import { mostValueUnit, randomUpgrades, rep } from '../utils'
 
 const hybrid: Record<number, UnitKey> = {
   1: '混合体掠夺者',
@@ -492,6 +492,112 @@ export function CreateRoleTable() {
               target.load_unit(CardData['阿塔尼斯'])
             }
           }
+        },
+      },
+    },
+    科学球: {
+      init() {
+        this.progress.max = 2
+        this.progress.cur = 2
+        this.enable = true
+        this.record = {}
+      },
+      listener: {
+        'card-entered'({ target }, player) {
+          const { unit } = mostValueUnit(target.units)
+          const r = this.record || {}
+          if (unit) {
+            r[unit] = (r[unit] || 0) + 1
+          }
+        },
+        $ability(m, player) {
+          if (!this.enable) {
+            return
+          }
+          if (player.gas < 1 || !player.can_enter('观察样本')) {
+            return
+          }
+          const ci = player.enter('观察样本')
+          if (ci) {
+            const r = this.record || {}
+            ci.obtain_unit(
+              Object.keys(r)
+                .map(k => rep(k as UnitKey, r[k]))
+                .flat()
+            )
+            player.obtain_resource({
+              gas: -1,
+            })
+            this.progress.cur -= 1
+            this.enable = this.progress.cur > 0
+          }
+        },
+      },
+    },
+    母舰核心: {
+      init() {
+        this.progress.cur = 0
+        this.progress.max = 2
+      },
+      listener: {
+        'round-enter'({ round }, player) {
+          if (round === 1) {
+            player.obtain_resource({
+              mineral: -3,
+            })
+            player.enter('母舰核心')
+          }
+        },
+        'card-combined'(m, player) {
+          const cis = player
+            .all()
+            .filter(ci => ci.name === '母舰核心' || ci.name === '母舰')
+          if (!cis.length) {
+            return
+          }
+          cis[0].obtain_unit(rep('虚空辉光舰', player.level))
+          if (this.progress.cur < this.progress.max) {
+            this.progress.cur += 1
+            if (this.progress.cur === this.progress.max) {
+              this.progress.cur = -1
+              this.enhance = true
+              cis[0].name = '母舰'
+              cis[0].replace(cis[0].find('母舰核心', 1), '母舰')
+            }
+          }
+        },
+      },
+    },
+    行星要塞: {
+      listener: {
+        'round-enter'() {
+          this.enable = true
+        },
+        'card-entered'({ target }, player) {
+          if (target.attrib.get('structure')) {
+            target.obtain_unit(rep('自动机炮', player.level))
+          }
+        },
+        $ability(m, player) {
+          if (!this.enable) {
+            return
+          }
+          if (player.mineral < 3) {
+            return
+          }
+          player.obtain_resource({
+            mineral: -3,
+          })
+          player.push_discover(
+            player.$ref$Game.lcg
+              .shuffle(PackData['行星要塞衍生'].map(c => CardData[c]))
+              .slice(0, 3)
+              .map(card => ({
+                type: 'card',
+                card,
+              }))
+          )
+          this.enable = false
         },
       },
     },

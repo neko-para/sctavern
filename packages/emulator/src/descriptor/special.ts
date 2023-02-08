@@ -1,7 +1,47 @@
-import { isNormal, UnitData } from '@sctavern/data'
-import type { Race } from '@sctavern/data'
+import {
+  isNormal,
+  isSpecialStructure,
+  UnitData,
+  PackData,
+  CardData,
+} from '@sctavern/data'
+import type { UnitKey, Race } from '@sctavern/data'
 import type { Descriptor } from '../types'
-import { rep } from '../utils'
+import { NotImplementYet, rep } from '../utils'
+import { 任务 } from './terran'
+
+function 自动机炮转换(
+  eachn: number,
+  eachg: number,
+  into: UnitKey,
+  countn = 1,
+  countg = 1
+): Descriptor {
+  return {
+    listener: {
+      'round-end'() {
+        const k = this.isg() ? eachg : eachn
+        const n = Math.floor(this.find('自动机炮').length / k)
+        this.filter('自动机炮', n * k)
+        this.obtain_unit(rep(into, k * (this.isg() ? countg : countn)))
+      },
+    },
+  }
+}
+
+function 制造(req: number, unit: UnitKey, cnt = 1): Descriptor {
+  return {
+    listener: {
+      'round-end'() {
+        const idx = this.find('零件', req)
+        if (idx.length === req) {
+          this.filter((u, p) => idx.includes(p))
+          this.obtain_unit(rep(unit, cnt))
+        }
+      },
+    },
+  }
+}
 
 export default function (/* config */): Record<string, Descriptor> {
   return {
@@ -124,6 +164,125 @@ export default function (/* config */): Record<string, Descriptor> {
               }
             }
           }
+        },
+      },
+    },
+    母舰核心0: NotImplementYet(),
+    母舰核心1: NotImplementYet(),
+    毒气炮塔0: 自动机炮转换(3, 2, '毒气炮塔'),
+    毒气炮塔1: {
+      listener: {
+        'post-sell'() {
+          this.$ref$Player.obtain_resource({
+            mineral: this.isg() ? 2 : 1,
+          })
+        },
+      },
+    },
+    凯达琳巨石0: 自动机炮转换(5, 4, '凯达琳巨石'),
+    凯达琳巨石1: {
+      listener: {
+        'round-end'() {
+          this.obtain_unit(rep('自动机炮', this.$ref$Player.all_of('P').length))
+        },
+      },
+    },
+    岗哨机枪0: 自动机炮转换(1, 1, '岗哨机枪', 2, 2),
+    岗哨机枪1: {
+      listener: {
+        'card-entered'() {
+          this.obtain_unit(rep('岗哨机枪', this.isg() ? 3 : 2))
+        },
+      },
+    },
+    行星要塞0: 自动机炮转换(5, 4, '行星要塞'),
+    行星要塞1: {
+      config: {
+        unique: 'normal',
+      },
+      listener: {
+        'card-selled'({ target }) {
+          if (target.race === 'N') {
+            this.obtain_unit(
+              target.filter(
+                u =>
+                  !isSpecialStructure(UnitData[u]) &&
+                  !!UnitData[u].tag.structure
+              )
+            )
+          }
+        },
+      },
+    },
+    星门0: {
+      listener: {
+        'round-end'() {
+          this.obtain_unit(rep('零件', this.isg() ? 2 : 1))
+          this.replace(this.find('自动机炮'), '零件')
+        },
+      },
+    },
+    星门1: 制造(6, '星门'),
+    自动机炮0: {
+      listener: {
+        'round-end'() {
+          this.obtain_unit(rep('自动机炮', this.isg() ? 2 : 1))
+        },
+      },
+    },
+    自动机炮1: {
+      listener: {
+        'post-sell'() {
+          const ar = this.around(this.attrib.get('oldpos'))
+          if (!ar.length) {
+            return
+          }
+          const cnt = this.find('自动机炮').length
+          ar[0].obtain_unit(rep('自动机炮', cnt))
+        },
+      },
+    },
+    作战中心0: 制造(6, '作战指挥中心'),
+    作战中心1: 任务(
+      'card-entered',
+      2,
+      ci => ci.obtain_unit(rep('零件', ci.isg() ? 2 : 1)),
+      () => true,
+      'roundend'
+    ),
+    导弹基地0: 自动机炮转换(1, 1, '风暴对地导弹塔', 2, 2),
+    导弹基地1: {
+      listener: {
+        'task-done'() {
+          this.obtain_unit(rep('风暴对地导弹塔', this.isg() ? 3 : 2))
+        },
+      },
+    },
+    粒子光炮0: {
+      listener: {
+        'round-end'() {
+          this.around().forEach(ci => {
+            this.obtain_unit(ci.filter('自动机炮', this.isg() ? 2 : 1))
+          })
+          this.replace(this.find('自动机炮'), '零件')
+        },
+      },
+    },
+    粒子光炮1: 制造(9, '粒子光炮'),
+    再生钢0: 自动机炮转换(2, 2, '热辣贝蒂'),
+    再生钢1: {
+      listener: {
+        'obtain-upgrade'() {
+          this.$ref$Player.push_discover(
+            this.$ref$Player.$ref$Game.lcg
+              .shuffle(PackData['行星要塞衍生'].map(c => CardData[c]))
+              .slice(0, 3)
+              .map(card => ({
+                type: 'card',
+                card,
+              }))
+          )
+          this.obtain_unit(rep('热辣贝蒂', this.isg() ? 2 : 1))
         },
       },
     },

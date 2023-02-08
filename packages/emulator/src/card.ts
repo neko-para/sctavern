@@ -144,13 +144,14 @@ export class CardInstance {
     return this.units.filter(u => pred(u)).slice(0, maxi)
   }
 
-  filter(pred: (unit: UnitKey, pos: number) => boolean, maxi = -1) {
+  filter(pred: UnitKey | ((unit: UnitKey, pos: number) => boolean), maxi = -1) {
     const taked: UnitKey[] = []
+    const realp = typeof pred === 'string' ? (u: UnitKey) => u === pred : pred
     if (maxi === -1) {
       maxi = this.units.length
     }
     this.units = this.units.filter((u, i) => {
-      if (pred(u, i) && taked.length < maxi) {
+      if (realp(u, i) && taked.length < maxi) {
         taked.push(u)
         return false
       } else {

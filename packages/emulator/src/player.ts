@@ -540,6 +540,7 @@ export class PlayerInstance {
         max: -1,
       },
       enhance: true,
+      record: null,
     }
     this.prophesy = []
 
@@ -712,6 +713,7 @@ export class PlayerInstance {
         max: -1,
       },
       enhance: false,
+      record: keepAttrib ? this.role.record : null,
     }
 
     this.role_impl().init.call(this.role, this)
@@ -887,7 +889,7 @@ export class PlayerInstance {
     if (place === -1) {
       place = this.present.findIndex(x => !x)
       if (place === -1) {
-        return false
+        return null
       }
     }
     if (this.present[place]) {

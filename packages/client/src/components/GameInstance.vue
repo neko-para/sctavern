@@ -37,10 +37,23 @@ const tr = computed(() => {
 })
 
 const showMenu = ref(true)
+const showRole = ref(false)
 </script>
 
 <template>
   <div class="d-flex flex-column justify-center">
+    <v-dialog v-model="showRole" class="w-50">
+      <v-card class="d-flex flex-column">
+        <span
+          class="Info ma-4"
+          v-for="(v, k) in pl?.role.record || {}"
+          :key="`RI-${k}`"
+        >
+          {{ k }}: {{ v }}
+        </span>
+      </v-card>
+    </v-dialog>
+
     <div class="d-flex">
       <v-card class="ControlPanel d-flex flex-column">
         <div class="ml-auto">
@@ -120,7 +133,7 @@ const showMenu = ref(true)
           <div class="mt-1">
             <discover-item
               class="ml-2"
-              v-for="(d, i) in pl?.discover?.item.slice(0, 3) || []"
+              v-for="(d, i) in pl?.discover?.item.slice(0, 4) || []"
               :key="`Discover${i}`"
               :state="state"
               :client="client"
@@ -130,7 +143,7 @@ const showMenu = ref(true)
           <div v-if="pl?.discover?.item.length > 3" class="mt-1 mb-1">
             <discover-item
               class="ml-2"
-              v-for="(d, i) in pl?.discover?.item.slice(3) || []"
+              v-for="(d, i) in pl?.discover?.item.slice(4) || []"
               :key="`Discover${i + 3}`"
               :state="state"
               :client="client"
@@ -163,6 +176,13 @@ const showMenu = ref(true)
           >
             {{ tr[a.action] }}
           </auto-button>
+          <auto-button
+            v-if="pl?.role.record"
+            class="ml-2"
+            variant="elevated"
+            @click="showRole = true"
+            >信息</auto-button
+          >
         </div>
       </div>
     </div>

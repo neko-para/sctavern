@@ -162,6 +162,7 @@ export interface GameState {
         max: number
       } | null
       enhance: boolean
+      record: Record<string, number> | null
     }
 
     action: GlobalAction[]
@@ -220,6 +221,7 @@ export interface RoleInstance {
     max: number
   }
   enhance: boolean
+  record: Record<string, number> | null
 }
 
 export interface RoleImpl {

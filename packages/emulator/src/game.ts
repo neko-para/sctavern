@@ -127,6 +127,7 @@ export class GameInstance {
                 progress:
                   p.role.progress.cur === -1 ? null : dup(p.role.progress),
                 enhance: p.role.enhance,
+                record: p.role.record,
               },
 
               action: [
