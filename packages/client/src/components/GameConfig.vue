@@ -104,6 +104,8 @@ const AllRoleChoice = computed<RoleKey[]>(() => {
     '科学球',
     '母舰核心',
     '行星要塞',
+    '拟态虫',
+    '探机',
     '混合体',
   ]
 })

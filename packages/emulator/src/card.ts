@@ -422,8 +422,13 @@ export class CardInstance {
     }
   }
 
-  load_unit(cd: Card, fake = true) {
+  load_unit(
+    cd: Card,
+    fake = true,
+    filter: (u: UnitKey) => boolean = () => true
+  ) {
     const us = (Object.keys(cd.unit) as UnitKey[])
+      .filter(filter)
       .map(u => rep(u, cd.unit[u] as number))
       .flat()
     if (fake) {

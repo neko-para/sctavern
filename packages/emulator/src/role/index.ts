@@ -1,4 +1,10 @@
-import { CardData, PackData, UpgradeData } from '@sctavern/data'
+import {
+  CardData,
+  isNormal,
+  PackData,
+  UnitData,
+  UpgradeData,
+} from '@sctavern/data'
 import type { RoleKey, UnitKey } from '@sctavern/data'
 import { CardInstance } from '../card'
 import type { RoleImpl } from '../types'
@@ -597,6 +603,63 @@ export function CreateRoleTable() {
                 card,
               }))
           )
+          this.enable = false
+        },
+      },
+    },
+    拟态虫: {
+      init() {
+        this.attrib.pos = -1
+      },
+      listener: {
+        'round-enter'() {
+          this.enable = true
+        },
+        $ability(m, player) {
+          if (!this.enable) {
+            return
+          }
+          const ci = player.query_selected_present()
+          if (!ci || player.mineral < 2 || ci.index() === this.attrib.pos) {
+            return
+          }
+          const c = player.$ref$Game.pool.discover(
+            c => c.level === player.level,
+            1
+          )
+          if (!c) {
+            return
+          }
+          ci.load_unit(c[0], false, u => isNormal(UnitData[u]))
+          this.attrib.pos = ci.index()
+          player.$ref$Game.pool.drop(c)
+          player.obtain_resource({
+            mineral: -2,
+          })
+          this.enable = false
+        },
+      },
+    },
+    探机: {
+      listener: {
+        'card-entered'({ target }) {
+          target.obtain_unit(['水晶塔'])
+        },
+        'round-enter'() {
+          this.enable = true
+        },
+        $ability(m, player) {
+          if (!this.enable) {
+            return
+          }
+          const ci = player.query_selected_present()
+          if (!ci || player.mineral < 1 || ci.find('水晶塔').length < 1) {
+            return
+          }
+          ci.replace(ci.find('水晶塔', 1), '虚空水晶塔')
+          player.obtain_resource({
+            mineral: -1,
+          })
           this.enable = false
         },
       },
