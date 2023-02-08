@@ -1,7 +1,13 @@
 {
   "name": "@sctavern/emulator",
   "main": "./src/index.ts",
+  "scripts": {
+    "test": "esbuild --platform=node --bundle src/battle/test.ts --outfile=index.js & node index.js"
+  },
   "dependencies": {
     "@sctavern/data": "*"
+  },
+  "devDependencies": {
+    "esbuild": "^0.17.6"
   }
 }

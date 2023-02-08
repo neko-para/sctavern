@@ -20,6 +20,11 @@ const router = createRouter({
       component: () => import('@/views/LocalGame.vue'),
       props: route => ({ config: JSON.parse(route.query.config as string) }),
     },
+    {
+      path: '/test/battle',
+      name: 'battle-test',
+      component: () => import('@/views/BattleTest.vue'),
+    },
   ],
 })
 

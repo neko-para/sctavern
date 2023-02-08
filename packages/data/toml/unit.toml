@@ -1226,10 +1226,24 @@ race = 'T'
 value = 50
 type = 'normal'
 health = 45
+speed = 3.15
+size = 0.1
 
 [unit.tag]
 light = true
 biological = true
+
+[[unit.weapon]]
+name = "C-14型电磁枪"
+damage = 6
+type = "direct"
+range = 5
+speed = 0.61
+target = "GA"
+
+[unit.armor]
+name = "人类步兵护甲"
+defense = 0
 
 [[unit]]
 name = '响尾蛇战车'

@@ -40,6 +40,23 @@ export const enum UnitTag {
   Air = 'air', // 空中单位
 }
 
+export interface Weapon {
+  name: string
+  damage: number
+  // specialDamage: [UnitTag, number][]
+  type: 'direct' | 'project'
+  projectSpeed?: number
+
+  range: number
+  speed: number
+  target: 'G' | 'A' | 'GA'
+}
+
+export interface Armor {
+  name: string
+  defense: number
+}
+
 export interface Unit {
   name: UnitKey
   pinyin: string
@@ -53,6 +70,13 @@ export interface Unit {
 
   health: number
   shield?: number
+
+  speed?: number
+  size?: number
+
+  weapon?: Weapon[]
+  armor?: Armor
+  sarmor?: Armor
 }
 
 export interface Card {
