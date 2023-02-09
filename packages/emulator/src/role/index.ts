@@ -555,9 +555,7 @@ export function CreateRoleTable() {
           }
         },
         'card-combined'(m, player) {
-          const cis = player
-            .all()
-            .filter(ci => ci.name === '母舰核心' || ci.name === '母舰')
+          const cis = player.locate(['母舰核心', '母舰'])
           if (!cis.length) {
             return
           }
@@ -596,7 +594,7 @@ export function CreateRoleTable() {
           })
           player.push_discover(
             player.$ref$Game.lcg
-              .shuffle(PackData['行星要塞衍生'].map(c => CardData[c]))
+              .shuffle(PackData.行星要塞衍生.map(c => CardData[c]))
               .slice(0, 3)
               .map(card => ({
                 type: 'card',
@@ -673,6 +671,55 @@ export function CreateRoleTable() {
             })
             const ci = player.enter('不法之徒')
             ci?.add_desc('不法之徒0')
+          }
+        },
+      },
+    },
+    诺娃: {
+      listener: {
+        'round-enter'(m, player) {
+          player.push_discover(
+            player.$ref$Game.lcg
+              .shuffle(PackData.辅助卡.map(c => CardData[c]))
+              .slice(0, 2)
+              .map(card => ({
+                type: 'card',
+                card,
+              }))
+          )
+        },
+      },
+    },
+    思旺: {
+      listener: {
+        $ability(m, player) {
+          const ci = player.query_selected_present()
+          if (!ci) {
+            return
+          }
+          if (player.locate('机械工厂').length === 0) {
+            if (!player.enter('机械工厂')) {
+              return
+            }
+          }
+          const mechs = player.locate('机械工厂')
+          if (!mechs.length) {
+            return
+          }
+          mechs[0].obtain_unit(
+            rep('零件', ci.filter(u => !!UnitData[u].tag.mechanical).length)
+          )
+        },
+      },
+    },
+    跳虫: {
+      init(player) {
+        player.config.ZergEggCard = '虫卵(跳虫)'
+      },
+      listener: {
+        'tavern-upgraded'({ level }, player) {
+          if (level === 4) {
+            player.config.ZergEggCount = 2
           }
         },
       },

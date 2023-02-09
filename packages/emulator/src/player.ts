@@ -752,10 +752,14 @@ export class PlayerInstance {
     return RoleTable[this.role.name]
   }
 
+  locate(name: string | string[]): CardInstance[] {
+    return typeof name === 'string'
+      ? this.all().filter(c => c.name === name)
+      : this.all().filter(c => name.includes(c.name))
+  }
+
   locate_combine_target(card: CardKey) {
-    return this.present
-      .filter(notNull)
-      .map(c => c.card)
+    return this.all()
       .filter(c => c.name === card && c.color === 'normal')
       .slice(0, 2)
   }
@@ -1110,7 +1114,7 @@ export class PlayerInstance {
       if (!egg) {
         break
       }
-      egg.color = 'gold'
+      egg.name = '虫卵' // 覆盖名称
       eggs.push(egg)
     }
     eggs.sort((a, b) => a.index() - b.index())

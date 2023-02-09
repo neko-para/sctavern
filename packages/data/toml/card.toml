@@ -2654,6 +2654,7 @@ desc = [
 [card.unit]
 
 [card.attr]
+gold = true
 
 [[card]]
 name = '复制中心'
@@ -3226,7 +3227,7 @@ name = '生化实验室'
 pinyin = 'shsys'
 race = 'N'
 level = 0
-pack = '诺娃衍生'
+pack = '辅助卡'
 belong = 'none'
 type = 'support'
 desc = [
@@ -3245,7 +3246,7 @@ name = '紧急回收'
 pinyin = 'jjhs'
 race = 'N'
 level = 0
-pack = '诺娃衍生'
+pack = '辅助卡'
 belong = 'none'
 type = 'support'
 desc = [
@@ -3264,7 +3265,7 @@ name = '星灵科技'
 pinyin = 'xlkj'
 race = 'N'
 level = 0
-pack = '诺娃衍生'
+pack = '辅助卡'
 belong = 'none'
 type = 'support'
 desc = [
@@ -3283,7 +3284,7 @@ name = '尖端科技'
 pinyin = 'jdkj'
 race = 'N'
 level = 0
-pack = '诺娃衍生'
+pack = '辅助卡'
 belong = 'none'
 type = 'support'
 desc = [
@@ -3302,7 +3303,7 @@ name = '超负荷'
 pinyin = 'cfh'
 race = 'N'
 level = 0
-pack = '诺娃衍生'
+pack = '辅助卡'
 belong = 'none'
 type = 'support'
 desc = [
@@ -3345,6 +3346,26 @@ desc = [
 
 [card.unit]
 '科技实验室' = 1
+
+[card.attr]
+gold = true
+
+[[card]]
+name = '虫卵(跳虫)'
+pinyin = 'cl(tc)'
+race = 'Z'
+level = 0
+pack = '核心衍生'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'出售该卡牌时, 尝试将此卡牌的单位转移到另一张虫卵牌上',
+		'出售该卡牌时, 尝试将此卡牌的单位转移到另一张虫卵牌上',
+	],
+]
+
+[card.unit]
 
 [card.attr]
 gold = true

@@ -96,21 +96,6 @@ export default function (/* config */): Record<string, Descriptor> {
       },
       text: ['新添加的单位同样会献祭', '新添加的单位同样会献祭'],
     },
-    虫卵_跳虫: {
-      listener: {
-        'post-sell'() {
-          const eggs = this.$ref$Player.all().filter(c => c.name === '虫卵')
-          if (eggs.length > 1) {
-            // 最后一个是出售的卡
-            eggs[0].obtain_unit(this.units)
-          }
-        },
-      },
-      text: [
-        '出售该卡牌时, 尝试将此卡牌的单位转移到另一张虫卵牌上',
-        '出售该卡牌时, 尝试将此卡牌的单位转移到另一张虫卵牌上',
-      ],
-    },
     被感染的: {
       listener: {
         'round-end'() {
@@ -431,7 +416,9 @@ export default function (/* config */): Record<string, Descriptor> {
     星灵科技0: {
       listener: {
         'post-deploy'({ target }) {
-          target.add_desc('星灵科技')
+          if (target.race !== 'P') {
+            target.add_desc('星灵科技')
+          }
         },
       },
     },
@@ -446,6 +433,18 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'post-deploy'({ target }) {
           this.$ref$Player.destroy(target, { extraEnter: true })
+        },
+      },
+    },
+    机械工厂0: 制造(70, '休伯利安号'),
+    机械工厂1: 制造(45, '战列巡航舰', 9),
+    机械工厂2: 制造(30, '雷神', 6),
+    机械工厂3: 制造(16, '攻城坦克', 6),
+    '虫卵(跳虫)0': {
+      listener: {
+        'post-sell'() {
+          const eggs = this.$ref$Player.locate('虫卵')
+          eggs[0]?.obtain_unit(this.units)
         },
       },
     },

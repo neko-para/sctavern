@@ -107,6 +107,9 @@ const AllRoleChoice = computed<RoleKey[]>(() => {
     '拟态虫',
     '探机',
     '泰凯斯',
+    '诺娃',
+    '思旺',
+    '跳虫',
     '混合体',
   ]
 })

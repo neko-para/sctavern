@@ -485,7 +485,7 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'post-enter'() {
           const sc = this.$ref$Player.$ref$Game.lcg
-            .shuffle(PackData.诺娃衍生.map(c => CardData[c]))
+            .shuffle(PackData.辅助卡.map(c => CardData[c]))
             .slice(0, 2)
           this.$ref$Player.push_discover(
             sc.map(card => ({
