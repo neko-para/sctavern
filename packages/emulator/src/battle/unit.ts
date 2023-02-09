@@ -71,12 +71,17 @@ export class UnitInstance {
         .mul((this.unit.speed || 1) * dT)
       const into = this.pos.add(mov)
       let blocked: Position | null = null
+      let blockDis = Infinity
       for (const uu of units) {
+        const d = uu.pos.sub(into).dis()
         if (
           uu.id !== this.id &&
-          uu.pos.sub(into).dis() < (this.unit.size || 0) + (uu.unit.size || 0)
+          d < (this.unit.size || 0) + (uu.unit.size || 0)
         ) {
-          blocked = uu.pos
+          if (blockDis > d) {
+            blocked = uu.pos
+            blockDis = d
+          }
           break
         }
       }
@@ -86,13 +91,14 @@ export class UnitInstance {
           target: into,
         }
       } else {
+        // const backMid = this.pos.sub(blocked).norm()
+        // const backTarget = this.pos.sub(into).norm()
+        // const real = backMid.mul(2).sub(backTarget)
+        const real = this.pos.sub(blocked).norm()
+
         this.action = {
           type: 'move',
-          target: this.pos
-            .sub(blocked)
-            .norm()
-            .mul((this.unit.speed || 1) * dT)
-            .add(this.pos),
+          target: real.mul((this.unit.speed || 1) * dT).add(this.pos),
         }
       }
     } else {
