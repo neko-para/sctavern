@@ -3,11 +3,11 @@
   "main": "./src/index.ts",
   "scripts": {
     "2toml": "esbuild --platform=node --bundle script/2toml.ts --outfile=index.js & node index.js",
-    "ftoml": "esbuild --platform=node --bundle script/ftoml.ts --outfile=index.js & node index.js",
+    "ftoml": "tsx script/ftoml.ts",
     "build": "npm run ftoml"
   },
   "devDependencies": {
     "@ltd/j-toml": "^1.38.0",
-    "esbuild": "^0.17.6"
+    "tsx": "^3.12.3"
   }
 }

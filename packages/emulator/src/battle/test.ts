@@ -31,6 +31,7 @@ function Test() {
 
   setInterval(() => {
     battle.iterate()
+    console.log(battle.units.map(u => `${u.life} <${u.pos.str()}>`).join('\t'))
   }, 50)
 }
 
