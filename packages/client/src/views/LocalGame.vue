@@ -297,7 +297,7 @@ function doImport() {
                 msg: '$cheat',
                 type: 'unit',
                 units: [getUnitChoice[0].name],
-                place: player?.selected.place || 0,
+                place: player?.selected.place ?? 0,
               })
           "
         ></v-text-field>
@@ -314,7 +314,7 @@ function doImport() {
                 msg: '$cheat',
                 type: 'unit',
                 units: [u.name],
-                place: player?.selected.place || 0,
+                place: player?.selected.place ?? 0,
               })
             "
           >

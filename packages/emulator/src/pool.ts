@@ -49,7 +49,7 @@ export class Pool {
           f.push(card)
           mf.push(...repX(card, (this.heap[ck] || 1) - 1))
         } else {
-          f.push(...repX(card, this.heap[ck] || 0))
+          f.push(...repX(card, this.heap[ck] ?? 0))
         }
       } else {
         nh[ck] = this.heap[ck]
@@ -76,9 +76,9 @@ export class Pool {
       if (!this.allow.includes(c.pack)) {
         return
       }
-      const cnt = (this.heap[c.name] || 0) + 1
+      const cnt = (this.heap[c.name] ?? 0) + 1
       /*
-      let cnt = (this.heap[c.name] || 0) + 1
+      let cnt = (this.heap[c.name] ?? 0) + 1
       if (cnt > poolCount[c.level]) {
         cnt = poolCount[c.level]
       }

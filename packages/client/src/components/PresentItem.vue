@@ -45,7 +45,7 @@ const infoDlg = ref(false)
 function buildUnit(units: UnitKey[]) {
   const set: Partial<Record<UnitKey, number>> = {}
   units.forEach(u => {
-    set[u] = (set[u] || 0) + 1
+    set[u] = (set[u] ?? 0) + 1
   })
   return Object.keys(set).map(u => `${u}\t${set[u as UnitKey]}`)
 }

@@ -451,7 +451,7 @@ export default function (/* config */): Record<string, Descriptor> {
               return Object.keys(units)
                 .map(u => UnitData[u as UnitKey])
                 .filter(u => isNormal(u) && !u.tag.heroic && u.tag.biological)
-                .map(u => rep(u.name, units[u.name] || 0))
+                .map(u => rep(u.name, units[u.name] ?? 0))
             })
             .flat(2)
 

@@ -40,8 +40,8 @@ export class Battle {
         case 'attack': {
           const damage = Math.max(
             1,
-            (u.unit.weapon?.[0].damage || 0) -
-              (u.action.target.unit.armor?.defense || 0)
+            (u.unit.weapon?.[0].damage ?? 0) -
+              (u.action.target.unit.armor?.defense ?? 0)
           )
           u.action.target.life = Math.max(0, u.action.target.life - damage)
           u.action = {

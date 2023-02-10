@@ -73,7 +73,7 @@ const showRole = ref(false)
         <span class="Info">
           回合 {{ state.round }} 等级 {{ pl?.level }} 生命 {{ pl?.life }} 价值
           {{
-            pl?.present.map(c => c.card?.value || 0).reduce((a, b) => a + b, 0)
+            pl?.present.map(c => c.card?.value ?? 0).reduce((a, b) => a + b, 0)
           }}
         </span>
         <span class="Info">
@@ -115,7 +115,7 @@ const showRole = ref(false)
               :place="i"
             ></store-item>
           </div>
-          <div v-if="(pl?.store.length || 0) > 3" class="mt-1">
+          <div v-if="(pl?.store.length ?? 0) > 3" class="mt-1">
             <store-item
               class="ml-2"
               v-for="(s, i) in pl?.store.slice(3) || []"

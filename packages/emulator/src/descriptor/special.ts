@@ -83,7 +83,7 @@ export default function (/* config */): Record<string, Descriptor> {
             this.attrib.alter(
               'sacrifice',
               m.units
-                .map(u => UnitData[u].health + (UnitData[u].shield || 0))
+                .map(u => UnitData[u].health + (UnitData[u].shield ?? 0))
                 .reduce((a, b) => a + b, 0) * 1.5
             )
             this.attrib.alter(

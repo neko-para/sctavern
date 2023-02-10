@@ -76,7 +76,7 @@ export class UnitInstance {
         const d = uu.pos.sub(into).dis()
         if (
           uu.id !== this.id &&
-          d < (this.unit.size || 0) + (uu.unit.size || 0)
+          d < (this.unit.size ?? 0) + (uu.unit.size ?? 0)
         ) {
           if (blockDis > d) {
             blocked = uu.pos

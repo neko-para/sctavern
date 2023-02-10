@@ -63,7 +63,7 @@ export function CreateRoleTable() {
         })
         right.attrib.load(left.attrib, ['任务'])
         leftDesc.forEach(d => right.add_desc(d))
-        switch (this.attrib.mode || 0) {
+        switch (this.attrib.mode ?? 0) {
           case 0:
             this.enable = false
             break
@@ -513,7 +513,7 @@ export function CreateRoleTable() {
           const { unit } = mostValueUnit(target.units)
           const r = this.record || {}
           if (unit) {
-            r[unit] = (r[unit] || 0) + 1
+            r[unit] = (r[unit] ?? 0) + 1
           }
         },
         $ability(m, player) {

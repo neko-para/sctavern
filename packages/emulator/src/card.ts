@@ -253,7 +253,7 @@ export class CardInstance {
 
           const sum =
             res
-              .map(u => u.health + (u.shield || 0))
+              .map(u => u.health + (u.shield ?? 0))
               .reduce((a, b) => a + b, 0) * 1.5
           const vsum = res.map(u => u.value).reduce((a, b) => a + b, 0)
 

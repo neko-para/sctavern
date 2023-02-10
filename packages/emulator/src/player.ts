@@ -157,7 +157,7 @@ const playerBind: GenericListener<PlayerInstance> = {
         })
         this.post({
           msg: 'upgrade-cancelled',
-          target: this.present[ctx.target || 0]?.card as CardInstance,
+          target: this.present[ctx.target ?? 0]?.card as CardInstance,
         })
       }
     }
