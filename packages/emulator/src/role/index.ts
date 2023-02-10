@@ -1251,6 +1251,33 @@ export function CreateRoleTable() {
         },
       },
     },
+    锻炉: {
+      init() {
+        this.progress.cur = 0
+      },
+      listener: {
+        'card-selled'({ target }) {
+          if (target.name !== '虫卵' && target.name !== '被感染的虫卵') {
+            this.progress.cur = Math.min(50, this.progress.cur + 2)
+          }
+        },
+      },
+    },
+    扎加拉: {
+      listener: {
+        'round-enter'(m, player) {
+          if (player.all().length >= 6) {
+            const maxv = Math.max(...player.all().map(c => c.value()))
+            player.destroy(player.all().filter(c => c.value() === maxv)[0])
+            const minv = Math.min(...player.all().map(c => c.value()))
+            player.destroy(player.all().filter(c => c.value() === minv)[0])
+            player.obtain_resource({
+              mineral: 11,
+            })
+          }
+        },
+      },
+    },
   }
   for (const r in res) {
     const impl = res[r as keyof typeof res] as Partial<RoleImpl>

@@ -121,8 +121,41 @@ const AllRoleChoice = computed<RoleKey[]>(() => {
     '德哈卡',
     '星港',
     '进化腔',
+    '锻炉',
+    '扎加拉',
   ]
 })
+
+const noPveRoles: RoleKey[] = [
+  '追猎者',
+  '使徒',
+  '矿骡',
+  '斯台特曼',
+  '雷诺',
+  '阿塔尼斯',
+  '科学球',
+  '母舰核心',
+  '行星要塞',
+  '拟态虫',
+  '探机',
+  '泰凯斯',
+  '诺娃',
+  '思旺',
+  '跳虫',
+  '蒙斯克',
+  '雷神',
+  '机械哨兵',
+  '异龙',
+  '医疗兵',
+  '分裂池',
+  '响尾蛇',
+  // '混合体',
+  '德哈卡',
+  '星港',
+  '进化腔',
+  '锻炉',
+  '扎加拉',
+]
 
 function genRole(): RoleKey[] {
   return lcg.shuffle(AllRoleChoice.value).slice(0, role.value.length)
@@ -204,8 +237,12 @@ function genRole(): RoleKey[] {
           <v-checkbox
             v-model="pve"
             density="compact"
-            hide-details
             label="启用PVE内容"
+            :error-messages="
+              pve && noPveRoles.includes(role[0])
+                ? ['警告: 当前角色的预言尚未完成']
+                : []
+            "
           ></v-checkbox>
         </v-col>
       </div>
