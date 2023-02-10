@@ -111,7 +111,7 @@ export default function (/* config */): Record<string, Descriptor> {
       ci => {
         return (
           ci.around().filter(c => c.race === 'Z').length === 2 ||
-          ci.$ref$Player.config.AlwaysIncubate
+          ci.$ref$Player.config.AlwaysHatch
         )
       },
       ci => {

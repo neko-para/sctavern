@@ -75,12 +75,12 @@ export interface PlayerConfig {
   MaxUpgradePerCard: number
 
   AlwaysInsert: boolean
-  AlwaysIncubate: boolean
+  AlwaysHatch: boolean
 
   ZergEggCount: number
   ZergEggCard: CardKey
   ZergEggRestrictBiological: boolean
-  ZergIncubateRestrictBiological: boolean
+  ZergHatchRestrictBiological: boolean
 
   BuyResource: 'mineral' | 'life'
 

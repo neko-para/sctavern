@@ -350,7 +350,7 @@ export function CreateProphesyTable() {
     机械感染: {
       init() {
         this.config.ZergEggRestrictBiological = false
-        this.config.ZergIncubateRestrictBiological = false
+        this.config.ZergHatchRestrictBiological = false
       },
     },
     虚空风暴: {

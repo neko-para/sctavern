@@ -489,12 +489,12 @@ export class PlayerInstance {
       MaxUpgradePerCard: 5,
 
       AlwaysInsert: false,
-      AlwaysIncubate: false,
+      AlwaysHatch: false,
 
       ZergEggCount: 1,
       ZergEggCard: '虫卵',
       ZergEggRestrictBiological: true,
-      ZergIncubateRestrictBiological: true,
+      ZergHatchRestrictBiological: true,
 
       BuyResource: 'mineral',
 
@@ -841,7 +841,7 @@ export class PlayerInstance {
     }
   ) {
     if (!item) {
-      return ''
+      return -1
     }
     const id = this.persisAttrib.get('discover-counter')
     this.persisAttrib.alter('discover-counter', 1)
@@ -1081,7 +1081,7 @@ export class PlayerInstance {
   }
 
   hatch(from: CardInstance, units: UnitKey[]) {
-    if (this.config.ZergIncubateRestrictBiological) {
+    if (this.config.ZergHatchRestrictBiological) {
       units = units.filter(u => UnitData[u].tag.biological)
     }
     if (units.length === 0) {
@@ -1093,7 +1093,7 @@ export class PlayerInstance {
       units,
     })
     from.around(from.attrib.get('oldpos', -1)).forEach(ci => {
-      if (ci.race === 'Z' || this.config.AlwaysIncubate) {
+      if (ci.race === 'Z' || this.config.AlwaysHatch) {
         ci.obtain_unit(m.units, 'hatch')
       }
     })

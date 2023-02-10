@@ -1,7 +1,10 @@
 import {
   CardData,
+  ExtPack,
   isNormal,
   PackData,
+  PackKey,
+  royalized,
   UnitData,
   UpgradeData,
 } from '@sctavern/data'
@@ -720,6 +723,248 @@ export function CreateRoleTable() {
         'tavern-upgraded'({ level }, player) {
           if (level === 4) {
             player.config.ZergEggCount = 2
+          }
+        },
+      },
+    },
+    蒙斯克: {
+      init() {
+        this.progress.cur = 12
+        this.enable = true
+      },
+      listener: {
+        'round-enter'() {
+          if (this.progress.cur > 0) {
+            this.progress.cur -= 3
+          }
+        },
+        $ability(m, player) {
+          if (player.mineral < this.progress.cur) {
+            return
+          }
+          player.all().forEach(ci => {
+            ci.replace(
+              [
+                ...ci.find('战列巡航舰', 1),
+                ...ci.find('雷神', 1),
+                ...ci.find('攻城坦克', 1),
+                ...ci.find(['维京战机', '维京战机<机甲>'], 1),
+              ].slice(0, 1),
+              royalized
+            )
+          })
+          player.obtain_resource({
+            mineral: -this.progress.cur,
+          })
+          this.progress.cur = 9
+        },
+      },
+    },
+    雷神: {
+      init() {
+        this.enable = true
+      },
+      listener: {
+        'tavern-upgraded'() {
+          this.enable = true
+        },
+        $ability(m, player) {
+          if (!this.enable) {
+            return
+          }
+          const ci = player.query_selected_present()
+          if (!ci || ci.level >= 6) {
+            return
+          }
+          this.attrib.target = ci.index()
+          const choice = PackData.核心
+            .map(c => CardData[c])
+            .filter(c => c.race === ci.race && c.level === ci.level)
+          this.attrib.discoverId = player.push_discover(
+            choice
+              .filter(c => c.name !== ci.name)
+              .map(card => ({
+                type: 'card',
+                card,
+              })),
+            {
+              extra: '取消',
+              fake: true,
+            }
+          )
+        },
+        'discover-finish'({ ctx }, player) {
+          if (ctx.id === this.attrib.discoverId) {
+            delete this.attrib.discoverId
+            const c = ctx.choice
+            if (typeof c !== 'number' || c === -1) {
+              return
+            }
+            const ci = player.present[this.attrib.target]?.card
+            if (!ci) {
+              return
+            }
+            ci.clear_desc()
+            const item = ctx.item[c]
+            if (item.type === 'card') {
+              ci.load_desc(item.card, true)
+              ci.post({
+                msg: 'post-enter',
+              })
+              this.enable = false
+            }
+          }
+        },
+      },
+    },
+    机械哨兵: {
+      init() {
+        this.progress.max = 3
+        this.progress.cur = 3
+      },
+      listener: {
+        'round-enter'() {
+          this.enable = this.progress.cur > 0
+        },
+        $ability(m, player) {
+          if (!this.enable) {
+            return
+          }
+          const ci = player.query_selected_present()
+          if (
+            !ci ||
+            ci.level >= 5 ||
+            ci.occupy.length === 0 ||
+            player.mineral < 4
+          ) {
+            return
+          }
+          player.obtain_resource({
+            mineral: -4,
+          })
+          player.stage(ci.occupy[0])
+          this.progress.cur -= 1
+          this.enable = false
+        },
+      },
+    },
+    异龙: {
+      init() {
+        this.enable = true
+      },
+      listener: {
+        'tavern-upgraded'() {
+          this.enable = true
+        },
+        $ability(m, player) {
+          if (!this.enable) {
+            return
+          }
+          if (player.mineral < 2) {
+            return
+          }
+          player.obtain_resource({
+            mineral: -2,
+          })
+          this.enable = false
+          player.push_discover(
+            player.$ref$Game.pool
+              .discover(
+                c => c.race === 'Z' && c.level <= player.level,
+                4,
+                false
+              )
+              ?.map(card => ({
+                type: 'card',
+                card,
+              }))
+          )
+        },
+      },
+    },
+    医疗兵: {
+      listener: {
+        'round-enter'() {
+          this.enable = true
+        },
+        $ability(m, player) {
+          if (!this.enable) {
+            return
+          }
+          const ci = player.query_selected_present()
+          if (!ci) {
+            return
+          }
+          const us = ci.units
+            .map(u => UnitData[u])
+            .filter(u => isNormal(u) && u.tag.biological && !u.tag.heroic)
+          player.destroy(ci)
+          const cs = player.all()
+          for (const [i, c] of cs.entries()) {
+            c.obtain_unit(
+              us.filter((u, p) => p % cs.length === i).map(u => u.name)
+            )
+          }
+          player.obtain_resource({
+            mineral: 1,
+          })
+          this.enable = false
+        },
+      },
+    },
+    分裂池: {
+      init(player) {
+        player.config.AlwaysHatch = true
+      },
+      listener: {
+        'round-enter'() {
+          this.enable = true
+        },
+        $ability(m, player) {
+          if (!this.enable) {
+            return
+          }
+          const ci = player.query_selected_present()
+          if (!ci) {
+            return
+          }
+          ci.hatch(-1)
+          this.enable = false
+        },
+      },
+    },
+    响尾蛇: {
+      init() {
+        this.progress.cur = 0
+        this.progress.max = 3
+      },
+      listener: {
+        'tavern-upgraded'() {
+          if (this.progress.cur === 3) {
+            this.progress.cur = 0
+          }
+        },
+        'store-refreshed'(m, player) {
+          if (this.progress.cur < this.progress.max) {
+            this.progress.cur += 1
+            if (this.progress.cur === this.progress.max) {
+              const packs: PackKey[] = ['核心', ...ExtPack]
+              const cards = packs
+                .map(p => PackData[p])
+                .flat()
+                .map(c => CardData[c])
+                .filter(c => c.level === player.level)
+              player.$ref$Game.lcg.shuffle(cards)
+              player.push_discover(
+                cards.slice(0, player.level === 6 ? 3 : 4).map(card => ({
+                  type: 'card',
+                  card,
+                })),
+                {
+                  nodrop: true,
+                }
+              )
+            }
           }
         },
       },

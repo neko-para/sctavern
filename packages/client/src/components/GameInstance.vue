@@ -140,7 +140,10 @@ const showRole = ref(false)
               :place="i"
             ></discover-item>
           </div>
-          <div v-if="pl?.discover?.item.length > 3" class="mt-1 mb-1">
+          <div
+            v-if="pl?.discover?.item.length > 3 || pl.discover.extra"
+            class="mt-1 mb-1"
+          >
             <discover-item
               class="ml-2"
               v-for="(d, i) in pl?.discover?.item.slice(4) || []"
