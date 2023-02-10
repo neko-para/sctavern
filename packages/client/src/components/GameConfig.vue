@@ -118,6 +118,9 @@ const AllRoleChoice = computed<RoleKey[]>(() => {
     '分裂池',
     '响尾蛇',
     '混合体',
+    '德哈卡',
+    '星港',
+    '进化腔',
   ]
 })
 

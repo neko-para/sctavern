@@ -137,10 +137,12 @@ const playerBind: GenericListener<PlayerInstance> = {
           }
         }
         this.$ref$Game.pool.drop(drop)
-        ctx.choice = place
         this.post({
           msg: 'discover-finish',
-          ctx,
+          ctx: {
+            ...ctx,
+            choice: place,
+          },
         })
         break
       }
@@ -838,6 +840,7 @@ export class PlayerInstance {
       fake?: boolean
       target?: number
       nodrop?: boolean
+      data?: unknown
     }
   ) {
     if (!item) {

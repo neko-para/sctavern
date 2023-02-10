@@ -117,11 +117,11 @@ export type DiscoverItem =
 export interface DiscoverContext {
   item: DiscoverItem[]
   id: number
-  choice?: number
   extra?: string
   fake?: boolean
   target?: number
   nodrop?: boolean
+  data?: unknown
 }
 
 export interface GameState {

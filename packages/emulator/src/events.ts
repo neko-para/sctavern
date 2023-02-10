@@ -142,7 +142,7 @@ export type PlayerMsg = ApplyKey<
     }
   | {
       msg: 'discover-finish'
-      ctx: DiscoverContext
+      ctx: DiscoverContext & { choice: number }
     }
   | {
       msg: 'get-buy-cost'

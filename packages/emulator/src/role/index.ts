@@ -1,5 +1,7 @@
 import {
+  canElite,
   CardData,
+  elited,
   ExtPack,
   isNormal,
   PackData,
@@ -12,6 +14,7 @@ import type { RoleKey, UnitKey } from '@sctavern/data'
 import { CardInstance } from '../card'
 import type { RoleImpl } from '../types'
 import { mostValueUnit, randomUpgrades, rep } from '../utils'
+import type { LCG } from '../game'
 
 const hybrid: Record<number, UnitKey> = {
   1: '混合体掠夺者',
@@ -20,6 +23,102 @@ const hybrid: Record<number, UnitKey> = {
   4: '混合体巨兽',
   5: '混合体支配者',
   6: '混合体实验体',
+}
+
+const evolution: Record<
+  '原始蟑螂' | '原始刺蛇' | '原始异龙' | '暴掠龙' | '原始雷兽' | '德哈卡分身',
+  UnitKey
+> = {
+  原始蟑螂: '原始点火虫',
+  原始刺蛇: '原始穿刺者',
+  原始异龙: '原始守卫',
+  暴掠龙: '毒裂兽',
+  原始雷兽: '原始暴龙兽',
+  德哈卡分身: '德哈卡',
+}
+
+interface ZergMutation {
+  from: UnitKey
+  to: UnitKey
+  count: number
+}
+
+function genMutations(lcg: LCG, maxi: number): ZergMutation[] {
+  function genMutation(lcg: LCG, maxi: number): ZergMutation {
+    function genNormal(lcg: LCG): UnitKey {
+      const v = lcg.int(100, 21)
+      if (v <= 30) {
+        return '守卫'
+      } else if (v <= 35) {
+        return '破坏者'
+      } else if (v <= 50) {
+        return '跳虫'
+      } else if (v <= 60) {
+        return '蟑螂'
+      } else if (v <= 70) {
+        return '异龙'
+      } else if (v <= 80) {
+        return '爆虫'
+      } else if (v <= 90) {
+        return '刺蛇'
+      } else {
+        return '虫后'
+      }
+    }
+
+    function genMedium(lcg: LCG): UnitKey {
+      const v = lcg.int(30, 1)
+      if (v <= 5) {
+        return '雷兽'
+      } else if (v <= 10) {
+        return '潜伏者'
+      } else if (v <= 20) {
+        return '异龙(精英)'
+      } else {
+        return '刺蛇(精英)'
+      }
+    }
+
+    function genGreat(lcg: LCG): UnitKey {
+      const v = lcg.int(10, 1)
+      if (v <= 1) {
+        return '利维坦'
+      } else if (v <= 2) {
+        return '王兽'
+      } else if (v <= 4) {
+        return '莽兽'
+      } else if (v <= 6) {
+        return '飞蛇'
+      } else if (v <= 8) {
+        return '感染者'
+      } else {
+        return '巢虫领主'
+      }
+    }
+
+    const k = lcg.int(maxi, 1)
+    const type = k <= 5 ? 3 : k <= 20 ? 2 : 1
+    return {
+      from: genNormal(lcg),
+      to:
+        type === 3
+          ? genGreat(lcg)
+          : type === 2
+          ? genMedium(lcg)
+          : genNormal(lcg),
+      count: type === 3 ? 1 : type === 2 ? lcg.int(2, 1) : lcg.int(5, 2),
+    }
+  }
+
+  const mut: ZergMutation[] = []
+  while (mut.length < 3) {
+    const m = genMutation(lcg, maxi)
+    if (mut.findIndex(x => x.from === m.from && x.to === m.to) !== -1) {
+      continue
+    }
+    mut.push(m)
+  }
+  return mut
 }
 
 export function CreateRoleTable() {
@@ -794,25 +893,25 @@ export function CreateRoleTable() {
           )
         },
         'discover-finish'({ ctx }, player) {
-          if (ctx.id === this.attrib.discoverId) {
-            delete this.attrib.discoverId
-            const c = ctx.choice
-            if (typeof c !== 'number' || c === -1) {
-              return
-            }
-            const ci = player.present[this.attrib.target]?.card
-            if (!ci) {
-              return
-            }
-            ci.clear_desc()
-            const item = ctx.item[c]
-            if (item.type === 'card') {
-              ci.load_desc(item.card, true)
-              ci.post({
-                msg: 'post-enter',
-              })
-              this.enable = false
-            }
+          if (ctx.id !== this.attrib.discoverId) {
+            return
+          }
+          delete this.attrib.discoverId
+          if (ctx.choice === -1) {
+            return
+          }
+          const ci = player.present[this.attrib.target]?.card
+          if (!ci) {
+            return
+          }
+          ci.clear_desc()
+          const item = ctx.item[ctx.choice]
+          if (item.type === 'card') {
+            ci.load_desc(item.card, true)
+            ci.post({
+              msg: 'post-enter',
+            })
+            this.enable = false
           }
         },
       },
@@ -1004,6 +1103,152 @@ export function CreateRoleTable() {
             break
         }
         this.enable = false
+      },
+    },
+    德哈卡: {
+      init() {
+        this.progress.cur = 0
+        this.enable = true
+      },
+      listener: {
+        'round-enter'(m, player) {
+          this.progress.cur += player.gas
+        },
+        $ability(m, player) {
+          const ci = player.query_selected_present()
+          if (!ci) {
+            return
+          }
+          if (ci.belong === 'primal') {
+            if (this.progress.cur < 1) {
+              return
+            }
+            const us = ci.find(u => u in evolution)
+            const cho = player.$ref$Game.lcg.one_of(us)
+            if (typeof cho === 'number') {
+              ci.replace([cho], u => evolution[u as keyof typeof evolution])
+              this.progress.cur -= 1
+            }
+          } else {
+            if (this.progress.cur < 6) {
+              return
+            }
+            ci.clear_desc()
+            ci.name = '原始刺蛇'
+            ci.level = 2
+            ci.race = 'N'
+            ci.belong = 'primal'
+            if (ci.color === 'amber') {
+              ci.color = 'gold'
+            }
+            ci.load_desc(CardData.原始刺蛇, true)
+            this.progress.cur -= 6
+          }
+        },
+      },
+    },
+    星港: {
+      listener: {
+        'round-enter'(m, player) {
+          // Or round-start ?
+          player.all().forEach(ci => {
+            ci.replace(
+              ci.find(
+                u => isNormal(UnitData[u]) && !!UnitData[u].tag.air,
+                player.level - 1
+              ),
+              u => (UnitData[u].tag.heroic ? '战列巡航舰' : '怨灵战机')
+            )
+          })
+        },
+        'round-leave'(m, player) {
+          player.all().forEach(ci => {
+            const { unit } = mostValueUnit(
+              ci.units.filter(
+                u => !UnitData[u].tag.heroic && UnitData[u].tag.air
+              )
+            )
+            if (unit) {
+              ci.replace(ci.find('怨灵战机', 1), unit)
+            }
+          })
+        },
+      },
+    },
+    进化腔: {
+      listener: {
+        'round-enter'({ round }, player) {
+          if (round === 1) {
+            return
+          }
+          this.attrib.rate = 100
+          const mut = genMutations(player.$ref$Game.lcg, this.attrib.rate)
+          this.attrib.discoverId = player.push_discover(
+            mut.map(zm => ({
+              type: 'custom',
+              str: `${zm.count}${zm.from} -> ${zm.count}${zm.to}`,
+            })),
+            {
+              extra: player.mineral >= 1 ? '刷新' : undefined,
+              fake: true,
+              data: mut,
+            }
+          )
+        },
+        'discover-finish'({ ctx }, player) {
+          if (ctx.id !== this.attrib.discoverId) {
+            return
+          }
+          const mut = ctx.data as ZergMutation[]
+          delete this.attrib.discoverId
+          if (ctx.choice === -1) {
+            if (player.mineral < 1) {
+              this.attrib.discoverId = player.push_discover(
+                mut.map(zm => ({
+                  type: 'custom',
+                  str: `${zm.count}${zm.from} -> ${zm.count}${zm.to}`,
+                })),
+                {
+                  extra: player.mineral >= 1 ? '刷新' : undefined,
+                  fake: true,
+                  data: mut,
+                }
+              )
+              return
+            }
+            player.obtain_resource({
+              mineral: -1,
+            })
+            this.attrib.rate = Math.max(0, this.attrib.rate - 5)
+            const newmut = genMutations(player.$ref$Game.lcg, this.attrib.rate)
+            this.attrib.discoverId = player.push_discover(
+              newmut.map(zm => ({
+                type: 'custom',
+                str: `${zm.count}${zm.from} -> ${zm.count}${zm.to}`,
+              })),
+              {
+                extra: player.mineral >= 1 ? '刷新' : undefined,
+                fake: true,
+                data: newmut,
+              }
+            )
+          } else {
+            const zm = mut[ctx.choice]
+            const from = [zm.from]
+            const to = [zm.to, zm.to]
+            if (canElite(player.$ref$Game.config.ActiveUnit, from[0])) {
+              from.push(elited(from[0]))
+            }
+            if (canElite(player.$ref$Game.config.ActiveUnit, to[0])) {
+              to[1] = elited(to[0])
+            }
+            player.all_of('Z').forEach(ci => {
+              ci.replace(ci.find(from, zm.count), u =>
+                u === from[0] ? to[0] : to[1]
+              )
+            })
+          }
+        },
       },
     },
   }
