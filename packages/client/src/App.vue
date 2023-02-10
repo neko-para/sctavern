@@ -7,6 +7,8 @@ const browserStore = useBrowserStore()
 
 Init()
 
+screen.orientation.lock('landscape')
+
 watch(
   browserStore,
   () => {
