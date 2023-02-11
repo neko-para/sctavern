@@ -15,7 +15,7 @@ import {
 import type { RoleKey, UnitKey } from '@sctavern/data'
 import { CardInstance } from '../card'
 import type { DiscoverContext, DiscoverItem, RoleImpl } from '../types'
-import { mostValueUnit, randomUpgrades, rep } from '../utils'
+import { mostValueUnit, notNull, randomUpgrades, rep } from '../utils'
 import type { LCG } from '../game'
 
 const hybrid: Record<number, UnitKey> = {
@@ -1576,6 +1576,20 @@ export function CreateRoleTable() {
       ability(player) {
         player.config.RefreshDisabled = false
         player.set_role('解放者', true)
+      },
+    },
+    干扰者: {
+      listener: {
+        'round-enter'(m, player) {
+          const x = player.hand
+            .filter(notNull)
+            .map(h => CardData[h.card])
+            .filter(c => c.type !== 'support').length
+          player.upgrade_cost = Math.max(
+            player.upgrade_cost - Math.max(x - 2, 0),
+            0
+          )
+        },
       },
     },
   }
