@@ -212,19 +212,7 @@ export function CreateProphesyTable() {
     },
     能量扩散: {
       init() {
-        this.attrib.set('能量扩散', 10)
-      },
-      listener: {
-        'get-refresh-cost'(m) {
-          if (this.attrib.get('能量扩散')) {
-            if (m.cost > 0) {
-              m.cost = 0
-              if (m.time === 'real') {
-                this.attrib.alter('能量扩散', -1)
-              }
-            }
-          }
-        },
+        this.attrib.alter('free-refresh', 10)
       },
     },
     人海战术: {
@@ -393,19 +381,11 @@ export function CreateProphesyTable() {
 
     灵能特训: {
       init() {
-        this.attrib.set('灵能特训', 10)
+        this.attrib.alter('free-refresh', 10)
       },
       listener: {
         'round-enter'() {
-          this.attrib.set('灵能特训', 10)
-        },
-        'get-refresh-cost'(m) {
-          if (m.cost > 0 && this.attrib.get('灵能特训')) {
-            m.cost = 0
-            if (m.time === 'real') {
-              this.attrib.alter('灵能特训', -1)
-            }
-          }
+          this.attrib.alter('free-refresh', 10)
         },
       },
     },

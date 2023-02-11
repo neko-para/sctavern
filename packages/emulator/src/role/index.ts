@@ -1,4 +1,5 @@
 import {
+  AllUpgrade,
   canElite,
   CardData,
   CardKey,
@@ -421,13 +422,10 @@ export function CreateRoleTable() {
     },
     蟑螂: {},
     副官: {
-      init() {
-        this.progress.cur = 1
-        this.progress.max = 1
-      },
+      init() {},
       listener: {
         'round-enter'(m, player) {
-          this.progress.cur = 1
+          player.attrib.alter('free-refresh', 1)
           if (this.attrib.mode === 1) {
             player.obtain_resource({
               mineral: player.attrib.get('副官'),
@@ -441,17 +439,12 @@ export function CreateRoleTable() {
         'round-leave'(m, player) {
           player.nextAttrib.set('副官', player.mineral)
         },
-        'get-refresh-cost'(m, player) {
-          if (m.cost > 0 && this.progress.cur > 0) {
-            m.cost = 0
-            if (m.time === 'real') {
-              this.progress.cur -= 1
-              if (this.attrib.mode === 2) {
-                player.obtain_resource({
-                  mineral: 1,
-                })
-                // TODO: 免费刷新应该是专门的机制
-              }
+        refreshed(m, player) {
+          if (m.cost === 0 && this.attrib.mode === 2) {
+            if (player.mineral < player.mineral_max) {
+              player.obtain_resource({
+                mineral: 1,
+              })
             }
           }
         },
@@ -1363,6 +1356,61 @@ export function CreateRoleTable() {
       record() {
         const record = this.record as Record<string, string>
         return Object.keys(record).map(k => `${k}: ${record[k]}`)
+      },
+    },
+    凯瑞甘: {
+      init() {
+        this.progress.cur = 0
+        this.progress.max = 5
+      },
+      listener: {
+        'tavern-upgraded'(m, player) {
+          player.attrib.alter('free-refresh', 1)
+        },
+        'round-enter'() {
+          this.progress.cur = 0
+        },
+        bought({ action }, player) {
+          if (action === 'combine') {
+            return
+          }
+          this.progress.cur += 1
+          if (this.progress.cur === this.progress.max) {
+            player.set_role('凯瑞甘(异虫形态)')
+          }
+        },
+      },
+    },
+    '凯瑞甘(异虫形态)': {
+      init(player) {
+        this.enhance = true
+        player.gas = 0
+        player.gas_max = 0
+        player.all().forEach(ci => {
+          if (ci.occupy.length > 0) {
+            ci.load_unit(CardData[ci.occupy[0]], true)
+          }
+        })
+      },
+      listener: {
+        'card-entered'({ target }, player) {
+          player.push_discover(
+            player.$ref$Game.lcg
+              .shuffle(
+                AllUpgrade.map(u => UpgradeData[u]).filter(
+                  u => u.category === 'combine'
+                )
+              )
+              .slice(0, 3)
+              .map(upgrade => ({
+                type: 'upgrade',
+                upgrade,
+              })),
+            {
+              target: target.index(),
+            }
+          )
+        },
       },
     },
   }

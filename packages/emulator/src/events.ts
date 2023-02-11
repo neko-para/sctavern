@@ -162,11 +162,6 @@ export type PlayerMsg = ApplyKey<
       place: number
     }
   | {
-      msg: 'get-refresh-cost'
-      time: 'dry' | 'real'
-      cost: number
-    }
-  | {
       msg: 'bought'
       action: 'enter' | 'combine' | 'stage'
       cardt: CardKey
@@ -174,6 +169,7 @@ export type PlayerMsg = ApplyKey<
     }
   | {
       msg: 'refreshed'
+      cost: number
     }
   | {
       msg: 'get-extra-void'

@@ -124,6 +124,7 @@ const AllRoleChoice = computed<RoleKey[]>(() => {
     '锻炉',
     '扎加拉',
     '大力神',
+    '凯瑞甘',
   ]
 })
 
@@ -157,6 +158,7 @@ const noPveRoles: RoleKey[] = [
   '锻炉',
   '扎加拉',
   '大力神',
+  '凯瑞甘',
 ]
 
 function genRole(): RoleKey[] {

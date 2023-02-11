@@ -46,10 +46,13 @@ const playerBind: GenericListener<PlayerInstance> = {
     if (this.mineral < this.get_refresh_cost()) {
       return
     }
-    // 这里不能直接一行写, 由于存在副官2预言这种刷新时获得晶体矿的情况, 会数据错误
-    const cost = this.get_refresh_cost('real')
-    this.mineral -= cost
-    this.do_refresh()
+    const cost = this.get_refresh_cost()
+    if (cost === 0) {
+      this.attrib.alter('free-refresh', -1)
+    } else {
+      this.mineral -= cost
+    }
+    this.do_refresh(undefined, cost)
   },
   $finish() {
     if (this.curStatus() === 'normal') {
@@ -710,7 +713,7 @@ export class PlayerInstance {
     })
   }
 
-  do_refresh(spec?: (req: number) => Card[] | null) {
+  do_refresh(spec?: (req: number) => Card[] | null, cost = 0) {
     this.$ref$Game.pool.drop(
       (this.store.filter(x => x !== null) as { card: CardKey }[]).map(
         c => CardData[c.card]
@@ -720,6 +723,7 @@ export class PlayerInstance {
     this.fill_store(spec)
     this.post({
       msg: 'refreshed',
+      cost,
     })
     this.post({
       msg: 'store-refreshed',
@@ -1211,12 +1215,8 @@ export class PlayerInstance {
     }).cost
   }
 
-  get_refresh_cost(time: 'dry' | 'real' = 'dry') {
-    return this.post({
-      msg: 'get-refresh-cost',
-      time,
-      cost: 1,
-    }).cost
+  get_refresh_cost() {
+    return this.attrib.get('free-refresh') ? 0 : 1
   }
 
   get_extra_void() {
