@@ -154,6 +154,71 @@ export function CreateProphesyTable() {
         this.role.attrib.mode = 2
       },
     },
+    暗影追踪: {
+      init() {
+        this.role.attrib.mode = 1
+        this.role.enhance = true
+        this.role.progress.cur = -1
+      },
+    },
+    闪现充能: {
+      init() {
+        this.role.attrib.mode = 2
+        this.attrib.alter('free-refresh', 5)
+      },
+      listener: {
+        'round-enter'() {
+          this.attrib.alter('free-refresh', 5)
+        },
+      },
+    },
+    灵能传送: {
+      init() {
+        this.role.attrib.mode = 1
+        this.role.progress.cur = -1
+        this.role.enhance = true
+      },
+    },
+    共鸣之刃: {
+      init() {
+        this.role.attrib.mode = 2
+      },
+    },
+    超量采集: {
+      init() {
+        this.role.attrib.mode = 1
+        this.role.enable = true
+        this.role.progress.cur = 3
+      },
+    },
+    附属钻头: {
+      init() {
+        this.role.attrib.mode = 2
+      },
+    },
+    机械气罐: {
+      init() {
+        this.role.attrib.mode = 1
+      },
+      listener: {
+        'card-selled'() {
+          this.obtain_resource({
+            gas: 1,
+          })
+        },
+      },
+    },
+    爆裂核心: {
+      init() {
+        this.role.attrib.mode = 2
+        this.role.enable = true
+      },
+      listener: {
+        'round-enter'() {
+          this.role.enable = true
+        },
+      },
+    },
     虚空意志: {
       init() {
         this.role.attrib.mode = 1

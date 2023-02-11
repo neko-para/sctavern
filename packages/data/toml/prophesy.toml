@@ -144,6 +144,54 @@ type = '副官'
 desc = '免费刷新后, 获得1晶体矿'
 
 [[prophesy]]
+name = '暗影追踪'
+pinyin = 'ayzz'
+type = '追猎者'
+desc = '购买或出售卡牌都会刷新酒馆'
+
+[[prophesy]]
+name = '闪现充能'
+pinyin = 'sxcn'
+type = '追猎者'
+desc = '每回合获得5次免费刷新'
+
+[[prophesy]]
+name = '灵能传送'
+pinyin = 'lncs'
+type = '使徒'
+desc = '技能改为每回合购买的第一张卡牌费用为0'
+
+[[prophesy]]
+name = '共鸣之刃'
+pinyin = 'gmzr'
+type = '使徒'
+desc = "每购买两张卡牌, 使下一张卡牌费用变为1\n(回合开始时重置计数)"
+
+[[prophesy]]
+name = '超量采集'
+pinyin = 'clcj'
+type = '矿骡'
+desc = '技能替换为: 每回合存储3晶体矿, 使用技能获得所有存储的晶体矿, 整局游戏只能使用一次'
+
+[[prophesy]]
+name = '附属钻头'
+pinyin = 'fszt'
+type = '矿骡'
+desc = '初始晶体矿变为6'
+
+[[prophesy]]
+name = '机械气罐'
+pinyin = 'jxqg'
+type = '斯台特曼'
+desc = '出售卡牌时, 获得1瓦斯'
+
+[[prophesy]]
+name = '爆裂核心'
+pinyin = 'blhx'
+type = '斯台特曼'
+desc = '获得主动技能: 每回合, 摧毁选中的卡牌并获得3晶体矿, 相邻卡牌获得摧毁卡牌的所有升级'
+
+[[prophesy]]
 name = '虚空意志'
 pinyin = 'xkyz'
 type = '混合体'

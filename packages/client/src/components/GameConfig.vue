@@ -87,10 +87,6 @@ const AllRoleChoice = computed<RoleKey[]>(() => {
 })
 
 const noPveRoles: RoleKey[] = [
-  '追猎者',
-  '使徒',
-  '矿骡',
-  '斯台特曼',
   '雷诺',
   '阿塔尼斯',
   '科学球',

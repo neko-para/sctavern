@@ -450,7 +450,6 @@ export function CreateRoleTable() {
         },
       },
     },
-    // 下面的PVE都没做
     追猎者: {
       init() {
         this.progress.cur = 0
@@ -477,6 +476,11 @@ export function CreateRoleTable() {
             player.do_refresh()
           }
         },
+        'card-selled'(m, player) {
+          if (this.attrib.mode === 1) {
+            player.do_refresh()
+          }
+        },
       },
     },
     使徒: {
@@ -485,20 +489,43 @@ export function CreateRoleTable() {
       },
       listener: {
         'round-enter'() {
-          this.progress.cur = 0
+          if (this.attrib.mode === 1) {
+            this.enhance = true
+          } else {
+            this.progress.cur = 0
+          }
         },
         bought(m) {
           if (m.action !== 'combine') {
-            this.progress.cur += 1
-            this.enhance = this.progress.cur === this.progress.max
+            if (this.attrib.mode !== 1) {
+              if (
+                this.attrib.mode === 2 &&
+                this.progress.cur === this.progress.max
+              ) {
+                this.progress.cur = 0
+              } else {
+                this.progress.cur += 1
+              }
+            }
+            if (this.attrib.mode === 1) {
+              this.enhance = false
+            } else {
+              this.enhance = this.progress.cur === this.progress.max
+            }
           }
         },
         'get-buy-cost'(m) {
           if (m.action === 'combine') {
             return
           }
-          if (this.progress.cur === this.progress.max && m.cost > 1) {
-            m.cost = 1
+          if (this.attrib.mode === 1) {
+            if (this.enhance) {
+              m.cost = 0
+            }
+          } else {
+            if (this.progress.cur === this.progress.max) {
+              m.cost = Math.min(m.cost, 1)
+            }
           }
         },
       },
@@ -509,21 +536,36 @@ export function CreateRoleTable() {
       },
       listener: {
         'round-enter'(m, player) {
-          if (this.attrib.used) {
-            player.mineral -= player.mineral_max - 2
-            this.attrib.used = 0
+          if (this.attrib.mode !== 1) {
+            if (this.attrib.used) {
+              player.mineral -=
+                player.mineral_max - (this.attrib.mode === 2 ? 6 : 2)
+              this.attrib.used = 0
+            } else {
+              this.enable = true
+            }
           } else {
-            this.enable = true
+            this.progress.cur += 3
           }
         },
       },
       ability(player) {
-        if (!this.enable || player.mineral >= player.mineral_max) {
+        if (!this.enable) {
           return
         }
-        player.obtain_resource({
-          mineral: player.mineral_max - player.mineral,
-        })
+        if (this.attrib.mode === 1) {
+          player.obtain_resource({
+            mineral: this.progress.cur,
+          })
+          this.progress.cur = -1
+        } else {
+          if (player.mineral >= player.mineral_max) {
+            return
+          }
+          player.obtain_resource({
+            mineral: player.mineral_max - player.mineral,
+          })
+        }
         this.enable = false
         this.attrib.used = 1
       },
@@ -556,7 +598,25 @@ export function CreateRoleTable() {
           )
         },
       },
+      ability(player) {
+        const ci = player.query_selected_present()
+        if (!ci) {
+          return
+        }
+        const ups = ci.upgrades
+        const ar = ci.around()
+        player.destroy(ci)
+        player.obtain_resource({
+          mineral: 3,
+        })
+        ar.forEach(c => {
+          ups.forEach(u => {
+            c.obtain_upgrade(u)
+          })
+        })
+      },
     },
+    // 下面的PVE都没做
     雷诺: {
       init() {
         this.enable = true
