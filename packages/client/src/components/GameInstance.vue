@@ -46,10 +46,10 @@ const showRole = ref(false)
       <v-card class="d-flex flex-column">
         <span
           class="Info ma-4"
-          v-for="(v, k) in pl?.role.record || {}"
+          v-for="(v, k) in pl?.role.record || []"
           :key="`RI-${k}`"
         >
-          {{ k }}: {{ v }}
+          {{ v }}
         </span>
       </v-card>
     </v-dialog>
@@ -180,7 +180,7 @@ const showRole = ref(false)
             {{ tr[a.action] }}
           </auto-button>
           <auto-button
-            v-if="pl?.role.record"
+            v-if="pl?.role.record && pl.role.record.length > 0"
             class="ml-2"
             variant="elevated"
             @click="showRole = true"

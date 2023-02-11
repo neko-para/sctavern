@@ -794,7 +794,6 @@ export function CreateRoleTable() {
       },
     },
     思旺: {
-      listener: {},
       ability(player) {
         const ci = player.query_selected_present()
         if (!ci) {
@@ -1361,6 +1360,10 @@ export function CreateRoleTable() {
         this.attrib.swapedIndex = ci.index()
         this.attrib.swapId = player.push_insert(null)
       },
+      record() {
+        const record = this.record as Record<string, string>
+        return Object.keys(record).map(k => `${k}: ${record[k]}`)
+      },
     },
   }
   for (const r in res) {
@@ -1368,6 +1371,7 @@ export function CreateRoleTable() {
     impl.init = impl.init || (() => void 0)
     impl.listener = impl.listener || {}
     impl.ability = impl.ability || (() => void 0)
+    impl.record = impl.record || (() => [])
   }
   return res as Record<RoleKey, RoleImpl>
 }

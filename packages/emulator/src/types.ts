@@ -174,7 +174,7 @@ export interface GameState {
         max: number
       } | null
       enhance: boolean
-      record: Record<string, number> | null
+      record: string[]
     }
 
     action: GlobalAction[]
