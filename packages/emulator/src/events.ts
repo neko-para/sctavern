@@ -1,6 +1,11 @@
 import type { CardKey, UnitKey, UpgradeKey } from '@sctavern/data'
 import type { CardInstance } from './card'
-import type { DiscoverContext, GameArea, ObtainUnitWay } from './types'
+import type {
+  DiscoverContext,
+  GameArea,
+  InsertContext,
+  ObtainUnitWay,
+} from './types'
 
 type ApplyKey<T, I> = T extends unknown ? T & I : never
 
@@ -139,6 +144,10 @@ export type PlayerMsg = ApplyKey<
       msg: 'warp'
       units: UnitKey[]
       into: CardInstance | null
+    }
+  | {
+      msg: 'insert-finish'
+      ctx: InsertContext & { choice: number }
     }
   | {
       msg: 'discover-finish'

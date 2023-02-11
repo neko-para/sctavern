@@ -27,6 +27,7 @@ import type {
   RoleInstance,
   DiscoverContext,
   DiscoverItem,
+  InsertContext,
 } from './types'
 import { notNull, repX } from './utils'
 import DescriptorTable from './descriptor'
@@ -77,12 +78,21 @@ const playerBind: GenericListener<PlayerInstance> = {
   $choice: function ({ category, place }) {
     switch (category) {
       case 'insert': {
-        const card = this.insertCard.shift()
-        if (!card) {
+        const ctx = this.insertItem.shift()
+        if (!ctx) {
           return
         }
         this.status.pop()
-        this.enter(card, place)
+        if (!ctx.fake) {
+          this.enter(ctx.card, place)
+        }
+        this.post({
+          msg: 'insert-finish',
+          ctx: {
+            ...ctx,
+            choice: place,
+          },
+        })
         break
       }
       case 'deploy': {
@@ -105,7 +115,9 @@ const playerBind: GenericListener<PlayerInstance> = {
           if (!ctx.nodrop) {
             ctx.item.forEach((item, i) => {
               if (i === place) {
-                return
+                if (!ctx.dropall) {
+                  return
+                }
               }
               if (item.type === 'card') {
                 drop.push(item.card)
@@ -134,6 +146,16 @@ const playerBind: GenericListener<PlayerInstance> = {
               p.init.call(this)
               this.prophesy.push(result.prophesy.name)
             }
+          }
+        } else {
+          if (ctx.dropall) {
+            drop.push(
+              ...(
+                ctx.item.filter(it => it.type === 'card') as (DiscoverItem & {
+                  type: 'card'
+                })[]
+              ).map(it => it.card)
+            )
           }
         }
         this.$ref$Game.pool.drop(drop)
@@ -454,7 +476,8 @@ export class PlayerInstance {
 
   status: PlayerStatus[]
 
-  insertCard: CardKey[]
+  // insertCard: CardKey[]
+  insertItem: InsertContext[]
   deployCard: CardKey[]
   discoverItem: DiscoverContext[]
 
@@ -515,7 +538,7 @@ export class PlayerInstance {
     this.upgrade_cost = 5 + 1
 
     this.status = ['middle']
-    this.insertCard = []
+    this.insertItem = []
     this.deployCard = []
     this.discoverItem = []
 
@@ -823,9 +846,22 @@ export class PlayerInstance {
     return this.mineral >= this.get_refresh_cost()
   }
 
-  push_insert(card: CardKey) {
+  push_insert(card: CardKey | null): number {
+    const id = this.persisAttrib.get('insert-counter')
+    this.persisAttrib.alter('insert-counter', 1)
     this.status.push('insert')
-    this.insertCard.push(card)
+    const ctx: InsertContext = card
+      ? {
+          id,
+          fake: false,
+          card,
+        }
+      : {
+          id,
+          fake: true,
+        }
+    this.insertItem.push(ctx)
+    return id
   }
 
   push_deploy(card: CardKey) {
@@ -840,6 +876,7 @@ export class PlayerInstance {
       fake?: boolean
       target?: number
       nodrop?: boolean
+      dropall?: boolean
       data?: unknown
     }
   ) {

@@ -114,6 +114,17 @@ export type DiscoverItem =
       str: string
     }
 
+export type InsertContext =
+  | {
+      id: number
+      fake: true
+    }
+  | {
+      id: number
+      fake: false
+      card: CardKey
+    }
+
 export interface DiscoverContext {
   item: DiscoverItem[]
   id: number
@@ -121,6 +132,7 @@ export interface DiscoverContext {
   fake?: boolean
   target?: number
   nodrop?: boolean
+  dropall?: boolean
   data?: unknown
 }
 
@@ -221,7 +233,7 @@ export interface RoleInstance {
     max: number
   }
   enhance: boolean
-  record: Record<string, number> | null
+  record: unknown | null
 }
 
 export interface RoleImpl {
@@ -230,6 +242,8 @@ export interface RoleImpl {
   listener: SpecificListener<RoleInstance, PlayerInstance>
 
   ability: (this: RoleInstance, player: PlayerInstance) => void
+
+  record: (this: RoleInstance) => string[]
 }
 
 export interface ProphesyImpl {

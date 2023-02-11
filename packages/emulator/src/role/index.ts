@@ -1,6 +1,7 @@
 import {
   canElite,
   CardData,
+  CardKey,
   elited,
   ExtPack,
   isNormal,
@@ -12,7 +13,7 @@ import {
 } from '@sctavern/data'
 import type { RoleKey, UnitKey } from '@sctavern/data'
 import { CardInstance } from '../card'
-import type { RoleImpl } from '../types'
+import type { DiscoverContext, DiscoverItem, RoleImpl } from '../types'
 import { mostValueUnit, randomUpgrades, rep } from '../utils'
 import type { LCG } from '../game'
 
@@ -522,16 +523,16 @@ export function CreateRoleTable() {
             this.enable = true
           }
         },
-        $ability(m, player) {
-          if (!this.enable || player.mineral >= player.mineral_max) {
-            return
-          }
-          player.obtain_resource({
-            mineral: player.mineral_max - player.mineral,
-          })
-          this.enable = false
-          this.attrib.used = 1
-        },
+      },
+      ability(player) {
+        if (!this.enable || player.mineral >= player.mineral_max) {
+          return
+        }
+        player.obtain_resource({
+          mineral: player.mineral_max - player.mineral,
+        })
+        this.enable = false
+        this.attrib.used = 1
       },
     },
     斯台特曼: {
@@ -567,19 +568,17 @@ export function CreateRoleTable() {
       init() {
         this.enable = true
       },
-      listener: {
-        $ability(m, player) {
-          if (!this.enable) {
-            return
-          }
-          const ci = player.query_selected_present()
-          if (!ci || ci.color === 'gold') {
-            return
-          }
-          ci.color = 'gold'
-          ci.obtain_upgrade('金光闪闪')
-          this.enable = false
-        },
+      ability(player) {
+        if (!this.enable) {
+          return
+        }
+        const ci = player.query_selected_present()
+        if (!ci || ci.color === 'gold') {
+          return
+        }
+        ci.color = 'gold'
+        ci.obtain_upgrade('金光闪闪')
+        this.enable = false
       },
     },
     阿塔尼斯: {
@@ -613,33 +612,35 @@ export function CreateRoleTable() {
       listener: {
         'card-entered'({ target }, player) {
           const { unit } = mostValueUnit(target.units)
-          const r = this.record || {}
+          const r = this.record as Record<UnitKey, number>
           if (unit) {
             r[unit] = (r[unit] ?? 0) + 1
           }
         },
-        $ability(m, player) {
-          if (!this.enable) {
-            return
-          }
-          if (player.gas < 1 || !player.can_enter('观察样本')) {
-            return
-          }
-          const ci = player.enter('观察样本')
-          if (ci) {
-            const r = this.record || {}
-            ci.obtain_unit(
-              Object.keys(r)
-                .map(k => rep(k as UnitKey, r[k]))
-                .flat()
-            )
-            player.obtain_resource({
-              gas: -1,
-            })
-            this.progress.cur -= 1
-            this.enable = this.progress.cur > 0
-          }
-        },
+      },
+      ability(player) {
+        if (!this.enable) {
+          return
+        }
+        if (player.gas < 1 || !player.can_enter('观察样本')) {
+          return
+        }
+        const ci = player.enter('观察样本')
+        if (ci) {
+          const r = this.record as Record<UnitKey, number>
+          ci.obtain_unit(
+            (Object.keys(r) as UnitKey[]).map(k => rep(k, r[k])).flat()
+          )
+          player.obtain_resource({
+            gas: -1,
+          })
+          this.progress.cur -= 1
+          this.enable = this.progress.cur > 0
+        }
+      },
+      record() {
+        const r = this.record as Record<UnitKey, number>
+        return (Object.keys(r) as UnitKey[]).map(k => `${k}: ${r[k]}`)
       },
     },
     母舰核心: {
@@ -684,27 +685,27 @@ export function CreateRoleTable() {
             target.obtain_unit(rep('自动机炮', player.level))
           }
         },
-        $ability(m, player) {
-          if (!this.enable) {
-            return
-          }
-          if (player.mineral < 3) {
-            return
-          }
-          player.obtain_resource({
-            mineral: -3,
-          })
-          player.push_discover(
-            player.$ref$Game.lcg
-              .shuffle(PackData.行星要塞衍生.map(c => CardData[c]))
-              .slice(0, 3)
-              .map(card => ({
-                type: 'card',
-                card,
-              }))
-          )
-          this.enable = false
-        },
+      },
+      ability(player) {
+        if (!this.enable) {
+          return
+        }
+        if (player.mineral < 3) {
+          return
+        }
+        player.obtain_resource({
+          mineral: -3,
+        })
+        player.push_discover(
+          player.$ref$Game.lcg
+            .shuffle(PackData.行星要塞衍生.map(c => CardData[c]))
+            .slice(0, 3)
+            .map(card => ({
+              type: 'card',
+              card,
+            }))
+        )
+        this.enable = false
       },
     },
     拟态虫: {
@@ -715,29 +716,29 @@ export function CreateRoleTable() {
         'round-enter'() {
           this.enable = true
         },
-        $ability(m, player) {
-          if (!this.enable) {
-            return
-          }
-          const ci = player.query_selected_present()
-          if (!ci || player.mineral < 2 || ci.index() === this.attrib.pos) {
-            return
-          }
-          const c = player.$ref$Game.pool.discover(
-            c => c.level === player.level,
-            1
-          )
-          if (!c) {
-            return
-          }
-          ci.load_unit(c[0], false, u => isNormal(UnitData[u]))
-          this.attrib.pos = ci.index()
-          player.$ref$Game.pool.drop(c)
-          player.obtain_resource({
-            mineral: -2,
-          })
-          this.enable = false
-        },
+      },
+      ability(player) {
+        if (!this.enable) {
+          return
+        }
+        const ci = player.query_selected_present()
+        if (!ci || player.mineral < 2 || ci.index() === this.attrib.pos) {
+          return
+        }
+        const c = player.$ref$Game.pool.discover(
+          c => c.level === player.level,
+          1
+        )
+        if (!c) {
+          return
+        }
+        ci.load_unit(c[0], false, u => isNormal(UnitData[u]))
+        this.attrib.pos = ci.index()
+        player.$ref$Game.pool.drop(c)
+        player.obtain_resource({
+          mineral: -2,
+        })
+        this.enable = false
       },
     },
     探机: {
@@ -748,20 +749,20 @@ export function CreateRoleTable() {
         'round-enter'() {
           this.enable = true
         },
-        $ability(m, player) {
-          if (!this.enable) {
-            return
-          }
-          const ci = player.query_selected_present()
-          if (!ci || player.mineral < 1 || ci.find('水晶塔').length < 1) {
-            return
-          }
-          ci.replace(ci.find('水晶塔', 1), '虚空水晶塔')
-          player.obtain_resource({
-            mineral: -1,
-          })
-          this.enable = false
-        },
+      },
+      ability(player) {
+        if (!this.enable) {
+          return
+        }
+        const ci = player.query_selected_present()
+        if (!ci || player.mineral < 1 || ci.find('水晶塔').length < 1) {
+          return
+        }
+        ci.replace(ci.find('水晶塔', 1), '虚空水晶塔')
+        player.obtain_resource({
+          mineral: -1,
+        })
+        this.enable = false
       },
     },
     泰凯斯: {
@@ -793,25 +794,24 @@ export function CreateRoleTable() {
       },
     },
     思旺: {
-      listener: {
-        $ability(m, player) {
-          const ci = player.query_selected_present()
-          if (!ci) {
+      listener: {},
+      ability(player) {
+        const ci = player.query_selected_present()
+        if (!ci) {
+          return
+        }
+        if (player.locate('机械工厂').length === 0) {
+          if (!player.enter('机械工厂')) {
             return
           }
-          if (player.locate('机械工厂').length === 0) {
-            if (!player.enter('机械工厂')) {
-              return
-            }
-          }
-          const mechs = player.locate('机械工厂')
-          if (!mechs.length) {
-            return
-          }
-          mechs[0].obtain_unit(
-            rep('零件', ci.filter(u => !!UnitData[u].tag.mechanical).length)
-          )
-        },
+        }
+        const mechs = player.locate('机械工厂')
+        if (!mechs.length) {
+          return
+        }
+        mechs[0].obtain_unit(
+          rep('零件', ci.filter(u => !!UnitData[u].tag.mechanical).length)
+        )
       },
     },
     跳虫: {
@@ -837,26 +837,26 @@ export function CreateRoleTable() {
             this.progress.cur -= 3
           }
         },
-        $ability(m, player) {
-          if (player.mineral < this.progress.cur) {
-            return
-          }
-          player.all().forEach(ci => {
-            ci.replace(
-              [
-                ...ci.find('战列巡航舰', 1),
-                ...ci.find('雷神', 1),
-                ...ci.find('攻城坦克', 1),
-                ...ci.find(['维京战机', '维京战机<机甲>'], 1),
-              ].slice(0, 1),
-              royalized
-            )
-          })
-          player.obtain_resource({
-            mineral: -this.progress.cur,
-          })
-          this.progress.cur = 9
-        },
+      },
+      ability(player) {
+        if (player.mineral < this.progress.cur) {
+          return
+        }
+        player.all().forEach(ci => {
+          ci.replace(
+            [
+              ...ci.find('战列巡航舰', 1),
+              ...ci.find('雷神', 1),
+              ...ci.find('攻城坦克', 1),
+              ...ci.find(['维京战机', '维京战机<机甲>'], 1),
+            ].slice(0, 1),
+            royalized
+          )
+        })
+        player.obtain_resource({
+          mineral: -this.progress.cur,
+        })
+        this.progress.cur = 9
       },
     },
     雷神: {
@@ -866,31 +866,6 @@ export function CreateRoleTable() {
       listener: {
         'tavern-upgraded'() {
           this.enable = true
-        },
-        $ability(m, player) {
-          if (!this.enable) {
-            return
-          }
-          const ci = player.query_selected_present()
-          if (!ci || ci.level >= 6) {
-            return
-          }
-          this.attrib.target = ci.index()
-          const choice = PackData.核心
-            .map(c => CardData[c])
-            .filter(c => c.race === ci.race && c.level === ci.level)
-          this.attrib.discoverId = player.push_discover(
-            choice
-              .filter(c => c.name !== ci.name)
-              .map(card => ({
-                type: 'card',
-                card,
-              })),
-            {
-              extra: '取消',
-              fake: true,
-            }
-          )
         },
         'discover-finish'({ ctx }, player) {
           if (ctx.id !== this.attrib.discoverId) {
@@ -915,6 +890,31 @@ export function CreateRoleTable() {
           }
         },
       },
+      ability(player) {
+        if (!this.enable) {
+          return
+        }
+        const ci = player.query_selected_present()
+        if (!ci || ci.level >= 6) {
+          return
+        }
+        this.attrib.target = ci.index()
+        const choice = PackData.核心
+          .map(c => CardData[c])
+          .filter(c => c.race === ci.race && c.level === ci.level)
+        this.attrib.discoverId = player.push_discover(
+          choice
+            .filter(c => c.name !== ci.name)
+            .map(card => ({
+              type: 'card',
+              card,
+            })),
+          {
+            extra: '取消',
+            fake: true,
+          }
+        )
+      },
     },
     机械哨兵: {
       init() {
@@ -925,26 +925,26 @@ export function CreateRoleTable() {
         'round-enter'() {
           this.enable = this.progress.cur > 0
         },
-        $ability(m, player) {
-          if (!this.enable) {
-            return
-          }
-          const ci = player.query_selected_present()
-          if (
-            !ci ||
-            ci.level >= 5 ||
-            ci.occupy.length === 0 ||
-            player.mineral < 4
-          ) {
-            return
-          }
-          player.obtain_resource({
-            mineral: -4,
-          })
-          player.stage(ci.occupy[0])
-          this.progress.cur -= 1
-          this.enable = false
-        },
+      },
+      ability(player) {
+        if (!this.enable) {
+          return
+        }
+        const ci = player.query_selected_present()
+        if (
+          !ci ||
+          ci.level >= 5 ||
+          ci.occupy.length === 0 ||
+          player.mineral < 4
+        ) {
+          return
+        }
+        player.obtain_resource({
+          mineral: -4,
+        })
+        player.stage(ci.occupy[0])
+        this.progress.cur -= 1
+        this.enable = false
       },
     },
     异龙: {
@@ -955,30 +955,26 @@ export function CreateRoleTable() {
         'tavern-upgraded'() {
           this.enable = true
         },
-        $ability(m, player) {
-          if (!this.enable) {
-            return
-          }
-          if (player.mineral < 2) {
-            return
-          }
-          player.obtain_resource({
-            mineral: -2,
-          })
-          this.enable = false
-          player.push_discover(
-            player.$ref$Game.pool
-              .discover(
-                c => c.race === 'Z' && c.level <= player.level,
-                4,
-                false
-              )
-              ?.map(card => ({
-                type: 'card',
-                card,
-              }))
-          )
-        },
+      },
+      ability(player) {
+        if (!this.enable) {
+          return
+        }
+        if (player.mineral < 2) {
+          return
+        }
+        player.obtain_resource({
+          mineral: -2,
+        })
+        this.enable = false
+        player.push_discover(
+          player.$ref$Game.pool
+            .discover(c => c.race === 'Z' && c.level <= player.level, 4, false)
+            ?.map(card => ({
+              type: 'card',
+              card,
+            }))
+        )
       },
     },
     医疗兵: {
@@ -986,29 +982,29 @@ export function CreateRoleTable() {
         'round-enter'() {
           this.enable = true
         },
-        $ability(m, player) {
-          if (!this.enable) {
-            return
-          }
-          const ci = player.query_selected_present()
-          if (!ci) {
-            return
-          }
-          const us = ci.units
-            .map(u => UnitData[u])
-            .filter(u => isNormal(u) && u.tag.biological && !u.tag.heroic)
-          player.destroy(ci)
-          const cs = player.all()
-          for (const [i, c] of cs.entries()) {
-            c.obtain_unit(
-              us.filter((u, p) => p % cs.length === i).map(u => u.name)
-            )
-          }
-          player.obtain_resource({
-            mineral: 1,
-          })
-          this.enable = false
-        },
+      },
+      ability(player) {
+        if (!this.enable) {
+          return
+        }
+        const ci = player.query_selected_present()
+        if (!ci) {
+          return
+        }
+        const us = ci.units
+          .map(u => UnitData[u])
+          .filter(u => isNormal(u) && u.tag.biological && !u.tag.heroic)
+        player.destroy(ci)
+        const cs = player.all()
+        for (const [i, c] of cs.entries()) {
+          c.obtain_unit(
+            us.filter((u, p) => p % cs.length === i).map(u => u.name)
+          )
+        }
+        player.obtain_resource({
+          mineral: 1,
+        })
+        this.enable = false
       },
     },
     分裂池: {
@@ -1019,17 +1015,17 @@ export function CreateRoleTable() {
         'round-enter'() {
           this.enable = true
         },
-        $ability(m, player) {
-          if (!this.enable) {
-            return
-          }
-          const ci = player.query_selected_present()
-          if (!ci) {
-            return
-          }
-          ci.hatch(-1)
-          this.enable = false
-        },
+      },
+      ability(player) {
+        if (!this.enable) {
+          return
+        }
+        const ci = player.query_selected_present()
+        if (!ci) {
+          return
+        }
+        ci.hatch(-1)
+        this.enable = false
       },
     },
     响尾蛇: {
@@ -1114,37 +1110,37 @@ export function CreateRoleTable() {
         'round-enter'(m, player) {
           this.progress.cur += player.gas
         },
-        $ability(m, player) {
-          const ci = player.query_selected_present()
-          if (!ci) {
+      },
+      ability(player) {
+        const ci = player.query_selected_present()
+        if (!ci) {
+          return
+        }
+        if (ci.belong === 'primal') {
+          if (this.progress.cur < 1) {
             return
           }
-          if (ci.belong === 'primal') {
-            if (this.progress.cur < 1) {
-              return
-            }
-            const us = ci.find(u => u in evolution)
-            const cho = player.$ref$Game.lcg.one_of(us)
-            if (typeof cho === 'number') {
-              ci.replace([cho], u => evolution[u as keyof typeof evolution])
-              this.progress.cur -= 1
-            }
-          } else {
-            if (this.progress.cur < 6) {
-              return
-            }
-            ci.clear_desc()
-            ci.name = '原始刺蛇'
-            ci.level = 2
-            ci.race = 'N'
-            ci.belong = 'primal'
-            if (ci.color === 'amber') {
-              ci.color = 'gold'
-            }
-            ci.load_desc(CardData.原始刺蛇, true)
-            this.progress.cur -= 6
+          const us = ci.find(u => u in evolution)
+          const cho = player.$ref$Game.lcg.one_of(us)
+          if (typeof cho === 'number') {
+            ci.replace([cho], u => evolution[u as keyof typeof evolution])
+            this.progress.cur -= 1
           }
-        },
+        } else {
+          if (this.progress.cur < 6) {
+            return
+          }
+          ci.clear_desc()
+          ci.name = '原始刺蛇'
+          ci.level = 2
+          ci.race = 'N'
+          ci.belong = 'primal'
+          if (ci.color === 'amber') {
+            ci.color = 'gold'
+          }
+          ci.load_desc(CardData.原始刺蛇, true)
+          this.progress.cur -= 6
+        }
       },
     },
     星港: {
@@ -1276,6 +1272,94 @@ export function CreateRoleTable() {
             })
           }
         },
+      },
+    },
+    大力神: {
+      init() {
+        this.record = {}
+      },
+      listener: {
+        'round-enter'({ round }, player) {
+          this.enable = true
+          switch (round) {
+            case 1:
+              this.attrib.dis5 = player.push_discover(
+                player.$ref$Game.pool
+                  .discover(c => c.level === 5, 3)
+                  ?.map(card => ({
+                    type: 'card',
+                    card,
+                  })),
+                {
+                  fake: true,
+                  dropall: true,
+                }
+              )
+              this.attrib.dis3 = player.push_discover(
+                player.$ref$Game.pool
+                  .discover(c => c.level === 3, 3)
+                  ?.map(card => ({
+                    type: 'card',
+                    card,
+                  })),
+                {
+                  fake: true,
+                  dropall: true,
+                }
+              )
+              break
+          }
+        },
+        'tavern-upgraded'({ level }, player) {
+          const record = this.record as Record<3 | 5, CardKey>
+          switch (level) {
+            case 2:
+            case 4:
+              player.upgrade_cost += 1
+              break
+            case 3:
+              player.stage(record[3])
+              break
+            case 5:
+              player.stage(record[5])
+              break
+          }
+        },
+        'discover-finish'({ ctx }) {
+          const record = this.record as Record<3 | 5, CardKey>
+          if (ctx.id === this.attrib.dis3) {
+            record[3] = (
+              ctx.item[ctx.choice] as DiscoverItem & { type: 'card' }
+            ).card.name
+          } else if (ctx.id === this.attrib.dis5) {
+            record[5] = (
+              ctx.item[ctx.choice] as DiscoverItem & { type: 'card' }
+            ).card.name
+          }
+        },
+        'insert-finish'({ ctx }, player) {
+          if (ctx.id !== this.attrib.swapId) {
+            return
+          }
+          if (ctx.choice === this.attrib.swapedIndex) {
+            return
+          }
+          const from = player.present[this.attrib.swapedIndex]
+          player.present[this.attrib.swapedIndex] = player.present[ctx.choice]
+          player.present[ctx.choice] = from
+          this.enable = false
+        },
+      },
+      ability(player) {
+        if (!this.enable) {
+          return
+        }
+        const ci = player.query_selected_present()
+        if (!ci) {
+          return
+        }
+        this.attrib.swapedIndex = ci.index()
+        this.attrib.swapId = player.push_insert(null)
       },
     },
   }
