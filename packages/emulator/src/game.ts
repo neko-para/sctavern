@@ -146,6 +146,7 @@ export class GameInstance {
                     msg: '$refresh',
                     player: ip,
                   },
+                  special: !!p.attrib.get('free-refresh'),
                 },
                 {
                   action: p.locked ? 'unlock' : 'lock',

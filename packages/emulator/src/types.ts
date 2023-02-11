@@ -26,6 +26,7 @@ interface Action {
 
 export interface GlobalAction extends Action {
   action: 'upgrade' | 'refresh' | 'lock' | 'unlock' | 'finish' | 'ability'
+  special?: boolean
 }
 
 export interface StoreAction extends Action {

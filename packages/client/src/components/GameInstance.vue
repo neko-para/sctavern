@@ -175,7 +175,13 @@ const showRole = ref(false)
             :key="`GA-${i}`"
             :disabled="!a.enable"
             @click="client.post(a.msg)"
-            :color="a.msg.msg === '$ability' && pl?.role.enhance ? 'red' : ''"
+            :color="
+              a.msg.msg === '$ability' && pl?.role.enhance
+                ? 'red'
+                : a.msg.msg === '$refresh' && a.special
+                ? 'green'
+                : ''
+            "
           >
             {{ tr[a.action] }}
           </auto-button>
