@@ -23,6 +23,11 @@ span {
   margin-right: 0px;
 }
 
+.special {
+  border: 1px dashed black !important;
+  padding: 1px !important;
+}
+
 .selected {
   border: 1px solid black !important;
   padding: 1px !important;

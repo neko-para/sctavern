@@ -1413,6 +1413,171 @@ export function CreateRoleTable() {
         },
       },
     },
+    米拉: {
+      init() {
+        this.progress.cur = 6
+      },
+      listener: {
+        'card-entered'({ target }, player) {
+          if (target.level > this.progress.cur) {
+            player.obtain_resource({
+              mineral: 1,
+            })
+          }
+          this.progress.cur = target.level
+        },
+      },
+    },
+    先知: {
+      init() {
+        this.enable = true
+      },
+      listener: {
+        'round-enter'() {
+          this.enhance = true
+        },
+        'upgrade-cancelled'(m, player) {
+          if (this.enhance) {
+            this.enhance = false
+            player.obtain_resource({
+              gas: 1,
+            })
+          }
+        },
+      },
+      ability(player) {
+        if (!this.enable) {
+          return
+        }
+        const ci = player.query_selected_present()
+        if (!ci || ci.upgrades.length === ci.config.MaxUpgrade) {
+          return
+        }
+        player.push_discover(
+          player.$ref$Game.lcg
+            .shuffle(
+              AllUpgrade.map(u => UpgradeData[u]).filter(
+                u => u.category === 'combine'
+              )
+            )
+            .slice(0, 3)
+            .map(upgrade => ({
+              type: 'upgrade',
+              upgrade,
+            })),
+          {
+            target: ci.index(),
+          }
+        )
+        this.enable = false
+      },
+    },
+    阿尔达瑞斯: {
+      listener: {
+        'get-buy-cost'(m, player) {
+          const s = player.store[m.place]
+          if (s) {
+            if (s.special) {
+              m.cost = Math.min(m.cost, 2)
+              if (m.time === 'real') {
+                s.special = false
+              }
+            }
+          }
+        },
+        refreshed(m, player) {
+          player.store.forEach(s => {
+            if (s) {
+              s.special = false
+            }
+          })
+        },
+        'round-leave'(m, player) {
+          if (player.locked) {
+            player.store.forEach(s => {
+              if (s) {
+                s.special = true
+              }
+            })
+          }
+        },
+      },
+    },
+    斯托科夫: {
+      init() {
+        this.progress.cur = 0
+      },
+      listener: {
+        'round-enter'(m, player) {
+          this.enable = player.life > this.progress.cur
+        },
+        'tavern-upgraded'() {
+          this.progress.cur += 3
+        },
+      },
+      ability(player) {
+        if (!this.enable) {
+          return
+        }
+        player.life -= this.progress.cur
+
+        player.do_refresh(n =>
+          player.$ref$Game.pool.discover(c => c.level === player.level, n)
+        )
+
+        this.enable = false
+      },
+    },
+    解放者: {
+      init(player) {
+        this.enable = false
+        this.attrib.fr = 1
+        player.attrib.alter('free-refresh', 1)
+      },
+      listener: {
+        'round-enter'(m, player) {
+          this.enable = true
+          this.attrib.fr = 1
+          player.attrib.alter('free-refresh', 1)
+        },
+        refreshed({ cost }, player) {
+          if (cost > 0) {
+            this.attrib.fr = 1
+            player.attrib.alter('free-refresh', 1)
+          } else {
+            this.attrib.fr = 0
+          }
+        },
+        'get-buy-cost'(m) {
+          m.cost = 4
+        },
+      },
+      ability(player) {
+        if (this.attrib.fr) {
+          player.attrib.alter('free-refresh', -1)
+        }
+        delete this.attrib.fr
+        player.set_role('解放者(防卫模式)', true)
+      },
+    },
+    '解放者(防卫模式)': {
+      init(player) {
+        this.enable = false
+        player.config.RefreshDisabled = true
+      },
+      listener: {
+        'round-enter'() {
+          this.enable = true
+        },
+        'get-buy-cost'(m) {
+          m.cost = Math.min(m.cost, 2)
+        },
+      },
+      ability(player) {
+        player.config.RefreshDisabled = false
+        player.set_role('解放者', true)
+      },
+    },
   }
   for (const r in res) {
     const impl = res[r as keyof typeof res] as Partial<RoleImpl>

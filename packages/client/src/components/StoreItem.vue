@@ -39,7 +39,11 @@ const isSel = computed(() => {
   <v-card
     class="d-flex flex-column align-self-start KeyCard"
     :color="item && props.state.player[props.client.pos]?.locked ? 'cyan' : ''"
-    :class="{ selected: isSel, unselected: !isSel }"
+    :class="{
+      selected: isSel,
+      unselected: !isSel && !item?.special,
+      special: !!item?.special,
+    }"
     @click="
       client.autoPost(
         item

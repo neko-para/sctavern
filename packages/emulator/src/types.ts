@@ -90,6 +90,8 @@ export interface PlayerConfig {
 
   MaxMineral: number
   MaxGas: number
+
+  RefreshDisabled: boolean
 }
 
 export interface CardConfig {

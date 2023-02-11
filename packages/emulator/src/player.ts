@@ -43,6 +43,9 @@ const playerBind: GenericListener<PlayerInstance> = {
     }
   },
   $refresh() {
+    if (this.config.RefreshDisabled) {
+      return
+    }
     if (this.mineral < this.get_refresh_cost()) {
       return
     }
@@ -392,19 +395,18 @@ const playerBind: GenericListener<PlayerInstance> = {
     if (this.gas < this.config.MaxGas) {
       this.gas += 1
     }
-    if (this.persisAttrib.get('R解放者_模式')) {
-      return
-    }
-    if (!this.locked) {
-      this.$ref$Game.pool.drop(
-        (this.store.filter(x => x !== null) as { card: CardKey }[]).map(
-          x => CardData[x.card]
+    if (!this.config.RefreshDisabled) {
+      if (!this.locked) {
+        this.$ref$Game.pool.drop(
+          (this.store.filter(x => x !== null) as { card: CardKey }[]).map(
+            x => CardData[x.card]
+          )
         )
-      )
-      this.store.fill(null)
+        this.store.fill(null)
+      }
+      this.locked = false
+      this.fill_store()
     }
-    this.locked = false
-    this.fill_store()
   },
   'round-enter'({ round }) {
     if (this.$ref$Game.config.Pve) {
@@ -531,6 +533,8 @@ export class PlayerInstance {
 
       MaxMineral: 10,
       MaxGas: 6,
+
+      RefreshDisabled: false,
     }
     this.attrib = new Attribute()
     this.nextAttrib = new Attribute()
@@ -714,6 +718,9 @@ export class PlayerInstance {
   }
 
   do_refresh(spec?: (req: number) => Card[] | null, cost = 0) {
+    if (this.config.RefreshDisabled) {
+      return
+    }
     this.$ref$Game.pool.drop(
       (this.store.filter(x => x !== null) as { card: CardKey }[]).map(
         c => CardData[c.card]
@@ -847,7 +854,9 @@ export class PlayerInstance {
   }
 
   can_refresh() {
-    return this.mineral >= this.get_refresh_cost()
+    return (
+      !this.config.RefreshDisabled && this.mineral >= this.get_refresh_cost()
+    )
   }
 
   push_insert(card: CardKey | null): number {
