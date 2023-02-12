@@ -174,6 +174,11 @@ export type PlayerMsg = ApplyKey<
   | {
       msg: 'get-extra-void'
       void: number
+    }
+  | {
+      msg: 'get-unit-value'
+      unit: UnitKey
+      value: number
     },
   {
     player: number

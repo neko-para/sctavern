@@ -18,6 +18,55 @@ import type { DiscoverContext, DiscoverItem, RoleImpl } from '../types'
 import { mostValueUnit, notNull, randomUpgrades, rep } from '../utils'
 import type { LCG } from '../game'
 
+const ghostUpgrade: Record<
+  string,
+  {
+    desc: string
+    multi: boolean
+  }
+> = {
+  传送: {
+    desc: '所有幽灵能使用紧急传送并且增加30点生命值上限',
+    multi: false,
+  },
+  穿甲弹: {
+    desc: '所有幽灵能发射穿甲弹并且增加30点生命值上限',
+    multi: false,
+  },
+  潜能: {
+    desc: '所有幽灵生命值减少10%, 能够使用潜能',
+    multi: false,
+  },
+  病毒弹: {
+    desc: '所有幽灵能使用病毒弹并且增加30点生命上限',
+    multi: false,
+  },
+  攻速: {
+    desc: '所有幽灵生命值减少10%, 攻速翻倍',
+    multi: false,
+  },
+  EMP: {
+    desc: '所有幽灵生命值减少10%, 能发射EMP弹',
+    multi: false,
+  },
+  近战: {
+    desc: '所有幽灵武器变为近战并且增加70%生命值',
+    multi: false,
+  },
+  强化剂: {
+    desc: '所有幽灵能使用超级强化剂并且增加30点生命值上限',
+    multi: false,
+  },
+  生命: {
+    desc: '所有幽灵增加80点生命值上限',
+    multi: true,
+  },
+  射程: {
+    desc: '所有幽灵武器射程+2',
+    multi: true,
+  },
+}
+
 const hybrid: Record<number, UnitKey> = {
   1: '混合体掠夺者',
   2: '混合体天罚者',
@@ -239,6 +288,32 @@ export function CreateRoleTable() {
       init() {
         this.progress.cur = 1
         this.progress.max = 2
+        this.record = {}
+      },
+      listener: {
+        'round-enter'() {
+          this.enable = true
+        },
+        'discover-finish'({ ctx }) {
+          if (ctx.id !== this.attrib.discoverId) {
+            return
+          }
+          delete this.attrib.discoverId
+          const ups = this.record as Record<string, number>
+          const cho = (
+            ctx.item[ctx.choice] as DiscoverItem & { type: 'custom' }
+          ).str
+          ups[cho] = (ups[cho] ?? 0) + 1
+        },
+        'get-unit-value'(m) {
+          if (m.unit === '幽灵') {
+            const ups = this.record as Record<string, number>
+            const cnt = Object.keys(ups)
+              .map(u => ups[u])
+              .reduce((a, b) => a + b, 0)
+            m.value += 70 * cnt
+          }
+        },
       },
       ability(player) {
         if (this.attrib.mode !== 1) {
@@ -247,8 +322,31 @@ export function CreateRoleTable() {
           if (player.mineral < 2) {
             return
           }
-          // TODO: Support upgrade
+          player.obtain_resource({
+            mineral: -2,
+          })
+          const ups = this.record as Record<string, number>
+          const rest = Object.keys(ghostUpgrade).filter(
+            u => ghostUpgrade[u].multi || !ups[u]
+          )
+          this.attrib.discoverId = player.push_discover(
+            player.$ref$Game.lcg
+              .shuffle(rest)
+              .slice(0, 3)
+              .map(upgrade => ({
+                type: 'custom',
+                str: upgrade,
+              })),
+            {
+              fake: true,
+            }
+          )
+          this.enable = false
         }
+      },
+      record() {
+        const ups = this.record as Record<string, number>
+        return Object.keys(ups).map(upgrade => `${upgrade}: ${ups[upgrade]}`)
       },
     },
     感染虫: {

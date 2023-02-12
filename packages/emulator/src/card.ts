@@ -255,7 +255,9 @@ export class CardInstance {
             res
               .map(u => u.health + (u.shield || 0))
               .reduce((a, b) => a + b, 0) * 1.5
-          const vsum = res.map(u => u.value).reduce((a, b) => a + b, 0)
+          const vsum = res
+            .map(u => this.$ref$Player.get_unit_value(u.name))
+            .reduce((a, b) => a + b, 0)
 
           this.attrib.set('sacrifice', sum)
           this.attrib.set('extraValue', vsum)
@@ -452,7 +454,7 @@ export class CardInstance {
 
   value() {
     return this.units
-      .map(u => UnitData[u].value)
+      .map(u => this.$ref$Player.get_unit_value(u))
       .reduce((a, b) => a + b, this.attrib.get('extraValue'))
   }
 

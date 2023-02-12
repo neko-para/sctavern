@@ -1234,4 +1234,12 @@ export class PlayerInstance {
       void: 0,
     }).void
   }
+
+  get_unit_value(unit: UnitKey) {
+    return this.post({
+      msg: 'get-unit-value',
+      unit,
+      value: UnitData[unit].value,
+    }).value
+  }
 }
