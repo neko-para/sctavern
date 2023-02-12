@@ -79,9 +79,10 @@ export class ClassManager {
     const reviver = (key: string, value: unknown) => {
       if (typeof value === 'object' && value !== null) {
         if ('$proto$' in value) {
-          const pname = value.$proto$ as string
+          const v = value as { $proto$?: string }
+          const pname = v.$proto$ as string
           if (pname in this.protos) {
-            delete value.$proto$
+            delete v.$proto$
             return Object.setPrototypeOf(value, this.protos[pname])
           } else {
             throw `prototype ${pname} not found`

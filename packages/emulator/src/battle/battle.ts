@@ -1,7 +1,6 @@
-import { UnitInstance } from './unit'
+import type { UnitInstance } from './unit'
 import type { LCG } from '../game'
 import { dT } from './config'
-import { Position } from './position'
 
 export class Battle {
   lcg: LCG

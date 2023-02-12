@@ -1,4 +1,5 @@
-import { AllUpgrade, UnitData, UpgradeKey } from '@sctavern/data'
+import { AllUpgrade, UnitData } from '@sctavern/data'
+import type { UpgradeKey } from '@sctavern/data'
 import type { UnitKey } from '@sctavern/data'
 import type { GameInstance, LCG } from './game'
 import cm from './serialize'
@@ -15,7 +16,7 @@ export function repX<T>(v: T, n: number) {
 export function dup<T>(v: T): T {
   if (typeof v === 'object' && v) {
     if (v instanceof Array) {
-      return v.map(dup) as T
+      return v.map(dup) as unknown as T
     } else {
       const r: Record<string | number | symbol, unknown> = {}
       for (const k in v) {

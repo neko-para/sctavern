@@ -2,19 +2,18 @@ import {
   AllUpgrade,
   canElite,
   CardData,
-  CardKey,
   elited,
   ExtPack,
   isNormal,
   PackData,
-  PackKey,
   royalized,
   UnitData,
   UpgradeData,
 } from '@sctavern/data'
+import type { CardKey, PackKey } from '@sctavern/data'
 import type { RoleKey, UnitKey } from '@sctavern/data'
-import { CardInstance } from '../card'
-import type { DiscoverContext, DiscoverItem, RoleImpl } from '../types'
+import type { CardInstance } from '../card'
+import type { DiscoverItem, RoleImpl } from '../types'
 import { mostValueUnit, notNull, randomUpgrades, rep } from '../utils'
 import type { LCG } from '../game'
 
