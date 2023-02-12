@@ -7,7 +7,7 @@ const browserStore = useBrowserStore()
 
 Init()
 
-screen.orientation.lock('landscape')
+// screen.orientation.lock('landscape')
 
 watch(
   browserStore,
@@ -17,8 +17,19 @@ watch(
       [
         browserStore.isMobile ? 'Mobile' : '',
         browserStore.isPad ? 'Pad' : '',
+        browserStore.isPortrait ? 'Portrait' : '',
       ].join(' ')
     )
+    if (browserStore.isPortrait) {
+      const offset =
+        (browserStore.clientSize.height - browserStore.clientSize.width) / 2
+      document.body.setAttribute(
+        'style',
+        `width: ${browserStore.clientSize.height}px; height: ${browserStore.clientSize.width}px; transform: rotate(90deg) translate(0, ${offset}px)`
+      )
+    } else {
+      document.body.setAttribute('style', '')
+    }
   },
   { deep: true }
 )
@@ -38,8 +49,4 @@ watch(
   </v-app>
 </template>
 
-<style>
-.PortraitRotate {
-  transform: rotate(90deg);
-}
-</style>
+<style></style>

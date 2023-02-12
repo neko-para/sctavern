@@ -91,3 +91,11 @@ span.Label {
 .Pad .FullScreen > div > .MiddleScale {
   transform: translate(-50%, -50%) scale(1.5) translate(33.33%, 33.33%);
 }
+
+.Portrait {
+  /* transform: rotate(90deg); */
+}
+
+.PortraitRotate {
+  /* transform: rotate(90deg); */
+}

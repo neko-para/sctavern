@@ -22,6 +22,11 @@ export const useBrowserStore = defineStore('browser', () => {
     }
   }
 
+  const clientSize = ref({
+    width: 0,
+    height: 0,
+  })
+
   function init() {
     const ms = matchMedia(`
 (orientation: landscape) and (min-height: 900px) and (min-width: 1900px),
@@ -49,6 +54,17 @@ export const useBrowserStore = defineStore('browser', () => {
     document.addEventListener('fullscreenchange', () => {
       isFullScreen.value = !!document.fullscreenElement
     })
+
+    clientSize.value = {
+      width: window.innerWidth,
+      height: window.innerHeight,
+    }
+    window.addEventListener('resize', () => {
+      clientSize.value = {
+        width: window.innerWidth,
+        height: window.innerHeight,
+      }
+    })
   }
 
   return {
@@ -56,6 +72,7 @@ export const useBrowserStore = defineStore('browser', () => {
     isPad,
     isPortrait,
     isFullScreen,
+    clientSize,
     toggleFullScreen,
     init,
   }

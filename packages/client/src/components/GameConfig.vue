@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import AutoButton from './AutoButton.vue'
 import {
   type PackKey,
   type RoleKey,
@@ -121,6 +122,13 @@ const noPveRoles: RoleKey[] = [
   '干扰者',
 ]
 
+const showChooseRole = ref(false)
+
+function chooseRole(r: RoleKey) {
+  role.value[0] = r
+  showChooseRole.value = false
+}
+
 function genRole(): RoleKey[] {
   return lcg.shuffle(AllRoleChoice.value).slice(0, role.value.length)
 }
@@ -175,12 +183,26 @@ function genRole(): RoleKey[] {
         <template v-if="role.length === 1">
           <v-col cols="1"></v-col>
           <v-col cols="8">
-            <v-select
+            <v-dialog v-model="showChooseRole">
+              <template v-slot:activator="{ props }">
+                <v-btn v-bind="props">{{ role[0] }}</v-btn>
+              </template>
+              <v-card class="d-flex flex-column Dialog">
+                <auto-button
+                  v-for="(r, i) in AllRoleChoice"
+                  :key="`RK-${i}`"
+                  @click="chooseRole(r)"
+                >
+                  {{ r }}
+                </auto-button>
+              </v-card>
+            </v-dialog>
+            <!-- <v-select
               hide-details
               density="compact"
               v-model="role[0]"
               :items="AllRoleChoice"
-            ></v-select>
+            ></v-select> -->
           </v-col>
           <v-col cols="2">
             <v-btn @click="role = genRole()"> 随机 </v-btn>
@@ -223,3 +245,13 @@ function genRole(): RoleKey[] {
     </v-card-actions>
   </v-card>
 </template>
+
+<style>
+.Dialog {
+  height: 75vh;
+}
+
+.Portrait .Dialog {
+  height: 75vw;
+}
+</style>
