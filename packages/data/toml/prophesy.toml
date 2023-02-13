@@ -192,6 +192,30 @@ type = '斯台特曼'
 desc = '获得主动技能: 每回合, 摧毁选中的卡牌并获得3晶体矿, 相邻卡牌获得摧毁卡牌的所有升级'
 
 [[prophesy]]
+name = '金光普照'
+pinyin = 'jgpz'
+type = '雷诺'
+desc = '移除原技能, 6星一下的卡牌进场时变为金色并获得金光闪闪升级'
+
+[[prophesy]]
+name = '限制解除'
+pinyin = 'xzjc'
+type = '雷诺'
+desc = '技能不再限制卡牌等级, 但无法连续使用技能'
+
+[[prophesy]]
+name = '光影集结'
+pinyin = 'gyjj'
+type = '阿塔尼斯'
+desc = '每回合结束时, 额外触发两次集结效果'
+
+[[prophesy]]
+name = '能量阵列'
+pinyin = 'nlzl'
+type = '阿塔尼斯'
+desc = '获得5倍能量强度'
+
+[[prophesy]]
 name = '虚空意志'
 pinyin = 'xkyz'
 type = '混合体'

@@ -713,22 +713,33 @@ export function CreateRoleTable() {
         })
       },
     },
-    // 下面的PVE都没做
     雷诺: {
       init() {
         this.enable = true
+      },
+      listener: {
+        'round-enter'() {
+          if (this.attrib.mode === 2) {
+            this.enable = !this.attrib.used
+            this.attrib.used = 0
+          }
+        },
       },
       ability(player) {
         if (!this.enable) {
           return
         }
         const ci = player.query_selected_present()
-        if (!ci || ci.color === 'gold') {
+        if (!ci) {
+          return
+        }
+        if (this.attrib.mode !== 2 && ci.level >= 6) {
           return
         }
         ci.color = 'gold'
         ci.obtain_upgrade('金光闪闪')
         this.enable = false
+        this.attrib.used = 1
       },
     },
     阿塔尼斯: {
@@ -752,6 +763,7 @@ export function CreateRoleTable() {
         },
       },
     },
+    // 下面的PVE都没做
     科学球: {
       init() {
         this.progress.max = 2

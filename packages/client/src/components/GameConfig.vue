@@ -88,8 +88,6 @@ const AllRoleChoice = computed<RoleKey[]>(() => {
 })
 
 const noPveRoles: RoleKey[] = [
-  '雷诺',
-  '阿塔尼斯',
   '科学球',
   '母舰核心',
   '行星要塞',

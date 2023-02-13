@@ -83,6 +83,9 @@ export interface PlayerConfig {
   ZergEggRestrictBiological: boolean
   ZergHatchRestrictBiological: boolean
 
+  ProtossPowerMultiplier: number
+  ProtossPowerAll: boolean
+
   BuyResource: 'mineral' | 'life'
 
   StoreCount: number[]

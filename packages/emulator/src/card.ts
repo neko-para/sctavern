@@ -293,15 +293,19 @@ export class CardInstance {
 
   self_power() {
     return (
-      this.find(u => ['水晶塔', '虚空水晶塔'].includes(u)).length +
-      this.attrib.get('供能')
+      (this.find(u => ['水晶塔', '虚空水晶塔'].includes(u)).length +
+        this.attrib.get('供能')) *
+      this.$ref$Player.config.ProtossPowerMultiplier
     )
   }
 
   power() {
-    return this.around()
+    return (
+      this.$ref$Player.config.ProtossPowerAll
+        ? this.$ref$Player.all()
+        : this.around().concat(this)
+    )
       .map(c => c.self_power())
-      .concat(this.self_power())
       .reduce((a, b) => a + b, 0)
   }
 

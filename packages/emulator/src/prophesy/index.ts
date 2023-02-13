@@ -219,6 +219,41 @@ export function CreateProphesyTable() {
         },
       },
     },
+    金光普照: {
+      init() {
+        this.role.attrib.mode = 1
+        this.role.enable = false
+      },
+      listener: {
+        'card-entered'({ target }) {
+          if (target.level < 6) {
+            target.color = 'gold'
+            target.obtain_upgrade('金光闪闪')
+          }
+        },
+      },
+    },
+    限制解除: {
+      init() {
+        this.role.attrib.mode = 2
+        this.role.attrib.used = 0
+      },
+    },
+    光影集结: {
+      listener: {
+        'round-end'() {
+          this.all().forEach(ci => {
+            ci.regroup(-1)
+            ci.regroup(-1)
+          })
+        },
+      },
+    },
+    能量阵列: {
+      init() {
+        this.config.ProtossPowerMultiplier = 5
+      },
+    },
     虚空意志: {
       init() {
         this.role.attrib.mode = 1

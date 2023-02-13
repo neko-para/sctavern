@@ -526,6 +526,9 @@ export class PlayerInstance {
       ZergEggRestrictBiological: true,
       ZergHatchRestrictBiological: true,
 
+      ProtossPowerMultiplier: 1,
+      ProtossPowerAll: false,
+
       BuyResource: 'mineral',
 
       StoreCount: [0, 3, 4, 4, 5, 5, 6],
