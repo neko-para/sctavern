@@ -5,7 +5,9 @@
   "scripts": {
     "build:data": "cd packages/data && npm run build",
     "build:client": "cd packages/client && npm run build",
-    "dev:client": "cd packages/client && npm run dev"
+    "dev:client": "cd packages/client && npm run dev",
+    "build:clientreact": "cd packages/client-react && npm run build",
+    "dev:clientreact": "cd packages/client-react && npm run dev"
   },
   "workspaces": {
     "packages": [
