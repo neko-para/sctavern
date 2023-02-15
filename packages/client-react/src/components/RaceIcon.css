@@ -1,0 +1,15 @@
+.RaceIcon {
+  width: 36px;
+  height: 36px;
+}
+
+.Mobile .RaceIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.Mobile .RaceIcon > img {
+  width: 18px;
+  height: 18px;
+  object-fit: scale-down;
+}

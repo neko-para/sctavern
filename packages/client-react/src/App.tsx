@@ -17,7 +17,7 @@ function App() {
       )
     }
   }, [])
-  return <GameInstance state={state}></GameInstance>
+  return <GameInstance state={state} client={client.current}></GameInstance>
 }
 
 export default App

@@ -1,0 +1,7 @@
+.Button:hover {
+  cursor: pointer;
+}
+
+.Button {
+  padding: 5px 10px;
+}
