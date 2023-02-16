@@ -1,24 +1,14 @@
-import { Client, PlayerState } from '@sctavern/emulator'
+import { useContext } from 'react'
+import { playerContext } from './Context'
 import PresentCard from './PresentCard'
 import './PresentSection.css'
 
-export interface Props {
-  player: PlayerState
-  client: Client
-}
-
-function PresentSection(props: Props) {
+function PresentSection() {
+  const player = useContext(playerContext)
   return (
     <div className="PresentSection">
-      {props.player.present.map((item, index) => {
-        return (
-          <PresentCard
-            item={item}
-            client={props.client}
-            pos={index}
-            key={index}
-          ></PresentCard>
-        )
+      {player.present.map((item, index) => {
+        return <PresentCard item={item} pos={index} key={index}></PresentCard>
       })}
     </div>
   )

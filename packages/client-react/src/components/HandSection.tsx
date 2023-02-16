@@ -1,24 +1,14 @@
-import type { Client, PlayerState } from '@sctavern/emulator'
+import { useContext } from 'react'
+import { playerContext } from './Context'
 import HandCard from './HandCard'
 import './HandSection.css'
 
-export interface Props {
-  client: Client
-  player: PlayerState
-}
-
-function HandSection(props: Props) {
+function HandSection() {
+  const player = useContext(playerContext)
   return (
     <div className="HandSection">
-      {props.player.hand.map((item, index) => {
-        return (
-          <HandCard
-            item={item}
-            client={props.client}
-            pos={index}
-            key={index}
-          ></HandCard>
-        )
+      {player.hand.map((item, index) => {
+        return <HandCard item={item} pos={index} key={index}></HandCard>
       })}
     </div>
   )

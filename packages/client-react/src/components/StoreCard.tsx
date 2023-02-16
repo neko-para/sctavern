@@ -1,17 +1,19 @@
 import { CardData } from '@sctavern/data'
-import type { Client, StoreItemState, PlayerState } from '@sctavern/emulator'
+import type { StoreItemState } from '@sctavern/emulator'
+import { useContext } from 'react'
 import Button from './Button'
+import { clientContext } from './Context'
 import RaceIcon from './RaceIcon'
 import './StoreCard.css'
 import { tr } from './tr'
 
 export interface Props {
-  client: Client
   item: StoreItemState | null
   pos: number
 }
 
 function StoreCard(props: Props) {
+  const client = useContext(clientContext)
   if (props.item) {
     return (
       <div className="StoreCard flex-column justify-around">
@@ -24,7 +26,7 @@ function StoreCard(props: Props) {
             return (
               <Button
                 onClick={() => {
-                  props.client.post(act.msg)
+                  client.post(act.msg)
                 }}
                 key={index}
               >

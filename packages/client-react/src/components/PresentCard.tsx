@@ -1,16 +1,18 @@
-import type { Client, PresentItemState } from '@sctavern/emulator'
+import type { PresentItemState } from '@sctavern/emulator'
+import { useContext } from 'react'
 import Button from './Button'
+import { clientContext } from './Context'
 import './PresentCard.css'
 import RaceIcon from './RaceIcon'
 import { tr } from './tr'
 
 export interface Props {
-  client: Client
   item: PresentItemState
   pos: number
 }
 
 function PresentCard(props: Props) {
+  const client = useContext(clientContext)
   return (
     <div className="PresentCard flex-column justify-around">
       {props.item.card ? (
@@ -34,7 +36,7 @@ function PresentCard(props: Props) {
           return (
             <Button
               onClick={() => {
-                props.client.post(act.msg)
+                client.post(act.msg)
               }}
               key={index}
             >

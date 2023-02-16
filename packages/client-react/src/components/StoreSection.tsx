@@ -1,23 +1,13 @@
-import type { Client, PlayerState } from '@sctavern/emulator'
+import { useContext } from 'react'
+import { playerContext } from './Context'
 import StoreCard from './StoreCard'
 
-export interface Props {
-  client: Client
-  player: PlayerState
-}
-
-function StoreSection(props: Props) {
+function StoreSection() {
+  const player = useContext(playerContext)
   return (
     <div className="flex gap">
-      {props.player.store.map((item, index) => {
-        return (
-          <StoreCard
-            item={item}
-            client={props.client}
-            pos={index}
-            key={index}
-          ></StoreCard>
-        )
+      {player.store.map((item, index) => {
+        return <StoreCard item={item} pos={index} key={index}></StoreCard>
       })}
     </div>
   )

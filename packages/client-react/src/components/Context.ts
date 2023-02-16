@@ -1,0 +1,12 @@
+import { Client, GameState, PlayerState, Wrapper } from '@sctavern/emulator'
+import { createContext } from 'react'
+
+const fake = new Wrapper()
+const client = new Client(0, fake)
+const ctx = fake.game.getState()
+
+export const gameContext = createContext<GameState>(ctx)
+export const clientContext = createContext<Client>(client)
+export const playerContext = createContext<PlayerState>(
+  ctx.player[0] as PlayerState
+)

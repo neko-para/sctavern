@@ -1,33 +1,28 @@
-import type { Client, GameState } from '@sctavern/emulator'
 import HandSection from './HandSection'
 import MainInfo from './MainInfo'
 import PresentSection from './PresentSection'
 import StoreSection from './StoreSection'
 import './GameInstance.css'
+import { useContext } from 'react'
+import { clientContext, gameContext, playerContext } from './Context'
 
-export interface Props {
-  state: GameState
-  client: Client
-}
-
-function GameInstance(props: Props) {
-  const player = props.state.player[props.client.pos]
+function GameInstance() {
+  const player =
+    useContext(gameContext).player[useContext(clientContext).pos] ?? null
   if (player) {
     return (
-      <div className="GameInstance flex-column gap">
-        <div className="flex gap">
-          <div className="flex-column gap">
-            <MainInfo
-              state={props.state}
-              client={props.client}
-              player={player}
-            ></MainInfo>
-            <HandSection player={player} client={props.client}></HandSection>
+      <playerContext.Provider value={player}>
+        <div className="GameInstance flex-column gap">
+          <div className="flex gap">
+            <div className="flex-column gap">
+              <MainInfo></MainInfo>
+              <HandSection></HandSection>
+            </div>
+            <StoreSection></StoreSection>
           </div>
-          <StoreSection player={player} client={props.client}></StoreSection>
+          <PresentSection></PresentSection>
         </div>
-        <PresentSection player={player} client={props.client}></PresentSection>
-      </div>
+      </playerContext.Provider>
     )
   } else {
     return <div></div>

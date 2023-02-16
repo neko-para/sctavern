@@ -1,6 +1,6 @@
 import { type GameState, Wrapper, Client } from '@sctavern/emulator'
 import { useState, useRef, useEffect } from 'react'
-import GameInstance from './components/GameInstance'
+import GameWrapper from './components/GameWrapper'
 
 function App() {
   const wrapper = useRef(new Wrapper())
@@ -17,7 +17,7 @@ function App() {
       )
     }
   }, [])
-  return <GameInstance state={state} client={client.current}></GameInstance>
+  return <GameWrapper state={state} client={client.current}></GameWrapper>
 }
 
 export default App
