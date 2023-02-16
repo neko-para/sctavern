@@ -1,18 +1,11 @@
-import {
-  AllUpgrade,
-  canElite,
-  CardData,
-  elited,
-  isNormal,
-  UnitData,
-} from '@sctavern/data'
+import { canElite, CardData, elited, isNormal, UnitData } from '@sctavern/data'
 import type { Race, UnitKey } from '@sctavern/data'
 import type { Descriptor } from '../types'
 import {
   mostValueUnit,
   NotImplementYet,
   notNull,
-  randomUpgrade,
+  randomUpgrades,
   rep,
 } from '../utils'
 
@@ -323,8 +316,10 @@ export default function (/* config */): Record<string, Descriptor> {
         'post-enter'() {
           ;[this, ...this.around()].forEach(ci => {
             ci.obtain_upgrade(
-              this.$ref$Player.$ref$Game.lcg.shuffle(
-                AllUpgrade.filter(u => !ci.upgrades.includes(u))
+              randomUpgrades(
+                this.$ref$Player.$ref$Game.lcg,
+                1
+                // u => !ci.upgrades.includes(u)
               )[0]
             )
           })
@@ -446,7 +441,9 @@ export default function (/* config */): Record<string, Descriptor> {
           this.$ref$Player.obtain_resource({
             gas: -1,
           })
-          this.obtain_upgrade(randomUpgrade(this.$ref$Player.$ref$Game.lcg))
+          this.obtain_upgrade(
+            randomUpgrades(this.$ref$Player.$ref$Game.lcg, 1)[0]
+          )
         },
       },
     },

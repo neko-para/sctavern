@@ -128,6 +128,7 @@ export const PackData: Record<PackKey, CardKey[]> = ${(() => {
 
 export const ExtPack: PackKey[] = ${JSON.stringify(obj.extPack)}
 export const PresetPoolPack: PackKey[] = ${JSON.stringify(obj.poolPack)}
+export const RandomUpgrade: UpgradeKey[] = ${JSON.stringify(obj.randomUpgrade)}
 export const PvpPresetActivePack: PackKey[] = ${JSON.stringify(obj.pvp.pack)}
 export const PvePresetActivePack: PackKey[] = ${JSON.stringify(obj.pve.pack)}
 export const PvpPresetActiveUnit: UnitKey[] = ${JSON.stringify(obj.pvp.unit)}

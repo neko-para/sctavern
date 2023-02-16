@@ -1,13 +1,7 @@
-import {
-  canElite,
-  elited,
-  AllProphesy,
-  ProphesyData,
-  AllUpgrade,
-} from '@sctavern/data'
+import { canElite, elited, AllProphesy, ProphesyData } from '@sctavern/data'
 import type { UpgradeKey, ProphesyKey } from '@sctavern/data'
 import type { ProphesyImpl } from '../types'
-import { rep } from '../utils'
+import { randomUpgrades, rep } from '../utils'
 
 export function CreateProphesyTable() {
   const res: {
@@ -536,10 +530,9 @@ export function CreateProphesyTable() {
         this.config.MaxUpgradePerCard += 3
         this.all().forEach(ci => {
           ci.config.MaxUpgrade += 3
+          // 必须一个一个获得, 因为可以获得重复的升级, 以及可以获得获得过的升级
           for (let i = 0; i < 3; i++) {
-            ci.obtain_upgrade(
-              this.$ref$Game.lcg.one_of(AllUpgrade) as UpgradeKey
-            )
+            ci.obtain_upgrade(randomUpgrades(this.$ref$Game.lcg, 1)[0])
           }
         })
       },

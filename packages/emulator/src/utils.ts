@@ -1,4 +1,4 @@
-import { AllUpgrade, UnitData } from '@sctavern/data'
+import { RandomUpgrade, UnitData } from '@sctavern/data'
 import type { UpgradeKey } from '@sctavern/data'
 import type { UnitKey } from '@sctavern/data'
 import type { GameInstance, LCG } from './game'
@@ -86,20 +86,10 @@ export function mostValueUnit(
   }
 }
 
-export function randomUpgrade(
-  lcg: LCG,
-  ignore: UpgradeKey[] = ['献祭']
-): UpgradeKey {
-  return lcg.one_of(AllUpgrade.filter(u => !ignore.includes(u))) as UpgradeKey
-}
-
 export function randomUpgrades(
   lcg: LCG,
   count: number,
-  pred: (u: UpgradeKey) => boolean = () => true,
-  ignore: UpgradeKey[] = ['献祭']
+  pred: (u: UpgradeKey) => boolean = () => true
 ): UpgradeKey[] {
-  return lcg
-    .shuffle(AllUpgrade.filter(u => !ignore.includes(u) && pred(u)))
-    .slice(0, count)
+  return lcg.shuffle(RandomUpgrade.filter(pred)).slice(0, count)
 }
