@@ -25,6 +25,8 @@ type = 'normal'
 health = 1500
 
 [unit.tag]
+heroic = true
+structure = true
 
 [[unit]]
 name = '百夫长'
