@@ -2,9 +2,9 @@ import HandSection from './HandSection'
 import MainInfo from './MainInfo'
 import PresentSection from './PresentSection'
 import StoreSection from './StoreSection'
-import './GameInstance.css'
 import { useContext } from 'react'
 import { clientContext, gameContext, playerContext } from './Context'
+import GlobalAction from './GlobalAction'
 
 function GameInstance() {
   const player =
@@ -18,7 +18,11 @@ function GameInstance() {
               <MainInfo></MainInfo>
               <HandSection></HandSection>
             </div>
-            <StoreSection></StoreSection>
+            <div className="flex-column">
+              <StoreSection></StoreSection>
+              <div className="flex-grow"></div>
+              <GlobalAction></GlobalAction>
+            </div>
           </div>
           <PresentSection></PresentSection>
         </div>

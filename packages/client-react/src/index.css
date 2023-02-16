@@ -1,6 +1,32 @@
 * {
   margin: 0;
   padding: 0;
+  cursor: default;
+}
+
+html {
+  font-size: 36%;
+}
+
+@media (orientation: landscape) and (min-width: 900px) and (min-height: 600px),
+  (orientation: portrait) and (min-height: 900px) and (min-width: 600px) {
+  html {
+    font-size: 50%;
+  }
+}
+
+@media (orientation: landscape) and (min-width: 1200px) and (min-height: 800px),
+  (orientation: portrait) and (min-height: 1200px) and (min-width: 800px) {
+  html {
+    font-size: 62.5%;
+  }
+}
+
+@media (orientation: landscape) and (min-width: 1500px) and (min-height: 900px),
+  (orientation: portrait) and (min-height: 1500px) and (min-width: 900px) {
+  html {
+    font-size: 80%;
+  }
 }
 
 #root {
@@ -58,14 +84,26 @@
   align-items: end;
 }
 
-span /* .PC */ {
-  font-size: larger;
+span {
+  font-size: 1.5rem;
 }
 
-.Mobile span {
-  font-size: 8pt;
+span.Label {
+  font-size: 2rem;
 }
 
-.Pad span {
-  font-size: medium;
+.SmallCard {
+  background-color: white;
+  width: 15rem;
+  height: 7rem;
+  box-shadow: 2px 2px grey;
+  border-radius: 5px;
+}
+
+.LargeCard {
+  background-color: white;
+  width: 15rem;
+  height: 30rem;
+  box-shadow: 2px 2px grey;
+  border-radius: 5px;
 }

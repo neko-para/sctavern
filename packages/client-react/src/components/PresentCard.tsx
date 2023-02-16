@@ -2,7 +2,6 @@ import type { PresentItemState } from '@sctavern/emulator'
 import { useContext } from 'react'
 import Button from './Button'
 import { clientContext } from './Context'
-import './PresentCard.css'
 import RaceIcon from './RaceIcon'
 import { tr } from './tr'
 
@@ -14,11 +13,11 @@ export interface Props {
 function PresentCard(props: Props) {
   const client = useContext(clientContext)
   return (
-    <div className="PresentCard flex-column justify-around">
+    <div className="LargeCard flex-column justify-around">
       {props.item.card ? (
         <div className="flex-column flex-grow">
           <div className="flex justify-center">
-            <span>{props.item.card.name}</span>
+            <span className="Label">{props.item.card.name}</span>
           </div>
           <div className="flex align-center">
             <RaceIcon race={props.item.card.race}></RaceIcon>
@@ -35,9 +34,11 @@ function PresentCard(props: Props) {
         {props.item.actions.map((act, index) => {
           return (
             <Button
+              type="text"
               onClick={() => {
                 client.post(act.msg)
               }}
+              disable={!act.enable}
               key={index}
             >
               {tr[act.action]}

@@ -1,7 +1,30 @@
-.Button:hover {
+.Button:hover,
+.Button > span:hover {
   cursor: pointer;
 }
 
-.Button {
-  padding: 5px 10px;
+.Button.Button_disabled:hover,
+.Button.Button_disabled > span:hover {
+  cursor: not-allowed;
+}
+
+.Button_text {
+  padding: 0.5rem 1rem;
+}
+
+.Button_text.Button_disabled {
+  color: lightgrey;
+  box-shadow: none;
+}
+
+.Button_flat {
+  padding: 1rem 2rem;
+  background-color: white;
+  box-shadow: 2px 2px grey;
+}
+
+.Button_flat.Button_disabled {
+  color: grey;
+  background-color: lightgrey;
+  box-shadow: none;
 }
