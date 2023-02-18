@@ -784,7 +784,7 @@ export function CreateRoleTable() {
           return
         }
         ci.clear_desc()
-        ci.add_desc(`集结:${ci.level}:0:获得:${unit}:1:2`)
+        ci.add_desc(`集结:${ci.level}:0:折跃:${unit}:1:2`)
         ci.fix_upgrade()
         ci.obtain_unit(rep('水晶塔', 2))
         this.enable = false
