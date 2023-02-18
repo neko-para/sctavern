@@ -6,6 +6,7 @@ import { tr } from './tr'
 function GlobalAction() {
   const player = useContext(playerContext)
   const client = useContext(clientContext)
+  const role = player.role
   return (
     <div className="flex gap">
       {player.action.map((act, index) => {
@@ -15,7 +16,14 @@ function GlobalAction() {
             onClick={() => client.post(act.msg)}
             disable={!act.enable}
           >
-            {act.action === 'ability' ? '魂姿' : tr[act.action]}
+            {act.action === 'ability'
+              ? role.ability +
+                (role.progress
+                  ? role.progress.max === -1
+                    ? ` ${role.progress.cur}`
+                    : ` ${role.progress.cur} / ${role.progress.max}`
+                  : '')
+              : tr[act.action]}
           </Button>
         )
       })}

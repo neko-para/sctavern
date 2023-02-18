@@ -96,7 +96,7 @@ span.Label {
   background-color: white;
   width: 15rem;
   height: 7rem;
-  box-shadow: 2px 2px grey;
+  box-shadow: 2px 2px lightgray;
   border-radius: 5px;
 }
 
@@ -104,6 +104,6 @@ span.Label {
   background-color: white;
   width: 15rem;
   height: 30rem;
-  box-shadow: 2px 2px grey;
+  box-shadow: 2px 2px lightgray;
   border-radius: 5px;
 }

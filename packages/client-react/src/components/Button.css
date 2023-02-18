@@ -20,7 +20,7 @@
 .Button_flat {
   padding: 1rem 2rem;
   background-color: white;
-  box-shadow: 2px 2px grey;
+  box-shadow: 2px 2px lightgray;
 }
 
 .Button_flat.Button_disabled {
