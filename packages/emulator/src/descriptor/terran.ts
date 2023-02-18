@@ -136,13 +136,63 @@ export function 进场后切换两侧挂件(): Descriptor {
 
 export default function (/* config */): Record<string, Descriptor> {
   return {
+    反应堆: {
+      listener: {
+        'round-end'(m, [unit]) {
+          if (this.infr() === '反应堆') {
+            this.obtain_unit(rep(unit as UnitKey, this.isy() ? 2 : 1))
+          }
+        },
+      },
+      text: ([unit]) => [`反应堆生产${unit}`, `反应堆生产${unit}`],
+    },
+    快速生产: {
+      listener: {
+        'fast-produce'(m, [unit, norm, gold]) {
+          this.obtain_unit(
+            rep(unit as UnitKey, this.isg() ? Number(gold) : Number(norm))
+          )
+        },
+      },
+      text: ([unit, norm, gold]) => [
+        `快速生产: 获得${norm}${unit}`,
+        `快速生产: 获得${gold}${unit}`,
+      ],
+    },
+    科挂: {
+      listener: {
+        'round-end'(m, [count, unit, norm, gold]) {
+          if (
+            Number(count) <=
+            this.$ref$Player
+              .all()
+              .map(
+                c =>
+                  c.units.filter(u =>
+                    ['科技实验室', '高级科技实验室'].includes(u)
+                  ).length
+              )
+              .reduce((a, b) => a + b, 0)
+          ) {
+            this.obtain_unit(
+              rep(unit as UnitKey, this.isy() ? Number(gold) : Number(norm))
+            )
+          }
+        },
+      },
+      text: ([count, unit, norm, gold]) => [
+        `每回合结束时, 若拥有至少${count}科技挂件, 则获得${norm}${unit}`,
+        `每回合结束时, 若拥有至少${count}科技挂件, 则获得${gold}${unit}`,
+      ],
+    },
+
     死神火车0: 任务('card-entered', 2, card =>
       card.$ref$Player.obtain_resource({
         mineral: card.isg() ? 2 : 1,
       })
     ),
-    好兄弟0: 快速生产('陆战队员', 4, 6),
-    好兄弟1: 反应堆('陆战队员'),
+    好兄弟0: { refer: '快速生产:陆战队员:4:6' },
+    好兄弟1: { refer: '反应堆:陆战队员' },
     挖宝奇兵0: 任务('store-refreshed', 5, card => {
       card.$ref$Player.push_discover(
         card.$ref$Player.$ref$Game.pool
@@ -153,7 +203,7 @@ export default function (/* config */): Record<string, Descriptor> {
           }))
       )
     }),
-    实验室安保0: 反应堆('陆战队员'),
+    实验室安保0: { refer: '反应堆:陆战队员' },
     实验室安保1: 进场后切换两侧挂件(),
     征兵令0: {
       listener: {
@@ -168,9 +218,9 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    恶火小队0: 反应堆('恶火'),
-    恶火小队1: 科挂(2, '歌利亚', 1, 2),
-    恶火小队2: 快速生产('攻城坦克', 1, 1),
+    恶火小队0: { refer: '反应堆:恶火' },
+    恶火小队1: { refer: '科挂:2:歌利亚:1:2' },
+    恶火小队2: { refer: '快速生产:攻城坦克:1:1' },
     空投地雷0: {
       listener: {
         'card-entered'() {
@@ -178,10 +228,10 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    空投地雷1: 快速生产('寡妇雷', 2, 3),
-    步兵连队0: 快速生产('劫掠者', 3, 5),
-    步兵连队1: 反应堆('劫掠者'),
-    飙车流0: 快速生产('秃鹫', 3, 5),
+    空投地雷1: { refer: '快速生产:寡妇雷:2:3' },
+    步兵连队0: { refer: '快速生产:劫掠者:3:5' },
+    步兵连队1: { refer: '反应堆:劫掠者' },
+    飙车流0: { refer: '快速生产:秃鹫:3:5' },
     飙车流1: 任务(
       'card-entered',
       3,
@@ -198,9 +248,9 @@ export default function (/* config */): Record<string, Descriptor> {
       () => true,
       'roundend'
     ),
-    陆军学院0: 科挂(3, '战狼', 1, 2),
-    陆军学院1: 快速生产('维京战机<机甲>', 3, 5),
-    空军学院0: 快速生产('维京战机', 3, 5),
+    陆军学院0: { refer: '科挂:3:战狼:1:2' },
+    陆军学院1: { refer: '快速生产:维京战机<机甲>:3:5' },
+    空军学院0: { refer: '快速生产:维京战机:3:5' },
     空军学院1: {
       listener: {
         'task-done'() {
@@ -208,8 +258,8 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    交叉火力0: 科挂(4, '攻城坦克', 1, 2),
-    交叉火力1: 快速生产('歌利亚', 3, 5),
+    交叉火力0: { refer: '科挂:4:攻城坦克:1:2' },
+    交叉火力1: { refer: '快速生产:歌利亚:3:5' },
     枪兵坦克0: {
       listener: {
         'round-end'() {
@@ -244,7 +294,7 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    护航中队0: 快速生产('黄昏之翼', 1, 2),
+    护航中队0: { refer: '快速生产:黄昏之翼:1:2' },
     护航中队1: {
       listener: {
         'card-entered'() {
@@ -252,7 +302,7 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    泰凯斯0: 反应堆('陆战队员(精英)'),
+    泰凯斯0: { refer: '反应堆:陆战队员(精英)' },
     泰凯斯1: {
       listener: {
         'round-end'() {
@@ -270,7 +320,7 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    外籍军团0: 反应堆('牛头人陆战队员'),
+    外籍军团0: { refer: '反应堆:牛头人陆战队员' },
     外籍军团1: {
       listener: {
         'post-enter'() {
@@ -308,7 +358,7 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    钢铁洪流0: 快速生产('雷神', 1, 2),
+    钢铁洪流0: { refer: '快速生产:雷神:1:2' },
     钢铁洪流1: 科挂X(5, ci => {
       ci.$ref$Player.all_of('T').forEach(c => {
         c.replace(c.find('攻城坦克', ci.isg() ? 2 : 1), elited)
@@ -322,7 +372,7 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    游骑兵1: 反应堆('雷诺(狙击手)'),
+    游骑兵1: { refer: '反应堆:雷诺(狙击手)' },
     沃菲尔德0: {
       listener: {
         'round-end'() {
@@ -369,7 +419,7 @@ export default function (/* config */): Record<string, Descriptor> {
       () => true,
       'instant'
     ),
-    帝国舰队1: 科挂(4, '黄昏之翼', 2, 4),
+    帝国舰队1: { refer: '科挂:4:黄昏之翼:2:4' },
     cloudplayer0: {
       listener: {
         'post-enter'() {
@@ -386,8 +436,8 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    黄昏之翼0: 快速生产('黄昏之翼', 1, 2),
-    黄昏之翼1: 反应堆('黄昏之翼'),
+    黄昏之翼0: { refer: '快速生产:黄昏之翼:1:2' },
+    黄昏之翼1: { refer: '反应堆:黄昏之翼' },
     艾尔游骑兵0: {
       listener: {
         'fast-produce'() {
@@ -412,8 +462,8 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    帝国敢死队0: 快速生产('诺娃', 2, 2),
-    帝国敢死队1: 反应堆('诺娃'),
+    帝国敢死队0: { refer: '快速生产:诺娃:2:2' },
+    帝国敢死队1: { refer: '反应堆:诺娃' },
     帝国敢死队2: {
       listener: {
         'task-done'() {
@@ -463,7 +513,7 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    帝国精锐0: 快速生产('恶蝠游骑兵', 1, 2),
+    帝国精锐0: { refer: '快速生产:恶蝠游骑兵:1:2' },
     帝国精锐1: {
       listener: {
         'round-end'() {

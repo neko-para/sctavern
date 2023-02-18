@@ -216,6 +216,7 @@ export interface GameState {
 }
 
 export interface Descriptor {
+  refer?: string // 替换
   config?: {
     unique?: 'normal' | 'left' // 优先金卡 / 优先左卡
     uniqueDisabled?: (ci: CardInstance) => boolean // 允许禁用唯一词条, 用于光复
@@ -223,8 +224,8 @@ export interface Descriptor {
     deinit?: Record<string, [number, number]>
   }
 
-  listener: SpecificListener<CardInstance, Descriptor>
-  text?: [string, string]
+  listener?: SpecificListener<CardInstance, string[]>
+  text?: [string, string] | ((extra: string[]) => [string, string])
   note?: (card: CardInstance, active: boolean) => string[]
 }
 

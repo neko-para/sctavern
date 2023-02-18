@@ -187,7 +187,11 @@ export class CardInstance {
     Dispatch(cardBind, msg, this)
     for (const d of this.descs) {
       if (this.$ref$Player.check_unique_active(d, this.index())) {
-        Dispatch(DescriptorTable[d].listener, msg, this, DescriptorTable[d])
+        const [desc, extra] = DescriptorTable(d)
+        const l = desc.listener
+        if (l) {
+          Dispatch(l, msg, this, extra)
+        }
       }
     }
   }
@@ -393,13 +397,10 @@ export class CardInstance {
 
   add_desc(d: string) {
     this.descs.push(d)
-    const ds = DescriptorTable[d]
-    if (!ds) {
-      console.log(d)
-    }
-    if (ds.config?.init) {
-      for (const k in ds.config.init) {
-        this.attrib.alter(k, ds.config.init[k][this.isg() ? 1 : 0])
+    const [desc] = DescriptorTable(d)
+    if (desc.config?.init) {
+      for (const k in desc.config.init) {
+        this.attrib.alter(k, desc.config.init[k][this.isg() ? 1 : 0])
       }
     }
   }
@@ -446,10 +447,10 @@ export class CardInstance {
 
   clear_desc() {
     for (const d of this.descs) {
-      const ds = DescriptorTable[d]
-      if (ds.config?.deinit) {
-        for (const k in ds.config.deinit) {
-          this.attrib.alter(k, ds.config.deinit[k][0])
+      const [desc] = DescriptorTable(d)
+      if (desc.config?.deinit) {
+        for (const k in desc.config.deinit) {
+          this.attrib.alter(k, desc.config.deinit[k][0])
         }
       }
     }

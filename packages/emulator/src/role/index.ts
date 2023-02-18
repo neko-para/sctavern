@@ -748,19 +748,46 @@ export function CreateRoleTable() {
         this.progress.max = 9
       },
       listener: {
+        'round-enter'() {
+          if (this.attrib.mode === 3) {
+            this.enable = true
+          }
+        },
         'card-entered'({ target }, player) {
-          if (this.progress.cur < this.progress.max && target.race === 'P') {
-            this.progress.cur += 1
-            if (this.progress.cur === this.progress.max) {
-              this.progress.cur = -1
-              target.name = `大主教的卫队`
-              target.level = 7
-              target.color = 'amber'
-              target.load_desc(CardData['阿塔尼斯'])
-              target.load_unit(CardData['阿塔尼斯'])
+          if (this.attrib.mode !== 3) {
+            if (this.progress.cur < this.progress.max && target.race === 'P') {
+              this.progress.cur += 1
+              if (this.progress.cur === this.progress.max) {
+                this.progress.cur = -1
+                target.name = `大主教的卫队`
+                target.level = 7
+                target.color = 'amber'
+                target.load_desc(CardData['阿塔尼斯'])
+                target.load_unit(CardData['阿塔尼斯'])
+              }
             }
           }
         },
+      },
+      ability(player) {
+        if (!this.enable) {
+          return
+        }
+        const ci = player.query_selected_present()
+        if (!ci || ci.race !== 'P') {
+          return
+        }
+        const { unit } = mostValueUnit(
+          ci.units.filter(u => isNormal(UnitData[u]))
+        )
+        if (!unit) {
+          return
+        }
+        ci.clear_desc()
+        ci.add_desc(`集结:${ci.level}:0:获得:${unit}:1:2`)
+        ci.fix_upgrade()
+        ci.obtain_unit(rep('水晶塔', 2))
+        this.enable = false
       },
     },
     // 下面的PVE都没做

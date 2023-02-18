@@ -632,8 +632,8 @@ export class PlayerInstance {
   }
 
   check_unique_active(key: string, place: number) {
-    const d = DescriptorTable[key]
-    if (d.config?.unique) {
+    const [desc] = DescriptorTable(key)
+    if (desc.config?.unique) {
       let pre = (
         this.present
           .map((c, i) => ({
@@ -642,10 +642,10 @@ export class PlayerInstance {
           }))
           .filter(c => c.card) as { card: CardInstance; pos: number }[]
       ).filter(c => c.card.descs.includes(key))
-      if (d.config.uniqueDisabled) {
-        pre = pre.filter(c => d.config?.uniqueDisabled?.(c.card))
+      if (desc.config.uniqueDisabled) {
+        pre = pre.filter(c => desc.config?.uniqueDisabled?.(c.card))
       }
-      if (d.config.unique === 'normal') {
+      if (desc.config.unique === 'normal') {
         const cp = {
           normal: 1,
           amber: 1,

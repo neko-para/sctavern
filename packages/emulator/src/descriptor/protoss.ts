@@ -49,6 +49,34 @@ function 集结(
 
 export default function (/* config */): Record<string, Descriptor> {
   return {
+    集结: {
+      listener: {
+        'round-end'(m, [power, id]) {
+          const cnt = Math.min(2, Math.floor(this.power() / Number(power)))
+          for (let i = 0; i < cnt; i++) {
+            this.regroup(Number(id))
+          }
+        },
+        'req-regroup'({ id: i }, [power, id, way, unit, norm, gold]) {
+          if (Number(id) === i || i === 1) {
+            if (way === '获得') {
+              this.obtain_unit(
+                rep(unit as UnitKey, this.isg() ? Number(gold) : Number(norm))
+              )
+            } else {
+              this.$ref$Player.warp(
+                rep(unit as UnitKey, this.isg() ? Number(gold) : Number(norm))
+              )
+            }
+          }
+        },
+      },
+      text: ([power, id, way, unit, norm, gold]) => [
+        `集结(${power}): ${way}${norm}${unit}`,
+        `集结(${power}): ${way}${gold}${unit}`,
+      ],
+    },
+
     折跃援军0: {
       listener: {
         'post-sell'() {
@@ -80,7 +108,7 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    万叉奔腾0: 集结(2, '狂热者', 1, 2),
+    万叉奔腾0: { refer: '集结:2:0:获得:狂热者:1:2' },
     折跃信标0: {
       config: {
         unique: 'left',
@@ -122,7 +150,7 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    暗影卫队1: 集结(3, '黑暗圣堂武士', 1, 2),
+    暗影卫队1: { refer: '集结:3:0:获得:黑暗圣堂武士:1:2' },
     暗影卫队2: {
       listener: {
         'round-end'() {
@@ -186,7 +214,7 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    虚空舰队0: 集结(5, '虚空辉光舰', 1, 2, 'warp'),
+    虚空舰队0: { refer: '集结:5:0:折跃:虚空辉光舰:1:2' },
     势不可挡0: {
       listener: {
         'post-enter'() {
@@ -194,7 +222,7 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    势不可挡1: 集结(5, '执政官', 1, 2, 'warp'),
+    势不可挡1: { refer: '集结:5:0:折跃:执政官:1:2' },
     势不可挡2: {
       listener: {
         'round-end'() {
@@ -204,8 +232,8 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    黄金舰队0: 集结(5, '侦察机', 1, 2, 'normal', 0),
-    黄金舰队1: 集结(7, '风暴战舰', 1, 2, 'normal', 1),
+    黄金舰队0: { refer: '集结:5:0:获得:侦察机:1:2' },
+    黄金舰队1: { refer: '集结:7:1:获得:风暴战舰:1:2' },
     尤尔兰0: {
       config: {
         init: {
@@ -215,7 +243,6 @@ export default function (/* config */): Record<string, Descriptor> {
           供能: [-5, -8],
         },
       },
-      listener: {},
     },
     尤尔兰1: {
       listener: {
@@ -291,7 +318,7 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    菲尼克斯1: 集结(5, '掠夺者', 1, 2),
+    菲尼克斯1: { refer: '集结:5:0:获得:掠夺者:1:2' },
     酒馆后勤处0: {
       listener: {
         'post-enter'() {
@@ -302,7 +329,7 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    净化一切0: 集结(4, '狂热者(精英)', 1, 2, 'warp'),
+    净化一切0: { refer: '集结:4:0:折跃:狂热者(精英):1:2' },
     净化一切1: {
       listener: {
         'round-end'() {
@@ -378,7 +405,7 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    黑暗教长1: 集结(3, '黑暗圣堂武士(精英)', 1, 2),
+    黑暗教长1: { refer: '集结:3:0:获得:黑暗圣堂武士(精英):1:2' },
     六脉神剑0: {
       listener: {
         'card-entered'() {

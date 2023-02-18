@@ -216,6 +216,12 @@ type = '阿塔尼斯'
 desc = '获得5倍能量强度'
 
 [[prophesy]]
+name = '测试服大主教'
+pinyin = 'csfdzj'
+type = '阿塔尼斯'
+desc = '变卡的那个'
+
+[[prophesy]]
 name = '虚空意志'
 pinyin = 'xkyz'
 type = '混合体'

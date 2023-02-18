@@ -43,6 +43,15 @@ export class LCG {
   }
 }
 
+function getText(key: string): [string, string] | [] {
+  const [desc, extra] = DescriptorTable(key)
+  if (desc.text instanceof Function) {
+    return desc.text(extra)
+  } else {
+    return desc.text ?? []
+  }
+}
+
 export class GameInstance {
   $ignore$Server: Server
 
@@ -321,14 +330,13 @@ export class GameInstance {
                         upgrades: dup(pr.card.upgrades),
                         descs: pr.card.descs.map(
                           key =>
-                            DescriptorTable[key].text?.[
-                              pr.card.isg() ? 1 : 0
-                            ] || `未知描述 ${key}`
+                            getText(key)[pr.card.isg() ? 1 : 0] ??
+                            `未知描述 ${key}`
                         ),
                         notes: pr.card.descs
                           .map(
                             key =>
-                              DescriptorTable[key].note?.(
+                              DescriptorTable(key)[0].note?.(
                                 pr.card,
                                 p.check_unique_active(key, i)
                               ) || []

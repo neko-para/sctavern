@@ -234,6 +234,9 @@ export function CreateProphesyTable() {
       },
     },
     光影集结: {
+      init() {
+        this.role.attrib.mode = 1
+      },
       listener: {
         'round-end'() {
           this.all().forEach(ci => {
@@ -245,7 +248,16 @@ export function CreateProphesyTable() {
     },
     能量阵列: {
       init() {
+        this.role.attrib.mode = 2
         this.config.ProtossPowerMultiplier = 5
+      },
+    },
+    测试服大主教: {
+      init() {
+        this.role.attrib.mode = 3
+        this.role.enable = true
+        this.role.progress.cur = -1
+        this.role.progress.max = -1
       },
     },
     虚空意志: {

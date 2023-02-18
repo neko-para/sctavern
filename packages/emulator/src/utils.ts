@@ -34,9 +34,7 @@ export function notNull<T>(v: T | null): v is T {
 }
 
 export function NotImplementYet(): Descriptor {
-  return {
-    listener: {},
-  }
+  return {}
 }
 
 export function Serialize(game: GameInstance) {
