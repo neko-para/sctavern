@@ -5,6 +5,7 @@ import StoreSection from './StoreSection'
 import { useContext } from 'react'
 import { clientContext, gameContext, playerContext } from './Context'
 import GlobalAction from './GlobalAction'
+import DiscoverSection from './DiscoverSection'
 
 function GameInstance() {
   const player =
@@ -18,12 +19,13 @@ function GameInstance() {
               <MainInfo></MainInfo>
               <HandSection></HandSection>
             </div>
-            <div className="flex-column">
+            <div className="flex-column gap">
               <StoreSection></StoreSection>
+              <DiscoverSection></DiscoverSection>
               <div className="flex-grow"></div>
-              <GlobalAction></GlobalAction>
             </div>
           </div>
+          <GlobalAction></GlobalAction>
           <PresentSection></PresentSection>
         </div>
       </playerContext.Provider>

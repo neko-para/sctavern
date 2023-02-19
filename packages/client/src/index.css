@@ -1,7 +1,6 @@
 * {
   margin: 0;
   padding: 0;
-  cursor: default;
 }
 
 html {
@@ -88,22 +87,20 @@ span {
   font-size: 1.5rem;
 }
 
+span.Hint {
+  font-size: 1.2rem;
+}
+
 span.Label {
   font-size: 2rem;
 }
 
 .SmallCard {
-  background-color: white;
   width: 15rem;
   height: 7rem;
-  box-shadow: 2px 2px lightgray;
-  border-radius: 5px;
 }
 
 .LargeCard {
-  background-color: white;
   width: 15rem;
   height: 30rem;
-  box-shadow: 2px 2px lightgray;
-  border-radius: 5px;
 }

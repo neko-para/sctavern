@@ -1,5 +1,6 @@
 import { PropsWithChildren } from 'react'
 import './Button.css'
+import HoverLayer from './HoverLayer'
 
 export interface Props {
   onClick?: () => void
@@ -13,12 +14,14 @@ function Button(props: PropsWithChildren<Props>) {
     classes.push('Button_disabled')
   }
   return (
-    <div
-      className={classes.join(' ')}
-      onClick={props.disable ? () => {} : props.onClick}
-    >
-      <span>{props.children}</span>
-    </div>
+    <HoverLayer>
+      <div
+        className={classes.join(' ')}
+        onClick={props.disable ? () => {} : props.onClick}
+      >
+        <span>{props.children}</span>
+      </div>
+    </HoverLayer>
   )
 }
 
