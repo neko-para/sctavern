@@ -1,6 +1,6 @@
 import { type GameState, Wrapper, Client } from '@sctavern/emulator'
 import { useState, useRef, useEffect } from 'react'
-import GameWrapper from './components/GameWrapper'
+import GameWrapper from '@/components/GameWrapper'
 
 function App() {
   const wrapper = useRef(new Wrapper())
