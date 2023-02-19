@@ -55,6 +55,22 @@ html {
   flex-grow: 1;
 }
 
+.flex-1 {
+  flex: 1;
+}
+
+.flex-2 {
+  flex: 2;
+}
+
+.flex-3 {
+  flex: 3;
+}
+
+.flex-4 {
+  flex: 4;
+}
+
 .gap {
   gap: 4px;
 }
@@ -83,6 +99,14 @@ html {
   align-items: end;
 }
 
+.text-align-center {
+  text-align: center;
+}
+
+.text-align-end {
+  text-align: end;
+}
+
 span {
   font-size: 1.5rem;
 }
@@ -103,4 +127,21 @@ span.Label {
 .LargeCard {
   width: 15rem;
   height: 30rem;
+}
+
+.InfoCard {
+  width: 75vw;
+  height: 75vh;
+}
+
+.Amber {
+  background-color: #ffc107 !important;
+}
+
+.Cyan {
+  background-color: #00bcd4 !important;
+}
+
+.Gold {
+  background-color: #ffeb3b !important;
 }

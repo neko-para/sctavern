@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import Button from './Button'
+import Button from '@/ui/Button'
 import { clientContext, playerContext } from './Context'
 import { tr } from './tr'
 

@@ -1,11 +1,9 @@
-import { CardData } from '@sctavern/data'
 import type { DiscoverItem } from '@sctavern/emulator'
 import { useContext } from 'react'
-import Button from './Button'
-import CardView from './CardView'
+import Button from '@/ui/Button'
+import CardView from '@/ui/CardView'
 import { clientContext } from './Context'
 import RaceIcon from './RaceIcon'
-import { tr } from './tr'
 
 export interface Props {
   item: DiscoverItem

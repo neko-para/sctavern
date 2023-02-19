@@ -4,12 +4,13 @@ import './CardView.css'
 
 export interface Props {
   disable?: boolean
+  color?: string
 }
 
 function CardView(props: PropsWithChildren<Props>) {
   return (
     <HoverLayer disable={props.disable ?? false}>
-      <div className="CardView">{props.children}</div>
+      <div className={'CardView ' + props.color ?? ''}>{props.children}</div>
     </HoverLayer>
   )
 }

@@ -1,18 +1,19 @@
 import { UnitKey } from '@sctavern/data'
 import type { PresentItemState } from '@sctavern/emulator'
-import { useContext } from 'react'
-import Button from './Button'
-import CardView from './CardView'
+import { useContext, useState } from 'react'
+import Button from '@/ui/Button'
+import CardView from '@/ui/CardView'
 import { clientContext } from './Context'
 import RaceIcon from './RaceIcon'
 import { tr } from './tr'
+import PresentCardInfo from './PresentCardInfo'
 
 export interface Props {
   item: PresentItemState
   pos: number
 }
 
-function countUnit(units: UnitKey[]): string[] {
+export function countUnit(units: UnitKey[]): string[] {
   const res: Partial<Record<UnitKey, number>> = {}
   units.forEach(u => {
     res[u] = (res[u] ?? 0) + 1
@@ -20,15 +21,43 @@ function countUnit(units: UnitKey[]): string[] {
   return (Object.keys(res) as UnitKey[]).map(u => `${u}: ${res[u]}`)
 }
 
+function calcColor(color?: 'normal' | 'amber' | 'gold') {
+  if (!color || color === 'normal') {
+    return ''
+  }
+  switch (color) {
+    case 'amber':
+      return 'Amber'
+    case 'gold':
+      return 'Gold'
+  }
+}
+
 function PresentCard(props: Props) {
   const client = useContext(clientContext)
+  const [showInfo, setShowInfo] = useState(false)
   return (
-    <CardView disable={!props.item.card}>
+    <CardView
+      disable={!props.item.card}
+      color={calcColor(props.item.card?.color)}
+    >
       <div className="LargeCard flex-column justify-around">
         {props.item.card ? (
           <div className="flex-column flex-grow">
             <div className="flex justify-center">
-              <span className="Label">{props.item.card.name}</span>
+              <PresentCardInfo
+                item={props.item}
+                show={showInfo}
+                setShow={setShowInfo}
+              ></PresentCardInfo>
+              <Button
+                type="text"
+                onClick={() => {
+                  setShowInfo(true)
+                }}
+              >
+                <span className="Label">{props.item.card.name}</span>
+              </Button>
             </div>
             <div className="flex align-center">
               <RaceIcon race={props.item.card.race}></RaceIcon>
@@ -42,12 +71,24 @@ function PresentCard(props: Props) {
               ))}
             </div>
             <div className="flex-grow"></div>
-            <div className="flex-column">
-              {countUnit(props.item.card.units).map((s, index) => (
-                <span className="Hint" key={index}>
-                  {s}
-                </span>
-              ))}
+            <div className="flex">
+              <div className="flex-column">
+                {countUnit(props.item.card.units).map((s, index) => (
+                  <span className="Hint" key={index}>
+                    {s}
+                  </span>
+                ))}
+              </div>
+              <div className="flex-grow"></div>
+              <div className="flex-column">
+                {props.item.card.upgrades.map((upg, index) => {
+                  return (
+                    <span className="Hint text-align-end" key={index}>
+                      {upg}
+                    </span>
+                  )
+                })}
+              </div>
             </div>
             <div className="flex">
               <span>

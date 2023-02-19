@@ -8,7 +8,14 @@ function StoreSection() {
   return (
     <div className="StoreSection">
       {player.store.map((item, index) => {
-        return <StoreCard item={item} pos={index} key={index}></StoreCard>
+        return (
+          <StoreCard
+            item={item}
+            pos={index}
+            key={index}
+            lock={player.locked}
+          ></StoreCard>
+        )
       })}
     </div>
   )

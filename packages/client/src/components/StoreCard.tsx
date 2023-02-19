@@ -1,14 +1,15 @@
 import { CardData } from '@sctavern/data'
 import type { StoreItemState } from '@sctavern/emulator'
 import { useContext } from 'react'
-import Button from './Button'
-import CardView from './CardView'
+import Button from '@/ui/Button'
+import CardView from '@/ui/CardView'
 import { clientContext } from './Context'
 import RaceIcon from './RaceIcon'
 import { tr } from './tr'
 
 export interface Props {
   item: StoreItemState | null
+  lock: boolean
   pos: number
 }
 
@@ -16,7 +17,7 @@ function StoreCard(props: Props) {
   const client = useContext(clientContext)
   if (props.item) {
     return (
-      <CardView>
+      <CardView color={props.lock ? 'Cyan' : ''}>
         <div className="SmallCard flex-column justify-around">
           <div className="flex align-center flex-grow">
             <RaceIcon race={CardData[props.item.card].race}></RaceIcon>

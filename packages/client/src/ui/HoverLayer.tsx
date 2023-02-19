@@ -3,6 +3,7 @@ import './HoverLayer.css'
 
 export interface Props {
   disable?: boolean
+  onClick?: () => void
 }
 
 function HoverLayer(props: PropsWithChildren<Props>) {
@@ -11,7 +12,7 @@ function HoverLayer(props: PropsWithChildren<Props>) {
     classes.push('HoverLayer_disabled')
   }
   return (
-    <div className={classes.join(' ')}>
+    <div className={classes.join(' ')} onClick={props.onClick}>
       <div className="Layer"></div>
       {props.children}
     </div>
