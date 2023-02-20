@@ -8,7 +8,7 @@ import { redirect, useNavigate } from 'react-router'
 
 function GameConfig() {
   const [config, setConfig] = useState<GameConfig>({
-    Pack: [],
+    Pack: ['核心'],
     Seed: Math.floor(Math.random() * 1000000),
     Role: ['白板'],
     Mutation: [],
@@ -64,7 +64,12 @@ function GameConfig() {
         <CardActions>
           <Button
             onClick={() => {
-              navigate('/local/play')
+              navigate(
+                '/local/play?' +
+                  new URLSearchParams({
+                    config: JSON.stringify(config),
+                  })
+              )
             }}
           >
             开始
