@@ -1,7 +1,4 @@
 import type { DiscoverItem } from '@sctavern/emulator'
-import { useContext } from 'react'
-import Button from '@material-ui/core/Button'
-import CardView from '@material-ui/core/Card'
 import { clientContext } from './Context'
 import RaceIcon from './RaceIcon'
 

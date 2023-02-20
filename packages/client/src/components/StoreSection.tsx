@@ -1,4 +1,3 @@
-import { useContext } from 'react'
 import { playerContext } from './Context'
 import StoreCard from './StoreCard'
 import { useStyle } from './style'

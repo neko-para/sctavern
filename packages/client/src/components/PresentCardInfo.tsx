@@ -1,4 +1,3 @@
-import CardView from '@material-ui/core/Card'
 import Dialog from '@/ui/Dialog'
 import type { PresentItemState } from '@sctavern/emulator'
 import { countUnit } from './PresentCard'

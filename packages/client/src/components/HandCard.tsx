@@ -1,8 +1,5 @@
 import { CardData } from '@sctavern/data'
 import type { HandItemState } from '@sctavern/emulator'
-import { useContext } from 'react'
-import Button from '@material-ui/core/Button'
-import CardView from '@material-ui/core/Card'
 import { clientContext } from './Context'
 import RaceIcon from './RaceIcon'
 import { tr } from './tr'

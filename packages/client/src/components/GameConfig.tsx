@@ -1,5 +1,3 @@
-import Button from '@material-ui/core/Button'
-import CardView from '@material-ui/core/Card'
 import Input from '@/ui/Input'
 import {
   PresetPoolPack,
@@ -7,7 +5,6 @@ import {
   PvpPresetActiveUnit,
 } from '@sctavern/data'
 import type { GameConfig } from '@sctavern/emulator'
-import { useState } from 'react'
 
 function GameConfig() {
   const [config, setConfig] = useState<GameConfig>({

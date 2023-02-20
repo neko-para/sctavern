@@ -1,4 +1,3 @@
-import { useContext } from 'react'
 import { playerContext } from './Context'
 import PresentCard from './PresentCard'
 import { useStyle } from './style'

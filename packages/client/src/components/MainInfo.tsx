@@ -1,4 +1,3 @@
-import { useContext } from 'react'
 import { gameContext, playerContext } from './Context'
 
 function MainInfo() {
