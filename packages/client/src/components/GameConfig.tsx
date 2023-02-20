@@ -1,10 +1,10 @@
-import Input from '@/ui/Input'
 import {
   PresetPoolPack,
   PvpPresetActivePack,
   PvpPresetActiveUnit,
 } from '@sctavern/data'
 import type { GameConfig } from '@sctavern/emulator'
+import { redirect, useNavigate } from 'react-router'
 
 function GameConfig() {
   const [config, setConfig] = useState<GameConfig>({
@@ -18,35 +18,60 @@ function GameConfig() {
     ActiveUnit: PvpPresetActiveUnit,
   })
 
+  const navigate = useNavigate()
+
   return (
-    <CardView>
-      <div className="InfoCard flex-column">
-        <div className="flex gap">
-          <Input
-            class={['flex-4']}
-            type="number"
-            value={config.Seed.toString()}
-            setValue={v => {
-              setConfig({
-                ...config,
-                Seed: Math.floor(Number(v) ?? 1),
-              })
-            }}
-          ></Input>
+    <Container>
+      <CardView>
+        <CardContent className="InfoCard">
+          <Box display="grid" gridTemplateColumns="repeat(12, 1fr)">
+            <Box gridColumn="span 1"></Box>
+            <Box gridColumn="span 8">
+              <TextField
+                fullWidth
+                type="number"
+                label="种子"
+                value={config.Seed.toString()}
+                onChange={event => {
+                  setConfig({
+                    ...config,
+                    Seed: Math.floor(Number(event.target.value) ?? 1),
+                  })
+                }}
+              ></TextField>
+            </Box>
+            <Grid
+              gridColumn="span 2"
+              container
+              justifyContent="center"
+              alignContent="center"
+            >
+              <Button
+                variant="contained"
+                onClick={() => {
+                  setConfig({
+                    ...config,
+                    Seed: Math.floor(Math.random() * 1000000),
+                  })
+                }}
+              >
+                随机
+              </Button>
+            </Grid>
+            <Box gridColumn="span 1"></Box>
+          </Box>
+        </CardContent>
+        <CardActions>
           <Button
-            // class={['flex-1']}
             onClick={() => {
-              setConfig({
-                ...config,
-                Seed: Math.floor(Math.random() * 1000000),
-              })
+              navigate('/local/play')
             }}
           >
-            随机
+            开始
           </Button>
-        </div>
-      </div>
-    </CardView>
+        </CardActions>
+      </CardView>
+    </Container>
   )
 }
 

@@ -1,12 +1,11 @@
 import { playerContext } from './Context'
 import DiscoverCard from './DiscoverCard'
-import { useStyle } from './style'
+import './index.css'
 
 function DiscoverSection() {
   const player = useContext(playerContext)
-  const style = useStyle()
   return (
-    <div className={style.DiscoverSection}>
+    <div className="DiscoverSection">
       {player.discover?.item.map((item, index) => {
         return <DiscoverCard item={item} pos={index} key={index}></DiscoverCard>
       })}

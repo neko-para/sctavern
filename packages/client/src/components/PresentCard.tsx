@@ -4,6 +4,7 @@ import { clientContext } from './Context'
 import RaceIcon from './RaceIcon'
 import { tr } from './tr'
 import PresentCardInfo from './PresentCardInfo'
+import { PresetColor } from '@/color'
 
 export interface Props {
   item: PresentItemState
@@ -33,8 +34,13 @@ function calcColor(color?: 'normal' | 'amber' | 'gold') {
 function PresentCard(props: Props) {
   const client = useContext(clientContext)
   const [showInfo, setShowInfo] = useState(false)
+  const color = calcColor(props.item.card?.color)
   return (
-    <CardView color={calcColor(props.item.card?.color)}>
+    <CardView
+      style={{
+        backgroundColor: color ? PresetColor[color] : '',
+      }}
+    >
       <div className="LargeCard flex-column justify-around">
         {props.item.card ? (
           <div className="flex-column flex-grow">
@@ -45,6 +51,7 @@ function PresentCard(props: Props) {
                 setShow={setShowInfo}
               ></PresentCardInfo>
               <Button
+                color="inherit"
                 variant="text"
                 onClick={() => {
                   setShowInfo(true)

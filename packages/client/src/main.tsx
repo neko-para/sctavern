@@ -1,10 +1,17 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom/client'
 import { createHashRouter, redirect, RouterProvider } from 'react-router-dom'
 import LocalGame from './view/LocalGame'
 import './index.css'
 import './util.css'
 import LocalConfig from './view/LocalConfig'
+import '@fontsource/roboto/300.css'
+import '@fontsource/roboto/400.css'
+import '@fontsource/roboto/500.css'
+import '@fontsource/roboto/700.css'
+import { createTheme } from '@mui/material/styles'
+import { ThemeProvider } from '@emotion/react'
+import * as Color from '@mui/material/colors'
 
 const router = createHashRouter([
   {
@@ -23,9 +30,17 @@ const router = createHashRouter([
   },
 ])
 
-ReactDOM.render(
+const theme = createTheme({
+  palette: {
+    primary: Color.deepPurple,
+    info: Color.brown,
+  },
+})
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>,
-  document.getElementById('root') as HTMLElement
+    <ThemeProvider theme={theme}>
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  </React.StrictMode>
 )

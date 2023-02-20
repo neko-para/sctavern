@@ -3,10 +3,6 @@
   padding: 0;
 }
 
-html {
-  font-size: 62.5%;
-}
-
 #root {
   position: fixed;
   left: 0;
@@ -44,18 +40,5 @@ span.Label {
 }
 
 .InfoCard {
-  width: 75vw;
-  height: 75vh;
-}
-
-.Amber {
-  background-color: #ffc107 !important;
-}
-
-.Cyan {
-  background-color: #00bcd4 !important;
-}
-
-.Gold {
-  background-color: #ffeb3b !important;
+  min-height: 25vh;
 }

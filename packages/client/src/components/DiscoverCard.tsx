@@ -1,6 +1,7 @@
 import type { DiscoverItem } from '@sctavern/emulator'
 import { clientContext } from './Context'
 import RaceIcon from './RaceIcon'
+import SmallCard from './SmallCard'
 
 export interface Props {
   item: DiscoverItem
@@ -20,42 +21,31 @@ function getName(item: DiscoverItem) {
   }
 }
 
-function StoreCard(props: Props) {
+function DiscoverCard(props: Props) {
   const client = useContext(clientContext)
   if (props.item) {
     return (
-      <CardView>
-        <div className="SmallCard flex-column justify-around">
-          <div className="flex align-center flex-grow">
-            {props.item.type === 'card' && (
-              <RaceIcon race={props.item.card.race}></RaceIcon>
-            )}
-            <span className="flex-grow Label">{getName(props.item)}</span>
-          </div>
-          <div className="flex justify-around">
-            <Button
-              variant="text"
-              onClick={() => {
-                client.autoPost({
-                  msg: '$choice',
-                  place: props.pos,
-                  category: 'discover',
-                })
-              }}
-            >
-              这个
-            </Button>
-          </div>
-        </div>
-      </CardView>
+      <SmallCard
+        race={props.item.type === 'card' ? props.item.card.race : undefined}
+        title={getName(props.item)}
+      >
+        <Button
+          variant="text"
+          onClick={() => {
+            client.autoPost({
+              msg: '$choice',
+              place: props.pos,
+              category: 'discover',
+            })
+          }}
+        >
+          这个
+        </Button>
+      </SmallCard>
     )
   } else {
-    return (
-      <CardView>
-        <div className="SmallCard"></div>
-      </CardView>
-    )
+    return <SmallCard title=""></SmallCard>
   }
 }
 
-export default StoreCard
+export default DiscoverCard

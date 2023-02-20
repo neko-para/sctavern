@@ -1,7 +1,7 @@
 import type { PresentItemState } from '@sctavern/emulator'
 import { countUnit } from './PresentCard'
 import RaceIcon from './RaceIcon'
-import { useStyle } from './style'
+import './index.css'
 
 export interface Props {
   item: PresentItemState
@@ -10,8 +10,6 @@ export interface Props {
 }
 
 function PresentCardInfo(props: Props) {
-  const style = useStyle()
-
   if (props.item.card) {
     return (
       <Dialog
@@ -20,7 +18,7 @@ function PresentCardInfo(props: Props) {
         open={props.show}
         onClose={() => props.setShow(false)}
       >
-        <DialogContent className={'InfoCard ' + style.PresentCardInfo}>
+        <DialogContent className="InfoCard PresentCardInfo">
           <div className="flex-column flex-2">
             <span className="Label">{props.item.card.name}</span>
             <div className="flex align-center">
