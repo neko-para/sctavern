@@ -1,8 +1,8 @@
 import { UnitKey } from '@sctavern/data'
 import type { PresentItemState } from '@sctavern/emulator'
 import { useContext, useState } from 'react'
-import Button from '@/ui/Button'
-import CardView from '@/ui/CardView'
+import Button from '@material-ui/core/Button'
+import CardView from '@material-ui/core/Card'
 import { clientContext } from './Context'
 import RaceIcon from './RaceIcon'
 import { tr } from './tr'
@@ -37,10 +37,7 @@ function PresentCard(props: Props) {
   const client = useContext(clientContext)
   const [showInfo, setShowInfo] = useState(false)
   return (
-    <CardView
-      disable={!props.item.card}
-      color={calcColor(props.item.card?.color)}
-    >
+    <CardView color={calcColor(props.item.card?.color)}>
       <div className="LargeCard flex-column justify-around">
         {props.item.card ? (
           <div className="flex-column flex-grow">
@@ -51,7 +48,7 @@ function PresentCard(props: Props) {
                 setShow={setShowInfo}
               ></PresentCardInfo>
               <Button
-                type="text"
+                variant="text"
                 onClick={() => {
                   setShowInfo(true)
                 }}
@@ -109,11 +106,11 @@ function PresentCard(props: Props) {
           {props.item.actions.map((act, index) => {
             return (
               <Button
-                type="text"
+                variant="text"
                 onClick={() => {
                   client.post(act.msg)
                 }}
-                disable={!act.enable}
+                disabled={!act.enable}
                 key={index}
               >
                 {tr[act.action]}

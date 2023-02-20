@@ -1,8 +1,8 @@
 import { CardData } from '@sctavern/data'
 import type { HandItemState } from '@sctavern/emulator'
 import { useContext } from 'react'
-import Button from '@/ui/Button'
-import CardView from '@/ui/CardView'
+import Button from '@material-ui/core/Button'
+import CardView from '@material-ui/core/Card'
 import { clientContext } from './Context'
 import RaceIcon from './RaceIcon'
 import { tr } from './tr'
@@ -26,11 +26,11 @@ function HandCard(props: Props) {
             {props.item.actions.map((act, index) => {
               return (
                 <Button
-                  type="text"
+                  variant="text"
                   onClick={() => {
                     client.post(act.msg)
                   }}
-                  disable={!act.enable}
+                  disabled={!act.enable}
                   key={index}
                 >
                   {tr[act.action]}
@@ -43,7 +43,7 @@ function HandCard(props: Props) {
     )
   } else {
     return (
-      <CardView disable={true}>
+      <CardView>
         <div className="SmallCard"></div>
       </CardView>
     )

@@ -1,5 +1,5 @@
-import Button from '@/ui/Button'
-import CardView from '@/ui/CardView'
+import Button from '@material-ui/core/Button'
+import CardView from '@material-ui/core/Card'
 import Input from '@/ui/Input'
 import {
   PresetPoolPack,
@@ -22,7 +22,7 @@ function GameConfig() {
   })
 
   return (
-    <CardView disable={true}>
+    <CardView>
       <div className="InfoCard flex-column">
         <div className="flex gap">
           <Input
@@ -37,7 +37,7 @@ function GameConfig() {
             }}
           ></Input>
           <Button
-            class={['flex-1']}
+            // class={['flex-1']}
             onClick={() => {
               setConfig({
                 ...config,

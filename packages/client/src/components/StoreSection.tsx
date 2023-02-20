@@ -1,12 +1,13 @@
 import { useContext } from 'react'
 import { playerContext } from './Context'
 import StoreCard from './StoreCard'
-import './StoreSection.css'
+import { useStyle } from './style'
 
 function StoreSection() {
   const player = useContext(playerContext)
+  const style = useStyle()
   return (
-    <div className="StoreSection">
+    <div className={style.StoreSection}>
       {player.store.map((item, index) => {
         return (
           <StoreCard

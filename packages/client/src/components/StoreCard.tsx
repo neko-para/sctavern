@@ -1,8 +1,7 @@
 import { CardData } from '@sctavern/data'
 import type { StoreItemState } from '@sctavern/emulator'
 import { useContext } from 'react'
-import Button from '@/ui/Button'
-import CardView from '@/ui/CardView'
+import { Button, Card as CardView } from '@material-ui/core'
 import { clientContext } from './Context'
 import RaceIcon from './RaceIcon'
 import { tr } from './tr'
@@ -17,34 +16,35 @@ function StoreCard(props: Props) {
   const client = useContext(clientContext)
   if (props.item) {
     return (
-      <CardView color={props.lock ? 'Cyan' : ''}>
-        <div className="SmallCard flex-column justify-around">
-          <div className="flex align-center flex-grow">
-            <RaceIcon race={CardData[props.item.card].race}></RaceIcon>
-            <span className="flex-grow Label">{props.item.card}</span>
-          </div>
-          <div className="flex justify-around">
-            {props.item.actions.map((act, index) => {
-              return (
-                <Button
-                  type="text"
-                  onClick={() => {
-                    client.post(act.msg)
-                  }}
-                  disable={!act.enable}
-                  key={index}
-                >
-                  {tr[act.action]}
-                </Button>
-              )
-            })}
-          </div>
+      <CardView
+        className="SmallCard flex-column justify-around"
+        color={props.lock ? 'Cyan' : ''}
+      >
+        <div className="flex align-center flex-grow">
+          <RaceIcon race={CardData[props.item.card].race}></RaceIcon>
+          <span className="flex-grow Label">{props.item.card}</span>
+        </div>
+        <div className="flex justify-around">
+          {props.item.actions.map((act, index) => {
+            return (
+              <Button
+                variant="text"
+                onClick={() => {
+                  client.post(act.msg)
+                }}
+                disabled={!act.enable}
+                key={index}
+              >
+                {tr[act.action]}
+              </Button>
+            )
+          })}
         </div>
       </CardView>
     )
   } else {
     return (
-      <CardView disable={true}>
+      <CardView>
         <div className="SmallCard"></div>
       </CardView>
     )

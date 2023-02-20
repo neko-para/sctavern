@@ -1,9 +1,9 @@
-import CardView from '@/ui/CardView'
+import CardView from '@material-ui/core/Card'
 import Dialog from '@/ui/Dialog'
 import type { PresentItemState } from '@sctavern/emulator'
 import { countUnit } from './PresentCard'
-import './PresentCardInfo.css'
 import RaceIcon from './RaceIcon'
+import { useStyle } from './style'
 
 export interface Props {
   item: PresentItemState
@@ -12,11 +12,13 @@ export interface Props {
 }
 
 function PresentCardInfo(props: Props) {
+  const style = useStyle()
+
   if (props.item.card) {
     return (
       <Dialog show={props.show} setShow={props.setShow}>
         <CardView>
-          <div className="InfoCard PresentCardInfo">
+          <div className={'InfoCard ' + style.PresentCardInfo}>
             <div className="flex-column flex-2">
               <span className="Label">{props.item.card.name}</span>
               <div className="flex align-center">

@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import Button from '@/ui/Button'
+import Button from '@material-ui/core/Button'
 import { clientContext, playerContext } from './Context'
 import { tr } from './tr'
 
@@ -12,9 +12,10 @@ function GlobalAction() {
       {player.action.map((act, index) => {
         return (
           <Button
+            variant="contained"
             key={index}
             onClick={() => client.post(act.msg)}
-            disable={!act.enable}
+            disabled={!act.enable}
           >
             {act.action === 'ability'
               ? role.ability +

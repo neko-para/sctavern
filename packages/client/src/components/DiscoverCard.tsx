@@ -1,7 +1,7 @@
 import type { DiscoverItem } from '@sctavern/emulator'
 import { useContext } from 'react'
-import Button from '@/ui/Button'
-import CardView from '@/ui/CardView'
+import Button from '@material-ui/core/Button'
+import CardView from '@material-ui/core/Card'
 import { clientContext } from './Context'
 import RaceIcon from './RaceIcon'
 
@@ -37,7 +37,7 @@ function StoreCard(props: Props) {
           </div>
           <div className="flex justify-around">
             <Button
-              type="text"
+              variant="text"
               onClick={() => {
                 client.autoPost({
                   msg: '$choice',
@@ -54,7 +54,7 @@ function StoreCard(props: Props) {
     )
   } else {
     return (
-      <CardView disable={true}>
+      <CardView>
         <div className="SmallCard"></div>
       </CardView>
     )

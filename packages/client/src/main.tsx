@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
+import ReactDOM from 'react-dom'
 import { createHashRouter, redirect, RouterProvider } from 'react-router-dom'
 import LocalGame from './view/LocalGame'
 import AutoAdapt from '@/ui/AutoAdapt'
@@ -24,11 +24,12 @@ const router = createHashRouter([
   },
 ])
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+ReactDOM.render(
   <React.StrictMode>
     <AutoAdapt>
       <RouterProvider router={router} />
       <DialogLayer></DialogLayer>
     </AutoAdapt>
-  </React.StrictMode>
+  </React.StrictMode>,
+  document.getElementById('root') as HTMLElement
 )
