@@ -22,9 +22,9 @@ function GameInstance() {
               <StoreSection></StoreSection>
               <DiscoverSection></DiscoverSection>
               <div className="flex-grow"></div>
+              <GlobalAction></GlobalAction>
             </div>
           </div>
-          <GlobalAction></GlobalAction>
           <PresentSection></PresentSection>
         </div>
       </playerContext.Provider>

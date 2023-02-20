@@ -1,4 +1,4 @@
-import { PropsWithChildren, useRef, useEffect, useState } from 'react'
+import { PropsWithChildren } from 'react'
 import './AutoAdapt.css'
 
 export interface Props {}

@@ -6,10 +6,14 @@ export const useStyle = makeStyles(() =>
       display: 'flex',
       gap: '4px',
     },
-    DiscoverSection: {
+    CompactDiscoverSection: {
       display: 'grid',
       gridTemplateRows: 'repeat(2, 1fr)',
       gridTemplateColumns: 'repeat(3, 1fr)',
+      gap: '4px',
+    },
+    DiscoverSection: {
+      display: 'flex',
       gap: '4px',
     },
     PresentSection: {
@@ -23,10 +27,14 @@ export const useStyle = makeStyles(() =>
       gridAutoFlow: 'column',
       gap: '4px',
     },
-    StoreSection: {
+    CompactStoreSection: {
       display: 'grid',
       gridTemplateRows: 'repeat(2, 1fr)',
       gridTemplateColumns: 'repeat(3, 1fr)',
+      gap: '4px',
+    },
+    StoreSection: {
+      display: 'flex',
       gap: '4px',
     },
   })

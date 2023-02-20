@@ -1,6 +1,5 @@
 import type { Race } from '@sctavern/data'
 import RacePng from '../res/Race'
-import './RaceIcon.css'
 
 export interface Props {
   race: Race
@@ -8,8 +7,23 @@ export interface Props {
 
 function RaceIcon(props: Props) {
   return (
-    <div className="RaceIcon flex align-center justify-center">
-      <img src={RacePng[props.race]}></img>
+    <div
+      style={{
+        display: 'flex',
+        alignContent: 'center',
+        justifyContent: 'center',
+        width: '36px',
+        height: '36px',
+      }}
+    >
+      <img
+        src={RacePng[props.race]}
+        style={{
+          width: '36px',
+          height: '36px',
+          objectFit: 'scale-down',
+        }}
+      ></img>
     </div>
   )
 }

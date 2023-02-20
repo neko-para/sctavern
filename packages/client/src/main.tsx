@@ -2,9 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { createHashRouter, redirect, RouterProvider } from 'react-router-dom'
 import LocalGame from './view/LocalGame'
-import AutoAdapt from '@/ui/AutoAdapt'
-import DialogLayer from '@/ui/DialogLayer'
 import './index.css'
+import './util.css'
 import LocalConfig from './view/LocalConfig'
 
 const router = createHashRouter([
@@ -26,10 +25,7 @@ const router = createHashRouter([
 
 ReactDOM.render(
   <React.StrictMode>
-    <AutoAdapt>
-      <RouterProvider router={router} />
-      <DialogLayer></DialogLayer>
-    </AutoAdapt>
+    <RouterProvider router={router} />
   </React.StrictMode>,
   document.getElementById('root') as HTMLElement
 )

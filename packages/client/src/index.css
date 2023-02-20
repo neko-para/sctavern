@@ -4,28 +4,7 @@
 }
 
 html {
-  font-size: 36%;
-}
-
-@media (orientation: landscape) and (min-width: 900px) and (min-height: 600px),
-  (orientation: portrait) and (min-height: 900px) and (min-width: 600px) {
-  html {
-    font-size: 50%;
-  }
-}
-
-@media (orientation: landscape) and (min-width: 1200px) and (min-height: 800px),
-  (orientation: portrait) and (min-height: 1200px) and (min-width: 800px) {
-  html {
-    font-size: 62.5%;
-  }
-}
-
-@media (orientation: landscape) and (min-width: 1500px) and (min-height: 900px),
-  (orientation: portrait) and (min-height: 1500px) and (min-width: 900px) {
-  html {
-    font-size: 80%;
-  }
+  font-size: 62.5%;
 }
 
 #root {
@@ -42,91 +21,26 @@ html {
   background-color: wheat;
 }
 
-.flex {
-  display: flex !important;
-}
-
-.flex-column {
-  display: flex !important;
-  flex-direction: column !important;
-}
-
-.flex-grow {
-  flex-grow: 1;
-}
-
-.flex-1 {
-  flex: 1;
-}
-
-.flex-2 {
-  flex: 2;
-}
-
-.flex-3 {
-  flex: 3;
-}
-
-.flex-4 {
-  flex: 4;
-}
-
-.gap {
-  gap: 4px;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.justify-around {
-  justify-content: space-around;
-}
-
-.justify-between {
-  justify-content: space-between;
-}
-
-.align-center {
-  align-items: center;
-}
-
-.align-start {
-  align-items: start;
-}
-
-.align-end {
-  align-items: end;
-}
-
-.text-align-center {
-  text-align: center;
-}
-
-.text-align-end {
-  text-align: end;
-}
-
 span {
-  font-size: 1.5rem;
+  font-size: 20px;
 }
 
 span.Hint {
-  font-size: 1.2rem;
+  font-size: 16px;
 }
 
 span.Label {
-  font-size: 2rem;
+  font-size: 24px;
 }
 
 .SmallCard {
-  width: 15rem;
-  height: 7rem;
+  width: 200px;
+  height: 100px;
 }
 
 .LargeCard {
-  width: 15rem;
-  height: 30rem;
+  width: 250px;
+  height: 400px;
 }
 
 .InfoCard {

@@ -15,7 +15,14 @@ export default defineConfig({
       imports: [
         {
           react: ['useState', 'useRef', 'useEffect', 'useContext'],
-          '@material-ui/core': ['Button', 'Grid', ['Card', 'CardView']],
+          '@material-ui/core': [
+            'Button',
+            'Container',
+            'Grid',
+            'Dialog',
+            'DialogContent',
+            ['Card', 'CardView'],
+          ],
         },
       ],
     }),
