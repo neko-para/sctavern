@@ -1,6 +1,5 @@
 import type { DiscoverItem } from '@sctavern/emulator'
 import { clientContext } from './Context'
-import RaceIcon from './RaceIcon'
 import SmallCard from './SmallCard'
 
 export interface Props {

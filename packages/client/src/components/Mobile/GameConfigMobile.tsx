@@ -10,7 +10,7 @@ import {
   RoleData,
   RoleKey,
 } from '@sctavern/data'
-import { type GameConfig, LCG } from '@sctavern/emulator'
+import { type GameConfig as GameConfigMobile, LCG } from '@sctavern/emulator'
 import { useNavigate } from 'react-router'
 
 const lcg = new LCG(Math.floor(Math.random() * 100000))
@@ -50,8 +50,8 @@ const noPveRoles: RoleKey[] = [
   '干扰者',
 ]
 
-function GameConfig() {
-  const [config, setConfig] = useState<GameConfig>({
+function GameConfigMobile() {
+  const [config, setConfig] = useState<GameConfigMobile>({
     Pack: ['核心'],
     Seed: Math.floor(Math.random() * 1000000),
     Role: ['白板'],
@@ -99,8 +99,7 @@ function GameConfig() {
       <CardView>
         <CardContent className="InfoCard">
           <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" rowGap={2}>
-            <Box gridColumn="span 1"></Box>
-            <Box gridColumn="span 8">
+            <Box gridColumn="span 10">
               <TextField
                 fullWidth
                 type="number"
@@ -127,10 +126,8 @@ function GameConfig() {
                 随机
               </Button>
             </Box>
-            <Box gridColumn="span 1"></Box>
-            <Box gridColumn="span 1"></Box>
             <Box
-              gridColumn="span 8"
+              gridColumn="span 10"
               display="grid"
               gridTemplateColumns="repeat(2, 1fr)"
             >
@@ -166,9 +163,7 @@ function GameConfig() {
                 随机
               </Button>
             </Box>
-            <Box gridColumn="span 1"></Box>
-            <Box gridColumn="span 1"></Box>
-            <Box gridColumn="span 8">
+            <Box gridColumn="span 10">
               <FormControl fullWidth>
                 <InputLabel>角色</InputLabel>
                 <Select
@@ -204,9 +199,7 @@ function GameConfig() {
                 随机
               </Button>
             </Box>
-            <Box gridColumn="span 1"></Box>
-            <Box gridColumn="span 1"></Box>
-            <Box gridColumn="span 2">
+            <Box gridColumn="span 6">
               <FormControlLabel
                 label="启用PVE"
                 control={
@@ -218,7 +211,7 @@ function GameConfig() {
                 }
               ></FormControlLabel>
             </Box>
-            <Box gridColumn="span 4" alignSelf="center">
+            <Box gridColumn="span 6" alignSelf="center">
               {config.Pve && noPveRoles.includes(config.Role[0])
                 ? '警告: 当前角色的预言尚未完成'
                 : ''}
@@ -244,4 +237,4 @@ function GameConfig() {
   )
 }
 
-export default GameConfig
+export default GameConfigMobile

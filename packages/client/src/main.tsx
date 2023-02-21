@@ -1,6 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { createHashRouter, redirect, RouterProvider } from 'react-router-dom'
+import {
+  createHashRouter,
+  redirect,
+  RouteObject,
+  RouterProvider,
+} from 'react-router-dom'
 import LocalGame from './view/LocalGame'
 import './index.css'
 import './util.css'
@@ -12,6 +17,30 @@ import '@fontsource/roboto/700.css'
 import { createTheme } from '@mui/material/styles'
 import { ThemeProvider } from '@emotion/react'
 import * as Color from '@mui/material/colors'
+import GameInstance from './components/GameInstance'
+import GameInstanceMobile from './components/Mobile/GameInstanceMobile'
+import GameConfig from './components/GameConfig'
+import GameConfigMobile from './components/Mobile/GameConfigMobile'
+
+function isMobile() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  )
+}
+
+function foward(url: string): RouteObject {
+  return {
+    path: url,
+    loader: ({ request }) => {
+      const u = new URL(request.url)
+      return redirect(
+        isMobile()
+          ? `${url}/mobile?${u.searchParams}`
+          : `${url}/pc?${u.searchParams}`
+      )
+    },
+  }
+}
 
 const router = createHashRouter([
   {
@@ -20,19 +49,30 @@ const router = createHashRouter([
       return redirect('/local/config')
     },
   },
+  foward('/local/config'),
   {
-    path: '/local/config',
-    element: <LocalConfig></LocalConfig>,
+    path: '/local/config/pc',
+    element: <LocalConfig instance={GameConfig}></LocalConfig>,
   },
   {
-    path: '/local/play',
-    element: <LocalGame></LocalGame>,
+    path: '/local/config/mobile',
+    element: <LocalConfig instance={GameConfigMobile}></LocalConfig>,
+  },
+  foward('/local/play'),
+  {
+    path: '/local/play/pc',
+    element: <LocalGame instance={GameInstance}></LocalGame>,
+  },
+  {
+    path: '/local/play/mobile',
+    element: <LocalGame instance={GameInstanceMobile}></LocalGame>,
   },
 ])
 
 const theme = createTheme({
   palette: {
     primary: Color.deepPurple,
+    secondary: Color.red,
     info: Color.brown,
   },
 })

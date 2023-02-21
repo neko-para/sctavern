@@ -14,14 +14,26 @@ export default defineConfig({
       ],
       imports: [
         {
-          react: ['useState', 'useRef', 'useEffect', 'useContext'],
+          react: [
+            'useState',
+            'useRef',
+            'useMemo',
+            'useEffect',
+            'useContext',
+            'Fragment',
+          ],
           '@mui/material': [
+            'Accordion',
+            'AccordionSummary',
+            'AccordionDetails',
             'Box',
             'Button',
             'Container',
             'Checkbox',
             'Dialog',
             'DialogContent',
+            'DialogActions',
+            'Divider',
             'FormControl',
             'FormControlLabel',
             'Grid',

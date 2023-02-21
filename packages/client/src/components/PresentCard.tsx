@@ -1,6 +1,6 @@
 import type { UnitKey } from '@sctavern/data'
 import type { PresentItemState } from '@sctavern/emulator'
-import { clientContext } from './Context'
+import { clientContext, playerContext } from './Context'
 import RaceIcon from './RaceIcon'
 import { tr } from './tr'
 import PresentCardInfo from './PresentCardInfo'
@@ -33,12 +33,31 @@ function calcColor(color?: 'normal' | 'amber' | 'gold') {
 
 function PresentCard(props: Props) {
   const client = useContext(clientContext)
+  const player = useContext(playerContext)
   const [showInfo, setShowInfo] = useState(false)
   const color = calcColor(props.item.card?.color)
+  const selected =
+    player.selected.area === 'present' && player.selected.place === props.pos
   return (
     <CardView
+      className={selected ? 'Selected' : 'NotSelected'}
       style={{
         backgroundColor: color ? PresetColor[color] : '',
+      }}
+      onClick={() => {
+        if (props.item.card) {
+          client.autoPost({
+            msg: '$select',
+            area: 'present',
+            place: props.pos,
+          })
+        } else {
+          client.autoPost({
+            msg: '$select',
+            area: 'none',
+            place: -1,
+          })
+        }
       }}
     >
       <div className="LargeCard flex-column justify-around">

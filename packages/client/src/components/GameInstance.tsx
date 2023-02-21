@@ -5,8 +5,9 @@ import StoreSection from './StoreSection'
 import { clientContext, gameContext, playerContext } from './Context'
 import GlobalAction from './GlobalAction'
 import DiscoverSection from './DiscoverSection'
+import { PropsWithChildren } from 'react'
 
-function GameInstance() {
+function GameInstance(props: PropsWithChildren<{}>) {
   const player =
     useContext(gameContext).player[useContext(clientContext).pos] ?? null
   if (player) {
@@ -24,6 +25,7 @@ function GameInstance() {
               <div className="flex-grow"></div>
               <GlobalAction></GlobalAction>
             </div>
+            {props.children}
           </div>
           <PresentSection></PresentSection>
         </div>

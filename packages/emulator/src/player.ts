@@ -893,7 +893,7 @@ export class PlayerInstance {
       data?: unknown
     }
   ) {
-    if (!item) {
+    if (!item || item.length === 0) {
       return -1
     }
     const id = this.persisAttrib.get('discover-counter')

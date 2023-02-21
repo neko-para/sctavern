@@ -175,16 +175,18 @@ const showRole = ref(false)
             :key="`GA-${i}`"
             :disabled="!a.enable"
             @click="client.post(a.msg)"
-            :color="
-              a.msg.msg === '$ability' && pl?.role.enhance
-                ? 'red'
-                : a.msg.msg === '$refresh' && a.special
-                ? 'green'
-                : ''
-            "
+            :color="a.msg.msg === '$refresh' && a.special ? 'green' : ''"
           >
             {{ tr[a.action] }}
           </auto-button>
+          <auto-button
+            v-if="pl?.abilityAction"
+            class="ml-2"
+            variant="elevated"
+            @click="pl && client.post(pl.abilityAction.msg)"
+            :color="pl?.role.enhance ? 'red' : ''"
+            >信息</auto-button
+          >
           <auto-button
             v-if="pl?.role.record && pl.role.record.length > 0"
             class="ml-2"

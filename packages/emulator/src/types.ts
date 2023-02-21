@@ -25,9 +25,11 @@ interface Action {
 }
 
 export interface GlobalAction extends Action {
-  action: 'upgrade' | 'refresh' | 'lock' | 'unlock' | 'finish' | 'ability'
+  action: 'upgrade' | 'refresh' | 'lock' | 'unlock' | 'finish'
   special?: boolean
 }
+
+export interface AbilityAction extends Action {}
 
 export interface StoreAction extends Action {
   action: 'enter' | 'combine' | 'stage'
@@ -215,6 +217,7 @@ export interface PlayerState {
   }
 
   action: GlobalAction[]
+  abilityAction: AbilityAction
   store: (StoreItemState | null)[]
   hand: (HandItemState | null)[]
   present: PresentItemState[]

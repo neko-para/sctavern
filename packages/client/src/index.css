@@ -42,3 +42,12 @@ span.Label {
 .InfoCard {
   min-height: 25vh;
 }
+
+.Selected {
+  border: 1px solid black;
+  padding: 1px;
+}
+
+.NotSelected {
+  padding: 2px;
+}

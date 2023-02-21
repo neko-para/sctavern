@@ -1,10 +1,18 @@
 import { type GameState, Wrapper, Client } from '@sctavern/emulator'
 import GameWrapper from '@/components/GameWrapper'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import Control from '@/components/ControlPanel/Control'
+import Cheat from '@/components/ControlPanel/Cheat'
+import GameInstance from '@/components/GameInstance'
 
-function App() {
+export interface Props {
+  instance: typeof GameInstance
+}
+
+function LocalGame(props: Props) {
   const [searchParams, setSearchParams] = useSearchParams()
   const cfgJson = searchParams.get('config')
+  const navigate = useNavigate()
 
   const wrapper = useRef(new Wrapper())
   const client = useRef(new Client(0, wrapper.current))
@@ -23,7 +31,31 @@ function App() {
       )
     }
   }, [])
-  return <GameWrapper state={state} client={client.current}></GameWrapper>
+  return (
+    <GameWrapper
+      state={state}
+      client={client.current}
+      instance={props.instance}
+    >
+      <Box
+        component={CardView}
+        alignSelf="start"
+        display="grid"
+        gridTemplateColumns="repeat(2, 1fr)"
+      >
+        <Button
+          onClick={() => {
+            navigate('/local/config')
+          }}
+        >
+          返回
+        </Button>
+        <div></div>
+        <Control wrapper={wrapper.current}></Control>
+        <Cheat></Cheat>
+      </Box>
+    </GameWrapper>
+  )
 }
 
-export default App
+export default LocalGame
