@@ -5,7 +5,9 @@
   "scripts": {
     "build:data": "cd packages/data && npm run build",
     "build:client": "cd packages/client && npm run build",
-    "dev:client": "cd packages/client && npm run dev"
+    "dev:client": "cd packages/client && npm run dev",
+    "build:clientvue": "cd packages/client-vue && npm run build",
+    "dev:clientvue": "cd packages/client-vue && npm run dev"
   },
   "workspaces": {
     "packages": [

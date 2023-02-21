@@ -1,0 +1,58 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  background-color: wheat;
+}
+
+span {
+  font-size: 20px;
+}
+
+span.Hint {
+  font-size: 16px;
+}
+
+span.Label {
+  font-size: 24px;
+}
+
+.SmallCard {
+  width: 200px;
+  height: 100px;
+}
+
+.LargeCard {
+  width: 250px;
+  height: 400px;
+}
+
+.InfoCard {
+  min-height: 25vh;
+}
+
+.Selected {
+  border: 1px solid black;
+  padding: 1px;
+}
+
+.NotSelected {
+  padding: 2px;
+}
+
+.Special {
+  border: 1px dashed black;
+  padding: 1px;
+}

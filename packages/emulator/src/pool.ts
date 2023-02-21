@@ -17,7 +17,7 @@ export class Pool {
   heap: Partial<Record<CardKey, number>>
   allow: PackKey[]
 
-  constructor(pack: PackKey[], lcg: LCG, poolPack: PackKey[]) {
+  constructor(pack: PackKey[], lcg: LCG, poolPack: PackKey[], pve: boolean) {
     this.$ref$lcg = lcg
     this.heap = {}
     this.allow = poolPack
@@ -25,7 +25,7 @@ export class Pool {
     pack.forEach(p => {
       PackData[p].forEach(c => {
         const card = CardData[c]
-        if (p === '特典') {
+        if (p === '特典' && !pve) {
           if (this.$ref$lcg.float() <= 0.15) {
             this.heap[c] = 1
           }

@@ -2,7 +2,11 @@ import { GameInstance } from './game'
 import { Server } from './server'
 import type { GameConfig } from './types'
 import defaultManager from './serialize'
-import { AllUnit, PresetPoolPack, PvpPresetActivePack } from '@sctavern/data'
+import {
+  PresetPoolPack,
+  PvpPresetActivePack,
+  PvpPresetActiveUnit,
+} from '@sctavern/data'
 
 export interface PortableSave {
   old: string[]
@@ -34,7 +38,7 @@ export class Wrapper {
         Pve: false,
         PoolPack: PresetPoolPack,
         ActivePack: PvpPresetActivePack,
-        ActiveUnit: AllUnit.map(x => x),
+        ActiveUnit: PvpPresetActiveUnit,
       },
       this.server
     )
@@ -70,7 +74,8 @@ export class Wrapper {
   }
 
   load(save: PortableSave) {
-    this.save = save
+    // this.save = save
+    this.save = JSON.parse(JSON.stringify(save))
     this.loadActive()
   }
 

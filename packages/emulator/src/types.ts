@@ -25,9 +25,11 @@ interface Action {
 }
 
 export interface GlobalAction extends Action {
-  action: 'upgrade' | 'refresh' | 'lock' | 'unlock' | 'finish' | 'ability'
+  action: 'upgrade' | 'refresh' | 'lock' | 'unlock' | 'finish'
   special?: boolean
 }
+
+export interface AbilityAction extends Action {}
 
 export interface StoreAction extends Action {
   action: 'enter' | 'combine' | 'stage'
@@ -147,72 +149,81 @@ export interface GameState {
 
   round: number
 
-  player: ({
-    config: PlayerConfig
+  player: (PlayerState | null)[]
+}
 
-    life: number
+export interface HandItemState {
+  card: CardKey
+  actions: HandAction[]
+}
+
+export interface StoreItemState {
+  card: CardKey
+  special: boolean
+  actions: StoreAction[]
+}
+
+export interface PresentItemState {
+  card: {
+    config: CardConfig
+
+    name: string
+    race: Race
     level: number
-    upgrade_cost: number
+    color: 'normal' | 'amber' | 'gold'
+    belong: CardBelong
 
-    status: PlayerStatus
+    units: UnitKey[]
+    upgrades: UpgradeKey[]
+    descs: string[]
+    notes: string[]
 
-    discover: null | DiscoverContext
+    value: number
+  } | null
+  actions: PresentAction[]
+}
 
-    mineral: number
-    mineral_max: number
-    gas: number
-    gas_max: number
+export interface PlayerState {
+  config: PlayerConfig
 
-    selected: {
-      area: GameArea
-      place: number
-    }
-    locked: boolean
+  life: number
+  level: number
+  upgrade_cost: number
 
-    role: {
-      name: RoleKey
-      ability: string
-      desc: string
-      enable: boolean
+  status: PlayerStatus
 
-      progress: {
-        cur: number
-        max: number
-      } | null
-      enhance: boolean
-      record: string[]
-    }
+  discover: null | DiscoverContext
 
-    action: GlobalAction[]
-    store: ({
-      card: CardKey
-      special: boolean
-      actions: StoreAction[]
-    } | null)[]
-    hand: ({
-      card: CardKey
-      actions: HandAction[]
-    } | null)[]
-    present: {
-      card: {
-        config: CardConfig
+  mineral: number
+  mineral_max: number
+  gas: number
+  gas_max: number
 
-        name: string
-        race: Race
-        level: number
-        color: 'normal' | 'amber' | 'gold'
-        belong: CardBelong
+  selected: {
+    area: GameArea
+    place: number
+  }
+  locked: boolean
 
-        units: UnitKey[]
-        upgrades: UpgradeKey[]
-        descs: string[]
-        notes: string[]
+  role: {
+    name: RoleKey
+    ability: string
+    desc: string
+    enable: boolean
 
-        value: number
-      } | null
-      actions: PresentAction[]
-    }[]
-  } | null)[]
+    progress: {
+      cur: number
+      max: number
+    } | null
+    enhance: boolean
+    record: string[]
+  }
+
+  action: GlobalAction[]
+  abilityAction: AbilityAction
+  store: (StoreItemState | null)[]
+  hand: (HandItemState | null)[]
+  present: PresentItemState[]
 }
 
 export interface Descriptor {
