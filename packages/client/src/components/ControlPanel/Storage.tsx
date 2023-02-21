@@ -53,8 +53,44 @@ function Storage(props: Props) {
     doLoad()
   }, [])
 
+  const [showImport, setShowImport] = useState(false)
+  const [files, setFiles] = useState<FileList | null>(null)
+  const fileEl = useRef<HTMLInputElement | null>(null)
+
   return (
     <Fragment>
+      <Dialog
+        open={showImport}
+        onClose={() => {
+          setShowImport(false)
+        }}
+      >
+        <DialogContent>
+          <input
+            ref={fileEl}
+            type="file"
+            accept=".SCTReplay"
+            onChange={() => {
+              setFiles(fileEl.current?.files ?? null)
+            }}
+          ></input>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            disabled={!files || files.length === 0}
+            onClick={() => {
+              if (files && files.length > 0) {
+                Upload(files[0]).then(() => {
+                  setShowImport(false)
+                })
+              }
+            }}
+          >
+            导入
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <Button
         onClick={() => {
           doSave(props.wrapper.save)
@@ -90,6 +126,13 @@ function Storage(props: Props) {
         }}
       >
         导出
+      </Button>
+      <Button
+        onClick={() => {
+          setShowImport(true)
+        }}
+      >
+        导入
       </Button>
     </Fragment>
   )
