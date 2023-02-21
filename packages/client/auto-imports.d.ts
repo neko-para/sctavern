@@ -27,6 +27,8 @@ declare global {
   const Select: typeof import('@mui/material')['Select']
   const TextField: typeof import('@mui/material')['TextField']
   const Typography: typeof import('@mui/material')['Typography']
+  const produce: typeof import('immer')['produce']
+  const useCallback: typeof import('react')['useCallback']
   const useContext: typeof import('react')['useContext']
   const useEffect: typeof import('react')['useEffect']
   const useMemo: typeof import('react')['useMemo']

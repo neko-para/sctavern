@@ -3,6 +3,7 @@ import GameWrapper from '@/components/GameWrapper'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Control from '@/components/ControlPanel/Control'
 import Cheat from '@/components/ControlPanel/Cheat'
+import Storage from '@/components/ControlPanel/Storage'
 import GameInstance from '@/components/GameInstance'
 
 export interface Props {
@@ -19,7 +20,10 @@ function LocalGame(props: Props) {
   const [state, setState] = useState<GameState>(wrapper.current.game.getState())
   useEffect(() => {
     console.log('Register updater')
-    wrapper.current.server.notify.push(setState)
+    const func = (state: GameState) => {
+      setState(state)
+    }
+    wrapper.current.server.notify.push(func)
     if (cfgJson) {
       wrapper.current.init(JSON.parse(cfgJson))
     }
@@ -27,7 +31,7 @@ function LocalGame(props: Props) {
     return () => {
       console.log('Clean updater')
       wrapper.current.server.notify = wrapper.current.server.notify.filter(
-        f => f !== setState
+        f => f !== func
       )
     }
   }, [])
@@ -53,6 +57,7 @@ function LocalGame(props: Props) {
         <div></div>
         <Control wrapper={wrapper.current}></Control>
         <Cheat></Cheat>
+        <Storage wrapper={wrapper.current}></Storage>
       </Box>
     </GameWrapper>
   )

@@ -74,7 +74,8 @@ export class Wrapper {
   }
 
   load(save: PortableSave) {
-    this.save = save
+    // this.save = save
+    this.save = JSON.parse(JSON.stringify(save))
     this.loadActive()
   }
 
