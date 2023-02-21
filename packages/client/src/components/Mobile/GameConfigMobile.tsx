@@ -10,7 +10,7 @@ import {
   RoleData,
   RoleKey,
 } from '@sctavern/data'
-import { type GameConfig as GameConfigMobile, LCG } from '@sctavern/emulator'
+import { type GameConfig, LCG } from '@sctavern/emulator'
 import { useNavigate } from 'react-router'
 
 const lcg = new LCG(Math.floor(Math.random() * 100000))
@@ -49,7 +49,7 @@ const noPveRoles: RoleKey[] = [
 ]
 
 function GameConfigMobile() {
-  const [config, setConfig] = useState<GameConfigMobile>({
+  const [config, setConfig] = useState<GameConfig>({
     Pack: ['核心'],
     Seed: Math.floor(Math.random() * 1000000),
     Role: ['白板'],
