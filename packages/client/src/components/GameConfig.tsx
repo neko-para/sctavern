@@ -16,8 +16,6 @@ import { useNavigate } from 'react-router'
 const lcg = new LCG(Math.floor(Math.random() * 100000))
 
 const noPveRoles: RoleKey[] = [
-  '雷诺',
-  '阿塔尼斯',
   '科学球',
   '母舰核心',
   '行星要塞',
@@ -76,7 +74,7 @@ function GameConfig() {
         })
       )
     },
-    []
+    [config]
   )
 
   const allRole = AllRole.filter(r => !RoleData[r].ext)
@@ -97,7 +95,7 @@ function GameConfig() {
         })
       )
     },
-    []
+    [config]
   )
 
   return (

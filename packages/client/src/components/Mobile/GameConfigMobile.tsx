@@ -16,8 +16,6 @@ import { useNavigate } from 'react-router'
 const lcg = new LCG(Math.floor(Math.random() * 100000))
 
 const noPveRoles: RoleKey[] = [
-  '雷诺',
-  '阿塔尼斯',
   '科学球',
   '母舰核心',
   '行星要塞',
@@ -64,35 +62,41 @@ function GameConfigMobile() {
 
   const navigate = useNavigate()
 
-  const handlePackChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const packs = event.target.checked
-      ? config.Pack.concat([event.target.name as PackKey])
-      : config.Pack.filter(p => p !== event.target.name)
-    setConfig({
-      ...config,
-      Pack: packs,
-    })
-  }
+  const handlePackChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setConfig(
+        produce(config, draft => {
+          if (event.target.checked) {
+            draft.Pack.push(event.target.name as PackKey)
+          } else {
+            draft.Pack = draft.Pack.filter(p => p !== event.target.name)
+          }
+        })
+      )
+    },
+    [config]
+  )
 
   const allRole = AllRole.filter(r => !RoleData[r].ext)
 
-  const handlePveChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      setConfig({
-        ...config,
-        Pve: true,
-        ActivePack: PvePresetActivePack,
-        ActiveUnit: PvePresetActiveUnit,
-      })
-    } else {
-      setConfig({
-        ...config,
-        Pve: false,
-        ActivePack: PvpPresetActivePack,
-        ActiveUnit: PvpPresetActiveUnit,
-      })
-    }
-  }
+  const handlePveChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setConfig(
+        produce(config, draft => {
+          if (event.target.checked) {
+            draft.Pve = true
+            draft.ActivePack = PvePresetActivePack
+            draft.ActiveUnit = PvePresetActiveUnit
+          } else {
+            draft.Pve = false
+            draft.ActivePack = PvpPresetActivePack
+            draft.ActiveUnit = PvpPresetActiveUnit
+          }
+        })
+      )
+    },
+    [config]
+  )
 
   return (
     <Container>
@@ -106,10 +110,11 @@ function GameConfigMobile() {
                 label="种子"
                 value={config.Seed.toString()}
                 onChange={event => {
-                  setConfig({
-                    ...config,
-                    Seed: Math.floor(Number(event.target.value) ?? 1),
-                  })
+                  setConfig(
+                    produce(config, draft => {
+                      draft.Seed = Math.floor(Number(event.target.value) ?? 1)
+                    })
+                  )
                 }}
               ></TextField>
             </Box>
@@ -117,10 +122,11 @@ function GameConfigMobile() {
               <Button
                 variant="contained"
                 onClick={() => {
-                  setConfig({
-                    ...config,
-                    Seed: Math.floor(Math.random() * 1000000),
-                  })
+                  setConfig(
+                    produce(config, draft => {
+                      draft.Seed = Math.floor(Math.random() * 1000000)
+                    })
+                  )
                 }}
               >
                 随机
@@ -151,13 +157,14 @@ function GameConfigMobile() {
               <Button
                 variant="contained"
                 onClick={() => {
-                  setConfig({
-                    ...config,
-                    Pack: [
-                      '核心',
-                      ...lcg.shuffle(ExtPack.map(x => x)).slice(0, 2),
-                    ],
-                  })
+                  setConfig(
+                    produce(config, draft => {
+                      draft.Pack = [
+                        '核心',
+                        ...lcg.shuffle(ExtPack.map(x => x)).slice(0, 2),
+                      ]
+                    })
+                  )
                 }}
               >
                 随机
@@ -170,10 +177,11 @@ function GameConfigMobile() {
                   label="角色"
                   value={config.Role[0]}
                   onChange={event => {
-                    setConfig({
-                      ...config,
-                      Role: [event.target.value as RoleKey],
-                    })
+                    setConfig(
+                      produce(config, draft => {
+                        draft.Role = [event.target.value as RoleKey]
+                      })
+                    )
                   }}
                 >
                   {allRole.map((role, index) => {
@@ -190,10 +198,11 @@ function GameConfigMobile() {
               <Button
                 variant="contained"
                 onClick={() => {
-                  setConfig({
-                    ...config,
-                    Role: [lcg.one_of(allRole) as RoleKey],
-                  })
+                  setConfig(
+                    produce(config, draft => {
+                      draft.Role = [lcg.one_of(allRole) as RoleKey]
+                    })
+                  )
                 }}
               >
                 随机
