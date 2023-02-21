@@ -51,3 +51,8 @@ span.Label {
 .NotSelected {
   padding: 2px;
 }
+
+.Special {
+  border: 1px dashed black;
+  padding: 1px;
+}

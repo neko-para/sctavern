@@ -8,12 +8,13 @@ export interface Props {
   race?: Race
   title: string
   color?: keyof typeof PresetColor | ''
+  className?: string
 }
 
 function SmallCard(props: PropsWithChildren<Props>) {
   return (
     <CardView
-      className="flex-column SmallCard"
+      className={'flex-column SmallCard ' + props.className ?? ''}
       style={{
         backgroundColor: props.color ? PresetColor[props.color] : '',
       }}

@@ -60,20 +60,30 @@ function Storage(props: Props) {
   return (
     <Fragment>
       <Dialog
+        fullWidth
         open={showImport}
         onClose={() => {
           setShowImport(false)
         }}
       >
         <DialogContent>
-          <input
-            ref={fileEl}
-            type="file"
-            accept=".SCTReplay"
-            onChange={() => {
-              setFiles(fileEl.current?.files ?? null)
-            }}
-          ></input>
+          <Grid container gap={2}>
+            <Button variant="contained" component="label">
+              上传
+              <input
+                hidden
+                ref={fileEl}
+                type="file"
+                accept=".SCTReplay"
+                onChange={() => {
+                  setFiles(fileEl.current?.files ?? null)
+                }}
+              ></input>
+            </Button>
+            {files && files.length > 0 && (
+              <Box alignSelf="center">{files[0].name}</Box>
+            )}
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button

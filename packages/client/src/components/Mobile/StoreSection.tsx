@@ -29,6 +29,9 @@ function StoreSection() {
             onClick={() => {
               setShowCard(item ? index : -1)
             }}
+            style={{
+              textDecoration: item?.special ? 'underline' : '',
+            }}
           >
             {item?.card ?? 'no card'}
           </Button>

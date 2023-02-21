@@ -19,6 +19,7 @@ function StoreCard(props: Props) {
         race={CardData[props.item.card].race}
         title={props.item.card}
         color={props.lock ? 'Cyan' : ''}
+        className={props.item.special ? 'Special' : 'NotSelected'}
       >
         {props.item.actions.map((act, index) => {
           return (
