@@ -52,6 +52,7 @@ export default defineConfig({
       ],
     }),
   ],
+  base: '/sctavern/',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
