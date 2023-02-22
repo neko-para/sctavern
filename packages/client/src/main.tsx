@@ -20,7 +20,6 @@ import * as Color from '@mui/material/colors'
 import GameInstance from './components/GameInstance'
 import GameInstanceMobile from './components/Mobile/GameInstanceMobile'
 import GameConfig from './components/GameConfig'
-import GameConfigMobile from './components/Mobile/GameConfigMobile'
 
 function isMobile() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -49,14 +48,9 @@ const router = createHashRouter([
       return redirect('/local/config')
     },
   },
-  foward('/local/config'),
   {
-    path: '/local/config/pc',
+    path: '/local/config',
     element: <LocalConfig instance={GameConfig}></LocalConfig>,
-  },
-  {
-    path: '/local/config/mobile',
-    element: <LocalConfig instance={GameConfigMobile}></LocalConfig>,
   },
   foward('/local/play'),
   {

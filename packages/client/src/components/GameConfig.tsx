@@ -99,12 +99,11 @@ function GameConfig() {
   )
 
   return (
-    <Container>
+    <Container maxWidth="sm">
       <CardView>
-        <CardContent className="InfoCard">
+        <CardContent className="">
           <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" rowGap={2}>
-            <Box gridColumn="span 1"></Box>
-            <Box gridColumn="span 8">
+            <Box gridColumn="span 10">
               <TextField
                 fullWidth
                 type="number"
@@ -133,10 +132,8 @@ function GameConfig() {
                 随机
               </Button>
             </Box>
-            <Box gridColumn="span 1"></Box>
-            <Box gridColumn="span 1"></Box>
             <Box
-              gridColumn="span 8"
+              gridColumn="span 10"
               display="grid"
               gridTemplateColumns="repeat(2, 1fr)"
             >
@@ -173,9 +170,7 @@ function GameConfig() {
                 随机
               </Button>
             </Box>
-            <Box gridColumn="span 1"></Box>
-            <Box gridColumn="span 1"></Box>
-            <Box gridColumn="span 8">
+            <Box gridColumn="span 10">
               <FormControl fullWidth>
                 <InputLabel>角色</InputLabel>
                 <Select
@@ -213,9 +208,7 @@ function GameConfig() {
                 随机
               </Button>
             </Box>
-            <Box gridColumn="span 1"></Box>
-            <Box gridColumn="span 1"></Box>
-            <Box gridColumn="span 2">
+            <Box gridColumn="span 6">
               <FormControlLabel
                 label="启用PVE"
                 control={
@@ -227,7 +220,7 @@ function GameConfig() {
                 }
               ></FormControlLabel>
             </Box>
-            <Box gridColumn="span 4" alignSelf="center">
+            <Box gridColumn="span 6" alignSelf="center">
               {config.Pve && noPveRoles.includes(config.Role[0])
                 ? '警告: 当前角色的预言尚未完成'
                 : ''}
