@@ -6,7 +6,12 @@ function PresentSection() {
   const client = useContext(clientContext)
   const [showCard, setShowCard] = useState(-1)
   return (
-    <Box display="grid" gridTemplateColumns="1fr 2fr 1fr" gap={1}>
+    <Box
+      display="grid"
+      gridTemplateColumns="1fr 2fr 1fr"
+      gap={1}
+      className="Section"
+    >
       <Dialog
         open={showCard !== -1}
         onClose={() => {
@@ -61,7 +66,7 @@ function PresentSection() {
                 setShowCard(item.card ? index : -1)
               }}
             >
-              {item.card?.name ?? 'no card'}
+              {item.card?.name ?? '(进场)'}
             </Button>
             {player.status === 'normal' &&
             !(

@@ -8,7 +8,7 @@ function HandSection() {
     setShowCard(-1)
   }
   return (
-    <Grid container direction="column" gap={1}>
+    <Grid container direction="column" gap={1} className="Section">
       <Dialog
         open={showCard !== -1}
         onClose={() => {
@@ -25,7 +25,7 @@ function HandSection() {
               setShowCard(item ? index : -1)
             }}
           >
-            {item?.card ?? 'no card'}
+            {item?.card ?? '(暂存)'}
           </Button>
         )
       })}

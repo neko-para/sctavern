@@ -8,7 +8,7 @@ function StoreSection() {
     setShowCard(-1)
   }
   return (
-    <Grid container direction="column" gap={1}>
+    <Grid container direction="column" gap={1} className="Section">
       <Dialog
         open={showCard !== -1}
         onClose={() => {
@@ -33,7 +33,7 @@ function StoreSection() {
               textDecoration: item?.special ? 'underline' : '',
             }}
           >
-            {item?.card ?? 'no card'}
+            {item?.card ?? '(商店)'}
           </Button>
         )
       })}

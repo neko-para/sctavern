@@ -39,7 +39,7 @@ function GameInstanceMobile(props: PropsWithChildren<{}>) {
           <DialogContent>{props.children}</DialogContent>
         </Dialog>
 
-        <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" rowGap={1}>
+        <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={1}>
           <Box gridColumn="span 2">
             <MainInfo></MainInfo>
           </Box>
