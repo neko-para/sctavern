@@ -1,4 +1,11 @@
-import { canElite, elited, AllProphesy, ProphesyData } from '@sctavern/data'
+import {
+  canElite,
+  elited,
+  AllProphesy,
+  ProphesyData,
+  isNormal,
+  UnitData,
+} from '@sctavern/data'
 import type { UpgradeKey, ProphesyKey } from '@sctavern/data'
 import type { ProphesyImpl } from '../types'
 import { randomUpgrades, rep } from '../utils'
@@ -460,7 +467,9 @@ export function CreateProphesyTable() {
                 ci => ci.attrib.get('void') && ci.level >= 1 && ci.level <= 5
               )
               .forEach(ci => {
-                const u = this.$ref$Game.lcg.one_of(ci.units)
+                const u = this.$ref$Game.lcg.one_of(
+                  ci.units.filter(u => isNormal(UnitData[u]))
+                )
                 if (u) {
                   ci.obtain_unit([u])
                 }
