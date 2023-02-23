@@ -1,4 +1,4 @@
-import { RoleData } from '@sctavern/data'
+import { ProphesyKey, RoleData } from '@sctavern/data'
 import type { InnerMsg } from './events'
 import { PlayerInstance } from './player'
 import { Pool } from './pool'
@@ -7,6 +7,7 @@ import { dup, repX } from './utils'
 import DescriptorTable from './descriptor'
 import { Attribute } from './attrib'
 import type { Server } from './server'
+import ProphesyTable from './prophesy'
 
 export class LCG {
   seed: number
@@ -328,13 +329,18 @@ export class GameInstance {
                         name: pr.card.name,
                         race: pr.card.race,
                         level: pr.card.level,
-                        color: pr.card.color,
+                        color:
+                          pr.card.color === 'normal'
+                            ? pr.card.gold
+                              ? 'gold'
+                              : 'normal'
+                            : pr.card.color,
                         belong: pr.card.belong,
                         units: dup(pr.card.units),
                         upgrades: dup(pr.card.upgrades),
                         descs: pr.card.descs.map(
                           key =>
-                            getText(key)[pr.card.isg() ? 1 : 0] ??
+                            getText(key)[pr.card.gold ? 1 : 0] ??
                             `未知描述 ${key}`
                         ),
                         notes: pr.card.descs
@@ -353,6 +359,18 @@ export class GameInstance {
                   actions: acts,
                 }
               }),
+              prophesy: (() => {
+                const res: Partial<Record<ProphesyKey, number | null>> = {}
+                p.prophesy.forEach(key => {
+                  const pd = ProphesyTable[key]
+                  if (pd.count) {
+                    res[key] = pd.count.call(p)
+                  } else {
+                    res[key] = null
+                  }
+                })
+                return res
+              })(),
             }
           : null
       }),

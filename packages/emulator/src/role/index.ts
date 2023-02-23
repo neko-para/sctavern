@@ -736,7 +736,7 @@ export function CreateRoleTable() {
         if (this.attrib.mode !== 2 && ci.level >= 6) {
           return
         }
-        ci.color = 'gold'
+        ci.gold = true
         ci.obtain_upgrade('金光闪闪')
         this.enable = false
         this.attrib.used = 1
@@ -1318,8 +1318,9 @@ export function CreateRoleTable() {
           ci.level = 2
           ci.race = 'N'
           ci.belong = 'primal'
-          if (ci.color === 'amber') {
-            ci.color = 'gold'
+          if (ci.color !== 'normal') {
+            ci.color = 'normal'
+            ci.gold = true
           }
           ci.load_desc(CardData.原始刺蛇, true)
           this.progress.cur -= 6

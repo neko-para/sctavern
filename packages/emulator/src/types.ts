@@ -170,7 +170,7 @@ export interface PresentItemState {
     name: string
     race: Race
     level: number
-    color: 'normal' | 'amber' | 'gold'
+    color: 'normal' | 'amber' | 'red' | 'gold'
     belong: CardBelong
 
     units: UnitKey[]
@@ -216,7 +216,7 @@ export interface PlayerState {
       max: number
     } | null
     enhance: boolean
-    record: string[]
+    record: unknown | null
   }
 
   action: GlobalAction[]
@@ -224,6 +224,8 @@ export interface PlayerState {
   store: (StoreItemState | null)[]
   hand: (HandItemState | null)[]
   present: PresentItemState[]
+
+  prophesy: Record<PropertyKey, number | null>
 }
 
 export interface Descriptor {
@@ -268,4 +270,6 @@ export interface ProphesyImpl {
   init: (this: PlayerInstance) => void
 
   listener: GenericListener<PlayerInstance>
+
+  count?: (this: PlayerInstance) => number
 }

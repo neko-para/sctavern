@@ -35,7 +35,7 @@ function 黑暗容器_获得(
   return {
     listener: {
       'obtain-darkness'() {
-        this.obtain_unit(rep(unit, this.isg() ? gold : normal))
+        this.obtain_unit(rep(unit, this.gold ? gold : normal))
       },
     },
   }
@@ -62,8 +62,8 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'round-end'() {
           this.obtain_unit([
-            ...rep('原始刺蛇', this.isg() ? 2 : 1),
-            ...rep('精华', this.isg() ? 4 : 2),
+            ...rep('原始刺蛇', this.gold ? 2 : 1),
+            ...rep('精华', this.gold ? 4 : 2),
           ])
         },
       },
@@ -71,7 +71,7 @@ export default function (/* config */): Record<string, Descriptor> {
     原始异龙0: {
       listener: {
         'card-entered'({ target }) {
-          target.right()?.obtain_unit(rep('精华', this.isg() ? 2 : 1))
+          target.right()?.obtain_unit(rep('精华', this.gold ? 2 : 1))
         },
       },
     },
@@ -98,7 +98,7 @@ export default function (/* config */): Record<string, Descriptor> {
     虚空大军0: {
       listener: {
         'round-end'() {
-          const n = this.isg() ? 2 : 1
+          const n = this.gold ? 2 : 1
           const cnt = this.$ref$Player.count()
           this.obtain_unit([
             ...rep('歌利亚', cnt.T ? n : 0),
@@ -115,8 +115,8 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'round-end'() {
           this.obtain_unit([
-            ...rep('暴掠龙', this.isg() ? 2 : 1),
-            ...rep('精华', this.isg() ? 4 : 2),
+            ...rep('暴掠龙', this.gold ? 2 : 1),
+            ...rep('精华', this.gold ? 4 : 2),
           ])
         },
       },
@@ -149,7 +149,7 @@ export default function (/* config */): Record<string, Descriptor> {
             .flat()
           this.$ref$Player.$ref$Game.lcg
             .shuffle(choice)
-            .slice(0, this.isg() ? 8 : 5)
+            .slice(0, this.gold ? 8 : 5)
             .forEach(({ card, index }) => {
               card.replace([index], elited)
             })
@@ -162,7 +162,7 @@ export default function (/* config */): Record<string, Descriptor> {
           this.left(this.attrib.get('oldpos'))?.obtain_unit(
             rep(
               '毁灭者',
-              Math.min(this.isg() ? 30 : 10, this.attrib.get('dark'))
+              Math.min(this.gold ? 30 : 10, this.attrib.get('dark'))
             )
           )
         },
@@ -189,7 +189,7 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'round-end'() {
           this.obtain_unit([
-            ...rep('原始雷兽', this.isg() ? 2 : 1),
+            ...rep('原始雷兽', this.gold ? 2 : 1),
             ...rep('精华', this.$ref$Player.all_of('N').length),
           ])
         },
@@ -207,7 +207,7 @@ export default function (/* config */): Record<string, Descriptor> {
         'round-end'() {
           const cnt = this.$ref$Player.count()
           if (cnt.T && cnt.Z && cnt.P && cnt.N) {
-            this.obtain_unit(rep('混合体毁灭者', this.isg() ? 4 : 2))
+            this.obtain_unit(rep('混合体毁灭者', this.gold ? 4 : 2))
           }
         },
       },
@@ -255,7 +255,7 @@ export default function (/* config */): Record<string, Descriptor> {
           this.obtain_unit(
             rep(
               '天罚行者',
-              (this.isg() ? 2 : 1) *
+              (this.gold ? 2 : 1) *
                 Math.min(2, Math.floor(this.attrib.get('dark') / 10))
             )
           )
@@ -266,7 +266,7 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'card-selled'({ target }) {
           if (target.find('精华').length >= 3) {
-            this.obtain_unit(rep('德哈卡分身', this.isg() ? 4 : 2))
+            this.obtain_unit(rep('德哈卡分身', this.gold ? 4 : 2))
           }
         },
       },
@@ -374,20 +374,24 @@ export default function (/* config */): Record<string, Descriptor> {
           const ci = ar[0]
           ci.name = '刀锋女王'
           ci.clear_desc()
-          ci.load_desc(CardData['刀锋女王'])
+          ci.add_desc('刀锋女王0')
+          ci.fix_upgrade()
           ci.replace(ci.find('莎拉·凯瑞甘', 1), '刀锋女王')
           this.$ref$Player.destroy(this)
         },
       },
     },
-    刀锋女王0: NotImplementYet(),
+    刀锋女王0: NotImplementYet([
+      '唯一: 与你战斗的玩家虚空投影加成效果降低30%(最低为0)',
+      '唯一: 与你战斗的玩家虚空投影加成效果降低30%(最低为0)',
+    ]),
     虚空构造体0: {
       config: {
         unique: 'normal',
       },
       listener: {
         'get-extra-void'(m) {
-          m.void += this.isg() ? 40 : 20
+          m.void += this.gold ? 40 : 20
         },
       },
     },
@@ -395,7 +399,7 @@ export default function (/* config */): Record<string, Descriptor> {
     死亡舰队1: {
       listener: {
         'round-end'() {
-          const consume = this.isg() ? 5 : 10
+          const consume = this.gold ? 5 : 10
           if (this.attrib.get('dark') >= consume) {
             this.gain_darkness(-consume)
             this.obtain_unit(['塔达林母舰'])
@@ -409,7 +413,7 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'round-end'() {
           if (this.$ref$Player.mineral >= 1) {
-            this.obtain_unit(rep('百夫长', this.isg() ? 4 : 2))
+            this.obtain_unit(rep('百夫长', this.gold ? 4 : 2))
           }
         },
       },
@@ -418,7 +422,7 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         seize({ target }) {
           if (this === target) {
-            this.obtain_unit(rep('天霸', this.isg() ? 2 : 1))
+            this.obtain_unit(rep('天霸', this.gold ? 2 : 1))
           }
         },
       },
@@ -470,7 +474,7 @@ export default function (/* config */): Record<string, Descriptor> {
     深渊行者1: {
       listener: {
         seize() {
-          this.obtain_unit(rep('先锋', this.isg() ? 2 : 1))
+          this.obtain_unit(rep('先锋', this.gold ? 2 : 1))
         },
       },
     },
@@ -497,7 +501,7 @@ export default function (/* config */): Record<string, Descriptor> {
         'round-end'() {
           const cnt = this.$ref$Player.count()
           if (cnt.T && cnt.Z && cnt.P && cnt.N) {
-            this.obtain_unit(rep('混合体巨兽', this.isg() ? 2 : 1))
+            this.obtain_unit(rep('混合体巨兽', this.gold ? 2 : 1))
           }
         },
       },
@@ -519,7 +523,7 @@ export default function (/* config */): Record<string, Descriptor> {
               .all()
               .filter(c => c.attrib.get('void'))
               .forEach(ci => {
-                ci.obtain_unit(rep('混合体毁灭者', this.isg() ? 3 : 2))
+                ci.obtain_unit(rep('混合体毁灭者', this.gold ? 3 : 2))
               })
           }
         },
@@ -558,7 +562,7 @@ export default function (/* config */): Record<string, Descriptor> {
                       .filter(u => isNormal(u) && !u.tag.heroic)
                       .map(u => u.name)
                   )
-                  .slice(0, this.isg() ? 2 : 1)
+                  .slice(0, this.gold ? 2 : 1)
               )
             })
         },
@@ -575,7 +579,7 @@ export default function (/* config */): Record<string, Descriptor> {
               .shuffle([
                 ...new Set(this.units.filter(u => !UnitData[u].tag.heroic)),
               ])
-              .slice(0, this.isg() ? 2 : 1)
+              .slice(0, this.gold ? 2 : 1)
           )
         },
       },

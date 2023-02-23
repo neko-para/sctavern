@@ -8,7 +8,7 @@ import {
 import type { UnitKey, Race } from '@sctavern/data'
 import type { Descriptor } from '../types'
 import { NotImplementYet, rep } from '../utils'
-import { 任务, 反应堆 } from './terran'
+import { 任务 } from './terran'
 
 function 自动机炮转换(
   eachn: number,
@@ -20,10 +20,10 @@ function 自动机炮转换(
   return {
     listener: {
       'round-end'() {
-        const k = this.isg() ? eachg : eachn
+        const k = this.gold ? eachg : eachn
         const n = Math.floor(this.find('自动机炮').length / k)
         this.filter('自动机炮', n * k)
-        this.obtain_unit(rep(into, k * (this.isg() ? countg : countn)))
+        this.obtain_unit(rep(into, k * (this.gold ? countg : countn)))
       },
     },
   }
@@ -53,6 +53,7 @@ export default function (/* config */): Record<string, Descriptor> {
           })
         },
       },
+      text: ['每回合开始时, 获得1晶体矿', '每回合开始时, 获得1晶体矿'],
     },
     黄金矿工1: {
       listener: {
@@ -62,6 +63,7 @@ export default function (/* config */): Record<string, Descriptor> {
           })
         },
       },
+      text: ['出售时, 获得3晶体矿', '出售时, 获得3晶体矿'],
     },
     原始尖塔: {
       listener: {
@@ -159,7 +161,7 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'post-sell'() {
           this.$ref$Player.obtain_resource({
-            mineral: this.isg() ? 2 : 1,
+            mineral: this.gold ? 2 : 1,
           })
         },
       },
@@ -176,7 +178,7 @@ export default function (/* config */): Record<string, Descriptor> {
     岗哨机枪1: {
       listener: {
         'card-entered'() {
-          this.obtain_unit(rep('岗哨机枪', this.isg() ? 3 : 2))
+          this.obtain_unit(rep('岗哨机枪', this.gold ? 3 : 2))
         },
       },
     },
@@ -202,7 +204,7 @@ export default function (/* config */): Record<string, Descriptor> {
     星门0: {
       listener: {
         'round-end'() {
-          this.obtain_unit(rep('零件', this.isg() ? 2 : 1))
+          this.obtain_unit(rep('零件', this.gold ? 2 : 1))
           this.replace(this.find('自动机炮'), '零件')
         },
       },
@@ -211,7 +213,7 @@ export default function (/* config */): Record<string, Descriptor> {
     自动机炮0: {
       listener: {
         'round-end'() {
-          this.obtain_unit(rep('自动机炮', this.isg() ? 2 : 1))
+          this.obtain_unit(rep('自动机炮', this.gold ? 2 : 1))
         },
       },
     },
@@ -231,7 +233,7 @@ export default function (/* config */): Record<string, Descriptor> {
     作战中心1: 任务(
       'card-entered',
       2,
-      ci => ci.obtain_unit(rep('零件', ci.isg() ? 2 : 1)),
+      ci => ci.obtain_unit(rep('零件', ci.gold ? 2 : 1)),
       () => true,
       'roundend'
     ),
@@ -239,7 +241,7 @@ export default function (/* config */): Record<string, Descriptor> {
     导弹基地1: {
       listener: {
         'task-done'() {
-          this.obtain_unit(rep('风暴对地导弹塔', this.isg() ? 3 : 2))
+          this.obtain_unit(rep('风暴对地导弹塔', this.gold ? 3 : 2))
         },
       },
     },
@@ -247,7 +249,7 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'round-end'() {
           this.around().forEach(ci => {
-            this.obtain_unit(ci.filter('自动机炮', this.isg() ? 2 : 1))
+            this.obtain_unit(ci.filter('自动机炮', this.gold ? 2 : 1))
           })
           this.replace(this.find('自动机炮'), '零件')
         },
@@ -267,12 +269,12 @@ export default function (/* config */): Record<string, Descriptor> {
                 card,
               }))
           )
-          this.obtain_unit(rep('热辣贝蒂', this.isg() ? 2 : 1))
+          this.obtain_unit(rep('热辣贝蒂', this.gold ? 2 : 1))
         },
       },
     },
-    不法之徒_反应堆_0: 反应堆('陆战队员'),
-    不法之徒_反应堆_1: 反应堆('陆战队员(精英)'),
+    不法之徒_反应堆_0: { refer: '反应堆:陆战队员' },
+    不法之徒_反应堆_1: { refer: '反应堆:陆战队员(精英)' },
     不法之徒0: 任务(
       'store-refreshed',
       4,
@@ -408,7 +410,7 @@ export default function (/* config */): Record<string, Descriptor> {
     星灵科技: {
       listener: {
         'round-end'() {
-          this.$ref$Player.warp(rep('陆战队员', this.isg() ? 2 : 1))
+          this.$ref$Player.warp(rep('陆战队员', this.gold ? 2 : 1))
         },
       },
       text: ['每回合结束时, 折跃1陆战队员', '每回合结束时, 折跃2陆战队员'],

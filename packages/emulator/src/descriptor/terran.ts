@@ -58,33 +58,6 @@ export function 任务<T extends InnerMsg['msg']>(
   }
 }
 
-export function 快速生产(
-  unit: UnitKey,
-  normal: number,
-  gold: number
-): Descriptor {
-  return {
-    listener: {
-      'fast-produce'() {
-        this.obtain_unit(rep(unit, this.isg() ? gold : normal))
-      },
-    },
-  }
-}
-
-export function 反应堆(unit: UnitKey): Descriptor {
-  return {
-    listener: {
-      'round-end'() {
-        if (this.infr() === '反应堆') {
-          this.obtain_unit(rep(unit, this.isy() ? 2 : 1))
-        }
-      },
-    },
-    text: [`反应堆生产${unit}`, `反应堆生产${unit}`],
-  }
-}
-
 export function 科挂X(
   count: number,
   reward: (card: CardInstance) => void
@@ -111,17 +84,6 @@ export function 科挂X(
   }
 }
 
-export function 科挂(
-  count: number,
-  unit: UnitKey,
-  normal: number,
-  gold: number
-): Descriptor {
-  return 科挂X(count, ci => {
-    ci.obtain_unit(rep(unit, ci.isg() ? gold : normal))
-  })
-}
-
 export function 进场后切换两侧挂件(): Descriptor {
   return {
     listener: {
@@ -140,7 +102,7 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'round-end'(m, [unit]) {
           if (this.infr() === '反应堆') {
-            this.obtain_unit(rep(unit as UnitKey, this.isy() ? 2 : 1))
+            this.obtain_unit(rep(unit as UnitKey, this.gold ? 2 : 1))
           }
         },
       },
@@ -150,7 +112,7 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'fast-produce'(m, [unit, norm, gold]) {
           this.obtain_unit(
-            rep(unit as UnitKey, this.isg() ? Number(gold) : Number(norm))
+            rep(unit as UnitKey, this.gold ? Number(gold) : Number(norm))
           )
         },
       },
@@ -175,7 +137,7 @@ export default function (/* config */): Record<string, Descriptor> {
               .reduce((a, b) => a + b, 0)
           ) {
             this.obtain_unit(
-              rep(unit as UnitKey, this.isy() ? Number(gold) : Number(norm))
+              rep(unit as UnitKey, this.gold ? Number(gold) : Number(norm))
             )
           }
         },
@@ -188,7 +150,7 @@ export default function (/* config */): Record<string, Descriptor> {
 
     死神火车0: 任务('card-entered', 2, card =>
       card.$ref$Player.obtain_resource({
-        mineral: card.isg() ? 2 : 1,
+        mineral: card.gold ? 2 : 1,
       })
     ),
     好兄弟0: { refer: '快速生产:陆战队员:4:6' },
@@ -224,7 +186,7 @@ export default function (/* config */): Record<string, Descriptor> {
     空投地雷0: {
       listener: {
         'card-entered'() {
-          this.obtain_unit(rep('寡妇雷', this.isg() ? 2 : 1))
+          this.obtain_unit(rep('寡妇雷', this.gold ? 2 : 1))
         },
       },
     },
@@ -244,7 +206,7 @@ export default function (/* config */): Record<string, Descriptor> {
     科考小队1: 任务(
       'store-refreshed',
       2,
-      card => card.obtain_unit(rep('歌利亚', card.isg() ? 2 : 1)),
+      card => card.obtain_unit(rep('歌利亚', card.gold ? 2 : 1)),
       () => true,
       'roundend'
     ),
@@ -254,7 +216,7 @@ export default function (/* config */): Record<string, Descriptor> {
     空军学院1: {
       listener: {
         'task-done'() {
-          this.obtain_unit(rep('解放者', this.isg() ? 2 : 1))
+          this.obtain_unit(rep('解放者', this.gold ? 2 : 1))
         },
       },
     },
@@ -265,7 +227,7 @@ export default function (/* config */): Record<string, Descriptor> {
         'round-end'() {
           this.$ref$Player.all_of('T').forEach(c => {
             if (c.infr() === '反应堆') {
-              c.obtain_unit(rep('陆战队员', this.isg() ? 4 : 2))
+              c.obtain_unit(rep('陆战队员', this.gold ? 4 : 2))
             }
           })
         },
@@ -275,9 +237,9 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'fast-produce'() {
           this.around().forEach(ci => {
-            ci.replace(ci.find('歌利亚', this.isg() ? 2 : 1), elited)
+            ci.replace(ci.find('歌利亚', this.gold ? 2 : 1), elited)
             ci.replace(
-              ci.find(['维京战机', '维京战机<机甲>'], this.isg() ? 2 : 1),
+              ci.find(['维京战机', '维京战机<机甲>'], this.gold ? 2 : 1),
               elited
             )
           })
@@ -298,7 +260,7 @@ export default function (/* config */): Record<string, Descriptor> {
     护航中队1: {
       listener: {
         'card-entered'() {
-          this.obtain_unit(rep('怨灵战机', this.isg() ? 2 : 1))
+          this.obtain_unit(rep('怨灵战机', this.gold ? 2 : 1))
         },
       },
     },
@@ -307,8 +269,8 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'round-end'() {
           this.$ref$Player.all_of('T').forEach(ci => {
-            ci.replace(ci.find('陆战队员', this.isg() ? 5 : 3), elited)
-            ci.replace(ci.find('劫掠者', this.isg() ? 5 : 3), elited)
+            ci.replace(ci.find('陆战队员', this.gold ? 5 : 3), elited)
+            ci.replace(ci.find('劫掠者', this.gold ? 5 : 3), elited)
           })
         },
       },
@@ -316,7 +278,7 @@ export default function (/* config */): Record<string, Descriptor> {
     泰凯斯2: {
       listener: {
         'round-end'() {
-          this.obtain_unit(rep('医疗运输机', this.isg() ? 2 : 1))
+          this.obtain_unit(rep('医疗运输机', this.gold ? 2 : 1))
         },
       },
     },
@@ -361,14 +323,14 @@ export default function (/* config */): Record<string, Descriptor> {
     钢铁洪流0: { refer: '快速生产:雷神:1:2' },
     钢铁洪流1: 科挂X(5, ci => {
       ci.$ref$Player.all_of('T').forEach(c => {
-        c.replace(c.find('攻城坦克', ci.isg() ? 2 : 1), elited)
-        c.replace(c.find('战狼', ci.isg() ? 2 : 1), elited)
+        c.replace(c.find('攻城坦克', ci.gold ? 2 : 1), elited)
+        c.replace(c.find('战狼', ci.gold ? 2 : 1), elited)
       })
     }),
     游骑兵0: {
       listener: {
         'infr-changed'({ target }) {
-          target.obtain_unit(rep('雷诺(狙击手)', this.isg() ? 2 : 1))
+          target.obtain_unit(rep('雷诺(狙击手)', this.gold ? 2 : 1))
         },
       },
     },
@@ -377,10 +339,7 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'round-end'() {
           this.$ref$Player.all().forEach(ci => {
-            ci.replace(
-              ci.find('陆战队员(精英)', this.isg() ? 2 : 1),
-              '帝盾卫兵'
-            )
+            ci.replace(ci.find('陆战队员(精英)', this.gold ? 2 : 1), '帝盾卫兵')
           })
         },
       },
@@ -394,7 +353,7 @@ export default function (/* config */): Record<string, Descriptor> {
           if (ci.race !== 'T') {
             return
           }
-          if (this.$ref$Player.attrib.get('沃菲尔德') >= (this.isg() ? 2 : 1)) {
+          if (this.$ref$Player.attrib.get('沃菲尔德') >= (this.gold ? 2 : 1)) {
             return
           }
           this.$ref$Player.attrib.alter('沃菲尔德', 1)
@@ -404,18 +363,14 @@ export default function (/* config */): Record<string, Descriptor> {
       note(ci, active) {
         const v = ci.$ref$Player.attrib.get('沃菲尔德')
         return [
-          active
-            ? v < (ci.isg() ? 2 : 1)
-              ? `启用 ${v}`
-              : `停用 ${v}`
-            : '禁用',
+          active ? (v < (ci.gold ? 2 : 1) ? `启用 ${v}` : `停用 ${v}`) : '禁用',
         ]
       },
     },
     帝国舰队0: 任务(
       'card-selled',
       3,
-      ci => ci.obtain_unit(rep('战列巡航舰', ci.isg() ? 2 : 1)),
+      ci => ci.obtain_unit(rep('战列巡航舰', ci.gold ? 2 : 1)),
       () => true,
       'instant'
     ),
@@ -450,7 +405,7 @@ export default function (/* config */): Record<string, Descriptor> {
     艾尔游骑兵0: {
       listener: {
         'fast-produce'() {
-          this.left()?.obtain_unit(rep('水晶塔', this.isg() ? 2 : 1))
+          this.left()?.obtain_unit(rep('水晶塔', this.gold ? 2 : 1))
         },
       },
     },
@@ -460,7 +415,7 @@ export default function (/* config */): Record<string, Descriptor> {
           this.obtain_unit(
             rep(
               '陆战队员',
-              (this.isg() ? 8 : 4) *
+              (this.gold ? 8 : 4) *
                 this.around()
                   .map(ci => {
                     return ci.filter(u => u === '水晶塔', 1).length
@@ -476,7 +431,7 @@ export default function (/* config */): Record<string, Descriptor> {
     帝国敢死队2: {
       listener: {
         'task-done'() {
-          this.obtain_unit(rep('诺娃', this.isg() ? 2 : 1))
+          this.obtain_unit(rep('诺娃', this.gold ? 2 : 1))
         },
       },
     },
@@ -485,7 +440,7 @@ export default function (/* config */): Record<string, Descriptor> {
         'round-end'() {
           this.$ref$Player.all_of('T').forEach(c => {
             if (c.infr() === '反应堆') {
-              c.obtain_unit(rep('火蝠', this.isg() ? 2 : 1))
+              c.obtain_unit(rep('火蝠', this.gold ? 2 : 1))
             }
           })
         },
@@ -495,7 +450,7 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'fast-produce'() {
           this.$ref$Player.all_of('T').forEach(ci => {
-            ci.replace(ci.find('火蝠', this.isg() ? 3 : 2), elited)
+            ci.replace(ci.find('火蝠', this.gold ? 3 : 2), elited)
           })
         },
       },
@@ -517,7 +472,7 @@ export default function (/* config */): Record<string, Descriptor> {
           this.obtain_unit(
             this.$ref$Player.$ref$Game.lcg
               .shuffle(units)
-              .slice(0, this.isg() ? 2 : 1)
+              .slice(0, this.gold ? 2 : 1)
           )
         },
       },
@@ -533,7 +488,7 @@ export default function (/* config */): Record<string, Descriptor> {
                 this.$ref$Player
                   .all()
                   .map(c => c.find('反应堆').length)
-                  .reduce((a, b) => a + b, 0) / (this.isg() ? 2 : 3)
+                  .reduce((a, b) => a + b, 0) / (this.gold ? 2 : 3)
               )
             )
           )

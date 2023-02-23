@@ -33,8 +33,12 @@ export function notNull<T>(v: T | null): v is T {
   return !!v
 }
 
-export function NotImplementYet(): Descriptor {
-  return {}
+export function NotImplementYet(text?: [string, string]): Descriptor {
+  return text
+    ? {
+        text,
+      }
+    : {}
 }
 
 export function Serialize(game: GameInstance) {

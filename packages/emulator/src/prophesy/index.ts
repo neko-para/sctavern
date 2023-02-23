@@ -228,7 +228,7 @@ export function CreateProphesyTable() {
       listener: {
         'card-entered'({ target }) {
           if (target.level < 6) {
-            target.color = 'gold'
+            target.gold = true
             target.obtain_upgrade('金光闪闪')
           }
         },
@@ -421,6 +421,9 @@ export function CreateProphesyTable() {
           }
         },
       },
+      count() {
+        return this.persisAttrib.get('研发计划')
+      },
     },
     基因改造: {
       listener: {
@@ -441,8 +444,8 @@ export function CreateProphesyTable() {
         'round-start'() {
           if (this.attrib.get('净化数据网')) {
             const ci = this.present[6]?.card
-            if (ci && ci.color !== 'gold') {
-              ci.color = 'gold'
+            if (ci) {
+              ci.gold = true
             }
           }
         },
@@ -476,6 +479,9 @@ export function CreateProphesyTable() {
               })
           }
         },
+      },
+      count() {
+        return this.persisAttrib.get('虚空风暴')
       },
     },
     能量预兆: {},
@@ -566,15 +572,31 @@ export function CreateProphesyTable() {
         })
       },
     },
-    相位提速: {},
+    相位提速: {
+      init() {
+        this.attrib.set('相位提速', 0)
+      },
+      listener: {
+        'round-enter'() {
+          this.attrib.set('相位提速', 0)
+        },
+        'card-selled'({ target }) {
+          this.attrib.set(
+            '相位提速',
+            Math.min(100, this.attrib.get('相位提速') + target.units.length)
+          )
+        },
+      },
+      count() {
+        return this.attrib.get('相位提速')
+      },
+    },
     点石成金: {
       init() {
-        this.all()
-          .filter(ci => ci.color !== 'gold')
-          .forEach(ci => {
-            ci.color = 'gold'
-            ci.obtain_upgrade('金光闪闪')
-          })
+        this.all().forEach(ci => {
+          ci.gold = true
+          ci.obtain_upgrade('金光闪闪')
+        })
       },
     },
   }

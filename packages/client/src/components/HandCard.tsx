@@ -13,7 +13,11 @@ function HandCard(props: Props) {
   const client = useContext(clientContext)
   if (props.item) {
     return (
-      <SmallCard race={CardData[props.item.card].race} title={props.item.card}>
+      <SmallCard
+        race={CardData[props.item.card].race}
+        title={props.item.card}
+        className="NotSelected"
+      >
         {props.item.actions.map((act, index) => {
           return (
             <Button
@@ -31,7 +35,7 @@ function HandCard(props: Props) {
       </SmallCard>
     )
   } else {
-    return <SmallCard title=""></SmallCard>
+    return <SmallCard title="" className="NotSelected"></SmallCard>
   }
 }
 

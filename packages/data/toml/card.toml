@@ -961,29 +961,8 @@ desc = [
 '莎拉·凯瑞甘' = 1
 
 [card.attr]
-amber = true
+nocombine = true
 insert = true
-
-[[card]]
-name = '刀锋女王'
-pinyin = 'dfnw'
-race = 'N'
-level = 6
-pack = '核心衍生'
-belong = 'none'
-type = 'normal'
-desc = [
-	[
-		'唯一: 与你战斗的玩家虚空投影加成效果降低30%(最低为0)',
-		'唯一: 与你战斗的玩家虚空投影加成效果降低30%(最低为0)',
-	],
-]
-
-[card.unit]
-'刀锋女王' = 1
-
-[card.attr]
-amber = true
 
 [[card]]
 name = '虚空构造体'
@@ -1005,29 +984,6 @@ desc = [
 
 [card.attr]
 insert = true
-
-[[card]]
-name = '黄金矿工'
-pinyin = 'hjkg'
-race = 'N'
-level = 0
-pack = '核心衍生'
-belong = 'none'
-type = 'normal'
-desc = [
-	[
-		'每回合开始时, 获得1晶体矿',
-		'每回合开始时, 获得1晶体矿',
-	],
-	[
-		'出售时, 获得3晶体矿',
-		'出售时, 获得3晶体矿',
-	],
-]
-
-[card.unit]
-
-[card.attr]
 
 [[card]]
 name = '折跃援军'
@@ -1649,7 +1605,7 @@ desc = [
 '反应堆' = 1
 
 [card.attr]
-amber = true
+nocombine = true
 
 [[card]]
 name = '实验室安保'
@@ -2762,7 +2718,7 @@ desc = [
 '沃拉尊' = 1
 
 [card.attr]
-amber = true
+nocombine = true
 
 [[card]]
 name = '帝国敢死队'
@@ -2984,7 +2940,7 @@ desc = [
 [card.unit]
 
 [card.attr]
-amber = true
+nocombine = true
 
 [[card]]
 name = '毒气炮塔'
@@ -3413,4 +3369,4 @@ desc = [
 '幽灵' = 2
 
 [card.attr]
-gold = true
+red = true

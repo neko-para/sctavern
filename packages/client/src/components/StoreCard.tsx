@@ -38,7 +38,7 @@ function StoreCard(props: Props) {
       </SmallCard>
     )
   } else {
-    return <SmallCard title=""></SmallCard>
+    return <SmallCard title="" className="NotSelected"></SmallCard>
   }
 }
 

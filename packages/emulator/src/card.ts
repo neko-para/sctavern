@@ -47,7 +47,8 @@ export class CardInstance {
   name: string
   race: Race
   level: number
-  color: 'normal' | 'amber' | 'gold'
+  gold: boolean
+  color: 'normal' | 'amber' | 'red'
   belong: CardBelong
 
   occupy: CardKey[]
@@ -67,7 +68,12 @@ export class CardInstance {
     this.name = card.name
     this.race = card.race
     this.level = card.level
-    this.color = card.attr.amber ? 'amber' : card.attr.gold ? 'gold' : 'normal'
+    this.gold = !!card.attr.gold
+    this.color = card.attr.nocombine
+      ? 'amber'
+      : card.attr.red
+      ? 'red'
+      : 'normal'
     this.belong = card.belong
     if (this.belong === 'virtual') {
       this.attrib.set('void', 1)
@@ -241,9 +247,12 @@ export class CardInstance {
         this.obtain_unit(rep('修理无人机', this.$ref$Player.level + 3))
         break
       case '黄金矿工':
-        this.color = 'gold'
+        this.gold = true
+        this.color = 'normal'
         this.clear_desc()
-        this.load_desc(CardData['黄金矿工'])
+        this.add_desc('黄金矿工0')
+        this.add_desc('黄金矿工1')
+        this.fix_upgrade()
         break
       case '献祭': {
         const vo = (unit: UnitKey) => {
@@ -282,14 +291,6 @@ export class CardInstance {
       msg: 'obtain-upgrade',
       upgrade,
     })
-  }
-
-  isg() {
-    return this.color === 'gold'
-  }
-
-  isy() {
-    return this.color !== 'normal'
   }
 
   infr() {
@@ -405,7 +406,7 @@ export class CardInstance {
     const [desc] = DescriptorTable(d)
     if (desc.config?.init) {
       for (const k in desc.config.init) {
-        this.attrib.alter(k, desc.config.init[k][this.isg() ? 1 : 0])
+        this.attrib.alter(k, desc.config.init[k][this.gold ? 1 : 0])
       }
     }
   }

@@ -27,6 +27,7 @@ function DiscoverCard(props: Props) {
       <SmallCard
         race={props.item.type === 'card' ? props.item.card.race : undefined}
         title={getName(props.item)}
+        className="NotSelected"
       >
         <Button
           variant="text"
@@ -43,7 +44,7 @@ function DiscoverCard(props: Props) {
       </SmallCard>
     )
   } else {
-    return <SmallCard title=""></SmallCard>
+    return <SmallCard title="" className="NotSelected"></SmallCard>
   }
 }
 

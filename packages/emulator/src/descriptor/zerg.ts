@@ -42,7 +42,7 @@ function 孵化(
 ) {
   return 孵化X(
     msg,
-    ci => rep(unit, ci.isg() ? gold : normal),
+    ci => rep(unit, ci.gold ? gold : normal),
     () => true,
     () => void 0,
     id
@@ -88,7 +88,7 @@ export default function (/* config */): Record<string, Descriptor> {
         }
         this.replace(
           units
-            .slice(units.length - (this.isg() ? 2 : 1))
+            .slice(units.length - (this.gold ? 2 : 1))
             .filter(({ unit }) => unit.value < into[0].unit.value)
             .map(({ index }) => index),
           into[0].unit.name
@@ -121,18 +121,18 @@ export default function (/* config */): Record<string, Descriptor> {
     虫群先锋0: {
       listener: {
         'round-end'() {
-          this.obtain_unit(rep('跳虫', this.isg() ? 4 : 2))
+          this.obtain_unit(rep('跳虫', this.gold ? 4 : 2))
         },
       },
     },
     蟑螂小队0: {
       listener: {
         'round-start'() {
-          this.replace(this.find('蟑螂', this.isg() ? 2 : 1), '破坏者')
+          this.replace(this.find('蟑螂', this.gold ? 2 : 1), '破坏者')
         },
       },
     },
-    蟑螂小队1: 注卵('post-sell', ci => rep('蟑螂', ci.isg() ? 4 : 2)),
+    蟑螂小队1: 注卵('post-sell', ci => rep('蟑螂', ci.gold ? 4 : 2)),
     屠猎者0: {
       listener: {
         'round-end'() {
@@ -143,15 +143,15 @@ export default function (/* config */): Record<string, Descriptor> {
     屠猎者1: {
       listener: {
         'tavern-upgraded'() {
-          this.obtain_unit(rep('刺蛇(精英)', this.isg() ? 2 : 1))
+          this.obtain_unit(rep('刺蛇(精英)', this.gold ? 2 : 1))
         },
       },
     },
-    埋地刺蛇0: 注卵('post-sell', ci => rep('刺蛇', ci.isg() ? 6 : 3)),
+    埋地刺蛇0: 注卵('post-sell', ci => rep('刺蛇', ci.gold ? 6 : 3)),
     变异军团0: {
       listener: {
         spawn() {
-          this.obtain_unit(rep('被感染的陆战队员', this.isg() ? 2 : 1))
+          this.obtain_unit(rep('被感染的陆战队员', this.gold ? 2 : 1))
         },
       },
     },
@@ -161,7 +161,7 @@ export default function (/* config */): Record<string, Descriptor> {
         '爆虫',
         Math.floor(
           ci.find(u => ['爆虫', '爆虫(精英)'].includes(u)).length /
-            (ci.isg() ? 15 : 20)
+            (ci.gold ? 15 : 20)
         )
       )
     ),
@@ -179,10 +179,10 @@ export default function (/* config */): Record<string, Descriptor> {
       },
     },
     飞龙骑脸0: 孵化('post-sell', '异龙', 2, 4),
-    凶残巨兽0: 注卵('post-sell', ci => rep('雷兽', ci.isg() ? 2 : 1)),
+    凶残巨兽0: 注卵('post-sell', ci => rep('雷兽', ci.gold ? 2 : 1)),
     注卵虫后0: 注卵('round-start', ci => [
-      ...rep('蟑螂', ci.isg() ? 2 : 1),
-      ...rep('刺蛇', ci.isg() ? 2 : 1),
+      ...rep('蟑螂', ci.gold ? 2 : 1),
+      ...rep('刺蛇', ci.gold ? 2 : 1),
     ]),
     孵化所0: {
       config: {
@@ -193,7 +193,7 @@ export default function (/* config */): Record<string, Descriptor> {
           if (time !== 'post' || way !== 'hatch') {
             return
           }
-          this.obtain_unit(rep(units[units.length - 1], this.isg() ? 3 : 2))
+          this.obtain_unit(rep(units[units.length - 1], this.gold ? 3 : 2))
         },
       },
     },
@@ -208,7 +208,7 @@ export default function (/* config */): Record<string, Descriptor> {
               this.$ref$Player
                 .all()
                 .map(c => {
-                  const idx = c.find('陆战队员', this.isg() ? 4 : 2)
+                  const idx = c.find('陆战队员', this.gold ? 4 : 2)
                   c.filter((u, i) => idx.includes(i))
                   return idx.length
                 })
@@ -222,10 +222,7 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'round-start'() {
           this.$ref$Player.all().forEach(ci => {
-            ci.replace(
-              ci.find('被感染的陆战队员', this.isg() ? 2 : 1),
-              '畸变体'
-            )
+            ci.replace(ci.find('被感染的陆战队员', this.gold ? 2 : 1), '畸变体')
           })
         },
       },
@@ -233,18 +230,18 @@ export default function (/* config */): Record<string, Descriptor> {
     腐化大龙0: {
       listener: {
         'round-start'() {
-          this.replace(this.find('腐化者', this.isg() ? 4 : 2), '巢虫领主')
+          this.replace(this.find('腐化者', this.gold ? 4 : 2), '巢虫领主')
         },
       },
     },
-    腐化大龙1: 注卵('post-sell', ci => rep('巢虫领主', ci.isg() ? 4 : 2)),
+    腐化大龙1: 注卵('post-sell', ci => rep('巢虫领主', ci.gold ? 4 : 2)),
     空中管制0: 孵化('post-enter', '爆蚊', 3, 6, 0),
     空中管制1: 孵化('post-enter', '异龙(精英)', 1, 2, 1),
     虫群大军0: {
       listener: {
         'round-end'() {
           if (this.$ref$Player.all_of('Z').length >= 4) {
-            this.$ref$Player.spawn(rep('雷兽', this.isg() ? 2 : 1))
+            this.$ref$Player.spawn(rep('雷兽', this.gold ? 2 : 1))
           }
         },
       },
@@ -254,7 +251,7 @@ export default function (/* config */): Record<string, Descriptor> {
         'post-enter'() {
           this.around().forEach(ci => {
             ci.replace(
-              ci.find(['蟑螂', '蟑螂(精英)'], this.isg() ? 2 : 1),
+              ci.find(['蟑螂', '蟑螂(精英)'], this.gold ? 2 : 1),
               '莽兽'
             )
           })
@@ -265,7 +262,7 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'post-enter'() {
           this.$ref$Player.all_of('Z').forEach(ci => {
-            ci.obtain_unit(rep('腐化者', this.isg() ? 4 : 2))
+            ci.obtain_unit(rep('腐化者', this.gold ? 4 : 2))
           })
         },
       },
@@ -276,7 +273,7 @@ export default function (/* config */): Record<string, Descriptor> {
           this.around()
             .filter(c => c.race === 'Z')
             .forEach(ci => {
-              ci.obtain_unit(rep('守卫', this.isg() ? 4 : 2))
+              ci.obtain_unit(rep('守卫', this.gold ? 4 : 2))
             })
         },
       },
@@ -288,7 +285,7 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         hatch({ units }) {
           this.obtain_unit(units, 'hatch')
-          if (this.isg()) {
+          if (this.gold) {
             this.obtain_unit(['巢虫领主'])
           }
         },
@@ -300,7 +297,7 @@ export default function (/* config */): Record<string, Descriptor> {
       },
       note: (ci, act) => [
         act
-          ? ci.isg() || ci.$ref$Player.persisAttrib.get('斯托科夫')
+          ? ci.gold || ci.$ref$Player.persisAttrib.get('斯托科夫')
             ? '注卵'
             : '禁用'
           : '停用',
@@ -311,8 +308,8 @@ export default function (/* config */): Record<string, Descriptor> {
             return
           }
           const v = this.$ref$Player.persisAttrib.get('斯托科夫')
-          this.$ref$Player.persisAttrib.set('斯托科夫', this.isg() ? 0 : 1 - v)
-          if (this.isg() || v === 1) {
+          this.$ref$Player.persisAttrib.set('斯托科夫', this.gold ? 0 : 1 - v)
+          if (this.gold || v === 1) {
             this.$ref$Player.spawn(
               target.units
                 .map(u => UnitData[u])
@@ -327,10 +324,10 @@ export default function (/* config */): Record<string, Descriptor> {
     守卫巢穴0: {
       listener: {
         'round-end'() {
-          this.$ref$Player.spawn(rep('守卫', this.isg() ? 2 : 1))
+          this.$ref$Player.spawn(rep('守卫', this.gold ? 2 : 1))
           this.$ref$Player.all().forEach(ci => {
             ci.replace(
-              ci.find(['异龙', '异龙(精英)'], this.isg() ? 2 : 1),
+              ci.find(['异龙', '异龙(精英)'], this.gold ? 2 : 1),
               '守卫'
             )
           })
@@ -339,14 +336,14 @@ export default function (/* config */): Record<string, Descriptor> {
     },
     生化危机0: 科挂X(2, ci => {
       ci.$ref$Player.spawn([
-        ...rep('牛头人陆战队员', ci.isg() ? 2 : 1),
-        ...rep('科技实验室', ci.isg() ? 4 : 2),
+        ...rep('牛头人陆战队员', ci.gold ? 2 : 1),
+        ...rep('科技实验室', ci.gold ? 4 : 2),
       ])
     }),
     雷兽窟0: {
       listener: {
         spawn() {
-          this.replace(this.find('幼雷兽', this.isg() ? 2 : 1), '雷兽')
+          this.replace(this.find('幼雷兽', this.gold ? 2 : 1), '雷兽')
         },
       },
     },
@@ -362,7 +359,7 @@ export default function (/* config */): Record<string, Descriptor> {
             eggs
               .map(c => c.units)
               .flat()
-              .filter(u => this.isg() || !UnitData[u].tag.heroic)
+              .filter(u => this.gold || !UnitData[u].tag.heroic)
           )
           eggs.forEach(e => this.$ref$Player.destroy(e))
           if (unit) {

@@ -38,9 +38,9 @@ function 集结(
     power,
     ci => {
       if (way === 'normal') {
-        ci.obtain_unit(rep(unit, ci.isg() ? gold : normal))
+        ci.obtain_unit(rep(unit, ci.gold ? gold : normal))
       } else {
-        ci.$ref$Player.warp(rep(unit, ci.isg() ? gold : normal))
+        ci.$ref$Player.warp(rep(unit, ci.gold ? gold : normal))
       }
     },
     id
@@ -61,11 +61,11 @@ export default function (/* config */): Record<string, Descriptor> {
           if (Number(id) === i || i === 1) {
             if (way === '获得') {
               this.obtain_unit(
-                rep(unit as UnitKey, this.isg() ? Number(gold) : Number(norm))
+                rep(unit as UnitKey, this.gold ? Number(gold) : Number(norm))
               )
             } else {
               this.$ref$Player.warp(
-                rep(unit as UnitKey, this.isg() ? Number(gold) : Number(norm))
+                rep(unit as UnitKey, this.gold ? Number(gold) : Number(norm))
               )
             }
           }
@@ -81,8 +81,8 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'post-sell'() {
           this.$ref$Player.warp([
-            ...rep('狂热者', this.isg() ? 2 : 1),
-            ...rep('追猎者', this.isg() ? 4 : 2),
+            ...rep('狂热者', this.gold ? 2 : 1),
+            ...rep('追猎者', this.gold ? 4 : 2),
           ])
         },
       },
@@ -90,14 +90,14 @@ export default function (/* config */): Record<string, Descriptor> {
     供能中心0: {
       listener: {
         'tavern-upgraded'() {
-          this.obtain_unit(rep('水晶塔', this.isg() ? 2 : 1))
+          this.obtain_unit(rep('水晶塔', this.gold ? 2 : 1))
         },
       },
     },
     龙骑兵团0: {
       listener: {
         'round-end'() {
-          this.obtain_unit(rep('零件', this.isg() ? 4 : 2))
+          this.obtain_unit(rep('零件', this.gold ? 4 : 2))
         },
       },
     },
@@ -125,21 +125,21 @@ export default function (/* config */): Record<string, Descriptor> {
         'post-enter'() {
           this.around()
             .filter(c => c.race === 'P')
-            .forEach(ci => ci.obtain_unit(rep('水晶塔', this.isg() ? 2 : 1)))
+            .forEach(ci => ci.obtain_unit(rep('水晶塔', this.gold ? 2 : 1)))
         },
       },
     },
     折跃部署0: {
       listener: {
         'round-end'() {
-          this.$ref$Player.warp(rep('追猎者', this.isg() ? 3 : 2))
+          this.$ref$Player.warp(rep('追猎者', this.gold ? 3 : 2))
         },
       },
     },
     折跃部署1: {
       listener: {
         'round-start'() {
-          this.$ref$Player.warp(rep('狂热者', this.isg() ? 2 : 1))
+          this.$ref$Player.warp(rep('狂热者', this.gold ? 2 : 1))
         },
       },
     },
@@ -165,7 +165,7 @@ export default function (/* config */): Record<string, Descriptor> {
         'post-enter'() {
           this.$ref$Player.all_of('P').forEach(ci => {
             ci.replace(
-              ci.find(u => !!UnitData[u].tag.biological, this.isg() ? 2 : 1),
+              ci.find(u => !!UnitData[u].tag.biological, this.gold ? 2 : 1),
               u => (UnitData[u].tag.heroic ? '英雄不朽者' : '不朽者')
             )
           })
@@ -175,14 +175,14 @@ export default function (/* config */): Record<string, Descriptor> {
     重回战场1: {
       listener: {
         'post-sell'() {
-          this.$ref$Player.warp(rep('不朽者', this.isg() ? 2 : 1))
+          this.$ref$Player.warp(rep('不朽者', this.gold ? 2 : 1))
         },
       },
     },
     折跃攻势0: {
       listener: {
         warp() {
-          this.obtain_unit(rep('追猎者', this.isg() ? 2 : 1))
+          this.obtain_unit(rep('追猎者', this.gold ? 2 : 1))
         },
       },
     },
@@ -195,7 +195,7 @@ export default function (/* config */): Record<string, Descriptor> {
             !UnitData[u].tag.massive
         )
         ci.$ref$Player.$ref$Game.lcg.shuffle(idx)
-        const tran = idx.slice(0, ci.isg() ? 2 : 1)
+        const tran = idx.slice(0, ci.gold ? 2 : 1)
         us.push(...c.filter((u, i) => tran.includes(i)).map(elited))
       })
       ci.$ref$Player.warp(us)
@@ -208,7 +208,7 @@ export default function (/* config */): Record<string, Descriptor> {
               (['不朽者', '巨像', '掠夺者'] as UnitKey[])[
                 this.$ref$Player.$ref$Game.lcg.int(2)
               ],
-              this.isg() ? 2 : 1
+              this.gold ? 2 : 1
             )
           )
         },
@@ -218,7 +218,7 @@ export default function (/* config */): Record<string, Descriptor> {
     势不可挡0: {
       listener: {
         'post-enter'() {
-          this.$ref$Player.warp(rep('执政官(精英)', this.isg() ? 2 : 1))
+          this.$ref$Player.warp(rep('执政官(精英)', this.gold ? 2 : 1))
         },
       },
     },
@@ -251,7 +251,7 @@ export default function (/* config */): Record<string, Descriptor> {
             time === 'post' &&
             (units.includes('水晶塔') || units.includes('虚空水晶塔'))
           ) {
-            this.obtain_unit(rep('莫汗达尔', this.isg() ? 2 : 1))
+            this.obtain_unit(rep('莫汗达尔', this.gold ? 2 : 1))
           }
         },
       },
@@ -300,7 +300,7 @@ export default function (/* config */): Record<string, Descriptor> {
           this.obtain_unit(
             target.units
               .filter(u => isNormal(UnitData[u]) || u === '水晶塔')
-              .filter(u => this.isg() || !UnitData[u].tag.heroic)
+              .filter(u => this.gold || !UnitData[u].tag.heroic)
           )
         },
       },
@@ -336,7 +336,7 @@ export default function (/* config */): Record<string, Descriptor> {
           this.$ref$Player.warp(
             rep(
               '巨像(精英)',
-              (this.isg() ? 2 : 1) * Math.min(2, Math.floor(this.power() / 7))
+              (this.gold ? 2 : 1) * Math.min(2, Math.floor(this.power() / 7))
             )
           )
         },
@@ -349,7 +349,7 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'round-end'() {
           if (this.$ref$Player.all_of('P').length >= 5) {
-            this.obtain_unit(rep('英雄不朽者', this.isg() ? 2 : 1))
+            this.obtain_unit(rep('英雄不朽者', this.gold ? 2 : 1))
           }
         },
       },
@@ -359,7 +359,7 @@ export default function (/* config */): Record<string, Descriptor> {
         'round-end'() {
           this.obtain_unit(
             rep('旋风狂热者(精英)', 2).concat(
-              rep('阿塔尼斯', this.isg() ? 2 : 0)
+              rep('阿塔尼斯', this.gold ? 2 : 0)
             )
           )
         },
@@ -380,20 +380,20 @@ export default function (/* config */): Record<string, Descriptor> {
     净化之光0: {
       listener: {
         'round-end'() {
-          this.obtain_unit(rep('虚空辉光舰', this.isg() ? 2 : 1))
+          this.obtain_unit(rep('虚空辉光舰', this.gold ? 2 : 1))
         },
       },
     },
     净化之光1: 集结X(4, ci => {
       ci.$ref$Player.all().forEach(c => {
-        c.replace(c.find('虚空辉光舰', ci.isg() ? 2 : 1), elited)
+        c.replace(c.find('虚空辉光舰', ci.gold ? 2 : 1), elited)
       })
     }),
     生物质发电0: {
       listener: {
         'card-selled'({ target }) {
           if (target.level >= 3 && target.race === 'Z') {
-            this.obtain_unit(rep('水晶塔', this.isg() ? 2 : 1))
+            this.obtain_unit(rep('水晶塔', this.gold ? 2 : 1))
           }
         },
       },
@@ -410,17 +410,17 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'card-entered'() {
           if (this.find('先知').length < this.power()) {
-            this.$ref$Player.warp(rep('先知', this.isg() ? 2 : 1))
+            this.$ref$Player.warp(rep('先知', this.gold ? 2 : 1))
           }
         },
       },
     },
     晋升仪式0: 集结X(4, ci => {
-      ci.replace(ci.find('不朽者', ci.isg() ? 2 : 1), '英雄不朽者')
+      ci.replace(ci.find('不朽者', ci.gold ? 2 : 1), '英雄不朽者')
       ci.replace(
         ci.find(
           u => u !== '高阶圣堂武士' && !!UnitData[u].tag.biological,
-          ci.isg() ? 2 : 1
+          ci.gold ? 2 : 1
         ),
         '高阶圣堂武士'
       )
@@ -440,7 +440,7 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'card-selled'({ target }) {
           if (target.value() > this.value()) {
-            this.obtain_unit(rep('菲尼克斯', this.isg() ? 3 : 1))
+            this.obtain_unit(rep('菲尼克斯', this.gold ? 3 : 1))
           }
         },
       },

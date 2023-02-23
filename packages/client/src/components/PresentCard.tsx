@@ -19,13 +19,15 @@ export function countUnit(units: UnitKey[]): string[] {
   return (Object.keys(res) as UnitKey[]).map(u => `${u}: ${res[u]}`)
 }
 
-function calcColor(color?: 'normal' | 'amber' | 'gold') {
+function calcColor(color?: 'normal' | 'amber' | 'red' | 'gold') {
   if (!color || color === 'normal') {
     return ''
   }
   switch (color) {
     case 'amber':
       return 'Amber'
+    case 'red':
+      return 'Red'
     case 'gold':
       return 'Gold'
   }

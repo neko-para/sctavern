@@ -643,14 +643,9 @@ export class PlayerInstance {
         pre = pre.filter(c => desc.config?.uniqueDisabled?.(c.card))
       }
       if (desc.config.unique === 'normal') {
-        const cp = {
-          normal: 1,
-          amber: 1,
-          gold: 0,
-        }
         pre.sort((a, b) => {
-          if (cp[a.card.color] !== cp[b.card.color]) {
-            return cp[a.card.color] - cp[b.card.color]
+          if (a.card.gold !== b.card.gold) {
+            return a.card.gold ? -1 : 1
           } else {
             return a.pos - b.pos
           }
@@ -796,7 +791,7 @@ export class PlayerInstance {
 
   locate_combine_target(card: CardKey) {
     return this.all()
-      .filter(c => c.name === card && c.color === 'normal')
+      .filter(c => c.name === card && c.color === 'normal' && !c.gold)
       .slice(0, 2)
   }
 
@@ -996,7 +991,7 @@ export class PlayerInstance {
         target[1].config.MaxUpgrade
       ),
     }
-    ci.color = 'gold'
+    ci.gold = true
     ci.occupy = [...target[0].occupy, ...target[1].occupy]
     ci.attrib.load(target[0].attrib, ['task'])
     ci.attrib.load(target[1].attrib, ['task'])

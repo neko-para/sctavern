@@ -89,7 +89,8 @@ export interface Card {
     [key in UnitKey]?: number
   }
   attr: {
-    amber?: true
+    nocombine?: true
+    red?: true
     gold?: true
     insert?: true
   }
