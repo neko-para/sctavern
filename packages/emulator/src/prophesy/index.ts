@@ -294,7 +294,7 @@ export function CreateProphesyTable() {
       init() {
         const res = this.$ref$Game.pool.discover(c => c.level === this.level, 1)
         if (res) {
-          this.stage(res[0].name)
+          this.obtain_card(res[0].name)
         }
       },
     },
@@ -302,7 +302,7 @@ export function CreateProphesyTable() {
       init() {
         const res = this.$ref$Game.pool.discover(c => c.name === '挖宝奇兵', 1)
         if (res) {
-          this.stage(res[0].name)
+          this.obtain_card(res[0].name)
         }
       },
     },

@@ -225,7 +225,7 @@ const playerBind: GenericListener<PlayerInstance> = {
             this.combine(ck)
             break
           case 'stage':
-            this.stage(ck)
+            this.obtain_card(ck)
             break
         }
 
@@ -358,10 +358,7 @@ const playerBind: GenericListener<PlayerInstance> = {
   $cheat: function (msg) {
     switch (msg.type) {
       case 'card':
-        if (!this.can_stage()) {
-          return
-        }
-        this.stage(msg.cardt)
+        this.obtain_card(msg.cardt, false)
         break
       case 'unit':
         if (!this.present[msg.place]) {

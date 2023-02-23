@@ -254,7 +254,7 @@ export function CreateRoleTable() {
         if (this.attrib.mode === 2) {
           player.$ref$Game.pool
             .discover(c => c.level === Math.max(1, player.level - 1), 2)
-            ?.forEach(c => player.stage(c.name))
+            ?.forEach(c => player.obtain_card(c.name))
         } else {
           player.push_discover(
             player.$ref$Game.pool
@@ -446,7 +446,7 @@ export function CreateRoleTable() {
           }
         }
         if (ci.occupy.length > 0 && this.attrib.mode === 1) {
-          player.stage(ci.occupy[0])
+          player.obtain_card(ci.occupy[0])
         }
         const lv = Math.min(6, ci.level + 1)
         player.destroy(ci)
@@ -512,7 +512,7 @@ export function CreateRoleTable() {
             this.attrib.mode === 2 &&
             target.occupy.length > 0
           ) {
-            player.stage(target.occupy[0])
+            player.obtain_card(target.occupy[0])
           }
         },
       },
@@ -1125,7 +1125,7 @@ export function CreateRoleTable() {
         player.obtain_resource({
           mineral: -4,
         })
-        player.stage(ci.occupy[0])
+        player.obtain_card(ci.occupy[0])
         this.progress.cur -= 1
         this.enable = false
       },
@@ -1501,10 +1501,10 @@ export function CreateRoleTable() {
               player.upgrade_cost += 1
               break
             case 3:
-              player.stage(record[3])
+              player.obtain_card(record[3])
               break
             case 5:
-              player.stage(record[5])
+              player.obtain_card(record[5])
               break
           }
         },
