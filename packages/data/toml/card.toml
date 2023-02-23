@@ -2171,6 +2171,26 @@ desc = [
 [card.attr]
 
 [[card]]
+name = '牛牛冲鸭'
+pinyin = 'nncy'
+race = 'T'
+level = 6
+pack = '特典'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 相邻两侧卡牌获得1牛头人陆战队员',
+		'每回合结束时, 相邻两侧卡牌获得1牛头人陆战队员',
+	],
+]
+
+[card.unit]
+'牛头人兵营' = 1
+
+[card.attr]
+
+[[card]]
 name = '虫群先锋'
 pinyin = 'cqxf'
 race = 'Z'

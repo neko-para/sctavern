@@ -869,11 +869,6 @@ export function CreateRoleTable() {
         'round-enter'() {
           this.enable = true
         },
-        'card-entered'({ target }, player) {
-          if (target.attrib.get('structure')) {
-            target.obtain_unit(rep('自动机炮', player.level))
-          }
-        },
       },
       ability(player) {
         if (!this.enable) {

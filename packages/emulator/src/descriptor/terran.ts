@@ -436,6 +436,15 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
+    牛牛冲鸭0: {
+      listener: {
+        'round-end'() {
+          this.around().forEach(ci => {
+            ci.obtain_unit(['牛头人陆战队员'])
+          })
+        },
+      },
+    },
     黄昏之翼0: { refer: '快速生产:黄昏之翼:1:2' },
     黄昏之翼1: { refer: '反应堆:黄昏之翼' },
     艾尔游骑兵0: {

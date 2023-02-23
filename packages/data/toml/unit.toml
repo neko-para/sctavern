@@ -22,7 +22,7 @@ pinyin = 'xklx'
 race = 'N'
 value = 0
 type = 'normal'
-health = 1500
+health = 1300
 
 [unit.tag]
 heroic = true
@@ -1598,6 +1598,19 @@ armored = true
 mechanical = true
 massive = true
 air = true
+
+[[unit]]
+name = '牛头人兵营'
+pinyin = 'ntrby'
+race = 'T'
+value = 0
+type = 'normal'
+health = 1000
+
+[unit.tag]
+armored = true
+mechanical = true
+structure = true
 
 [[unit]]
 name = '易爆感染体'

@@ -16,6 +16,11 @@ import DescriptorTable from './descriptor'
 import { Attribute } from './attrib'
 
 const cardBind: GenericListener<CardInstance> = {
+  'post-enter'() {
+    if (this.attrib.get('structure')) {
+      this.obtain_unit(rep('自动机炮', this.$ref$Player.level))
+    }
+  },
   'round-end': function () {
     if (this.race === 'T' && this.infr() === '高级科技实验室') {
       this.fast_prod()
