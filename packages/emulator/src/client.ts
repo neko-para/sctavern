@@ -1,21 +1,21 @@
+import type { ClientAdapter } from './adapter'
 import type { InnerMsg } from './events'
 import type { DistributiveOmit } from './types'
-import type { Wrapper } from './wrapper'
 
 export class Client {
   pos: number
-  wrapper: Wrapper
+  adapter: ClientAdapter
   observer: boolean
 
-  constructor(p: number, w: Wrapper, ob = false) {
+  constructor(p: number, a: ClientAdapter, ob = false) {
     this.pos = p
-    this.wrapper = w
+    this.adapter = a
     this.observer = ob
   }
 
   post(msg: InnerMsg) {
     if (!this.observer) {
-      this.wrapper.game.input({
+      this.adapter.sendInput({
         ...msg,
       })
     }
@@ -29,9 +29,5 @@ export class Client {
       ...msg,
       player: this.pos,
     })
-  }
-
-  getPlayer() {
-    return this.wrapper.game.player[this.pos]
   }
 }

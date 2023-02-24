@@ -7,6 +7,7 @@ import {
   PvpPresetActivePack,
   PvpPresetActiveUnit,
 } from '@sctavern/data'
+import { ServerAdapter } from './adapter'
 
 export interface PortableSave {
   old: string[]
@@ -15,6 +16,7 @@ export interface PortableSave {
 
 export class Wrapper {
   server: Server
+  adapter: ServerAdapter
   game: GameInstance
   save: PortableSave
 
@@ -22,12 +24,19 @@ export class Wrapper {
 
   saveStateChanged: () => void
 
-  constructor() {
+  constructor(a: ServerAdapter) {
     this.server = new Server()
     this.server.notify.push(() => {
       if (!this.loading) {
         this.autoSave()
       }
+    })
+    this.adapter = a
+    this.adapter.onInput = msg => {
+      this.game.input(msg)
+    }
+    this.server.notify.push(state => {
+      this.adapter.setState(state)
     })
     this.game = new GameInstance(
       {
