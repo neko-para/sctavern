@@ -26,27 +26,6 @@ function 集结X(
   }
 }
 
-function 集结(
-  power: number,
-  unit: UnitKey,
-  normal: number,
-  gold: number,
-  way: 'normal' | 'warp' = 'normal',
-  id = 0
-) {
-  return 集结X(
-    power,
-    ci => {
-      if (way === 'normal') {
-        ci.obtain_unit(rep(unit, ci.gold ? gold : normal))
-      } else {
-        ci.$ref$Player.warp(rep(unit, ci.gold ? gold : normal))
-      }
-    },
-    id
-  )
-}
-
 export default function (/* config */): Record<string, Descriptor> {
   return {
     集结: {
