@@ -410,5 +410,13 @@ export class GameInstance {
       msg: 'round-enter',
       round: this.round,
     })
+    this.player.forEach(p => {
+      if (p && p.life > 0) {
+        p.post({
+          msg: 'battle-result',
+          win: true,
+        })
+      }
+    })
   }
 }

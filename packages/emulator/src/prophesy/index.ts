@@ -45,6 +45,7 @@ export function CreateProphesyTable() {
     紧急征召: {
       init() {
         this.role.attrib.mode = 2
+        this.role.record = {}
       },
     },
     收割行动: {
@@ -55,6 +56,19 @@ export function CreateProphesyTable() {
     强化药剂: {
       init() {
         this.role.attrib.mode = 2
+        this.role.attrib.speed = 0
+      },
+      listener: {
+        'battle-result'({ win }) {
+          if (this.role.attrib.mode === 2) {
+            if (win) {
+              this.role.attrib.speed += 12
+            }
+          }
+        },
+      },
+      count() {
+        return this.role.attrib.speed
       },
     },
     幽灵报道: {
@@ -100,6 +114,16 @@ export function CreateProphesyTable() {
     改造突变: {
       init() {
         this.role.attrib.mode = 2
+        this.role.progress.cur = 0
+      },
+      listener: {
+        'battle-result'({ win }) {
+          if (win) {
+            this.role.progress.cur += 2
+          } else {
+            this.role.progress.cur += 1
+          }
+        },
       },
     },
     过量采集: {
@@ -559,7 +583,9 @@ export function CreateProphesyTable() {
           ci.config.MaxUpgrade += 3
           // 必须一个一个获得, 因为可以获得重复的升级, 以及可以获得获得过的升级
           for (let i = 0; i < 3; i++) {
-            ci.obtain_upgrade(randomUpgrades(this.$ref$Game.lcg, 1)[0])
+            ci.obtain_upgrade(
+              randomUpgrades(this.$ref$Game.lcg, 1, u => u !== '轨道空降')[0]
+            )
           }
         })
       },

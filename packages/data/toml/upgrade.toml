@@ -180,6 +180,42 @@ override = true
 category = 'special'
 
 [[upgrade]]
+name = '灵能感应'
+pinyin = 'lngy'
+override = true
+category = 'special'
+
+[[upgrade]]
+name = '能量迸发'
+pinyin = 'nlbf'
+override = true
+category = 'special'
+
+[[upgrade]]
+name = '精神控制'
+pinyin = 'jskz'
+override = true
+category = 'special'
+
+[[upgrade]]
+name = '潜能超载'
+pinyin = 'qncz'
+override = true
+category = 'special'
+
+[[upgrade]]
+name = '生物突变'
+pinyin = 'swtb'
+override = true
+category = 'special'
+
+[[upgrade]]
+name = '鲜血狂热'
+pinyin = 'xxkr'
+override = true
+category = 'special'
+
+[[upgrade]]
 name = '强化药剂'
 pinyin = 'qhyj'
 override = true

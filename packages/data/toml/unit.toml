@@ -2573,13 +2573,25 @@ psionic = true
 name = '后虫'
 pinyin = 'hc'
 race = 'Z'
-value = 300
+value = 400
 type = 'normal'
 health = 120
 
 [unit.tag]
 biological = true
 air = true
+
+[[unit]]
+name = '蝎虫'
+pinyin = 'xc'
+race = 'Z'
+value = 600
+type = 'normal'
+health = 80
+
+[unit.tag]
+biological = true
+psionic = true
 
 [[unit]]
 name = '科学船'
@@ -2616,9 +2628,18 @@ value = 350
 type = 'normal'
 health = 225
 
+[[unit]]
+name = '战列巡航舰(精英)'
+pinyin = 'zlxhj(jy)'
+race = 'T'
+value = 1200
+type = 'normal'
+health = 700
+
 [unit.tag]
 armored = true
 mechanical = true
+massive = true
 air = true
 
 [[unit]]

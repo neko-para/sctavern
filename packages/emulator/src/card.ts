@@ -21,12 +21,17 @@ const cardBind: GenericListener<CardInstance> = {
       this.obtain_unit(rep('自动机炮', this.$ref$Player.level))
     }
   },
-  'round-end': function () {
+  'round-start'() {
+    if (this.upgrades.includes('潜能超载')) {
+      this.$ref$Player.destroy(this)
+    }
+  },
+  'round-end'() {
     if (this.race === 'T' && this.infr() === '高级科技实验室') {
       this.fast_prod()
     }
   },
-  'post-sell': function () {
+  'post-sell'() {
     const n = this.find('虚空水晶塔').length
     if (n > 0) {
       for (const c of this.around(this.attrib.get('oldpos'))) {

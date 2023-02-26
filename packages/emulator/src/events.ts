@@ -96,6 +96,10 @@ export type GameMsg = ApplyKey<
 
 export type PlayerMsg = ApplyKey<
   | {
+      msg: 'battle-result'
+      win: boolean
+    }
+  | {
       msg: 'tavern-upgraded'
       level: number
     }

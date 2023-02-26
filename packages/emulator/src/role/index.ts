@@ -9,6 +9,7 @@ import {
   royalized,
   UnitData,
   UpgradeData,
+  ArchonUpgrade,
 } from '@sctavern/data'
 import type { CardKey, PackKey } from '@sctavern/data'
 import type { RoleKey, UnitKey } from '@sctavern/data'
@@ -220,7 +221,15 @@ export function CreateRoleTable() {
             this.enable = false
             break
           case 1:
-            right.units = [...right.units, ...right.units]
+            player.push_discover(
+              ArchonUpgrade.map(upgrade => ({
+                type: 'upgrade',
+                upgrade: UpgradeData[upgrade],
+              })),
+              {
+                target: right.index(),
+              }
+            )
             this.enable = false
             break
           case 2:
@@ -240,22 +249,51 @@ export function CreateRoleTable() {
         'round-enter'() {
           this.enable = true
         },
+        'get-buy-cost'(m) {
+          if (this.attrib.mode === 2) {
+            const r = this.record as Record<CardKey, number>
+            if (r[m.cardt]) {
+              m.cost = 1
+            }
+          }
+        },
+        refreshed(m, player) {
+          if (this.attrib.mode === 2) {
+            const r = this.record as Record<CardKey, number>
+            player.store.forEach(s => {
+              if (s) {
+                s.special = !!r[s.card]
+              }
+            })
+          }
+        },
       },
       ability(player) {
         if (!this.enable) {
           return
         }
-        if (player.mineral < 2) {
-          return
-        }
-        player.obtain_resource({
-          mineral: -2,
-        })
         if (this.attrib.mode === 2) {
-          player.$ref$Game.pool
-            .discover(c => c.level === Math.max(1, player.level - 1), 2)
-            ?.forEach(c => player.obtain_card(c.name))
+          const r = this.record as Record<CardKey, number>
+          const card = player.query_selected_store()
+          if (!card || r[card]) {
+            return
+          }
+          r[card] = 1
+          player.store[player.selected.place] = null
+          player.obtain_card(card)
+          player.store.forEach(s => {
+            if (s) {
+              s.special = !!r[s.card]
+            }
+          })
+          this.enable = false
         } else {
+          if (player.mineral < 2) {
+            return
+          }
+          player.obtain_resource({
+            mineral: -2,
+          })
           player.push_discover(
             player.$ref$Game.pool
               .discover(c => c.level === Math.max(1, player.level - 1), 3)
@@ -264,9 +302,17 @@ export function CreateRoleTable() {
                 card,
               }))
           )
+          if (this.attrib.mode !== 1) {
+            this.enable = false
+          }
         }
-        if (this.attrib.mode !== 1) {
-          this.enable = false
+      },
+      record() {
+        if (this.attrib.mode === 2) {
+          const record = this.record as Record<string, number>
+          return Object.keys(record)
+        } else {
+          return []
         }
       },
     },
@@ -427,38 +473,111 @@ export function CreateRoleTable() {
         'round-start'() {
           this.enable = true
         },
+        'discover-finish'({ ctx }, player) {
+          if (ctx.id !== this.attrib.discoverId) {
+            return
+          }
+          const ci = player.query_selected_present()
+          if (!ci) {
+            // ?
+            return
+          }
+          ci.clear_desc()
+          ci.load_desc(
+            (ctx.item[ctx.choice] as DiscoverItem & { type: 'card' }).card,
+            true
+          )
+          ci.post({
+            msg: 'post-enter',
+          })
+        },
       },
       ability(player) {
         if (!this.enable) {
           return
         }
-        const ci = player.query_selected_present()
-        if (!ci) {
-          return
-        }
-        if (this.attrib.mode !== 2) {
-          if (player.mineral < 2) {
-            return
-          } else {
+        switch (this.attrib.mode ?? 0) {
+          case 0: {
+            const ci = player.query_selected_present()
+            if (!ci) {
+              return
+            }
+            if (player.mineral < 2) {
+              return
+            }
             player.obtain_resource({
               mineral: -2,
             })
+            const lv = Math.min(6, ci.level + 1)
+            player.destroy(ci)
+            player.push_discover(
+              player.$ref$Game.pool
+                .discover(c => c.level === lv, 3)
+                ?.map(card => ({
+                  type: 'card',
+                  card,
+                }))
+            )
+            this.enable = false
+            break
+          }
+          case 1: {
+            const ci = player.query_selected_present()
+            if (!ci) {
+              return
+            }
+            if (player.mineral < 1) {
+              return
+            }
+            player.obtain_resource({
+              mineral: -1,
+            })
+            const lv = Math.min(6, ci.level + 1)
+            this.attrib.discoverId = player.push_discover(
+              player.$ref$Game.pool
+                .discover(c => c.level === lv, 3)
+                ?.map(card => ({
+                  type: 'card',
+                  card,
+                })),
+              {
+                fake: true,
+              }
+            )
+            this.enable = false
+            break
+          }
+          case 2: {
+            if (this.progress.cur < 3) {
+              return
+            }
+            const ci = player.query_selected_present()
+            if (ci) {
+              if (ci.upgrades.length < ci.config.MaxUpgrade) {
+                ci.obtain_upgrade('生物突变')
+                this.progress.cur -= 3
+              }
+            } else {
+              const si = player.query_selected_store()
+              if (si) {
+                const packs: PackKey[] = ['核心', ...ExtPack]
+                const cards = packs
+                  .map(p => PackData[p])
+                  .flat()
+                  .map(c => CardData[c])
+                  .filter(c => c.level === 6)
+                const card = player.$ref$Game.lcg.one_of(cards)
+                if (card) {
+                  player.store[player.selected.place] = {
+                    card: card.name,
+                    special: false,
+                  }
+                  this.progress.cur -= 3
+                }
+              }
+            }
           }
         }
-        if (ci.occupy.length > 0 && this.attrib.mode === 1) {
-          player.obtain_card(ci.occupy[0])
-        }
-        const lv = Math.min(6, ci.level + 1)
-        player.destroy(ci)
-        player.push_discover(
-          player.$ref$Game.pool
-            .discover(c => c.level === lv, 3)
-            ?.map(card => ({
-              type: 'card',
-              card,
-            }))
-        )
-        this.enable = false
       },
     },
     工蜂: {
@@ -1226,7 +1345,7 @@ export function CreateRoleTable() {
           if (this.progress.cur < this.progress.max) {
             this.progress.cur += 1
             if (this.progress.cur === this.progress.max) {
-              const packs: PackKey[] = ['核心', ...ExtPack]
+              const packs: PackKey[] = ['核心', ...ExtPack] // 能找特典吗
               const cards = packs
                 .map(p => PackData[p])
                 .flat()

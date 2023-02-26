@@ -9,6 +9,7 @@ export interface Props {
   title: string
   color?: keyof typeof PresetColor | ''
   className?: string
+  onClick?: () => void
 }
 
 function SmallCard(props: PropsWithChildren<Props>) {
@@ -18,6 +19,7 @@ function SmallCard(props: PropsWithChildren<Props>) {
       style={{
         backgroundColor: props.color ? PresetColor[props.color] : '',
       }}
+      onClick={props.onClick}
     >
       <div
         className="flex flex-grow justify-center align-center"

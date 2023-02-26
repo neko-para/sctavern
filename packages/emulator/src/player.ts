@@ -756,6 +756,12 @@ export class PlayerInstance {
       : null
   }
 
+  query_selected_store() {
+    return this.selected.area === 'store'
+      ? this.store[this.selected.place]?.card ?? null
+      : null
+  }
+
   obtain_card(card: CardKey, drop = true) {
     if (this.can_stage()) {
       this.stage(card)
