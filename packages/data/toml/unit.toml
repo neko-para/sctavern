@@ -2628,6 +2628,11 @@ value = 350
 type = 'normal'
 health = 225
 
+[unit.tag]
+armored = true
+mechanical = true
+air = true
+
 [[unit]]
 name = '战列巡航舰(精英)'
 pinyin = 'zlxhj(jy)'
