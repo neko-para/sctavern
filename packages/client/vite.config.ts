@@ -58,4 +58,18 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: id => {
+          if (id.includes('node_modules')) {
+            if (id.includes('sctavern/packages')) {
+              return 'sctavern'
+            }
+            return 'vender'
+          }
+        },
+      },
+    },
+  },
 })
