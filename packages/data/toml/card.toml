@@ -3421,3 +3421,23 @@ desc = [
 '追猎者' = 2
 
 [card.attr]
+
+[[card]]
+name = '拟态雏虫'
+pinyin = 'ntcc'
+race = 'N'
+level = 1
+pack = '拟态虫衍生'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'进场时, 变为商店随机卡牌',
+		'进场时, 变为商店随机卡牌',
+	],
+]
+
+[card.unit]
+
+[card.attr]
+insert = true

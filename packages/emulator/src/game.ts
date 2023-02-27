@@ -1,8 +1,14 @@
-import { ProphesyKey, RoleData } from '@sctavern/data'
+import { ProphesyData, ProphesyKey, RoleData, RoleKey } from '@sctavern/data'
 import type { InnerMsg } from './events'
 import { PlayerInstance } from './player'
 import { Pool } from './pool'
-import type { GameState, GameConfig, PresentAction } from './types'
+import type {
+  GameState,
+  GameConfig,
+  PresentAction,
+  RoleProphesyImpl,
+  ProphesyImpl,
+} from './types'
 import { dup, repX } from './utils'
 import DescriptorTable from './descriptor'
 import { Attribute } from './attrib'
@@ -133,17 +139,16 @@ export class GameInstance {
               selected: dup(p.selected),
               locked: p.locked,
 
-              role: {
-                name: p.role.name,
-                ability: RoleData[p.role.name].ability,
-                desc: RoleData[p.role.name].desc,
-                enable: p.role.enable,
+              roles: p.roles.map((role, index) => ({
+                name: role.name,
+                ability: RoleData[role.name].ability,
+                desc: RoleData[role.name].desc,
+                enable: role.enable,
 
-                progress:
-                  p.role.progress.cur === -1 ? null : dup(p.role.progress),
-                enhance: p.role.enhance,
-                record: p.role_impl().record.apply(p.role),
-              },
+                progress: role.progress.cur === -1 ? null : dup(role.progress),
+                enhance: role.enhance,
+                record: p.role_impl(index).record.apply(role),
+              })),
 
               action: [
                 {
@@ -180,13 +185,14 @@ export class GameInstance {
                   },
                 },
               ],
-              abilityAction: {
-                enable: p.role.enable && p.curStatus() === 'normal',
+              abilityAction: p.roles.map((role, place) => ({
+                enable: role.enable && p.curStatus() === 'normal',
                 msg: {
                   msg: '$ability',
                   player: ip,
+                  place,
                 },
-              },
+              })),
               store: p.store.map((s, i) => {
                 if (!s) {
                   return null
@@ -364,7 +370,14 @@ export class GameInstance {
                 p.prophesy.forEach(key => {
                   const pd = ProphesyTable[key]
                   if (pd.count) {
-                    res[key] = pd.count.call(p)
+                    if (typeof ProphesyData[key].type === 'string') {
+                      res[key] = (pd as RoleProphesyImpl).count?.call(
+                        p.find_role(ProphesyData[key].type as RoleKey),
+                        p
+                      )
+                    } else {
+                      res[key] = (pd as ProphesyImpl).count?.call(p)
+                    }
                   } else {
                     res[key] = null
                   }

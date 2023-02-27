@@ -4,6 +4,7 @@ import {
   UnitData,
   PackData,
   CardData,
+  CardKey,
 } from '@sctavern/data'
 import type { UnitKey, Race } from '@sctavern/data'
 import type { Descriptor } from '../types'
@@ -129,6 +130,33 @@ export default function (/* config */): Record<string, Descriptor> {
         '无法三连, 每回合结束时注卵随机一个单位三次',
         '无法三连, 每回合结束时注卵随机一个单位三次',
       ],
+    },
+    精神控制: {
+      listener: {
+        'round-end'() {
+          const cards = this.$ref$Player.$ref$Game.lcg
+            .shuffle(
+              this.$ref$Player.store
+                .map((store, index) => ({
+                  store,
+                  index,
+                }))
+                .filter(x => x.store)
+            )
+            .slice(0, 2)
+          cards.forEach(({ store, index }) => {
+            this.$ref$Player.store[index] = null
+            this.load_unit(CardData[store?.card as CardKey])
+          })
+        },
+      },
+    },
+    潜能超载: {
+      listener: {
+        'round-start'() {
+          this.$ref$Player.destroy(this)
+        },
+      },
     },
     幽灵报道0: {
       listener: {
@@ -276,6 +304,7 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
+    拟态雏虫0: NotImplementYet(),
     不法之徒_反应堆_0: { refer: '反应堆:陆战队员' },
     不法之徒_反应堆_1: { refer: '反应堆:陆战队员(精英)' },
     不法之徒0: 任务(

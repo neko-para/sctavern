@@ -6,6 +6,7 @@ import { clientContext, gameContext, playerContext } from './Context'
 import GlobalAction from './GlobalAction'
 import DiscoverSection from './DiscoverSection'
 import { PropsWithChildren } from 'react'
+import GlobalActionSection from './GlobalActionSection'
 
 function GameInstance(props: PropsWithChildren<{}>) {
   const player =
@@ -23,7 +24,7 @@ function GameInstance(props: PropsWithChildren<{}>) {
               <StoreSection></StoreSection>
               <DiscoverSection></DiscoverSection>
               <div className="flex-grow"></div>
-              <GlobalAction></GlobalAction>
+              <GlobalAction layout={GlobalActionSection}></GlobalAction>
             </div>
             {props.children}
           </div>

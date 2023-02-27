@@ -17,7 +17,7 @@ import type {
 } from '@sctavern/data'
 import { CardInstance } from './card'
 import { Dispatch } from './dispatch'
-import type { InnerMsg, GenericListener } from './events'
+import type { InnerMsg, GenericListener, SpecificListener } from './events'
 import type { GameInstance } from './game'
 import type {
   PlayerConfig,
@@ -28,6 +28,8 @@ import type {
   DiscoverContext,
   DiscoverItem,
   InsertContext,
+  RoleProphesyImpl,
+  ProphesyImpl,
 } from './types'
 import { notNull, repX } from './utils'
 import DescriptorTable from './descriptor'
@@ -63,11 +65,11 @@ const playerBind: GenericListener<PlayerInstance> = {
       this.$ref$Game.roundEnd()
     }
   },
-  $ability() {
-    if (!this.role.enable) {
+  $ability({ place }) {
+    if (!this.roles[place].enable) {
       return
     }
-    this.role_impl().ability.call(this.role, this)
+    this.role_impl(place).ability.call(this.roles[place], this)
   },
   $lock() {
     this.locked = true
@@ -148,9 +150,7 @@ const playerBind: GenericListener<PlayerInstance> = {
               ) {
                 return
               }
-              const p = ProphesyTable[result.prophesy.name]
-              p.init.call(this)
-              this.prophesy.push(result.prophesy.name)
+              this.load_prophesy(result.prophesy.name)
             }
           }
         } else {
@@ -420,16 +420,19 @@ const playerBind: GenericListener<PlayerInstance> = {
   'round-enter'({ round }) {
     if (this.$ref$Game.config.Pve) {
       if (round === 1) {
-        if (this.role.name !== '白板') {
+        this.roles.forEach(role => {
+          if (role.name === '白板') {
+            return
+          }
           this.push_discover(
             AllProphesy.map(p => ProphesyData[p])
-              .filter(p => p.type === this.role.name)
+              .filter(p => p.type === role.name)
               .map(prophesy => ({
                 type: 'prophesy',
                 prophesy,
               }))
           )
-        }
+        })
       } else if (round === 4) {
         this.push_discover(
           this.$ref$Game.lcg
@@ -507,7 +510,7 @@ export class PlayerInstance {
   }
   locked: boolean
 
-  role: RoleInstance
+  roles: RoleInstance[]
   prophesy: ProphesyKey[]
 
   store: ({
@@ -575,19 +578,21 @@ export class PlayerInstance {
     }
     this.locked = false
 
-    this.role = {
-      attrib: {},
+    this.roles = [
+      {
+        attrib: {},
 
-      name: rolekey,
-      enable: false,
+        name: rolekey,
+        enable: false,
 
-      progress: {
-        cur: -1,
-        max: -1,
+        progress: {
+          cur: -1,
+          max: -1,
+        },
+        enhance: true,
+        record: null,
       },
-      enhance: true,
-      record: null,
-    }
+    ]
     this.prophesy = []
 
     this.store = repX(null, 3)
@@ -595,7 +600,7 @@ export class PlayerInstance {
     this.present = repX(null, 7)
     this.process = null
 
-    this.set_role(rolekey)
+    this.set_role(0, rolekey)
   }
 
   curStatus(): PlayerStatus {
@@ -618,14 +623,37 @@ export class PlayerInstance {
     return m
   }
 
+  find_role(role: RoleKey) {
+    return this.roles.filter(r => r.name === role)[0]
+  }
+
   answer(msg: InnerMsg) {
     Dispatch(playerBind, msg, this)
 
     this.prophesy.forEach(p => {
-      Dispatch(ProphesyTable[p].listener, msg, this)
+      const pd = ProphesyData[p]
+      if (typeof pd.type === 'number') {
+        Dispatch(
+          ProphesyTable[p].listener as GenericListener<PlayerInstance>,
+          msg,
+          this
+        )
+      } else {
+        Dispatch(
+          ProphesyTable[p].listener as SpecificListener<
+            RoleInstance,
+            PlayerInstance
+          >,
+          msg,
+          this.find_role(pd.type),
+          this
+        )
+      }
     })
 
-    Dispatch(this.role_impl().listener, msg, this.role, this)
+    this.roles.forEach((r, index) => {
+      Dispatch(this.role_impl(index).listener, msg, r, this)
+    })
 
     if ('card' in msg) {
       if (msg.card === -1) {
@@ -746,9 +774,9 @@ export class PlayerInstance {
     })
   }
 
-  set_role(role: RoleKey, keepAttrib = false) {
-    this.role = {
-      attrib: keepAttrib ? this.role.attrib : {},
+  set_role(index: number, role: RoleKey, keepAttrib = false) {
+    this.roles[index] = {
+      attrib: keepAttrib ? this.roles[index].attrib : {},
 
       name: role,
       enable: false,
@@ -758,10 +786,23 @@ export class PlayerInstance {
         max: -1,
       },
       enhance: false,
-      record: keepAttrib ? this.role.record : null,
+      record: keepAttrib ? this.roles[index].record : null,
     }
 
-    this.role_impl().init.call(this.role, this)
+    this.role_impl(index).init.call(this.roles[index], this)
+  }
+
+  load_prophesy(prophesy: ProphesyKey) {
+    const pd = ProphesyData[prophesy]
+    const p = ProphesyTable[prophesy]
+    if (typeof pd.type === 'string') {
+      const rpd = p as RoleProphesyImpl
+      rpd.init.call(this.find_role(pd.type as RoleKey), this)
+    } else {
+      const rpd = p as ProphesyImpl
+      rpd.init.call(this)
+    }
+    this.prophesy.push(prophesy)
   }
 
   query_selected_present() {
@@ -799,8 +840,8 @@ export class PlayerInstance {
     }
   }
 
-  role_impl() {
-    return RoleTable[this.role.name]
+  role_impl(idx: number) {
+    return RoleTable[this.roles[idx].name]
   }
 
   locate(name: string | string[]): CardInstance[] {
@@ -941,7 +982,7 @@ export class PlayerInstance {
   }
 
   enter(card: CardKey, place = -1) {
-    const cd = CardData[card]
+    let cd = CardData[card]
     if (cd.type === 'support') {
       const target = this.present[place]?.card
       if (target) {
@@ -973,6 +1014,15 @@ export class PlayerInstance {
       } else {
         this.present.splice(rp, 1)
         this.present.splice(place, 0, null)
+      }
+    }
+    if (card === '拟态雏虫') {
+      const cardt = this.$ref$Game.lcg.one_of(this.store.filter(notNull))?.card
+      if (cardt) {
+        card = cardt
+        cd = CardData[cardt]
+      } else {
+        return null
       }
     }
     const ci = new CardInstance(this, cd)

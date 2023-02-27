@@ -3,9 +3,10 @@ import MainInfo from '../MainInfo'
 import PresentSection from './PresentSection'
 import StoreSection from './StoreSection'
 import { clientContext, gameContext, playerContext } from '../Context'
-import GlobalAction from './GlobalAction'
+import GlobalAction from '../GlobalAction'
 import DiscoverSection from './DiscoverSection'
 import { PropsWithChildren } from 'react'
+import GlobalActionSection from './GlobalActionSection'
 
 function GameInstanceMobile(props: PropsWithChildren<{}>) {
   const player =
@@ -44,7 +45,7 @@ function GameInstanceMobile(props: PropsWithChildren<{}>) {
             <MainInfo></MainInfo>
           </Box>
           <Box gridColumn="span 2">
-            <GlobalAction>
+            <GlobalAction layout={GlobalActionSection}>
               {player.status === 'discover' && hideDiscover && (
                 <Button
                   variant="contained"

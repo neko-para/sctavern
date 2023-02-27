@@ -21,6 +21,7 @@ export type InputMsg = ApplyKey<
     }
   | {
       msg: '$ability'
+      place: number
     }
   | {
       msg: '$lock'

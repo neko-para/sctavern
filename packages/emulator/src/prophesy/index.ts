@@ -6,258 +6,259 @@ import {
   isNormal,
   UnitData,
   CardKey,
+  RoleKey,
 } from '@sctavern/data'
 import type { ProphesyKey } from '@sctavern/data'
-import type { ProphesyImpl } from '../types'
+import type { DiscoverItem, ProphesyImpl, RoleProphesyImpl } from '../types'
 import { randomUpgrades, rep } from '../utils'
 
 export function CreateProphesyTable() {
   const res: {
-    [key in ProphesyKey]?: Partial<ProphesyImpl>
+    [key in ProphesyKey]?: Partial<RoleProphesyImpl>
   } = {
     混沌洪流: {
       init() {
-        this.role.attrib.mode = 1
+        this.attrib.mode = 1
       },
     },
     无限融合: {
       init() {
-        this.role.attrib.mode = 2
+        this.attrib.mode = 2
       },
     },
     狂热冲锋: {
-      init() {
-        this.role.attrib.mode = 1
-        while (this.level < 4) {
-          this.do_tavern_upgrade()
+      init(player) {
+        this.attrib.mode = 1
+        while (player.level < 4) {
+          player.do_tavern_upgrade()
         }
       },
     },
     能量提速: {
       init() {
-        this.role.attrib.mode = 2
+        this.attrib.mode = 2
       },
     },
     自动装填: {
       init() {
-        this.role.attrib.mode = 1
+        this.attrib.mode = 1
       },
     },
     紧急征召: {
       init() {
-        this.role.attrib.mode = 2
-        this.role.record = {}
+        this.attrib.mode = 2
+        this.record = {}
       },
     },
     收割行动: {
       init() {
-        this.role.attrib.mode = 1
+        this.attrib.mode = 1
       },
     },
     强化药剂: {
       init() {
-        this.role.attrib.mode = 2
-        this.role.attrib.speed = 0
+        this.attrib.mode = 2
+        this.attrib.speed = 0
       },
       listener: {
         'battle-result'({ win }) {
-          if (this.role.attrib.mode === 2) {
+          if (this.attrib.mode === 2) {
             if (win) {
-              this.role.attrib.speed += 12
+              this.attrib.speed += 12
             }
           }
         },
       },
       count() {
-        return this.role.attrib.speed
+        return this.attrib.speed
       },
     },
     幽灵报道: {
-      init() {
-        this.role.attrib.mode = 1
-        this.role.progress.max = -1
-        this.role.progress.cur = -1
-        this.role.enable = true
-        this.enter('幽灵报道')
+      init(player) {
+        this.attrib.mode = 1
+        this.progress.max = -1
+        this.progress.cur = -1
+        this.enable = true
+        player.enter('幽灵报道')
       },
     },
     暗影猎杀: {
       init() {
-        this.role.attrib.mode = 2
+        this.attrib.mode = 2
       },
     },
     寄生细胞: {
       init() {
-        this.role.attrib.mode = 1
+        this.attrib.mode = 1
       },
     },
     双生虫卵: {
       init() {
-        this.role.attrib.mode = 2
+        this.attrib.mode = 2
       },
     },
     备用钻头: {
       init() {
-        this.role.attrib.mode = 1
-        this.role.progress.cur = 3
+        this.attrib.mode = 1
+        this.progress.cur = 3
       },
     },
     自动修理: {
       init() {
-        this.role.attrib.mode = 2
+        this.attrib.mode = 2
       },
     },
     进化分支: {
       init() {
-        this.role.attrib.mode = 1
+        this.attrib.mode = 1
       },
     },
     改造突变: {
       init() {
-        this.role.attrib.mode = 2
-        this.role.progress.cur = 0
+        this.attrib.mode = 2
+        this.progress.cur = 0
       },
       listener: {
         'battle-result'({ win }) {
           if (win) {
-            this.role.progress.cur += 2
+            this.progress.cur += 2
           } else {
-            this.role.progress.cur += 1
+            this.progress.cur += 1
           }
         },
       },
     },
     过量采集: {
       init() {
-        this.role.attrib.mode = 1
+        this.attrib.mode = 1
       },
     },
     采集蜂群: {
       init() {
-        this.role.attrib.mode = 2
-        this.role.enable = true
+        this.attrib.mode = 2
+        this.enable = true
       },
     },
     充气甲壳: {
       init() {
-        this.role.attrib.mode = 1
+        this.attrib.mode = 1
       },
     },
     超距视界: {
       init() {
-        this.role.attrib.mode = 2
+        this.attrib.mode = 2
       },
     },
     再生护甲: {
       init() {
-        this.role.attrib.mode = 1
-        this.role.attrib.shield = 0
+        this.attrib.mode = 1
+        this.attrib.shield = 0
       },
       listener: {
-        'round-end'() {
-          this.life = Math.min(100, this.life + 10)
+        'round-end'(m, player) {
+          player.life = Math.min(100, player.life + 10)
         },
         'battle-result'({ win }) {
           if (!win) {
-            this.role.attrib.shield += 4
+            this.attrib.shield += 4
           }
         },
       },
       count() {
-        return this.role.attrib.shield ?? 0
+        return this.attrib.shield ?? 0
       },
     },
     荆棘外壳: {
       init() {
-        this.role.attrib.mode = 2
+        this.attrib.mode = 2
       },
     },
     护盾封存: {
       init() {
-        this.role.attrib.mode = 1
+        this.attrib.mode = 1
       },
     },
     能量视界: {
       init() {
-        this.role.attrib.mode = 2
+        this.attrib.mode = 2
       },
     },
     暗影追踪: {
       init() {
-        this.role.attrib.mode = 1
-        this.role.enhance = true
-        this.role.progress.cur = -1
+        this.attrib.mode = 1
+        this.enhance = true
+        this.progress.cur = -1
       },
     },
     闪现充能: {
-      init() {
-        this.role.attrib.mode = 2
-        this.attrib.alter('free-refresh', 5)
+      init(player) {
+        this.attrib.mode = 2
+        player.attrib.alter('free-refresh', 5)
       },
       listener: {
-        'round-enter'() {
-          this.attrib.alter('free-refresh', 5)
+        'round-enter'(m, player) {
+          player.attrib.alter('free-refresh', 5)
         },
       },
     },
     灵能传送: {
       init() {
-        this.role.attrib.mode = 1
-        this.role.progress.cur = -1
-        this.role.enable = true
+        this.attrib.mode = 1
+        this.progress.cur = -1
+        this.enable = true
       },
       listener: {
         'tavern-upgraded'() {
-          this.role.enable = true
+          this.enable = true
         },
       },
     },
     共鸣之刃: {
       init() {
-        this.role.attrib.mode = 2
-        this.role.progress.cur = -1
-        this.role.enhance = true
+        this.attrib.mode = 2
+        this.progress.cur = -1
+        this.enhance = true
       },
       listener: {
-        'round-enter'() {
-          this.role.enhance = true
-          if (this.role.record) {
-            this.obtain_card(this.role.record as CardKey)
-            this.role.record = null
+        'round-enter'(m, player) {
+          this.enhance = true
+          if (this.record) {
+            player.obtain_card(this.record as CardKey)
+            this.record = null
           }
         },
         bought({ cardt }) {
-          if (this.role.enhance) {
-            this.role.record = cardt
-            this.role.enhance = false
+          if (this.enhance) {
+            this.record = cardt
+            this.enhance = false
           }
         },
       },
     },
     超量采集: {
-      init() {
-        this.role.attrib.mode = 1
-        this.role.enable = false
-        this.mineral_max = 18
-        this.mineral = 18
-        this.config.MineralLimitDelta = -1
+      init(player) {
+        this.attrib.mode = 1
+        this.enable = false
+        player.mineral_max = 18
+        player.mineral = 18
+        player.config.MineralLimitDelta = -1
       },
     },
     附属钻头: {
-      init() {
-        this.role.attrib.mode = 2
-        this.role.enable = false
-        this.config.MineralLimitDelta = 2
-        this.config.MaxMineral = 20
+      init(player) {
+        this.attrib.mode = 2
+        this.enable = false
+        player.config.MineralLimitDelta = 2
+        player.config.MaxMineral = 20
       },
     },
     机械气罐: {
       init() {
-        this.role.attrib.mode = 1
+        this.attrib.mode = 1
       },
       listener: {
-        'card-selled'() {
-          this.obtain_resource({
+        'card-selled'(m, player) {
+          player.obtain_resource({
             gas: 1,
           })
         },
@@ -265,19 +266,19 @@ export function CreateProphesyTable() {
     },
     爆裂核心: {
       init() {
-        this.role.attrib.mode = 2
-        this.role.enable = true
+        this.attrib.mode = 2
+        this.enable = true
       },
       listener: {
         'round-enter'() {
-          this.role.enable = true
+          this.enable = true
         },
       },
     },
     金光普照: {
       init() {
-        this.role.attrib.mode = 1
-        this.role.enable = false
+        this.attrib.mode = 1
+        this.enable = false
       },
       listener: {
         'card-entered'({ target }) {
@@ -290,35 +291,35 @@ export function CreateProphesyTable() {
     },
     限制解除: {
       init() {
-        this.role.attrib.mode = 2
-        this.role.attrib.used = 0
+        this.attrib.mode = 2
+        this.attrib.used = 0
       },
     },
     光影集结: {
       init() {
-        this.role.attrib.mode = 1
-        this.role.enable = true
-        this.role.progress.cur = -1
-        this.role.progress.max = -1
+        this.attrib.mode = 1
+        this.enable = true
+        this.progress.cur = -1
+        this.progress.max = -1
       },
     },
     能量阵列: {
-      init() {
-        this.role.attrib.mode = 2
-        this.config.ProtossPowerMultiplier = 5
+      init(player) {
+        this.attrib.mode = 2
+        player.config.ProtossPowerMultiplier = 5
       },
     },
     搜寻样本: {
-      init() {
-        this.role.attrib.mode = 1
-        this.role.progress.cur = 0
-        this.role.progress.max = -1
-        this.role.enable = false
+      init(player) {
+        this.attrib.mode = 1
+        this.progress.cur = 0
+        this.progress.max = -1
+        this.enable = false
 
-        this.obtain_resource({
+        player.obtain_resource({
           mineral: -3,
         })
-        const ci = this.enter('科学观察')
+        const ci = player.enter('科学观察')
         if (ci) {
           ci.obtain_upgrade('搜寻样本')
         }
@@ -326,57 +327,113 @@ export function CreateProphesyTable() {
     },
     电磁干扰: {
       init() {
-        this.role.attrib.mode = 2
-        this.role.progress.cur = 3
-        this.role.progress.max = 3
+        this.attrib.mode = 2
+        this.progress.cur = 3
+        this.progress.max = 3
       },
     },
     核心超载: {
       init() {
-        this.role.attrib.mode = 1
-        this.role.enable = true
+        this.attrib.mode = 1
+        this.enable = true
       },
     },
     虫洞传送: {
-      init() {
-        this.role.attrib.mode = 2
-        this.enter('母舰核心(PVE)')
-        this.combine('母舰核心(PVE)', true)
+      init(player) {
+        this.attrib.mode = 2
+        player.enter('母舰核心(PVE)')
+        player.combine('母舰核心(PVE)', true)
       },
     },
     精装钢板: {
       init() {
-        this.role.attrib.mode = 1
+        this.attrib.mode = 1
       },
     },
     智能伺服: {
       init() {
-        this.role.attrib.mode = 2
+        this.attrib.mode = 2
+      },
+    },
+    适应细胞: {
+      init() {
+        this.attrib.mode = 1
+      },
+    },
+    完全拟态: {
+      init(player) {
+        this.attrib.mode = 2
+        this.enable = false
+        this.attrib.extraRoleId = player.roles.length
+        this.attrib.cleanProphesyId = -1
+      },
+      listener: {
+        'round-enter'(m, player) {
+          if (this.attrib.cleanProphesyId !== -1) {
+            player.prophesy.splice(this.attrib.cleanProphesyId, 1)
+            this.attrib.cleanProphesyId = -1
+          }
+          const prophesySet: ProphesyKey[] = [
+            '混沌洪流',
+            '寄生细胞',
+            '自动修理',
+            '采集蜂群',
+            '超距视界',
+            '荆棘外壳',
+            '爆裂核心',
+            '光影集结',
+            '精装钢板',
+            '智能伺服',
+          ]
+          this.attrib.discoverId = player.push_discover(
+            player.$ref$Game.lcg
+              .shuffle(prophesySet.map(x => x))
+              .slice(0, 4)
+              .map(str => ({
+                type: 'custom',
+                str,
+              }))
+          )
+        },
+        'discover-finish'({ ctx }, player) {
+          if (ctx.id !== this.attrib.discoverId) {
+            return
+          }
+          const p = (ctx.item[ctx.choice] as DiscoverItem & { type: 'custom' })
+            .str as ProphesyKey
+          const pd = ProphesyData[p]
+          player.set_role(this.attrib.extraRoleId, pd.type as RoleKey)
+          this.attrib.cleanProphesyId = player.prophesy.length
+          player.load_prophesy(p)
+        },
       },
     },
     虚空意志: {
       init() {
-        this.role.attrib.mode = 1
-        this.role.enable = true
+        this.attrib.mode = 1
+        this.enable = true
       },
       listener: {
         'round-enter'() {
-          this.role.enable = true
+          this.enable = true
         },
       },
     },
     形体降临: {
       init() {
-        this.role.attrib.mode = 2
-        this.role.enable = true
+        this.attrib.mode = 2
+        this.enable = true
       },
       listener: {
         'round-enter'() {
-          this.role.enable = true
+          this.enable = true
         },
       },
     },
-
+  }
+  const resg: {
+    [key in ProphesyKey]?: Partial<ProphesyImpl>
+  } = {
     地下交易: {
       init() {
         this.obtain_resource({
@@ -690,11 +747,19 @@ export function CreateProphesyTable() {
     },
   }
   for (const p in res) {
-    const impl = res[p as keyof typeof res] as Partial<ProphesyImpl>
+    const impl = res[p as keyof typeof res] as Partial<RoleProphesyImpl>
     impl.init = impl.init || (() => void 0)
     impl.listener = impl.listener || {}
   }
-  return res as Record<ProphesyKey, ProphesyImpl>
+  for (const p in resg) {
+    const impl = resg[p as keyof typeof resg] as Partial<ProphesyImpl>
+    impl.init = impl.init || (() => void 0)
+    impl.listener = impl.listener || {}
+  }
+  return {
+    ...res,
+    ...resg,
+  } as Record<ProphesyKey, ProphesyImpl | RoleProphesyImpl>
 }
 
 const t = CreateProphesyTable()

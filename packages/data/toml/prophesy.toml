@@ -252,6 +252,18 @@ type = '行星要塞'
 desc = '技能不再消耗晶体矿并增加两个选项'
 
 [[prophesy]]
+name = '适应细胞'
+pinyin = 'syxb'
+type = '拟态虫'
+desc = '替换技能: 每回合, 获得一张可以变为商店随机卡牌的拟态雏虫'
+
+[[prophesy]]
+name = '完全拟态'
+pinyin = 'wqnt'
+type = '拟态虫'
+desc = '每回合开始时, 发现一个初始预言, 并变为初始预言所属的角色'
+
+[[prophesy]]
 name = '虚空意志'
 pinyin = 'xkyz'
 type = '混合体'

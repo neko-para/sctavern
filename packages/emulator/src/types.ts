@@ -184,6 +184,20 @@ export interface PresentItemState {
   actions: PresentAction[]
 }
 
+export interface RoleState {
+  name: RoleKey
+  ability: string
+  desc: string
+  enable: boolean
+
+  progress: {
+    cur: number
+    max: number
+  } | null
+  enhance: boolean
+  record: unknown | null
+}
+
 export interface PlayerState {
   config: PlayerConfig
 
@@ -206,22 +220,10 @@ export interface PlayerState {
   }
   locked: boolean
 
-  role: {
-    name: RoleKey
-    ability: string
-    desc: string
-    enable: boolean
-
-    progress: {
-      cur: number
-      max: number
-    } | null
-    enhance: boolean
-    record: unknown | null
-  }
+  roles: RoleState[]
 
   action: GlobalAction[]
-  abilityAction: AbilityAction
+  abilityAction: AbilityAction[]
   store: (StoreItemState | null)[]
   hand: (HandItemState | null)[]
   present: PresentItemState[]
@@ -265,6 +267,14 @@ export interface RoleImpl {
   ability: (this: RoleInstance, player: PlayerInstance) => void
 
   record: (this: RoleInstance) => string[]
+}
+
+export interface RoleProphesyImpl {
+  init: (this: RoleInstance, player: PlayerInstance) => void
+
+  listener: SpecificListener<RoleInstance, PlayerInstance>
+
+  count?: (this: RoleInstance, player: PlayerInstance) => number
 }
 
 export interface ProphesyImpl {

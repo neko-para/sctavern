@@ -576,6 +576,7 @@ export function CreateRoleTable() {
                 }
               }
             }
+            break
           }
         }
       },
@@ -1085,40 +1086,49 @@ export function CreateRoleTable() {
         }
       },
     },
-    // 下面的PVE都没做
     拟态虫: {
       init() {
         this.attrib.pos = -1
       },
       listener: {
         'round-enter'() {
-          this.enable = true
+          if (this.attrib.mode !== 2) {
+            this.enable = true
+          }
         },
       },
       ability(player) {
         if (!this.enable) {
           return
         }
-        const ci = player.query_selected_present()
-        if (!ci || player.mineral < 2 || ci.index() === this.attrib.pos) {
-          return
+        switch (this.attrib.mode ?? 0) {
+          case 0:
+            const ci = player.query_selected_present()
+            if (!ci || player.mineral < 2 || ci.index() === this.attrib.pos) {
+              return
+            }
+            const c = player.$ref$Game.pool.discover(
+              c => c.level === player.level,
+              1
+            )
+            if (!c) {
+              return
+            }
+            ci.load_unit(c[0], false, u => isNormal(UnitData[u]))
+            this.attrib.pos = ci.index()
+            player.$ref$Game.pool.drop(c)
+            player.obtain_resource({
+              mineral: -2,
+            })
+            break
+          case 1:
+            player.obtain_card('拟态雏虫', false)
+            break
         }
-        const c = player.$ref$Game.pool.discover(
-          c => c.level === player.level,
-          1
-        )
-        if (!c) {
-          return
-        }
-        ci.load_unit(c[0], false, u => isNormal(UnitData[u]))
-        this.attrib.pos = ci.index()
-        player.$ref$Game.pool.drop(c)
-        player.obtain_resource({
-          mineral: -2,
-        })
         this.enable = false
       },
     },
+    // 下面的PVE都没做
     探机: {
       listener: {
         'card-entered'({ target }) {
@@ -1762,7 +1772,7 @@ export function CreateRoleTable() {
           }
           this.progress.cur += 1
           if (this.progress.cur === this.progress.max) {
-            player.set_role('凯瑞甘(异虫形态)')
+            player.set_role(player.roles.indexOf(this), '凯瑞甘(异虫形态)')
           }
         },
       },
@@ -1943,7 +1953,7 @@ export function CreateRoleTable() {
           player.attrib.alter('free-refresh', -1)
         }
         delete this.attrib.fr
-        player.set_role('解放者(防卫模式)', true)
+        player.set_role(player.roles.indexOf(this), '解放者(防卫模式)', true)
       },
     },
     '解放者(防卫模式)': {
@@ -1961,7 +1971,7 @@ export function CreateRoleTable() {
       },
       ability(player) {
         player.config.RefreshDisabled = false
-        player.set_role('解放者', true)
+        player.set_role(player.roles.indexOf(this), '解放者', true)
       },
     },
     干扰者: {

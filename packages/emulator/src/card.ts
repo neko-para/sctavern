@@ -21,11 +21,6 @@ const cardBind: GenericListener<CardInstance> = {
       this.obtain_unit(rep('自动机炮', this.$ref$Player.level))
     }
   },
-  'round-start'() {
-    if (this.upgrades.includes('潜能超载')) {
-      this.$ref$Player.destroy(this)
-    }
-  },
   'round-end'() {
     if (this.race === 'T' && this.infr() === '高级科技实验室') {
       this.fast_prod()
@@ -289,7 +284,9 @@ export class CardInstance {
         break
       }
       case '原始尖塔':
-        this.add_desc('原始尖塔')
+      case '精神控制':
+      case '潜能超载':
+        this.add_desc(upgrade)
         break
     }
     this.post({
