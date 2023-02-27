@@ -308,6 +308,40 @@ export function CreateProphesyTable() {
         this.config.ProtossPowerMultiplier = 5
       },
     },
+    搜寻样本: {
+      init() {
+        this.role.attrib.mode = 1
+        this.role.progress.cur = 0
+        this.role.progress.max = -1
+        this.role.enable = false
+
+        this.obtain_resource({
+          mineral: -3,
+        })
+        const ci = this.enter('科学观察')
+        if (ci) {
+          ci.obtain_upgrade('搜寻样本')
+        }
+      },
+    },
+    电磁干扰: {
+      init() {
+        this.role.attrib.mode = 2
+        this.role.progress.cur = 3
+        this.role.progress.max = 3
+      },
+    },
+    核心超载: {
+      init() {
+        this.role.enable = true
+      },
+    },
+    虫洞传送: {
+      init() {
+        this.enter('母舰核心(PVE)')
+        this.combine('母舰核心(PVE)', true)
+      },
+    },
     虚空意志: {
       init() {
         this.role.attrib.mode = 1

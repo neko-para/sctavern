@@ -16,8 +16,6 @@ import { useNavigate } from 'react-router'
 const lcg = new LCG(Math.floor(Math.random() * 100000))
 
 const noPveRoles: RoleKey[] = [
-  '科学球',
-  '母舰核心',
   '行星要塞',
   '拟态虫',
   '探机',

@@ -216,6 +216,30 @@ type = '阿塔尼斯'
 desc = '获得5倍能量强度'
 
 [[prophesy]]
+name = '搜寻样本'
+pinyin = 'sxyb'
+type = '科学球'
+desc = '移除技能, 消耗3晶体矿获得卡牌科学观察'
+
+[[prophesy]]
+name = '电磁干扰'
+pinyin = 'dcgr'
+type = '科学球'
+desc = '观察样本可以为选中卡牌添加并不再消耗瓦斯, 可以使用三次'
+
+[[prophesy]]
+name = '核心超载'
+pinyin = 'hxcz'
+type = '母舰核心'
+desc = '获得主动技能: 本回合, 卡牌的价格变为2, 购买卡牌时会自动补充其复制, 整局游戏只能使用一次'
+
+[[prophesy]]
+name = '虫洞传送'
+pinyin = 'cdcs'
+type = '母舰核心'
+desc = '立即三连母舰核心'
+
+[[prophesy]]
 name = '虚空意志'
 pinyin = 'xkyz'
 type = '混合体'

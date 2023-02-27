@@ -909,7 +909,6 @@ export function CreateRoleTable() {
         this.enable = false
       },
     },
-    // 下面的PVE都没做
     科学球: {
       init() {
         this.progress.max = 2
@@ -922,7 +921,30 @@ export function CreateRoleTable() {
           const { unit } = mostValueUnit(target.units)
           const r = this.record as Record<UnitKey, number>
           if (unit) {
-            r[unit] = (r[unit] ?? 0) + 1
+            if (this.attrib.mode !== 1) {
+              r[unit] = (r[unit] ?? 0) + 1
+            } else {
+              if (target.name === '科学观察') {
+                return
+              }
+              const cis = player.locate('科学观察')
+              if (cis.length > 0) {
+                cis[0].obtain_unit([unit])
+                this.progress.cur += 1
+              }
+            }
+          }
+        },
+        'card-selled'({ target }, player) {
+          const { unit } = mostValueUnit(target.units)
+          if (unit) {
+            if (this.attrib.mode === 1) {
+              const cis = player.locate('科学观察')
+              if (cis.length > 0) {
+                cis[0].obtain_unit([unit])
+                this.progress.cur += 1
+              }
+            }
           }
         },
       },
@@ -930,25 +952,42 @@ export function CreateRoleTable() {
         if (!this.enable) {
           return
         }
-        if (player.gas < 1 || !player.can_enter('观察样本')) {
+        if (this.attrib.mode === 1) {
           return
         }
-        const ci = player.enter('观察样本')
-        if (ci) {
-          const r = this.record as Record<UnitKey, number>
-          ci.obtain_unit(
-            (Object.keys(r) as UnitKey[]).map(k => rep(k, r[k])).flat()
-          )
-          player.obtain_resource({
-            gas: -1,
-          })
-          this.progress.cur -= 1
-          this.enable = this.progress.cur > 0
+        if (this.attrib.mode === 2) {
+          const ci = player.query_selected_present()
+          if (ci) {
+            const r = this.record as Record<UnitKey, number>
+            ci.obtain_unit(
+              (Object.keys(r) as UnitKey[]).map(k => rep(k, r[k])).flat()
+            )
+          }
+        } else {
+          if (player.gas < 1 || !player.can_enter('观察样本')) {
+            return
+          }
+          const ci = player.enter('观察样本')
+          if (ci) {
+            const r = this.record as Record<UnitKey, number>
+            ci.obtain_unit(
+              (Object.keys(r) as UnitKey[]).map(k => rep(k, r[k])).flat()
+            )
+            player.obtain_resource({
+              gas: -1,
+            })
+          }
         }
+        this.progress.cur -= 1
+        this.enable = this.progress.cur > 0
       },
       record() {
-        const r = this.record as Record<UnitKey, number>
-        return (Object.keys(r) as UnitKey[]).map(k => `${k}: ${r[k]}`)
+        if (this.attrib.mode === 1) {
+          return []
+        } else {
+          const r = this.record as Record<UnitKey, number>
+          return (Object.keys(r) as UnitKey[]).map(k => `${k}: ${r[k]}`)
+        }
       },
     },
     母舰核心: {
@@ -962,27 +1001,59 @@ export function CreateRoleTable() {
             player.obtain_resource({
               mineral: -3,
             })
-            player.enter('母舰核心')
+            player.enter(
+              player.$ref$Game.config.Pve ? '母舰核心(PVE)' : '母舰核心'
+            )
           }
         },
         'card-combined'(m, player) {
-          const cis = player.locate(['母舰核心', '母舰'])
+          const cis = player.locate(['母舰核心', '母舰核心(PVE)'])
           if (!cis.length) {
             return
           }
-          cis[0].obtain_unit(rep('虚空辉光舰', player.level))
+          cis.forEach(ci => {
+            if (ci.gold && player.$ref$Game.config.Pve) {
+              ci.obtain_unit([
+                ...rep('侦察机(精英)', player.level),
+                ...rep('虚空辉光舰(精英)', player.level),
+                ...rep('风暴战舰(精英)', player.level),
+              ])
+            } else {
+              ci.obtain_unit(rep('虚空辉光舰', player.level))
+            }
+          })
           if (this.progress.cur < this.progress.max) {
             this.progress.cur += 1
             if (this.progress.cur === this.progress.max) {
-              this.progress.cur = -1
-              this.enhance = true
-              cis[0].name = '母舰'
-              cis[0].replace(cis[0].find('母舰核心', 1), '母舰')
+              cis.forEach(ci => {
+                ci.replace(ci.find('母舰核心', 1), '母舰')
+              })
+            }
+          }
+        },
+        'get-buy-cost'(m, player) {
+          if (player.attrib.get('母舰核心:核心超载')) {
+            m.cost = Math.min(2, m.cost)
+          }
+        },
+        bought(m, player) {
+          if (player.attrib.get('母舰核心:核心超载')) {
+            player.store[m.place] = {
+              card: m.cardt,
+              special: false,
             }
           }
         },
       },
+      ability(player) {
+        if (!this.enable) {
+          return
+        }
+        player.attrib.set('母舰核心:核心超载', 1)
+        this.enable = false
+      },
     },
+    // 下面的PVE都没做
     行星要塞: {
       listener: {
         'round-enter'() {

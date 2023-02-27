@@ -976,9 +976,9 @@ export class PlayerInstance {
       }
     }
     const ci = new CardInstance(this, cd)
-    if (this.$ref$Game.config.PoolPack.includes(cd.pack)) {
-      ci.occupy.push(card)
-    }
+    // if (this.$ref$Game.config.PoolPack.includes(cd.pack)) {
+    ci.occupy.push(card)
+    // }
     this.present[place] = {
       card: ci,
     }
@@ -996,7 +996,7 @@ export class PlayerInstance {
     return ci
   }
 
-  combine(card: CardKey) {
+  combine(card: CardKey, noreward = false) {
     const target = this.locate_combine_target(card)
     if (target.length < 2) {
       return false
@@ -1061,29 +1061,30 @@ export class PlayerInstance {
       msg: 'post-enter',
     })
 
-    const reward: DiscoverItem[] | undefined = this.$ref$Game.pool
-      .discover(c => c.level === Math.min(6, this.level + 1), 3)
-      ?.map(c => ({
-        type: 'card',
-        card: c,
-      }))
+    if (!noreward) {
+      const reward: DiscoverItem[] | undefined = this.$ref$Game.pool
+        .discover(c => c.level === Math.min(6, this.level + 1), 3)
+        ?.map(c => ({
+          type: 'card',
+          card: c,
+        }))
 
-    if (ci.upgrades.length < ci.config.MaxUpgrade) {
-      const us = AllUpgrade.map(u => UpgradeData[u])
-        .filter(u => u.category === 'combine')
-        .filter(u => !ci.upgrades.includes(u.name))
-      if (us.length > 0) {
-        reward?.push({
-          type: 'upgrade',
-          upgrade: this.$ref$Game.lcg.shuffle(us)[0],
-        })
+      if (ci.upgrades.length < ci.config.MaxUpgrade) {
+        const us = AllUpgrade.map(u => UpgradeData[u])
+          .filter(u => u.category === 'combine')
+          .filter(u => !ci.upgrades.includes(u.name))
+        if (us.length > 0) {
+          reward?.push({
+            type: 'upgrade',
+            upgrade: this.$ref$Game.lcg.shuffle(us)[0],
+          })
+        }
       }
+
+      this.push_discover(reward, {
+        target: ci.index(),
+      })
     }
-
-    this.push_discover(reward, {
-      target: ci.index(),
-    })
-
     return ci
   }
 

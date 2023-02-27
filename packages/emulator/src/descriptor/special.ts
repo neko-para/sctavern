@@ -154,8 +154,11 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
+    科学观察0: NotImplementYet(),
     母舰核心0: NotImplementYet(),
     母舰核心1: NotImplementYet(),
+    '母舰核心(PVE)0': NotImplementYet(),
+    '母舰核心(PVE)1': NotImplementYet(),
     毒气炮塔0: 自动机炮转换(3, 2, '毒气炮塔'),
     毒气炮塔1: {
       listener: {

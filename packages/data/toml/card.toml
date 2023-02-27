@@ -3370,3 +3370,54 @@ desc = [
 
 [card.attr]
 red = true
+
+[[card]]
+name = '科学观察'
+pinyin = 'kxgc'
+race = 'T'
+level = 7
+pack = '科学球衍生'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'/词条暂无/',
+		'/词条暂无/',
+	],
+]
+
+[card.unit]
+'反应堆' = 1
+'科学船' = 2
+'陆战队员' = 2
+'医疗兵' = 2
+
+[card.attr]
+red = true
+
+[[card]]
+name = '母舰核心(PVE)'
+pinyin = 'mjhx(pve)'
+race = 'P'
+level = 1
+pack = '母舰核心衍生'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'玩家进行两次三连此卡牌变为母舰',
+		'玩家进行两次三连此卡牌变为母舰',
+	],
+	[
+		'三连时, 获得数量等你酒馆等级的虚空辉光舰',
+		'三连时, 获得数量等你酒馆等级的侦察机(精英), 虚空辉光舰(精英), 风暴战舰(精英)',
+	],
+]
+
+[card.unit]
+'母舰核心' = 1
+'狂热者' = 1
+'虚空水晶塔' = 2
+'追猎者' = 2
+
+[card.attr]
