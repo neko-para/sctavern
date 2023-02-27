@@ -94,6 +94,7 @@ export interface PlayerConfig {
   TavernUpgrade: number[]
 
   MaxMineral: number
+  MineralLimitDelta: number
   MaxGas: number
 
   RefreshDisabled: boolean

@@ -385,10 +385,22 @@ const playerBind: GenericListener<PlayerInstance> = {
     if (this.upgrade_cost > 0) {
       this.upgrade_cost -= 1
     }
-    if (this.mineral_max < this.config.MaxMineral) {
-      this.mineral_max += 1
+
+    if (this.config.MineralLimitDelta) {
+      if (this.config.MineralLimitDelta > 0) {
+        this.mineral_max = Math.min(
+          this.config.MaxMineral,
+          this.mineral_max + this.config.MineralLimitDelta
+        )
+      } else {
+        this.mineral_max = Math.max(
+          0,
+          this.mineral_max + this.config.MineralLimitDelta
+        )
+      }
     }
     this.mineral = this.mineral_max
+
     if (this.gas < this.config.MaxGas) {
       this.gas += 1
     }
@@ -485,6 +497,7 @@ export class PlayerInstance {
 
   mineral: number
   mineral_max: number
+
   gas: number
   gas_max: number
 
@@ -532,6 +545,7 @@ export class PlayerInstance {
       TavernUpgrade: [0, 5, 7, 8, 9, 11, 0],
 
       MaxMineral: 10,
+      MineralLimitDelta: 1,
       MaxGas: 6,
 
       RefreshDisabled: false,
@@ -1079,8 +1093,7 @@ export class PlayerInstance {
     this.present[pos] = null
     this.process = ci
 
-    const doPostEffect =
-      ci.level > 0 || ci.name === '虫卵' || ci.name === '被感染的虫卵'
+    const doPostEffect = ci.level > 0 || ci.name === '虫卵'
     const dark = ci.level >= 4 ? 2 : 1
     if (doPostEffect) {
       ci.post({

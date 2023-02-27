@@ -592,12 +592,19 @@ export function CreateRoleTable() {
               mineral: 1,
             })
           }
-        },
-        'tavern-upgraded'({ level }, player) {
           if (this.attrib.mode === 1) {
-            player.obtain_resource({
-              mineral: level,
-              gas: level,
+            player.$ref$Game.player.forEach(p => {
+              if (p && p.life > 0) {
+                if (round % 2 === 1) {
+                  p.obtain_resource({
+                    gas: 1,
+                  })
+                } else {
+                  p.obtain_resource({
+                    mineral: 1,
+                  })
+                }
+              }
             })
           }
         },
@@ -705,45 +712,43 @@ export function CreateRoleTable() {
       },
       listener: {
         'round-enter'() {
-          if (this.attrib.mode === 1) {
-            this.enhance = true
-          } else {
+          if (!this.attrib.mode) {
             this.progress.cur = 0
           }
         },
         bought(m) {
-          if (m.action !== 'combine') {
-            if (this.attrib.mode !== 1) {
-              if (
-                this.attrib.mode === 2 &&
-                this.progress.cur === this.progress.max
-              ) {
-                this.progress.cur = 0
-              } else {
-                this.progress.cur += 1
-              }
-            }
-            if (this.attrib.mode === 1) {
-              this.enhance = false
-            } else {
+          if (!this.attrib.mode) {
+            if (m.action !== 'combine') {
+              this.progress.cur += 1
               this.enhance = this.progress.cur === this.progress.max
             }
           }
         },
         'get-buy-cost'(m) {
-          if (m.action === 'combine') {
-            return
-          }
-          if (this.attrib.mode === 1) {
-            if (this.enhance) {
-              m.cost = 0
+          if (!this.attrib.mode) {
+            if (m.action === 'combine') {
+              return
             }
-          } else {
             if (this.progress.cur === this.progress.max) {
               m.cost = Math.min(m.cost, 1)
             }
           }
         },
+      },
+      ability(player) {
+        if (this.attrib.mode === 1) {
+          player.store.filter(notNull).forEach(s => {
+            player.obtain_card(s.card)
+          })
+          this.enable = false
+        }
+      },
+      record() {
+        if (this.attrib.mode === 2) {
+          return [(this.record as CardKey) ?? '']
+        } else {
+          return []
+        }
       },
     },
     矿骡: {
@@ -752,10 +757,9 @@ export function CreateRoleTable() {
       },
       listener: {
         'round-enter'(m, player) {
-          if (this.attrib.mode !== 1) {
+          if (!this.attrib.mode) {
             if (this.attrib.used) {
-              player.mineral -=
-                player.mineral_max - (this.attrib.mode === 2 ? 6 : 2)
+              player.mineral -= player.mineral_max - 2
               this.attrib.used = 0
             } else {
               this.enable = true
@@ -769,19 +773,15 @@ export function CreateRoleTable() {
         if (!this.enable) {
           return
         }
-        if (this.attrib.mode === 1) {
-          player.obtain_resource({
-            mineral: this.progress.cur,
-          })
-          this.progress.cur = -1
-        } else {
-          if (player.mineral >= player.mineral_max) {
-            return
-          }
-          player.obtain_resource({
-            mineral: player.mineral_max - player.mineral,
-          })
+        if (this.attrib.mode) {
+          return
         }
+        if (player.mineral >= player.mineral_max) {
+          return
+        }
+        player.obtain_resource({
+          mineral: player.mineral_max - player.mineral,
+        })
         this.enable = false
         this.attrib.used = 1
       },
@@ -868,12 +868,12 @@ export function CreateRoleTable() {
       },
       listener: {
         'round-enter'() {
-          if (this.attrib.mode === 3) {
+          if (this.attrib.mode === 1) {
             this.enable = true
           }
         },
         'card-entered'({ target }, player) {
-          if (this.attrib.mode !== 3) {
+          if (this.attrib.mode !== 1) {
             if (this.progress.cur < this.progress.max && target.race === 'P') {
               this.progress.cur += 1
               if (this.progress.cur === this.progress.max) {

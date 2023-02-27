@@ -5,8 +5,9 @@ import {
   ProphesyData,
   isNormal,
   UnitData,
+  CardKey,
 } from '@sctavern/data'
-import type { UpgradeKey, ProphesyKey } from '@sctavern/data'
+import type { ProphesyKey } from '@sctavern/data'
 import type { ProphesyImpl } from '../types'
 import { randomUpgrades, rep } from '../utils'
 
@@ -150,11 +151,20 @@ export function CreateProphesyTable() {
     再生护甲: {
       init() {
         this.role.attrib.mode = 1
+        this.role.attrib.shield = 0
       },
       listener: {
         'round-end'() {
           this.life = Math.min(100, this.life + 10)
         },
+        'battle-result'({ win }) {
+          if (!win) {
+            this.role.attrib.shield += 4
+          }
+        },
+      },
+      count() {
+        return this.role.attrib.shield ?? 0
       },
     },
     荆棘外壳: {
@@ -165,13 +175,6 @@ export function CreateProphesyTable() {
     护盾封存: {
       init() {
         this.role.attrib.mode = 1
-      },
-      listener: {
-        'round-enter'() {
-          this.obtain_resource({
-            mineral: 1,
-          })
-        },
       },
     },
     能量视界: {
@@ -201,24 +204,51 @@ export function CreateProphesyTable() {
       init() {
         this.role.attrib.mode = 1
         this.role.progress.cur = -1
-        this.role.enhance = true
+        this.role.enable = true
+      },
+      listener: {
+        'tavern-upgraded'() {
+          this.role.enable = true
+        },
       },
     },
     共鸣之刃: {
       init() {
         this.role.attrib.mode = 2
+        this.role.progress.cur = -1
+        this.role.enhance = true
+      },
+      listener: {
+        'round-enter'() {
+          this.role.enhance = true
+          if (this.role.record) {
+            this.obtain_card(this.role.record as CardKey)
+            this.role.record = null
+          }
+        },
+        bought({ cardt }) {
+          if (this.role.enhance) {
+            this.role.record = cardt
+            this.role.enhance = false
+          }
+        },
       },
     },
     超量采集: {
       init() {
         this.role.attrib.mode = 1
-        this.role.enable = true
-        this.role.progress.cur = 3
+        this.role.enable = false
+        this.mineral_max = 18
+        this.mineral = 18
+        this.config.MineralLimitDelta = -1
       },
     },
     附属钻头: {
       init() {
         this.role.attrib.mode = 2
+        this.role.enable = false
+        this.config.MineralLimitDelta = 2
+        this.config.MaxMineral = 20
       },
     },
     机械气罐: {
@@ -267,28 +297,15 @@ export function CreateProphesyTable() {
     光影集结: {
       init() {
         this.role.attrib.mode = 1
-      },
-      listener: {
-        'round-end'() {
-          this.all().forEach(ci => {
-            ci.regroup(-1)
-            ci.regroup(-1)
-          })
-        },
+        this.role.enable = true
+        this.role.progress.cur = -1
+        this.role.progress.max = -1
       },
     },
     能量阵列: {
       init() {
         this.role.attrib.mode = 2
         this.config.ProtossPowerMultiplier = 5
-      },
-    },
-    测试服大主教: {
-      init() {
-        this.role.attrib.mode = 3
-        this.role.enable = true
-        this.role.progress.cur = -1
-        this.role.progress.max = -1
       },
     },
     虚空意志: {
