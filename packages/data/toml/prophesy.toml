@@ -240,6 +240,18 @@ type = '母舰核心'
 desc = '立即三连母舰核心'
 
 [[prophesy]]
+name = '精装钢板'
+pinyin = 'jzgb'
+type = '行星要塞'
+desc = '使用技能后复原技能'
+
+[[prophesy]]
+name = '智能伺服'
+pinyin = 'znsf'
+type = '行星要塞'
+desc = '技能不再消耗晶体矿并增加两个选项'
+
+[[prophesy]]
 name = '虚空意志'
 pinyin = 'xkyz'
 type = '混合体'

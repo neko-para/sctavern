@@ -333,13 +333,25 @@ export function CreateProphesyTable() {
     },
     核心超载: {
       init() {
+        this.role.attrib.mode = 1
         this.role.enable = true
       },
     },
     虫洞传送: {
       init() {
+        this.role.attrib.mode = 2
         this.enter('母舰核心(PVE)')
         this.combine('母舰核心(PVE)', true)
+      },
+    },
+    精装钢板: {
+      init() {
+        this.role.attrib.mode = 1
+      },
+    },
+    智能伺服: {
+      init() {
+        this.role.attrib.mode = 2
       },
     },
     虚空意志: {

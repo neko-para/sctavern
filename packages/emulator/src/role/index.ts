@@ -1053,7 +1053,6 @@ export function CreateRoleTable() {
         this.enable = false
       },
     },
-    // 下面的PVE都没做
     行星要塞: {
       listener: {
         'round-enter'() {
@@ -1064,24 +1063,29 @@ export function CreateRoleTable() {
         if (!this.enable) {
           return
         }
-        if (player.mineral < 3) {
-          return
+        if (this.attrib.mode !== 2) {
+          if (player.mineral < 3) {
+            return
+          }
+          player.obtain_resource({
+            mineral: -3,
+          })
         }
-        player.obtain_resource({
-          mineral: -3,
-        })
         player.push_discover(
           player.$ref$Game.lcg
             .shuffle(PackData.行星要塞衍生.map(c => CardData[c]))
-            .slice(0, 3)
+            .slice(0, this.attrib.mode === 2 ? 5 : 3)
             .map(card => ({
               type: 'card',
               card,
             }))
         )
-        this.enable = false
+        if (this.attrib.mode !== 1) {
+          this.enable = false
+        }
       },
     },
+    // 下面的PVE都没做
     拟态虫: {
       init() {
         this.attrib.pos = -1
