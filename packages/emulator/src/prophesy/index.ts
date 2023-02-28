@@ -499,6 +499,11 @@ export function CreateProphesyTable() {
         )
       },
     },
+    萃取瓦斯: {
+      init() {
+        this.gas = this.gas_max
+      },
+    },
 
     过量补给: {
       init() {
@@ -509,19 +514,14 @@ export function CreateProphesyTable() {
     },
     终极发现: {
       init() {
-        this.push_discover(
-          this.$ref$Game.pool
-            .discover(c => c.level === 6, 4)
-            ?.map(card => ({
-              type: 'card',
-              card,
-            }))
+        this.do_refresh(req =>
+          this.$ref$Game.pool.discover(c => c.level === 6, req, false)
         )
       },
     },
     精英学院: {
       listener: {
-        'round-end'() {
+        'round-leave'() {
           this.all().forEach(ci => {
             ci.replace(
               ci.find(u => canElite(this.$ref$Game.config.ActiveUnit, u)),
@@ -572,28 +572,12 @@ export function CreateProphesyTable() {
         return this.persisAttrib.get('研发计划')
       },
     },
-    基因改造: {
-      listener: {
-        hatch({ from }) {
-          if (from.name === '虫卵') {
-            this.obtain_resource({
-              mineral: 6,
-            })
-          }
-        },
-      },
-    },
     净化数据网: {
-      init() {
-        this.nextAttrib.set('净化数据网', 1)
-      },
       listener: {
         'round-start'() {
-          if (this.attrib.get('净化数据网')) {
-            const ci = this.present[6]?.card
-            if (ci) {
-              ci.gold = true
-            }
+          const ci = this.present[6]?.card
+          if (ci) {
+            ci.gold = true
           }
         },
       },
@@ -602,6 +586,15 @@ export function CreateProphesyTable() {
       init() {
         this.config.ZergEggRestrictBiological = false
         this.config.ZergHatchRestrictBiological = false
+      },
+      listener: {
+        hatch({ from }) {
+          if (from.name === '虫卵') {
+            this.obtain_resource({
+              mineral: 6,
+            })
+          }
+        },
       },
     },
     虚空风暴: {
@@ -647,6 +640,13 @@ export function CreateProphesyTable() {
       },
     },
 
+    鲜血狂热: {
+      init() {
+        this.all().forEach(ci => {
+          ci.obtain_upgrade('鲜血狂热')
+        })
+      },
+    },
     灵能特训: {
       init() {
         this.attrib.alter('free-refresh', 10)
@@ -662,15 +662,6 @@ export function CreateProphesyTable() {
         'get-buy-cost'(m) {
           m.cost = Math.min(2, m.cost)
         },
-      },
-    },
-    达拉姆的荣耀: {
-      init() {
-        this.all().forEach(ci => {
-          ci.obtain_unit(rep('阿塔尼斯', 2))
-          ci.regroup(-1)
-          ci.regroup(-1)
-        })
       },
     },
     废弃试验品: {

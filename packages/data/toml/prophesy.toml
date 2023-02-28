@@ -330,6 +330,12 @@ type = 0
 desc = '刷新酒馆, 陈列当前酒馆等级+1星级的卡牌'
 
 [[prophesy]]
+name = '萃取瓦斯'
+pinyin = 'cqws'
+type = 0
+desc = '将瓦斯补充至满'
+
+[[prophesy]]
 name = '过量补给'
 pinyin = 'glbj'
 type = 1
@@ -339,7 +345,7 @@ desc = '获得随机晶体矿补给(最多20)'
 name = '终极发现'
 pinyin = 'zjfx'
 type = 1
-desc = '发现一张6星卡牌'
+desc = '刷新酒馆, 陈列星级为6的卡牌'
 
 [[prophesy]]
 name = '精英学院'
@@ -357,8 +363,7 @@ desc = '立即升级酒馆等级至6'
 name = '水晶聚能'
 pinyin = 'sjjn'
 type = 1
-desc = '本局游戏中, 若出售卡牌内拥有水晶塔或虚空水晶塔, 额外获得1晶体矿(无法叠加)'
-unique = true
+desc = '本局游戏中, 若出售卡牌内拥有水晶塔或虚空水晶塔, 额外获得1晶体矿'
 
 [[prophesy]]
 name = '研发计划'
@@ -368,23 +373,16 @@ desc = '本局游戏中, 每进场4张卡牌, 发现一张人族卡牌(无法叠
 unique = true
 
 [[prophesy]]
-name = '基因改造'
-pinyin = 'jygz'
-type = 1
-desc = '本局游戏中, 虫卵牌孵化时额外获得6晶体矿(无法叠加)'
-unique = true
-
-[[prophesy]]
 name = '净化数据网'
 pinyin = 'jhsjw'
 type = 1
-desc = '下回合开始时, 将7号位非金色卡牌变为金色并获得三连效果'
+desc = '每回合开始时，将7号位非金色卡牌变为金色'
 
 [[prophesy]]
 name = '机械感染'
 pinyin = 'jxgr'
 type = 1
-desc = '机械单位可以被孵化'
+desc = '虫卵中的任意单位都可以被孵化，虫卵牌孵化时额外获得6晶体矿'
 
 [[prophesy]]
 name = '虚空风暴'
@@ -407,6 +405,12 @@ type = 1
 desc = '本回合, 购买卡牌不再消耗晶体矿, 改为消耗生命值'
 
 [[prophesy]]
+name = '鲜血狂热'
+pinyin = 'xxkr'
+type = 2
+desc = '为所有卡牌添加鲜血狂热升级'
+
+[[prophesy]]
 name = '灵能特训'
 pinyin = 'lntx'
 type = 2
@@ -417,12 +421,6 @@ name = '作战资源方案'
 pinyin = 'zzzyfa'
 type = 2
 desc = '本局游戏中, 每张卡的费用都变为2晶体矿'
-
-[[prophesy]]
-name = '达拉姆的荣耀'
-pinyin = 'dlmdry'
-type = 2
-desc = '为所有卡牌添加2阿塔尼斯并触发2次集结'
 
 [[prophesy]]
 name = '废弃试验品'
