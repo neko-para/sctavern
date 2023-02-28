@@ -525,7 +525,7 @@ export class PlayerInstance {
   } | null)[]
   process: CardInstance | null
 
-  constructor(game: GameInstance, rolekey: RoleKey) {
+  constructor(game: GameInstance, rolekey: RoleKey[]) {
     this.$ref$Game = game
     this.config = {
       MaxUnitPerCard: 200,
@@ -578,21 +578,19 @@ export class PlayerInstance {
     }
     this.locked = false
 
-    this.roles = [
-      {
-        attrib: {},
+    this.roles = rolekey.map(r => ({
+      attrib: {},
 
-        name: rolekey,
-        enable: false,
+      name: r,
+      enable: false,
 
-        progress: {
-          cur: -1,
-          max: -1,
-        },
-        enhance: true,
-        record: null,
+      progress: {
+        cur: -1,
+        max: -1,
       },
-    ]
+      enhance: true,
+      record: null,
+    }))
     this.prophesy = []
 
     this.store = repX(null, 3)
@@ -600,7 +598,9 @@ export class PlayerInstance {
     this.present = repX(null, 7)
     this.process = null
 
-    this.set_role(0, rolekey)
+    rolekey.forEach((r, i) => {
+      this.set_role(i, r)
+    })
   }
 
   curStatus(): PlayerStatus {

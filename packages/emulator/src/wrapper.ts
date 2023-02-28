@@ -42,7 +42,7 @@ export class Wrapper {
       {
         Pack: ['核心'],
         Seed: 1,
-        Role: ['白板'],
+        Role: [['白板']],
         Mutation: [],
         Pve: false,
         PoolPack: PresetPoolPack,

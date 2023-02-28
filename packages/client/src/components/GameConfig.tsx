@@ -42,11 +42,104 @@ const noPveRoles: RoleKey[] = [
   '干扰者',
 ]
 
+function RoleSelector(props: {
+  role: RoleKey[]
+  setRole: (r: RoleKey[]) => void
+}) {
+  const allRole = useMemo(() => AllRole.filter(r => !RoleData[r].ext), [])
+
+  const getAvailableRoles = useCallback(
+    (index: number) => {
+      return allRole.filter(
+        r =>
+          r === '白板' || !props.role.filter((r, i) => i !== index).includes(r)
+      )
+    },
+    [props.role, allRole]
+  )
+
+  return (
+    <Fragment>
+      {props.role.map((role, index) => {
+        return (
+          <Fragment key={index}>
+            <Box gridColumn="span 8">
+              <FormControl fullWidth>
+                <InputLabel>角色</InputLabel>
+                <Select
+                  label="角色"
+                  value={role}
+                  onChange={event => {
+                    props.setRole(
+                      produce(props.role, draft => {
+                        draft[index] = event.target.value as RoleKey
+                      })
+                    )
+                  }}
+                >
+                  {getAvailableRoles(index).map((role, index) => {
+                    return (
+                      <MenuItem value={role} key={index}>
+                        {role}
+                      </MenuItem>
+                    )
+                  })}
+                </Select>
+              </FormControl>
+            </Box>
+            <Box gridColumn="span 2" alignSelf="center" justifySelf="center">
+              <Button
+                variant="contained"
+                disabled={props.role.length === 1}
+                onClick={() => {
+                  props.setRole(
+                    produce(props.role, draft => {
+                      draft.splice(index, 1)
+                    })
+                  )
+                }}
+              >
+                删除
+              </Button>
+            </Box>
+            <Box gridColumn="span 2" alignSelf="center" justifySelf="center">
+              <Button
+                variant="contained"
+                onClick={() => {
+                  props.setRole(
+                    produce(props.role, draft => {
+                      draft[index] = lcg.one_of(
+                        getAvailableRoles(index)
+                      ) as RoleKey
+                    })
+                  )
+                }}
+              >
+                随机
+              </Button>
+            </Box>
+          </Fragment>
+        )
+      })}
+      <Box gridColumn="span 2" alignSelf="center" justifySelf="center">
+        <Button
+          variant="contained"
+          onClick={() => {
+            props.setRole([...props.role, '白板'])
+          }}
+        >
+          添加
+        </Button>
+      </Box>
+    </Fragment>
+  )
+}
+
 function GameConfig() {
   const [config, setConfig] = useState<GameConfig>({
     Pack: ['核心'],
     Seed: Math.floor(Math.random() * 1000000),
-    Role: ['白板'],
+    Role: [['白板']],
     Mutation: [],
     Pve: false,
     PoolPack: PresetPoolPack,
@@ -70,8 +163,6 @@ function GameConfig() {
     },
     [config]
   )
-
-  const allRole = AllRole.filter(r => !RoleData[r].ext)
 
   const handlePveChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -164,44 +255,15 @@ function GameConfig() {
                 随机
               </Button>
             </Box>
-            <Box gridColumn="span 10">
-              <FormControl fullWidth>
-                <InputLabel>角色</InputLabel>
-                <Select
-                  label="角色"
-                  value={config.Role[0]}
-                  onChange={event => {
-                    setConfig(
-                      produce(config, draft => {
-                        draft.Role = [event.target.value as RoleKey]
-                      })
-                    )
-                  }}
-                >
-                  {allRole.map((role, index) => {
-                    return (
-                      <MenuItem value={role} key={index}>
-                        {role}
-                      </MenuItem>
-                    )
-                  })}
-                </Select>
-              </FormControl>
-            </Box>{' '}
-            <Box gridColumn="span 2" alignSelf="center" justifySelf="center">
-              <Button
-                variant="contained"
-                onClick={() => {
-                  setConfig(
-                    produce(config, draft => {
-                      draft.Role = [lcg.one_of(allRole) as RoleKey]
-                    })
-                  )
-                }}
-              >
-                随机
-              </Button>
-            </Box>
+            <RoleSelector
+              role={config.Role[0]}
+              setRole={role => {
+                setConfig({
+                  ...config,
+                  Role: [role],
+                })
+              }}
+            ></RoleSelector>
             <Box gridColumn="span 6">
               <FormControlLabel
                 label="启用PVE"
@@ -214,8 +276,11 @@ function GameConfig() {
                 }
               ></FormControlLabel>
             </Box>
-            <Box gridColumn="span 6" alignSelf="center">
-              {config.Pve && noPveRoles.includes(config.Role[0])
+            <Box gridColumn="span 12" alignSelf="center">
+              {config.Pve &&
+              config.Role[0]
+                .map(r => noPveRoles.includes(r))
+                .reduce((a, b) => a || b, false)
                 ? '警告: 当前角色的预言尚未完成'
                 : ''}
             </Box>

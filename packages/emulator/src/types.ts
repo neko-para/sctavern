@@ -64,7 +64,7 @@ export type ObtainUnitWay = 'normal' | 'hatch' | 'warp'
 export interface GameConfig {
   Pack: PackKey[]
   Seed: number
-  Role: RoleKey[]
+  Role: RoleKey[][]
   Mutation: MutationKey[]
 
   Pve: boolean
