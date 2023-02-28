@@ -925,9 +925,6 @@ export function CreateRoleTable() {
             if (this.attrib.mode !== 1) {
               r[unit] = (r[unit] ?? 0) + 1
             } else {
-              if (target.name === '科学观察') {
-                return
-              }
               const cis = player.locate('科学观察')
               if (cis.length > 0) {
                 cis[0].obtain_unit([unit])
@@ -1128,11 +1125,10 @@ export function CreateRoleTable() {
         this.enable = false
       },
     },
-    // 下面的PVE都没做
     探机: {
       listener: {
         'card-entered'({ target }) {
-          target.obtain_unit(['水晶塔'])
+          target.obtain_unit([this.attrib.mode === 1 ? '虚空水晶塔' : '水晶塔'])
         },
         'round-enter'() {
           this.enable = true
@@ -1153,6 +1149,7 @@ export function CreateRoleTable() {
         this.enable = false
       },
     },
+    // 下面的PVE都没做
     泰凯斯: {
       listener: {
         'round-enter'({ round }, player) {

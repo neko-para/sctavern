@@ -3441,3 +3441,25 @@ desc = [
 
 [card.attr]
 insert = true
+
+[[card]]
+name = '水晶阵列'
+pinyin = 'sjzl'
+race = 'P'
+level = 7
+pack = '探机衍生'
+belong = 'none'
+type = 'normal'
+desc = [
+	[
+		'每回合结束时, 每有5点能量强度, 获得1过载水晶塔',
+		'每回合结束时, 每有5点能量强度, 获得1过载水晶塔',
+	],
+]
+
+[card.unit]
+'过载水晶塔' = 2
+'普罗比斯' = 1
+
+[card.attr]
+red = true

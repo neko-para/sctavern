@@ -264,6 +264,18 @@ type = '拟态虫'
 desc = '每回合开始时, 发现一个初始预言, 并变为初始预言所属的角色'
 
 [[prophesy]]
+name = '虚空水晶'
+pinyin = 'xksj'
+type = '探机'
+desc = '任意卡牌进场时, 改为获得1虚空水晶塔'
+
+[[prophesy]]
+name = '扩散立场'
+pinyin = 'kslc'
+type = '探机'
+desc = '花费3晶体矿, 获得卡牌水晶阵列\n水晶塔为所有卡牌提供能量强度'
+
+[[prophesy]]
 name = '虚空意志'
 pinyin = 'xkyz'
 type = '混合体'
@@ -405,12 +417,6 @@ type = 1
 desc = '本回合, 购买卡牌不再消耗晶体矿, 改为消耗生命值'
 
 [[prophesy]]
-name = '鲜血狂热'
-pinyin = 'xxkr'
-type = 2
-desc = '为所有卡牌添加鲜血狂热升级'
-
-[[prophesy]]
 name = '灵能特训'
 pinyin = 'lntx'
 type = 2
@@ -445,6 +451,12 @@ name = '相位提速'
 pinyin = 'xwts'
 type = 2
 desc = '出售的卡牌每有一个单位, 当前回合战斗开始时所有单位都获得1%攻速提升(最高100%)'
+
+[[prophesy]]
+name = '鲜血狂热'
+pinyin = 'xxkr'
+type = 2
+desc = '为所有卡牌添加鲜血狂热升级'
 
 [[prophesy]]
 name = '点石成金'

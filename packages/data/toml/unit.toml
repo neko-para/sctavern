@@ -2470,6 +2470,94 @@ armored = true
 biological = true
 
 [[unit]]
+name = '普罗比斯'
+pinyin = 'plbs'
+race = 'P'
+value = 50
+type = 'normal'
+health = 20
+shield = 20
+
+[unit.tag]
+light = true
+mechanical = true
+
+[[unit]]
+name = '幽灵'
+pinyin = 'yl'
+race = 'N'
+value = 50
+type = 'normal'
+health = 100
+
+[unit.tag]
+light = true
+psionic = true
+
+[[unit]]
+name = '普罗比斯'
+pinyin = 'plbs'
+race = 'P'
+value = 50
+type = 'normal'
+health = 20
+shield = 20
+
+[unit.tag]
+light = true
+mechanical = true
+
+[[unit]]
+name = '过载水晶塔'
+pinyin = 'gzsjt'
+race = 'P'
+value = 300
+type = 'normal'
+health = 200
+shield = 200
+
+[unit.tag]
+armored = true
+structure = true
+
+[[unit]]
+name = '后虫'
+pinyin = 'hc'
+race = 'Z'
+value = 400
+type = 'normal'
+health = 120
+
+[unit.tag]
+biological = true
+air = true
+
+[[unit]]
+name = '蝎虫'
+pinyin = 'xc'
+race = 'Z'
+value = 600
+type = 'normal'
+health = 80
+
+[unit.tag]
+biological = true
+psionic = true
+
+[[unit]]
+name = '科学船'
+pinyin = 'kxq'
+race = 'T'
+value = 0
+type = 'normal'
+health = 200
+
+[unit.tag]
+light = true
+mechanical = true
+air = true
+
+[[unit]]
 name = '探机'
 pinyin = 'tj'
 race = 'P'
@@ -2546,18 +2634,6 @@ light = true
 mechanical = true
 
 [[unit]]
-name = '幽灵'
-pinyin = 'yl'
-race = 'N'
-value = 50
-type = 'normal'
-health = 100
-
-[unit.tag]
-light = true
-psionic = true
-
-[[unit]]
 name = '幽灵<埃蒙>'
 pinyin = 'yl'
 race = 'N'
@@ -2568,43 +2644,6 @@ health = 100
 [unit.tag]
 light = true
 psionic = true
-
-[[unit]]
-name = '后虫'
-pinyin = 'hc'
-race = 'Z'
-value = 400
-type = 'normal'
-health = 120
-
-[unit.tag]
-biological = true
-air = true
-
-[[unit]]
-name = '蝎虫'
-pinyin = 'xc'
-race = 'Z'
-value = 600
-type = 'normal'
-health = 80
-
-[unit.tag]
-biological = true
-psionic = true
-
-[[unit]]
-name = '科学船'
-pinyin = 'kxq'
-race = 'T'
-value = 0
-type = 'normal'
-health = 200
-
-[unit.tag]
-light = true
-mechanical = true
-air = true
 
 [[unit]]
 name = '海盗船'

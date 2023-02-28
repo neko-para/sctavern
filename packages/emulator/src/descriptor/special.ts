@@ -305,6 +305,13 @@ export default function (/* config */): Record<string, Descriptor> {
       },
     },
     拟态雏虫0: NotImplementYet(),
+    水晶阵列0: {
+      listener: {
+        'round-end'() {
+          this.obtain_unit(rep('过载水晶塔', Math.floor(this.power() / 5)))
+        },
+      },
+    },
     不法之徒_反应堆_0: { refer: '反应堆:陆战队员' },
     不法之徒_反应堆_1: { refer: '反应堆:陆战队员(精英)' },
     不法之徒0: 任务(

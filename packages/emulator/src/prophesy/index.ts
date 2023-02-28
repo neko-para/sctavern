@@ -322,6 +322,7 @@ export function CreateProphesyTable() {
         const ci = player.enter('科学观察')
         if (ci) {
           ci.obtain_upgrade('搜寻样本')
+          ci.units.pop() // 移除进场时获得的单位
         }
       },
     },
@@ -409,6 +410,25 @@ export function CreateProphesyTable() {
           this.attrib.cleanProphesyId = player.prophesy.length
           player.load_prophesy(p)
         },
+      },
+    },
+    虚空水晶: {
+      init() {
+        this.attrib.mode = 1
+      },
+    },
+    扩散立场: {
+      init(player) {
+        this.attrib.mode = 2
+        player.config.ProtossPowerAll = true
+
+        player.obtain_resource({
+          mineral: -3,
+        })
+        const ci = player.enter('水晶阵列')
+        if (ci) {
+          ci.units.pop() // 移除进场时获得的水晶塔
+        }
       },
     },
     虚空意志: {
@@ -640,13 +660,6 @@ export function CreateProphesyTable() {
       },
     },
 
-    鲜血狂热: {
-      init() {
-        this.all().forEach(ci => {
-          ci.obtain_upgrade('鲜血狂热')
-        })
-      },
-    },
     灵能特训: {
       init() {
         this.attrib.alter('free-refresh', 10)
@@ -729,6 +742,13 @@ export function CreateProphesyTable() {
       },
       count() {
         return this.attrib.get('相位提速')
+      },
+    },
+    鲜血狂热: {
+      init() {
+        this.all().forEach(ci => {
+          ci.obtain_upgrade('鲜血狂热')
+        })
       },
     },
     点石成金: {
