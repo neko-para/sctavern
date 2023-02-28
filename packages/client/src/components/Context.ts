@@ -2,10 +2,13 @@ import {
   Client,
   directLinkAdapters,
   GameState,
+  Init,
   PlayerState,
   Wrapper,
 } from '@sctavern/emulator'
 import { createContext } from 'react'
+
+Init()
 
 const dl = directLinkAdapters()
 const fake = new Wrapper(dl.server)

@@ -375,15 +375,18 @@ export function CreateProphesyTable() {
           }
           const prophesySet: ProphesyKey[] = [
             '混沌洪流',
+            '自动装填',
             '寄生细胞',
             '自动修理',
             '采集蜂群',
             '超距视界',
             '荆棘外壳',
+            '护盾封存',
             '爆裂核心',
             '光影集结',
             '精装钢板',
             '智能伺服',
+            // 能量磁场, 治疗循环, 形体降临
           ]
           this.attrib.discoverId = player.push_discover(
             player.$ref$Game.lcg
