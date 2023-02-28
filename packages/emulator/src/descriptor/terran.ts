@@ -15,7 +15,7 @@ import { notNull, rep } from '../utils'
 export function 任务<T extends InnerMsg['msg']>(
   msg: T,
   count: number,
-  reward: (card: CardInstance) => void,
+  reward: (card: CardInstance, msg: Extract<InnerMsg, { msg: T }>) => void,
   predict: (
     card: CardInstance,
     msg: Extract<InnerMsg, { msg: T }>
@@ -37,7 +37,7 @@ export function 任务<T extends InnerMsg['msg']>(
             if (policy === 'instant') {
               this.attrib.set('task', 0)
             }
-            reward(this)
+            reward(this, msg)
             this.$ref$Player.post({
               msg: 'task-done',
               target: this,

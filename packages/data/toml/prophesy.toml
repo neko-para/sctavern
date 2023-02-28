@@ -276,6 +276,18 @@ type = '探机'
 desc = '花费3晶体矿, 获得卡牌水晶阵列\n水晶塔为所有卡牌提供能量强度'
 
 [[prophesy]]
+name = '天降神兵'
+pinyin = 'tjsb'
+type = '泰凯斯'
+desc = '将卡牌不法之徒变为天降神兵'
+
+[[prophesy]]
+name = '红色按钮'
+pinyin = 'mhyj'
+type = '泰凯斯'
+desc = '将卡牌不法之徒升级\n任意卡获得升级时, 获得3陆战队员(精英)'
+
+[[prophesy]]
 name = '虚空意志'
 pinyin = 'xkyz'
 type = '混合体'

@@ -431,6 +431,32 @@ export function CreateProphesyTable() {
         }
       },
     },
+    天降神兵: {
+      init(player) {
+        this.attrib.mode = 1
+        this.progress.cur = 0
+
+        const ci = player.locate('不法之徒')[0]
+        ci.color = 'red'
+        ci.level = 7
+        ci.name = '天降神兵'
+        ci.replace_desc('不法之徒0', '天降神兵0')
+      },
+    },
+    红色按钮: {
+      init(player) {
+        this.attrib.mode = 1
+        const ci = player.locate('不法之徒')[0]
+        ci.color = 'red'
+        ci.level = 7
+        ci.replace_desc('不法之徒0', '不法之徒X0')
+      },
+      listener: {
+        'obtain-upgrade'({ card }, player) {
+          player.present[card]?.card.obtain_unit(rep('陆战队员(精英)', 3))
+        },
+      },
+    },
     虚空意志: {
       init() {
         this.attrib.mode = 1

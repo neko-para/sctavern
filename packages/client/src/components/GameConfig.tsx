@@ -16,7 +16,6 @@ import { useNavigate } from 'react-router'
 const lcg = new LCG(Math.floor(Math.random() * 100000))
 
 const noPveRoles: RoleKey[] = [
-  '泰凯斯',
   '诺娃',
   '思旺',
   '跳虫',

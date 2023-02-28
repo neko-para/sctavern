@@ -413,6 +413,27 @@ export class CardInstance {
     }
   }
 
+  replace_desc(from: string, to: string) {
+    const [desc] = DescriptorTable(from)
+    let cnt = 0
+    this.descs = this.descs.filter(d => {
+      if (d !== from) {
+        return true
+      }
+      if (desc.config?.deinit) {
+        for (const k in desc.config.deinit) {
+          this.attrib.alter(k, desc.config.deinit[k][0])
+        }
+      }
+      cnt += 1
+      return false
+    })
+    while (cnt > 0) {
+      cnt -= 1
+      this.add_desc(to)
+    }
+  }
+
   fix_upgrade() {
     this.upgrades.forEach(u => {
       switch (u) {

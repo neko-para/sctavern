@@ -318,7 +318,8 @@ export default function (/* config */): Record<string, Descriptor> {
       'store-refreshed',
       4,
       ci => {
-        ci.descs = ci.descs.map(s => (s === '不法之徒0' ? '不法之徒1' : s))
+        ci.replace_desc('不法之徒0', '不法之徒1')
+        ci.level += 1
         ci.$ref$Player.upgrade_cost = Math.max(
           0,
           ci.$ref$Player.upgrade_cost - 4
@@ -334,7 +335,8 @@ export default function (/* config */): Record<string, Descriptor> {
       'card-entered',
       2,
       ci => {
-        ci.descs = ci.descs.map(s => (s === '不法之徒1' ? '不法之徒2' : s))
+        ci.replace_desc('不法之徒1', '不法之徒2')
+        ci.level += 1
         ci.obtain_unit(rep('陆战队员', 4))
       },
       () => true,
@@ -345,7 +347,8 @@ export default function (/* config */): Record<string, Descriptor> {
       'store-refreshed',
       4,
       ci => {
-        ci.descs = ci.descs.map(s => (s === '不法之徒2' ? '不法之徒3' : s))
+        ci.replace_desc('不法之徒2', '不法之徒3')
+        ci.level += 1
         ci.obtain_upgrade('强化药剂')
         ci.$ref$Player.push_discover(
           ci.$ref$Player.$ref$Game.pool
@@ -364,10 +367,9 @@ export default function (/* config */): Record<string, Descriptor> {
       'store-refreshed',
       6,
       ci => {
-        ci.descs = ci.descs.map(s => (s === '不法之徒3' ? '不法之徒4' : s))
-        ci.descs = ci.descs.map(s =>
-          s === '不法之徒_反应堆_0' ? '不法之徒_反应堆_1' : s
-        )
+        ci.replace_desc('不法之徒3', '不法之徒4')
+        ci.level += 1
+        ci.replace_desc('不法之徒_反应堆_0', '不法之徒_反应堆_1')
         ci.$ref$Player.push_discover(
           ci.$ref$Player.$ref$Game.pool
             .discover(c => c.level === ci.$ref$Player.level, 3)
@@ -385,7 +387,8 @@ export default function (/* config */): Record<string, Descriptor> {
       'card-entered',
       4,
       ci => {
-        ci.descs = ci.descs.map(s => (s === '不法之徒4' ? '不法之徒5' : s))
+        ci.replace_desc('不法之徒4', '不法之徒5')
+        ci.level += 1
         ci.$ref$Player.obtain_resource({
           mineral: 4,
         })
@@ -399,7 +402,8 @@ export default function (/* config */): Record<string, Descriptor> {
       'card-entered',
       6,
       ci => {
-        ci.descs = ci.descs.map(s => (s === '不法之徒5' ? '不法之徒6' : s))
+        ci.replace_desc('不法之徒5', '不法之徒6')
+        ci.level += 1
         ci.obtain_unit(['奥丁'])
       },
       () => true,
@@ -415,6 +419,133 @@ export default function (/* config */): Record<string, Descriptor> {
       () => true,
       'instant',
       '任务: 进场4张卡牌\n奖励: 获得1雷神'
+    ),
+    天降神兵0: 任务(
+      'task-done',
+      6,
+      ci => {
+        ci.$ref$Player.all().forEach(ci => {
+          ci.attrib.set('task', 0)
+        })
+        ci.$ref$Player.find_role('泰凯斯').progress.cur += 1
+      },
+      () => true,
+      'instant',
+      '任务: 完成6个任意卡牌任务\n奖励: 将所有卡牌的任务重置并在下次战斗开始时发射一枚核弹'
+    ),
+    不法之徒X0: 任务(
+      'tavern-upgraded',
+      1,
+      ci => {
+        ci.replace_desc('不法之徒X0', '不法之徒X1')
+        ci.obtain_unit(['反应堆'])
+        ci.add_desc('不法之徒_反应堆_1')
+      },
+      () => true,
+      'instant',
+      '任务: 升级1次酒馆等级\n奖励: 获得反应堆, 生产陆战队员(精英)'
+    ),
+    不法之徒X1: 任务(
+      'store-refreshed',
+      3,
+      ci => {
+        ci.replace_desc('不法之徒X1', '不法之徒X2')
+        ci.$ref$Player.$ref$Game.pool
+          .discover(c => c.level === ci.$ref$Player.level, 2, false)
+          ?.map(c => c.name)
+          .map(card => {
+            ci.$ref$Player.obtain_card(card)
+          })
+      },
+      () => true,
+      'instant',
+      '任务: 刷新3次酒馆\n奖励: 获得两张当前酒馆等级的随机卡牌'
+    ),
+    不法之徒X2: 任务(
+      'card-entered',
+      4,
+      ci => {
+        ci.replace_desc('不法之徒X2', '不法之徒X3')
+        ci.$ref$Player.obtain_resource({
+          mineral: 3,
+        })
+      },
+      () => true,
+      'instant',
+      '任务: 进场4张卡牌\n奖励: 获得3晶体矿, 强化陆战队员(精英)的武器和技能'
+    ),
+    不法之徒X3: 任务(
+      'store-refreshed',
+      4,
+      ci => {
+        ci.replace_desc('不法之徒X3', '不法之徒X4')
+        ci.$ref$Player.push_discover(
+          ci.$ref$Player.$ref$Game.pool
+            .discover(c => c.level === ci.$ref$Player.level, 3)
+            ?.map(card => ({
+              type: 'card',
+              card,
+            }))
+        )
+      },
+      () => true,
+      'instant',
+      '任务: 刷新4次酒馆\n奖励: 发现一张当前酒馆等级的卡牌'
+    ),
+    不法之徒X4: 任务(
+      'card-entered',
+      6,
+      ci => {
+        ci.replace_desc('不法之徒X4', '不法之徒X5')
+        ci.$ref$Player.push_discover(
+          ci.$ref$Player.$ref$Game.pool
+            .discover(c => c.level === 6, 3)
+            ?.map(card => ({
+              type: 'card',
+              card,
+            }))
+        )
+      },
+      () => true,
+      'instant',
+      '任务: 进场6张卡牌\n奖励: 发现一张星级为6的卡牌, 强化劫掠者(精英)的武器和技能'
+    ),
+    不法之徒X5: 任务(
+      'store-refreshed',
+      10,
+      ci => {
+        ci.replace_desc('不法之徒X5', '不法之徒X6')
+        ci.$ref$Player.load_prophesy('精英学院')
+      },
+      () => true,
+      'instant',
+      '任务: 刷新10次酒馆\n奖励: 获得神器预言精英学院'
+    ),
+    不法之徒X6: 任务(
+      'card-entered',
+      4,
+      ci => {
+        ci.replace_desc('不法之徒X6', '不法之徒X7')
+        ci.obtain_unit(['奥丁'])
+      },
+      () => true,
+      'instant',
+      '任务: 进场4张卡牌\n奖励: 获得1奥丁, 战斗开始时发射核弹'
+    ),
+    不法之徒X7: 任务(
+      'obtain-upgrade',
+      1,
+      (ci, msg) => {
+        ci.$ref$Player
+          .all()
+          .filter(c => c !== ci)
+          .forEach(c => {
+            c.obtain_upgrade(msg.upgrade)
+          })
+      },
+      () => true,
+      'instant',
+      '任务: 不法之徒获得1次升级\n奖励: 为所有其他卡牌添加相同升级'
     ),
     生化实验室0: {
       listener: {
