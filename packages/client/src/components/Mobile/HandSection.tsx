@@ -20,6 +20,7 @@ function HandSection() {
       {player.hand.map((item, index) => {
         return (
           <Button
+            size="small"
             key={index}
             onClick={() => {
               setShowCard(item ? index : -1)

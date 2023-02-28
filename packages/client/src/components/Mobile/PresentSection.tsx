@@ -30,6 +30,7 @@ function PresentSection() {
           <Fragment key={index}>
             {player.status === 'insert' ? (
               <Button
+                size="small"
                 onClick={() => {
                   client.autoPost({
                     msg: '$choice',
@@ -42,6 +43,7 @@ function PresentSection() {
               </Button>
             ) : player.status === 'deploy' && item.card ? (
               <Button
+                size="small"
                 onClick={() => {
                   client.autoPost({
                     msg: '$choice',
@@ -62,6 +64,7 @@ function PresentSection() {
                   ? 'outlined'
                   : 'text'
               }
+              size="small"
               onClick={() => {
                 setShowCard(item.card ? index : -1)
               }}
@@ -74,6 +77,7 @@ function PresentSection() {
               player.selected.place === index
             ) ? (
               <Button
+                size="small"
                 onClick={() => {
                   if (player.present[index].card) {
                     client.autoPost({

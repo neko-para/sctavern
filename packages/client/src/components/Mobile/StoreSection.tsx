@@ -25,6 +25,7 @@ function StoreSection() {
         return (
           <Button
             variant={player.locked && item ? 'outlined' : 'text'}
+            size="small"
             key={index}
             onClick={() => {
               setShowCard(item ? index : -1)
