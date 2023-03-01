@@ -1,4 +1,11 @@
-import { canElite, CardData, elited, isNormal, UnitData } from '@sctavern/data'
+import {
+  canElite,
+  CardData,
+  elited,
+  isNormal,
+  PackData,
+  UnitData,
+} from '@sctavern/data'
 import type { Race, UnitKey } from '@sctavern/data'
 import type { Descriptor } from '../types'
 import {
@@ -47,6 +54,16 @@ function 黑暗容器_强化(req: number) {
 
 export default function (/* config */): Record<string, Descriptor> {
   return {
+    三连夺取自身: {
+      listener: {
+        'card-combined'({ target }) {
+          if (this !== target) {
+            target.seize(this)
+          }
+        },
+      },
+    },
+
     原始蟑螂0: 供养(1, '原始蟑螂'),
     不死队0: 黑暗容器_获得('不死队', 1, 2),
     不死队1: 黑暗容器_强化(8),
@@ -418,15 +435,7 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    死亡之翼0: {
-      listener: {
-        seize({ target }) {
-          if (this === target) {
-            this.obtain_unit(rep('天霸', this.gold ? 2 : 1))
-          }
-        },
-      },
-    },
+    死亡之翼0: { refer: '三连夺取自身' },
     死亡之翼1: {
       listener: {
         'card-combined'({ target }) {
@@ -594,6 +603,61 @@ export default function (/* config */): Record<string, Descriptor> {
             .forEach(ci => {
               ci.obtain_unit(['混合体掠夺者'])
             })
+        },
+      },
+    },
+    打翻墨水0: {
+      listener: {
+        'discover-finish'({ ctx }) {
+          if (ctx.id !== this.$ref$Player.persisAttrib.get('打翻墨水:id')) {
+            return
+          }
+          const ci =
+            this.$ref$Player.present[
+              this.$ref$Player.persisAttrib.get('打翻墨水')
+            ]?.card
+          if (!ci) {
+            return
+          }
+          ci.gold = false
+          ci.color = 'amber'
+          ci.name = '手刃降服重创'
+          if (ctx.choice === -1) {
+            return
+          }
+          const item = ctx.item[ctx.choice]
+          if (item.type === 'card') {
+            ci.clear_desc()
+            ci.load_desc(item.card, true)
+            ci.post({
+              msg: 'post-enter',
+            })
+          }
+        },
+        'post-enter'() {
+          const ci = this.left()
+          if (!ci) {
+            return
+          }
+          this.$ref$Player.persisAttrib.set('打翻墨水', ci.index())
+          const choice = PackData.核心
+            .map(c => CardData[c])
+            .filter(c => c.race === ci.race && c.level === ci.level)
+          this.$ref$Player.persisAttrib.set(
+            '打翻墨水:id',
+            this.$ref$Player.push_discover(
+              choice
+                .filter(c => c.name !== ci.name)
+                .map(card => ({
+                  type: 'card',
+                  card,
+                })),
+              {
+                extra: '取消', // ?
+                fake: true,
+              }
+            )
+          )
         },
       },
     },

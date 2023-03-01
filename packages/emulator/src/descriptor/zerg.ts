@@ -236,7 +236,7 @@ export default function (/* config */): Record<string, Descriptor> {
     },
     腐化大龙1: 注卵('post-sell', ci => rep('巢虫领主', ci.gold ? 4 : 2)),
     空中管制0: 孵化('post-enter', '爆蚊', 3, 6, 0),
-    空中管制1: 孵化('post-enter', '异龙(精英)', 1, 2, 1),
+    空中管制1: 孵化('round-end', '异龙(精英)', 1, 2, 1),
     虫群大军0: {
       listener: {
         'round-end'() {
@@ -410,6 +410,25 @@ export default function (/* config */): Record<string, Descriptor> {
                 card,
               }))
           )
+        },
+      },
+    },
+    存钱小猪0: {
+      listener: {
+        'post-sell'() {
+          this.$ref$Player.obtain_resource({
+            mineral: this.find('跳虫(精英)').length,
+          })
+        },
+      },
+    },
+    存钱小猪1: {
+      config: {
+        unique: 'normal',
+      },
+      listener: {
+        'round-end'() {
+          this.obtain_unit(rep('跳虫(精英)', this.$ref$Player.mineral))
         },
       },
     },

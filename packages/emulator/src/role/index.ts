@@ -1293,9 +1293,9 @@ export function CreateRoleTable() {
           if (!ci) {
             return
           }
-          ci.clear_desc()
           const item = ctx.item[ctx.choice]
           if (item.type === 'card') {
+            ci.clear_desc()
             ci.load_desc(item.card, true)
             ci.post({
               msg: 'post-enter',

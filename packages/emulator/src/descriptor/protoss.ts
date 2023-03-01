@@ -424,5 +424,21 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
+    星灵奥数0: {
+      listener: {
+        'round-start'() {
+          const ls = this.$ref$Player
+            .all()
+            .map(ci => ci.level)
+            .reduce((a, b) => a + b, 0)
+          if (ls === 21) {
+            this.obtain_unit(rep('风暴战舰', 2))
+            this.$ref$Player.obtain_resource({
+              gas: 1,
+            })
+          }
+        },
+      },
+    },
   }
 }

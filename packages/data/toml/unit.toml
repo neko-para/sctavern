@@ -2470,8 +2470,21 @@ armored = true
 biological = true
 
 [[unit]]
-name = '普罗比斯'
-pinyin = 'plbs'
+name = '王虫'
+pinyin = 'wc'
+race = 'Z'
+value = 0
+type = 'normal'
+health = 200
+
+[unit.tag]
+armored = true
+biological = true
+air = true
+
+[[unit]]
+name = '探机'
+pinyin = 'tj'
 race = 'P'
 value = 50
 type = 'normal'
@@ -2556,19 +2569,6 @@ health = 200
 light = true
 mechanical = true
 air = true
-
-[[unit]]
-name = '探机'
-pinyin = 'tj'
-race = 'P'
-value = 50
-type = 'normal'
-health = 20
-shield = 20
-
-[unit.tag]
-light = true
-mechanical = true
 
 [[unit]]
 name = 'SCV'

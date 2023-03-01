@@ -102,7 +102,9 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'round-end'(m, [unit]) {
           if (this.infr() === '反应堆') {
-            this.obtain_unit(rep(unit as UnitKey, this.gold ? 2 : 1))
+            this.obtain_unit(
+              rep(unit as UnitKey, this.gold || this.color === 'amber' ? 2 : 1)
+            )
           }
         },
       },
@@ -513,5 +515,7 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
+    等待戈多0: { refer: '三连夺取自身' },
+    等待戈多1: { refer: '反应堆:鱼人陆战队员' },
   }
 }
