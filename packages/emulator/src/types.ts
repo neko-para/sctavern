@@ -89,6 +89,7 @@ export interface PlayerConfig {
   ProtossPowerAll: boolean
 
   BuyResource: 'mineral' | 'life'
+  CombineRequire: number
 
   StoreCount: number[]
   TavernUpgrade: number[]

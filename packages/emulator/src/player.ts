@@ -37,6 +37,8 @@ import RoleTable from './role'
 import ProphesyTable from './prophesy'
 import { Attribute } from './attrib'
 
+type Infr = '反应堆' | '科技实验室' | '高级科技实验室'
+
 const playerBind: GenericListener<PlayerInstance> = {
   $upgrade() {
     if (this.level < 6 && this.mineral >= this.upgrade_cost) {
@@ -543,6 +545,7 @@ export class PlayerInstance {
       ProtossPowerAll: false,
 
       BuyResource: 'mineral',
+      CombineRequire: 2,
 
       StoreCount: [0, 3, 4, 4, 5, 5, 6],
       TavernUpgrade: [0, 5, 7, 8, 9, 11, 0],
@@ -1124,57 +1127,61 @@ export class PlayerInstance {
   }
 
   combine(card: CardKey, noreward = false) {
-    const target = this.locate_combine_target(card)
-    if (target.length < 2) {
+    const target = this.locate_combine_target(card).slice(
+      0,
+      this.config.CombineRequire
+    )
+    if (target.length < this.config.CombineRequire) {
       return false
     }
 
     const cd = CardData[card]
     const ci = new CardInstance(this, cd, false)
     ci.config = {
-      MaxUnit: Math.max(target[0].config.MaxUnit, target[1].config.MaxUnit),
-      MaxUpgrade: Math.max(
-        target[0].config.MaxUpgrade,
-        target[1].config.MaxUpgrade
-      ),
+      MaxUnit: Math.max(...target.map(t => t.config.MaxUnit)),
+      MaxUpgrade: Math.max(...target.map(t => t.config.MaxUpgrade)),
     }
     ci.gold = true
-    ci.occupy = [...target[0].occupy, ...target[1].occupy]
-    ci.attrib.load(target[0].attrib, ['task'])
-    ci.attrib.load(target[1].attrib, ['task'])
-    const i1 = target[0].infr()
-    const i2 = target[1].infr()
-    if (ci.race === 'T' && i1 && i2) {
-      if (i2 === '高级科技实验室') {
-        ci.units = [
-          ...target[0].units.filter(
-            u => !['反应堆', '科技实验室', '高级科技实验室'].includes(u),
-            ...target[1].units
-          ),
-        ]
-      } else {
-        ci.units = [
-          ...target[0].units,
-          ...target[1].units.filter(
-            u => !['反应堆', '科技实验室', '高级科技实验室'].includes(u)
-          ),
-        ]
-      }
-    } else {
-      ci.units = [...target[0].units, ...target[1].units]
-    }
-    ci.units = ci.units.slice(0, ci.config.MaxUnit)
-    ci.upgrades = [
-      ...target[0].upgrades,
-      ...target[1].upgrades.filter(u => {
-        return !target[0].upgrades.includes(u) || UpgradeData[u].override
-      }),
-    ]
+    ci.occupy = target.map(t => t.occupy).flat()
     if (this.$ref$Game.config.PoolPack.includes(cd.pack)) {
       ci.occupy.push(card)
     }
+    target.forEach(t => {
+      ci.attrib.load(t.attrib, ['task'])
+    })
+    if (ci.race === 'T') {
+      const removing = target.map(t => t.infr()).filter(u => !!u) as Infr[]
+      const infr = target
+        .map(t => t.infr())
+        .reduce((a, b) => {
+          if (a === '高级科技实验室' || b === '高级科技实验室') {
+            return '高级科技实验室'
+          } else {
+            return a && b
+          }
+        }, false)
+      if (infr) {
+        ci.units = target.map(t => t.units).flat()
+        removing.forEach(i => {
+          ci.filter(u => u === i, 1)
+        })
+        ci.units = [infr, ...ci.units]
+      }
+    } else {
+      ci.units = target.map(t => t.units).flat()
+    }
+    ci.units = ci.units.slice(0, ci.config.MaxUnit)
+    ci.upgrades = []
+    target
+      .map(t => t.upgrades)
+      .flat()
+      .forEach(u => {
+        ci.obtain_upgrade(u)
+      })
     this.put(target[0].index(), ci, 'combine')
-    this.unput(target[1].index(), 'disappear')
+    target.slice(1).forEach(t => {
+      this.unput(t.index(), 'disappear')
+    })
     ci.load_desc(cd)
 
     this.post({

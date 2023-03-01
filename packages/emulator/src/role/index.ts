@@ -1149,7 +1149,6 @@ export function CreateRoleTable() {
         this.enable = false
       },
     },
-    // 下面的PVE都没做
     泰凯斯: {
       listener: {
         'round-enter'({ round }, player) {
@@ -1228,6 +1227,7 @@ export function CreateRoleTable() {
         )
       },
     },
+    // 下面的PVE都没做
     跳虫: {
       init(player) {
         player.config.ZergEggCard = '虫卵(跳虫)'
