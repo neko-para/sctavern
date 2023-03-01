@@ -120,6 +120,22 @@ export type PlayerMsg = ApplyKey<
       target: CardInstance
     }
   | {
+      msg: 'card-appeared'
+      target: CardInstance
+      method: 'enter' | 'combine' | 'appear'
+    }
+  | {
+      msg: 'card-disappeared'
+      target: CardInstance
+      method: 'sell' | 'destroy' | 'disappear'
+      from: number
+    }
+  | {
+      msg: 'card-moved'
+      target: CardInstance
+      from: number
+    }
+  | {
       msg: 'upgrade-cancelled'
       target: CardInstance
     }

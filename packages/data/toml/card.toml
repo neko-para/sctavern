@@ -3218,6 +3218,25 @@ desc = [
 [card.attr]
 
 [[card]]
+name = '生化实验室+'
+pinyin = 'shsys+'
+race = 'N'
+level = 0
+pack = '辅助卡'
+belong = 'none'
+type = 'support'
+desc = [
+	[
+		'部署时, 将指定卡牌的5生物单位变为5畸变体并注卵',
+		'部署时, 将指定卡牌的5生物单位变为5畸变体并注卵',
+	],
+]
+
+[card.unit]
+
+[card.attr]
+
+[[card]]
 name = '紧急回收'
 pinyin = 'jjhs'
 race = 'N'
@@ -3229,6 +3248,25 @@ desc = [
 	[
 		'部署时, 摧毁指定卡牌, 将其中的非英雄单位转移到相邻非虫卵牌中(优先左侧卡牌)',
 		'部署时, 摧毁指定卡牌, 将其中的非英雄单位转移到相邻非虫卵牌中(优先左侧卡牌)',
+	],
+]
+
+[card.unit]
+
+[card.attr]
+
+[[card]]
+name = '紧急回收+'
+pinyin = 'jjhs+'
+race = 'N'
+level = 0
+pack = '辅助卡'
+belong = 'none'
+type = 'support'
+desc = [
+	[
+		'部署时, 摧毁指定卡牌, 将其中的所有单位转移到相邻非虫卵牌中(优先左侧卡牌)',
+		'部署时, 摧毁指定卡牌, 将其中的所有单位转移到相邻非虫卵牌中(优先左侧卡牌)',
 	],
 ]
 
@@ -3256,6 +3294,25 @@ desc = [
 [card.attr]
 
 [[card]]
+name = '星灵科技+'
+pinyin = 'xlkj+'
+race = 'N'
+level = 0
+pack = '辅助卡'
+belong = 'none'
+type = 'support'
+desc = [
+	[
+		"部署时, 为指定非神族卡牌添加描述:\n每回合结束时, 折跃1歌利亚\n三连后还原",
+		"部署时, 为指定非神族卡牌添加描述:\n每回合结束时, 折跃1歌利亚\n三连后还原",
+	],
+]
+
+[card.unit]
+
+[card.attr]
+
+[[card]]
 name = '尖端科技'
 pinyin = 'jdkj'
 race = 'N'
@@ -3275,6 +3332,25 @@ desc = [
 [card.attr]
 
 [[card]]
+name = '尖端科技+'
+pinyin = 'jdkj+'
+race = 'N'
+level = 0
+pack = '辅助卡'
+belong = 'none'
+type = 'support'
+desc = [
+	[
+		"部署时, 指定卡牌获得轨道空降升级\n其能让单位能空降到敌人后方, 并获得护盾超载",
+		"部署时, 指定卡牌获得轨道空降升级\n其能让单位能空降到敌人后方, 并获得护盾超载",
+	],
+]
+
+[card.unit]
+
+[card.attr]
+
+[[card]]
 name = '超负荷'
 pinyin = 'cfh'
 race = 'N'
@@ -3286,6 +3362,25 @@ desc = [
 	[
 		'部署时, 摧毁指定卡牌, 并再次触发它的进场特效',
 		'部署时, 摧毁指定卡牌, 并再次触发它的进场特效',
+	],
+]
+
+[card.unit]
+
+[card.attr]
+
+[[card]]
+name = '超负荷+'
+pinyin = 'cfh+'
+race = 'N'
+level = 0
+pack = '辅助卡'
+belong = 'none'
+type = 'support'
+desc = [
+	[
+		'部署时, 摧毁指定卡牌, 获得一张复制, 并再次触发它的进场特效',
+		'部署时, 摧毁指定卡牌, 获得一张复制, 并再次触发它的进场特效',
 	],
 ]
 

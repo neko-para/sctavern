@@ -567,12 +567,21 @@ export default function (/* config */): Record<string, Descriptor> {
           const units = target.findu(
             u => isNormal(UnitData[u]) && !UnitData[u].tag.heroic
           )
-          const into = target
-            .around()
-            .filter(ci => ci.name !== '虫卵' && ci.name !== '被感染的虫卵') // ?
+          const into = target.around().filter(ci => ci.name !== '虫卵')
           this.$ref$Player.destroy(target)
           if (into.length > 0) {
             into[0].obtain_unit(units)
+          }
+        },
+      },
+    },
+    ['紧急回收+0']: {
+      listener: {
+        'post-deploy'({ target }) {
+          const into = target.around().filter(ci => ci.name !== '虫卵')
+          this.$ref$Player.destroy(target)
+          if (into.length > 0) {
+            into[0].obtain_unit(target.units)
           }
         },
       },
@@ -585,11 +594,28 @@ export default function (/* config */): Record<string, Descriptor> {
       },
       text: ['每回合结束时, 折跃1陆战队员', '每回合结束时, 折跃2陆战队员'],
     },
+    ['星灵科技+']: {
+      listener: {
+        'round-end'() {
+          this.$ref$Player.warp(rep('歌利亚', this.gold ? 2 : 1))
+        },
+      },
+      text: ['每回合结束时, 折跃1歌利亚', '每回合结束时, 折跃2歌利亚'],
+    },
     星灵科技0: {
       listener: {
         'post-deploy'({ target }) {
           if (target.race !== 'P') {
             target.add_desc('星灵科技')
+          }
+        },
+      },
+    },
+    ['星灵科技+0']: {
+      listener: {
+        'post-deploy'({ target }) {
+          if (target.race !== 'P') {
+            target.add_desc('星灵科技+')
           }
         },
       },
@@ -601,9 +627,26 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
+    ['尖端科技+0']: {
+      listener: {
+        'post-deploy'({ target }) {
+          target.obtain_upgrade('轨道空降')
+        },
+      },
+    },
     超负荷0: {
       listener: {
         'post-deploy'({ target }) {
+          this.$ref$Player.destroy(target, { extraEnter: true })
+        },
+      },
+    },
+    ['超负荷+0']: {
+      listener: {
+        'post-deploy'({ target }) {
+          if (target.occupy.length > 0) {
+            this.$ref$Player.obtain_card(target.occupy[0])
+          }
           this.$ref$Player.destroy(target, { extraEnter: true })
         },
       },

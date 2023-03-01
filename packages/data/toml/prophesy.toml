@@ -283,9 +283,33 @@ desc = '将卡牌不法之徒变为天降神兵'
 
 [[prophesy]]
 name = '红色按钮'
-pinyin = 'mhyj'
+pinyin = 'hsan'
 type = '泰凯斯'
 desc = '将卡牌不法之徒升级\n任意卡获得升级时, 获得3陆战队员(精英)'
+
+[[prophesy]]
+name = '装备模块'
+pinyin = 'zbmk'
+type = '诺娃'
+desc = '强化发现的辅助卡'
+
+[[prophesy]]
+name = '备用武器'
+pinyin = 'bywq'
+type = '诺娃'
+desc = '辅助卡现在具有4个选项\n获得主动技能: 每回合, 再次发现一张辅助卡'
+
+[[prophesy]]
+name = '拆解工程'
+pinyin = 'cjgc'
+type = '思旺'
+desc = '出售卡牌时, 为卡牌机械工厂添加4零件'
+
+[[prophesy]]
+name = '零件交易'
+pinyin = 'ljjy'
+type = '思旺'
+desc = '出售卡牌机械工厂时, 获得1晶体矿'
 
 [[prophesy]]
 name = '虚空意志'

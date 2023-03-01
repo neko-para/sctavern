@@ -457,6 +457,43 @@ export function CreateProphesyTable() {
         },
       },
     },
+    装备模块: {
+      init() {
+        this.attrib.mode = 1
+      },
+    },
+    备用武器: {
+      init() {
+        this.attrib.mode = 2
+        this.enable = true
+      },
+    },
+    拆解工程: {
+      init() {
+        this.attrib.mode = 1
+      },
+      listener: {
+        'card-selled'(m, player) {
+          player.locate('机械工厂').forEach(ci => {
+            ci.obtain_unit(rep('零件', 4))
+          })
+        },
+      },
+    },
+    零件交易: {
+      init() {
+        this.attrib.mode = 2
+      },
+      listener: {
+        'card-disappeared'({ target, method }, player) {
+          if (target.name === '机械工厂' && method === 'sell') {
+            player.obtain_resource({
+              mineral: 1,
+            })
+          }
+        },
+      },
+    },
     虚空意志: {
       init() {
         this.attrib.mode = 1

@@ -670,6 +670,81 @@ export class PlayerInstance {
     }
   }
 
+  put(
+    pos: number,
+    card: CardInstance,
+    method: 'enter' | 'combine' | 'appear'
+  ): CardInstance | null {
+    const old = this.present[pos]?.card ?? null
+    this.present[pos] = { card }
+    this.post({
+      msg: 'card-appeared',
+      target: card,
+      method,
+    })
+    return old
+  }
+
+  unput(
+    pos: number,
+    method: 'sell' | 'destroy' | 'disappear'
+  ): CardInstance | null {
+    const old = this.present[pos]?.card ?? null
+    if (old) {
+      this.present[pos] = null
+      this.post({
+        msg: 'card-disappeared',
+        target: old,
+        method,
+        from: pos,
+      })
+    }
+    return old
+  }
+
+  move(from: number, to: number): CardInstance | null {
+    const old = this.unput(to, 'disappear')
+    const target = this.present[from]?.card ?? null
+    if (target) {
+      this.present[from] = null
+      this.present[to] = { card: target }
+      this.post({
+        msg: 'card-moved',
+        target,
+        from,
+      })
+    }
+    return old
+  }
+
+  swap(left: number, right: number) {
+    if (left === right) {
+      return
+    } else if (left > right) {
+      this.swap(right, left)
+      return
+    }
+    const lc = this.present[left]?.card ?? null
+    const rc = this.present[right]?.card ?? null
+
+    this.present[right] = lc && { card: lc }
+    this.present[left] = rc && { card: rc }
+    if (rc) {
+      this.post({
+        msg: 'card-moved',
+        target: rc,
+        from: right,
+      })
+    }
+    if (lc) {
+      this.post({
+        msg: 'card-moved',
+        target: lc,
+        from: left,
+      })
+    }
+  }
+
   check_unique_active(key: string, place: number) {
     const [desc] = DescriptorTable(key)
     if (desc.config?.unique) {
@@ -1006,14 +1081,18 @@ export class PlayerInstance {
       }
     }
     if (this.present[place]) {
-      const rp = this.present.indexOf(null, place + 1)
+      let rp = this.present.indexOf(null, place + 1)
       if (rp === -1) {
-        const lp = this.present.lastIndexOf(null)
-        this.present.splice(lp, 1)
-        this.present.splice(place, 0, null)
+        let lp = this.present.lastIndexOf(null)
+        while (lp < place) {
+          this.move(lp + 1, lp)
+          lp += 1
+        }
       } else {
-        this.present.splice(rp, 1)
-        this.present.splice(place, 0, null)
+        while (rp > place) {
+          this.move(rp - 1, rp)
+          rp -= 1
+        }
       }
     }
     if (card === '拟态雏虫') {
@@ -1029,9 +1108,7 @@ export class PlayerInstance {
     // if (this.$ref$Game.config.PoolPack.includes(cd.pack)) {
     ci.occupy.push(card)
     // }
-    this.present[place] = {
-      card: ci,
-    }
+    this.put(place, ci, 'enter')
     ci.load_desc(cd)
 
     this.post({
@@ -1096,10 +1173,8 @@ export class PlayerInstance {
     if (this.$ref$Game.config.PoolPack.includes(cd.pack)) {
       ci.occupy.push(card)
     }
-    this.present[target[0].index()] = {
-      card: ci,
-    }
-    this.present[target[1].index()] = null
+    this.put(target[0].index(), ci, 'combine')
+    this.unput(target[1].index(), 'disappear')
     ci.load_desc(cd)
 
     this.post({
@@ -1141,7 +1216,7 @@ export class PlayerInstance {
   sell(ci: CardInstance) {
     const pos = ci.index()
     ci.attrib.set('oldpos', pos)
-    this.present[pos] = null
+    this.unput(pos, 'sell')
     this.process = ci
 
     const doPostEffect = ci.level > 0 || ci.name === '虫卵'
@@ -1175,7 +1250,7 @@ export class PlayerInstance {
   destroy(ci: CardInstance, config?: { extraEnter?: true }) {
     const pos = ci.index()
     ci.attrib.set('oldpos', pos)
-    this.present[pos] = null
+    this.unput(pos, 'destroy')
     this.process = ci
 
     if (config?.extraEnter) {
@@ -1222,10 +1297,7 @@ export class PlayerInstance {
       return
     }
 
-    const eggs = this.present
-      .filter(notNull)
-      .map(c => c.card)
-      .filter(c => c.name === '虫卵')
+    const eggs = this.locate('虫卵')
 
     while (eggs.length < this.config.ZergEggCount) {
       const egg = this.enter(this.config.ZergEggCard)

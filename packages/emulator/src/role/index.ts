@@ -1168,24 +1168,54 @@ export function CreateRoleTable() {
         'round-enter'(m, player) {
           player.push_discover(
             player.$ref$Game.lcg
-              .shuffle(PackData.辅助卡.map(c => CardData[c]))
-              .slice(0, 2)
+              .shuffle(
+                (this.attrib.mode === 1
+                  ? PackData['辅助卡+']
+                  : PackData.辅助卡
+                ).map(c => CardData[c])
+              )
+              .slice(0, this.attrib.mode === 2 ? 4 : 2)
               .map(card => ({
                 type: 'card',
                 card,
               }))
           )
+          if (this.attrib.mode === 2) {
+            this.enable = true
+          }
         },
+      },
+      ability(player) {
+        if (!this.enable) {
+          return
+        }
+        player.push_discover(
+          player.$ref$Game.lcg
+            .shuffle(PackData.辅助卡.map(c => CardData[c]))
+            .slice(0, 4)
+            .map(card => ({
+              type: 'card',
+              card,
+            }))
+        )
+        this.enable = false
       },
     },
     思旺: {
+      init() {
+        this.enable = true
+      },
       ability(player) {
         const ci = player.query_selected_present()
         if (!ci) {
           return
         }
+        if (ci.find(u => !!UnitData[u].tag.mechanical).length === 0) {
+          return
+        }
         if (player.locate('机械工厂').length === 0) {
-          if (!player.enter('机械工厂')) {
+          const ci = player.enter('机械工厂')
+          if (!ci) {
             return
           }
         }
@@ -1729,9 +1759,7 @@ export function CreateRoleTable() {
           if (ctx.choice === this.attrib.swapedIndex) {
             return
           }
-          const from = player.present[this.attrib.swapedIndex]
-          player.present[this.attrib.swapedIndex] = player.present[ctx.choice]
-          player.present[ctx.choice] = from
+          player.swap(this.attrib.swapedIndex, ctx.choice)
           this.enable = false
         },
       },
