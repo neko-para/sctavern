@@ -248,8 +248,15 @@ export function CreateProphesyTable() {
       init(player) {
         this.attrib.mode = 2
         this.enable = false
-        player.config.MineralLimitDelta = 2
         player.config.MaxMineral = 20
+      },
+      listener: {
+        'round-enter'(m, player) {
+          player.mineral_max = Math.min(
+            player.config.MaxMineral,
+            player.mineral_max + 1
+          )
+        },
       },
     },
     机械气罐: {

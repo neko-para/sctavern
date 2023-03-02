@@ -1142,19 +1142,6 @@ biological = true
 mechanical = true
 
 [[unit]]
-name = '劫掠者(皇家卫队)'
-pinyin = 'jlz(hjwd)'
-race = 'T'
-value = 800
-type = 'normal'
-health = 400
-
-[unit.tag]
-armored = true
-biological = true
-heroic = true
-
-[[unit]]
 name = '反应堆'
 pinyin = 'fyd'
 race = 'T'
@@ -2277,6 +2264,19 @@ armored = true
 mechanical = true
 heroic = true
 air = true
+
+[[unit]]
+name = '劫掠者(皇家卫队)'
+pinyin = 'jlz(hjwd)'
+race = 'T'
+value = 800
+type = 'normal'
+health = 400
+
+[unit.tag]
+armored = true
+biological = true
+heroic = true
 
 [[unit]]
 name = '维京战机(皇家卫队)'
