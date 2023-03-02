@@ -1,5 +1,5 @@
 import { GameInstance } from './game'
-import { Server } from './server'
+import { StateTransfer } from './stateTransfer'
 import type { GameConfig } from './types'
 import defaultManager from './serialize'
 import {
@@ -15,28 +15,34 @@ export interface PortableSave {
 }
 
 export class Wrapper {
-  server: Server
-  adapter: ServerAdapter
+  id: unknown
+
+  stateTransfer: StateTransfer
+  adapters: ServerAdapter[]
   game: GameInstance
   save: PortableSave
 
   loading: boolean
 
   saveStateChanged: () => void
+  gameDroped: (id: unknown) => void
 
-  constructor(a: ServerAdapter) {
-    this.server = new Server()
-    this.server.notify.push(() => {
+  gameDropTimer: NodeJS.Timeout | number | null
+
+  constructor(a: ServerAdapter, id: unknown = null) {
+    this.id = id
+
+    this.stateTransfer = new StateTransfer()
+    this.stateTransfer.notify.push(() => {
       if (!this.loading) {
         this.autoSave()
       }
     })
-    this.adapter = a
-    this.adapter.onInput = msg => {
-      this.game.input(msg)
-    }
-    this.server.notify.push(state => {
-      this.adapter.setState(state)
+    this.adapters = []
+    this.stateTransfer.notify.push(state => {
+      this.adapters.forEach(a => {
+        a.setState(state)
+      })
     })
     this.game = new GameInstance(
       {
@@ -49,7 +55,7 @@ export class Wrapper {
         ActivePack: PvpPresetActivePack,
         ActiveUnit: PvpPresetActiveUnit,
       },
-      this.server
+      this.stateTransfer
     )
     this.save = {
       old: [defaultManager.serialize(this.game)],
@@ -59,22 +65,53 @@ export class Wrapper {
     this.loading = false
 
     this.saveStateChanged = () => void 0
+    this.gameDroped = () => void 0
+
+    this.gameDropTimer = null
+
+    this.addAdapter(a)
+  }
+
+  addAdapter(adapter: ServerAdapter) {
+    if (this.gameDropTimer) {
+      clearTimeout(this.gameDropTimer)
+      this.gameDropTimer = null
+    }
+    adapter.onInput = msg => {
+      this.game.input(msg)
+    }
+    adapter.onClose = () => {
+      this.removeAdapter(adapter)
+    }
+    this.adapters.push(adapter)
+    adapter.setState(this.game.getState())
+  }
+
+  removeAdapter(adapter: ServerAdapter) {
+    this.adapters = this.adapters.filter(a => a !== adapter)
+    adapter.onInput = () => void 0
+    if (this.adapters.length === 0) {
+      console.log(`start drop timer of ${this.id}`)
+      this.gameDropTimer = setTimeout(() => {
+        this.gameDroped(this.id)
+      }, 60 * 1000)
+    }
   }
 
   unbind() {
-    this.game.$ignore$Server = new Server()
+    this.game.$ignore$StateTransfer = new StateTransfer()
   }
 
   bind() {
-    this.game.$ignore$Server = this.server
+    this.game.$ignore$StateTransfer = this.stateTransfer
     this.loading = true
-    this.server.emit(this.game.getState())
+    this.stateTransfer.emit(this.game.getState())
     this.loading = false
   }
 
   init(cfg: GameConfig) {
     this.unbind()
-    this.game = new GameInstance(cfg, this.server)
+    this.game = new GameInstance(cfg, this.stateTransfer)
     this.save = {
       old: [defaultManager.serialize(this.game)],
       new: [],

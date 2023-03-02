@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "baseUrl": "./",
+    "rootDir": "./",
+    "outDir": "../../dist/@sctavern/server",
+    "declaration": true,
+    "types": ["node"],
+    "paths": {
+      "@sctavern/data": ["packages/data"],
+      "@sctavern/emulator": ["packages/emulator"],
+    }
+  },
+  "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"],
+  "include": ["src/**/*.ts", "./package.json", "src/**/*.js"]
+}

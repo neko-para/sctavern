@@ -5,9 +5,11 @@
     "test": "esbuild --platform=node --bundle src/battle/test.ts --outfile=index.js & node index.js"
   },
   "dependencies": {
-    "@sctavern/data": "*"
+    "@sctavern/data": "*",
+    "isomorphic-ws": "^5.0.0"
   },
   "devDependencies": {
+    "@types/ws": "^8.5.4",
     "esbuild": "^0.17.6"
   }
 }

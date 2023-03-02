@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": false
+  },
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    }
+  ]
+}

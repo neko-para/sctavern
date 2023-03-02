@@ -1,6 +1,6 @@
 import type { GameState } from './types'
 
-export class Server {
+export class StateTransfer {
   notify: ((state: GameState) => void)[]
 
   constructor() {

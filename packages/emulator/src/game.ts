@@ -12,7 +12,7 @@ import type {
 import { dup, repX } from './utils'
 import DescriptorTable from './descriptor'
 import { Attribute } from './attrib'
-import type { Server } from './server'
+import type { StateTransfer } from './stateTransfer'
 import ProphesyTable from './prophesy'
 
 export class LCG {
@@ -60,7 +60,7 @@ function getText(key: string): [string, string] | [] {
 }
 
 export class GameInstance {
-  $ignore$Server: Server
+  $ignore$StateTransfer: StateTransfer
 
   config: GameConfig
   attrib: Attribute
@@ -72,8 +72,8 @@ export class GameInstance {
 
   player: (PlayerInstance | null)[]
 
-  constructor(cfg: GameConfig, srv: Server) {
-    this.$ignore$Server = srv
+  constructor(cfg: GameConfig, st: StateTransfer) {
+    this.$ignore$StateTransfer = st
 
     this.config = dup(cfg)
     this.attrib = new Attribute()
@@ -97,7 +97,6 @@ export class GameInstance {
         return
       }
     }
-    console.log(msg)
     this.post(msg)
     this.emit()
   }
@@ -392,7 +391,7 @@ export class GameInstance {
   }
 
   emit() {
-    this.$ignore$Server.emit(this.getState())
+    this.$ignore$StateTransfer.emit(this.getState())
   }
 
   start() {

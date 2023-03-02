@@ -20,6 +20,8 @@ import * as Color from '@mui/material/colors'
 import GameInstance from './components/GameInstance'
 import GameInstanceMobile from './components/Mobile/GameInstanceMobile'
 import GameConfig from './components/GameConfig'
+import RemoteGame from './view/RemoteGame'
+import RemoteConfig from './view/RemoteConfig'
 
 function isMobile() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -60,6 +62,19 @@ const router = createHashRouter([
   {
     path: '/local/play/mobile',
     element: <LocalGame instance={GameInstanceMobile}></LocalGame>,
+  },
+  {
+    path: '/remote/config',
+    element: <RemoteConfig></RemoteConfig>,
+  },
+  foward('/remote/play'),
+  {
+    path: '/remote/play/pc',
+    element: <RemoteGame instance={GameInstance}></RemoteGame>,
+  },
+  {
+    path: '/remote/play/mobile',
+    element: <RemoteGame instance={GameInstanceMobile}></RemoteGame>,
   },
 ])
 
