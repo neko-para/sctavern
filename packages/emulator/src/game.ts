@@ -9,7 +9,7 @@ import type {
   RoleProphesyImpl,
   ProphesyImpl,
 } from './types'
-import { dup, repX } from './utils'
+import { dup, notNull, repX } from './utils'
 import DescriptorTable from './descriptor'
 import { Attribute } from './attrib'
 import type { StateTransfer } from './stateTransfer'
@@ -118,6 +118,11 @@ export class GameInstance {
       config: dup(this.config),
 
       round: this.round,
+
+      endProgress: {
+        current: this.player.filter(notNull).filter(p => p.fin).length,
+        require: this.player.filter(notNull).length,
+      },
 
       player: this.player.map((p, ip) => {
         return p
@@ -400,6 +405,13 @@ export class GameInstance {
     this.emit()
   }
 
+  checkFin() {
+    const ps = this.player.filter(notNull)
+    if (ps.length === ps.filter(p => p.fin).length) {
+      this.roundEnd()
+    }
+  }
+
   roundEnd() {
     this.post({
       msg: 'round-end',
@@ -409,6 +421,8 @@ export class GameInstance {
       msg: 'round-leave',
       round: this.round,
     })
+
+    this.player.filter(notNull).forEach(p => (p.fin = false))
     this.roundStart()
   }
 

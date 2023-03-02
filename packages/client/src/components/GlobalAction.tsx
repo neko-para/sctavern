@@ -76,23 +76,32 @@ function GlobalAction(props: PropsWithChildren<Props>) {
       </Dialog>
 
       <props.layout
-        general={player.action.map((act, index) => {
-          return (
-            <Button
-              variant="contained"
-              key={index}
-              onClick={() => client.post(act.msg)}
-              disabled={!act.enable}
-              color={
-                act.action === 'refresh' && act.special
-                  ? 'secondary'
-                  : 'primary'
-              }
-            >
-              {tr[act.action]}
-            </Button>
-          )
-        })}
+        general={
+          <Fragment>
+            {player.action.map((act, index) => {
+              return (
+                <Button
+                  variant="contained"
+                  key={index}
+                  onClick={() => client.post(act.msg)}
+                  disabled={!act.enable}
+                  color={
+                    act.action === 'refresh' && act.special
+                      ? 'secondary'
+                      : 'primary'
+                  }
+                >
+                  {tr[act.action]}
+                </Button>
+              )
+            })}
+            {game.endProgress.require > 1 && (
+              <Box alignSelf="center" justifySelf="center">
+                {game.endProgress.current} / {game.endProgress.require}
+              </Box>
+            )}
+          </Fragment>
+        }
         abilitys={player.abilityAction.map((action, index) => {
           return (
             <Button

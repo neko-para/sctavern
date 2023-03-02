@@ -151,6 +151,11 @@ export interface GameState {
 
   round: number
 
+  endProgress: {
+    current: number
+    require: number
+  }
+
   player: (PlayerState | null)[]
 }
 

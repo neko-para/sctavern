@@ -63,8 +63,8 @@ const playerBind: GenericListener<PlayerInstance> = {
   },
   $finish() {
     if (this.curStatus() === 'normal') {
-      // TODO: Notify game
-      this.$ref$Game.roundEnd()
+      this.fin = true
+      this.$ref$Game.checkFin()
     }
   },
   $ability({ place }) {
@@ -494,6 +494,7 @@ export class PlayerInstance {
   upgrade_cost: number
 
   status: PlayerStatus[]
+  fin: boolean
 
   // insertCard: CardKey[]
   insertItem: InsertContext[]
@@ -565,6 +566,8 @@ export class PlayerInstance {
     this.upgrade_cost = 5 + 1
 
     this.status = ['middle']
+    this.fin = false
+
     this.insertItem = []
     this.deployCard = []
     this.discoverItem = []
