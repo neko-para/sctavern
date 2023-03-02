@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 import AutoImport from 'unplugin-auto-import/vite'
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     AutoImport({
@@ -41,6 +41,11 @@ export default defineConfig({
             'InputLabel',
             'MenuItem',
             'Select',
+            'Step',
+            'Stepper',
+            'StepLabel',
+            'Tab',
+            'Tabs',
             'TextField',
             'Typography',
             ['Card', 'CardView'],
@@ -52,13 +57,14 @@ export default defineConfig({
       ],
     }),
   ],
-  base: '/sctavern/',
+  base: mode === 'direct' ? '/' : '/sctavern/',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
   build: {
+    outDir: mode === 'direct' ? 'dist-direct' : 'dist',
     rollupOptions: {
       output: {
         manualChunks: id => {
@@ -72,4 +78,17 @@ export default defineConfig({
       },
     },
   },
-})
+  server: {
+    proxy: {
+      '/wsapi': {
+        target: 'ws://localhost:6658',
+        ws: true,
+        changeOrigin: true,
+      },
+      '/api': {
+        target: 'http://localhost:6658',
+        changeOrigin: true,
+      },
+    },
+  },
+}))

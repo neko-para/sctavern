@@ -4,6 +4,7 @@ import WebSocket from 'isomorphic-ws'
 
 export interface ClientAdapter {
   sendInput(msg: InnerMsg): Promise<void>
+  close(): void
 
   onState: (state: GameState) => void
 }
@@ -24,6 +25,10 @@ export function directLinkAdapters() {
     async sendInput(msg) {
       result.server.onInput(msg)
     },
+    close() {
+      result.server.onClose()
+    },
+
     onState: () => void 0,
   }
   result.server = {
@@ -52,10 +57,43 @@ export function wsClientAdapter(url: string): ClientAdapter {
         })
       })
     },
+    close() {
+      this.ws.close()
+    },
+
     onState: () => void 0,
   }
   result.ws.addEventListener('message', ev => {
     result.onState(JSON.parse(ev.data.toString()))
+  })
+  return result
+}
+
+export function wsServerAdapter(socket: WebSocket.WebSocket): ServerAdapter {
+  const result: ServerAdapter & {
+    ws: WebSocket.WebSocket
+  } = {
+    ws: socket,
+    onInput: () => void 0,
+    onClose: () => void 0,
+
+    async setState(state: GameState) {
+      return new Promise((resolve, reject) => {
+        this.ws.send(JSON.stringify(state), err => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(void 0)
+          }
+        })
+      })
+    },
+  }
+  result.ws.on('message', data => {
+    result.onInput(JSON.parse(data.toString()))
+  })
+  result.ws.on('close', () => {
+    result.onClose()
   })
   return result
 }

@@ -52,7 +52,7 @@ const router = createHashRouter([
   },
   {
     path: '/local/config',
-    element: <LocalConfig instance={GameConfig}></LocalConfig>,
+    element: <LocalConfig></LocalConfig>,
   },
   foward('/local/play'),
   {

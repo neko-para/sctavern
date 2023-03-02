@@ -21,9 +21,10 @@ function LocalGame(props: Props) {
   const navigate = useNavigate()
 
   const adapter = useRef(directLinkAdapters())
-  const wrapper = useRef(new Wrapper(adapter.current.server))
+  const wrapper = useRef(new Wrapper())
   const client = useRef(new Client(0, adapter.current.client))
   useEffect(() => {
+    wrapper.current.addAdapter(adapter.current.server)
     if (cfgJson) {
       wrapper.current.init(JSON.parse(cfgJson))
     }

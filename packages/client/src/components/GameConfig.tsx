@@ -11,7 +11,7 @@ import {
   RoleKey,
 } from '@sctavern/data'
 import { type GameConfig, LCG } from '@sctavern/emulator'
-import { useNavigate } from 'react-router'
+import { PropsWithChildren } from 'react'
 
 const lcg = new LCG(Math.floor(Math.random() * 100000))
 
@@ -43,6 +43,8 @@ const noPveRoles: RoleKey[] = [
 function RoleSelector(props: {
   role: RoleKey[]
   setRole: (r: RoleKey[]) => void
+  last: boolean
+  requestDelete: () => void
 }) {
   const allRole = useMemo(() => AllRole.filter(r => !RoleData[r].ext), [])
 
@@ -58,10 +60,13 @@ function RoleSelector(props: {
 
   return (
     <Fragment>
+      <Box gridColumn="span 12">
+        <hr></hr>
+      </Box>
       {props.role.map((role, index) => {
         return (
           <Fragment key={index}>
-            <Box gridColumn="span 8">
+            <Box gridColumn="span 6">
               <FormControl fullWidth>
                 <InputLabel>角色</InputLabel>
                 <Select
@@ -85,7 +90,7 @@ function RoleSelector(props: {
                 </Select>
               </FormControl>
             </Box>
-            <Box gridColumn="span 2" alignSelf="center" justifySelf="center">
+            <Box gridColumn="span 3" alignSelf="center" justifySelf="center">
               <Button
                 variant="contained"
                 disabled={props.role.length === 1}
@@ -100,7 +105,7 @@ function RoleSelector(props: {
                 删除
               </Button>
             </Box>
-            <Box gridColumn="span 2" alignSelf="center" justifySelf="center">
+            <Box gridColumn="span 3" alignSelf="center" justifySelf="center">
               <Button
                 variant="contained"
                 onClick={() => {
@@ -119,7 +124,7 @@ function RoleSelector(props: {
           </Fragment>
         )
       })}
-      <Box gridColumn="span 2" alignSelf="center" justifySelf="center">
+      <Box gridColumn="span 3" alignSelf="center" justifySelf="center">
         <Button
           variant="contained"
           onClick={() => {
@@ -129,11 +134,28 @@ function RoleSelector(props: {
           添加
         </Button>
       </Box>
+      <Box gridColumn="span 3" alignSelf="center" justifySelf="center">
+        <Button
+          variant="contained"
+          disabled={props.last}
+          onClick={() => {
+            props.requestDelete()
+          }}
+        >
+          删除
+        </Button>
+      </Box>
     </Fragment>
   )
 }
 
-function GameConfig() {
+export interface Props {
+  local: boolean
+  trigger: (config: GameConfig) => void
+  label?: string
+}
+
+function GameConfig(props: PropsWithChildren<Props>) {
   const [config, setConfig] = useState<GameConfig>({
     Pack: ['核心'],
     Seed: Math.floor(Math.random() * 1000000),
@@ -144,8 +166,6 @@ function GameConfig() {
     ActivePack: PvpPresetActivePack,
     ActiveUnit: PvpPresetActiveUnit,
   })
-
-  const navigate = useNavigate()
 
   const handlePackChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -182,124 +202,147 @@ function GameConfig() {
   )
 
   return (
-    <Container maxWidth="sm">
-      <CardView>
-        <CardContent className="">
-          <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" rowGap={2}>
-            <Box gridColumn="span 10">
-              <TextField
-                fullWidth
-                type="number"
-                label="种子"
-                value={config.Seed.toString()}
-                onChange={event => {
-                  setConfig(
-                    produce(config, draft => {
-                      draft.Seed = Math.floor(Number(event.target.value) ?? 1)
-                    })
-                  )
-                }}
-              ></TextField>
-            </Box>
-            <Box gridColumn="span 2" alignSelf="center" justifySelf="center">
-              <Button
-                variant="contained"
-                onClick={() => {
-                  setConfig(
-                    produce(config, draft => {
-                      draft.Seed = Math.floor(Math.random() * 1000000)
-                    })
-                  )
-                }}
-              >
-                随机
-              </Button>
-            </Box>
-            <Box
-              gridColumn="span 10"
-              display="grid"
-              gridTemplateColumns="repeat(2, 1fr)"
-            >
-              {ExtPack.map((pack, index) => {
-                return (
-                  <FormControlLabel
-                    key={index}
-                    label={pack}
-                    control={
-                      <Checkbox
-                        name={pack}
-                        checked={config.Pack.includes(pack)}
-                        onChange={handlePackChange}
-                      ></Checkbox>
-                    }
-                  ></FormControlLabel>
-                )
-              })}
-            </Box>{' '}
-            <Box gridColumn="span 2" alignSelf="center" justifySelf="center">
-              <Button
-                variant="contained"
-                onClick={() => {
-                  setConfig(
-                    produce(config, draft => {
-                      draft.Pack = [
-                        '核心',
-                        ...lcg.shuffle(ExtPack.map(x => x)).slice(0, 2),
-                      ]
-                    })
-                  )
-                }}
-              >
-                随机
-              </Button>
-            </Box>
-            <RoleSelector
-              role={config.Role[0]}
-              setRole={role => {
-                setConfig({
-                  ...config,
-                  Role: [role],
-                })
-              }}
-            ></RoleSelector>
-            <Box gridColumn="span 6">
-              <FormControlLabel
-                label="启用PVE"
-                control={
-                  <Checkbox
-                    name="启用PVE"
-                    checked={config.Pve}
-                    onChange={handlePveChange}
-                  ></Checkbox>
-                }
-              ></FormControlLabel>
-            </Box>
-            <Box gridColumn="span 12" alignSelf="center">
-              {config.Pve &&
-              config.Role[0]
-                .map(r => noPveRoles.includes(r))
-                .reduce((a, b) => a || b, false)
-                ? '警告: 当前角色的预言尚未完成'
-                : ''}
-            </Box>
-          </Box>
-        </CardContent>
-        <CardActions>
-          <Button
-            onClick={() => {
-              navigate(
-                '/local/play?' +
-                  new URLSearchParams({
-                    config: JSON.stringify(config),
+    <Fragment>
+      <CardContent>
+        <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" rowGap={2}>
+          <Box gridColumn="span 10">
+            <TextField
+              fullWidth
+              type="number"
+              label="种子"
+              value={config.Seed.toString()}
+              onChange={event => {
+                setConfig(
+                  produce(config, draft => {
+                    draft.Seed = Math.floor(Number(event.target.value) ?? 1)
                   })
-              )
-            }}
+                )
+              }}
+            ></TextField>
+          </Box>
+          <Box gridColumn="span 2" alignSelf="center" justifySelf="center">
+            <Button
+              variant="contained"
+              onClick={() => {
+                setConfig(
+                  produce(config, draft => {
+                    draft.Seed = Math.floor(Math.random() * 1000000)
+                  })
+                )
+              }}
+            >
+              随机
+            </Button>
+          </Box>
+          <Box
+            gridColumn="span 10"
+            display="grid"
+            gridTemplateColumns="repeat(2, 1fr)"
           >
-            开始
-          </Button>
-        </CardActions>
-      </CardView>
-    </Container>
+            {ExtPack.map((pack, index) => {
+              return (
+                <FormControlLabel
+                  key={index}
+                  label={pack}
+                  control={
+                    <Checkbox
+                      name={pack}
+                      checked={config.Pack.includes(pack)}
+                      onChange={handlePackChange}
+                    ></Checkbox>
+                  }
+                ></FormControlLabel>
+              )
+            })}
+          </Box>{' '}
+          <Box gridColumn="span 2" alignSelf="center" justifySelf="center">
+            <Button
+              variant="contained"
+              onClick={() => {
+                setConfig(
+                  produce(config, draft => {
+                    draft.Pack = [
+                      '核心',
+                      ...lcg.shuffle(ExtPack.map(x => x)).slice(0, 2),
+                    ]
+                  })
+                )
+              }}
+            >
+              随机
+            </Button>
+          </Box>
+          <Box gridColumn="span 3" alignSelf="center" justifySelf="center">
+            <Button
+              variant="contained"
+              disabled={props.local}
+              onClick={() => {
+                setConfig(
+                  produce(config, draft => {
+                    draft.Role.push(['白板'])
+                  })
+                )
+              }}
+            >
+              添加
+            </Button>
+          </Box>
+          <Box gridColumn="span 3">
+            <FormControlLabel
+              label="启用PVE"
+              control={
+                <Checkbox
+                  name="启用PVE"
+                  checked={config.Pve}
+                  onChange={handlePveChange}
+                ></Checkbox>
+              }
+            ></FormControlLabel>
+          </Box>
+          <Box gridColumn="span 6" alignSelf="center" justifySelf="center">
+            {config.Pve &&
+            config.Role[0]
+              .map(r => noPveRoles.includes(r))
+              .reduce((a, b) => a || b, false)
+              ? '警告: 当前角色的预言尚未完成'
+              : ''}
+          </Box>
+          {config.Role.map((role, index) => {
+            return (
+              <RoleSelector
+                key={index}
+                role={role}
+                setRole={r => {
+                  setConfig(
+                    produce(config, draft => {
+                      draft.Role[index] = r
+                    })
+                  )
+                }}
+                last={config.Role.length === 1}
+                requestDelete={() => {
+                  setConfig(
+                    produce(config, draft => {
+                      draft.Role.splice(index, 1)
+                    })
+                  )
+                }}
+              ></RoleSelector>
+            )
+          })}
+        </Box>
+      </CardContent>
+      <CardActions>
+        <Button
+          onClick={() => {
+            props.trigger(config)
+          }}
+        >
+          {props.label ?? '开始'}
+        </Button>
+        {props.children}
+      </CardActions>
+    </Fragment>
   )
 }
 

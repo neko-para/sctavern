@@ -3,13 +3,18 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "scripts": {
-    "test": "tsx src/index.ts",
-    "build": "esbuild --platform=node --bundle src/index.ts --outfile=index.js"
+    "api": "tsx src/index.ts",
+    "build": "esbuild --platform=node --bundle src/index.ts --outfile=index.js",
+    "run": "node index.js"
   },
   "dependencies": {
-    "@sctavern/emulator": "*"
+    "@sctavern/emulator": "*",
+    "express": "^4.18.2",
+    "express-ws": "^5.0.2"
   },
   "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/express-ws": "^3.0.1",
     "esbuild": "^0.17.6",
     "tsx": "^3.12.3"
   }

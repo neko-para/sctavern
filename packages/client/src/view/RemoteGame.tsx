@@ -4,6 +4,7 @@ import {
   Client,
   directLinkAdapters,
   wsClientAdapter,
+  ClientAdapter,
 } from '@sctavern/emulator'
 import GameWrapper from '@/components/GameWrapper'
 import { useNavigate, useSearchParams } from 'react-router-dom'
@@ -19,38 +20,51 @@ export interface Props {
 function RemoteGame(props: Props) {
   const [searchParams, setSearchParams] = useSearchParams()
   const id = searchParams.get('id')
-  const remote = searchParams.get('remote')
   const pos = Number(searchParams.get('pos') ?? '0')
   const ob = searchParams.has('ob')
   const navigate = useNavigate()
 
-  const adapter = useMemo(
-    () => wsClientAdapter(`ws://${remote}/?id=${id}`),
-    [searchParams]
-  )
-  const client = useMemo(() => new Client(pos, adapter, ob), [searchParams])
-  return (
-    <GameWrapper client={client} instance={props.instance}>
-      <Box
-        component={CardView}
-        alignSelf="start"
-        display="grid"
-        gridTemplateColumns="repeat(2, 1fr)"
-      >
-        <Button
-          onClick={() => {
-            navigate('/local/config')
-          }}
+  const adapter = useRef<ClientAdapter | null>(null)
+  const [client, setClient] = useState<Client | null>(null)
+
+  useEffect(() => {
+    adapter.current = wsClientAdapter(
+      `ws://${window.location.host}/wsapi/play?id=${id}`
+    )
+    setClient(new Client(pos, adapter.current, ob))
+    return () => {
+      adapter.current?.close()
+      adapter.current = null
+      setClient(null)
+    }
+  }, [])
+
+  if (client) {
+    return (
+      <GameWrapper client={client} instance={props.instance}>
+        <Box
+          component={CardView}
+          alignSelf="start"
+          display="grid"
+          gridTemplateColumns="repeat(2, 1fr)"
         >
-          返回
-        </Button>
-        <div></div>
-        {/* <Control wrapper={wrapper.current}></Control> */}
-        <Cheat></Cheat>
-        {/* <Storage wrapper={wrapper.current}></Storage> */}
-      </Box>
-    </GameWrapper>
-  )
+          <Button
+            onClick={() => {
+              navigate('/remote/config')
+            }}
+          >
+            返回
+          </Button>
+          <div></div>
+          {/* <Control wrapper={wrapper.current}></Control> */}
+          <Cheat></Cheat>
+          {/* <Storage wrapper={wrapper.current}></Storage> */}
+        </Box>
+      </GameWrapper>
+    )
+  } else {
+    return <div></div>
+  }
 }
 
 export default RemoteGame

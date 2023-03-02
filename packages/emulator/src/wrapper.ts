@@ -14,6 +14,17 @@ export interface PortableSave {
   new: string[]
 }
 
+export const DefaultGameConfig: GameConfig = {
+  Pack: ['核心'],
+  Seed: 1,
+  Role: [['白板']],
+  Mutation: [],
+  Pve: false,
+  PoolPack: PresetPoolPack,
+  ActivePack: PvpPresetActivePack,
+  ActiveUnit: PvpPresetActiveUnit,
+}
+
 export class Wrapper {
   id: unknown
 
@@ -29,7 +40,7 @@ export class Wrapper {
 
   gameDropTimer: NodeJS.Timeout | number | null
 
-  constructor(a: ServerAdapter, id: unknown = null) {
+  constructor(id: unknown = null) {
     this.id = id
 
     this.stateTransfer = new StateTransfer()
@@ -68,12 +79,12 @@ export class Wrapper {
     this.gameDroped = () => void 0
 
     this.gameDropTimer = null
-
-    this.addAdapter(a)
+    this.triggerDrop()
   }
 
   addAdapter(adapter: ServerAdapter) {
     if (this.gameDropTimer) {
+      console.log(`delete drop timer ${this.id}`)
       clearTimeout(this.gameDropTimer)
       this.gameDropTimer = null
     }
@@ -91,11 +102,15 @@ export class Wrapper {
     this.adapters = this.adapters.filter(a => a !== adapter)
     adapter.onInput = () => void 0
     if (this.adapters.length === 0) {
-      console.log(`start drop timer of ${this.id}`)
-      this.gameDropTimer = setTimeout(() => {
-        this.gameDroped(this.id)
-      }, 60 * 1000)
+      this.triggerDrop()
     }
+  }
+
+  triggerDrop() {
+    console.log(`start drop timer of ${this.id}`)
+    this.gameDropTimer = setTimeout(() => {
+      this.gameDroped(this.id)
+    }, 60 * 1000)
   }
 
   unbind() {
