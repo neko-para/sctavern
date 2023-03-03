@@ -1,7 +1,7 @@
 import GameConfig from '@/components/GameConfig'
 import { DefaultGameConfig } from '@sctavern/emulator'
 import { useNavigate } from 'react-router'
-import axios from 'axios'
+import { Api } from '@/api'
 
 function RemoteConfig() {
   const navigate = useNavigate()
@@ -12,8 +12,38 @@ function RemoteConfig() {
   const [pos, setPos] = useState(0)
   const [ob, setOb] = useState(false)
 
+  const [ids, setIds] = useState<string[]>([])
+  const [showId, setShowId] = useState(false)
+  const [querying, setQuerying] = useState(false)
+
   return (
     <Container maxWidth="sm">
+      <Dialog open={showId} onClose={() => setShowId(false)}>
+        <DialogContent>
+          <Grid container direction="column" gap={1}>
+            <Grid item>
+              <span>已建立的游戏</span>
+            </Grid>
+            {ids.map((i, index) => {
+              return (
+                <Grid item key={index}>
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      setId(i)
+                      setTab(1)
+                      setShowId(false)
+                    }}
+                  >
+                    加入 {i}
+                  </Button>
+                </Grid>
+              )
+            })}
+          </Grid>
+        </DialogContent>
+      </Dialog>
+
       <CardView>
         <CardContent>
           <Stepper activeStep={tab}>
@@ -33,7 +63,7 @@ function RemoteConfig() {
                 gridTemplateColumns="repeat(12, 1fr)"
                 rowGap={2}
               >
-                <Box gridColumn="span 10">
+                <Box gridColumn="span 6">
                   <TextField
                     fullWidth
                     label="游戏id"
@@ -44,7 +74,31 @@ function RemoteConfig() {
                   ></TextField>
                 </Box>
                 <Box
-                  gridColumn="span 2"
+                  gridColumn="span 3"
+                  alignSelf="center"
+                  justifySelf="center"
+                >
+                  <Button
+                    variant="contained"
+                    disabled={querying}
+                    onClick={() => {
+                      setQuerying(true)
+                      Api.Query()
+                        .then(res => {
+                          setQuerying(false)
+                          setIds(res.data.ids)
+                          setShowId(true)
+                        })
+                        .catch(() => {
+                          setQuerying(false)
+                        })
+                    }}
+                  >
+                    列出
+                  </Button>
+                </Box>
+                <Box
+                  gridColumn="span 3"
                   alignSelf="center"
                   justifySelf="center"
                 >
@@ -63,27 +117,11 @@ function RemoteConfig() {
               local={false}
               label="创建"
               trigger={config => {
-                axios({
-                  url: '/api/setup',
-                  baseURL: `http://${window.location.host}`,
-                  method: 'POST',
-                  data: {
-                    id,
-                    config,
-                  },
-                }).then(res => {
+                Api.Setup(id, config).then(res => {
                   setTab(1)
                 })
               }}
-            >
-              <Button
-                onClick={() => {
-                  setTab(1)
-                }}
-              >
-                直连
-              </Button>
-            </GameConfig>
+            ></GameConfig>
           </Fragment>
         )}
         {tab === 1 && (
@@ -131,11 +169,19 @@ function RemoteConfig() {
             <CardActions>
               <Button
                 onClick={() => {
+                  setTab(0)
+                }}
+              >
+                取消
+              </Button>
+              <Button
+                onClick={() => {
                   navigate(
                     '/remote/play?' +
                       new URLSearchParams({
                         pos: pos.toString(),
                         id,
+                        ob: ob ? '1' : '0',
                       })
                   )
                 }}

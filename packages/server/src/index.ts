@@ -1,31 +1,18 @@
 import Express from 'express'
-import {
-  AllRole,
-  PresetPoolPack,
-  PvpPresetActivePack,
-  PvpPresetActiveUnit,
-  RoleData,
-} from '@sctavern/data'
-import {
-  GameConfig,
-  Init,
-  Wrapper,
-  wsServerAdapter,
-  wsServerAdapters,
-} from '@sctavern/emulator'
+import { GameConfig, Init, Wrapper, wsServerAdapter } from '@sctavern/emulator'
+import compression from 'compression'
 import ExpressWs from 'express-ws'
 
 Init()
 
 const wrappers = new Map<string, Wrapper>()
 
-const rs = AllRole.filter(r => !RoleData[r].ext)
-
 const server = ExpressWs(Express()).app
 
 server.use(Express.json())
+server.use(compression())
 
-server.use(Express.static('../client/dist-direct'))
+server.use(Express.static('www'))
 
 server.post('/api/setup', (request, response) => {
   const config = request.body as {
@@ -45,6 +32,15 @@ server.post('/api/setup', (request, response) => {
   response.send(
     JSON.stringify({
       message: 'ok',
+    })
+  )
+})
+
+server.post('/api/query', (request, response) => {
+  response.send(
+    JSON.stringify({
+      message: 'ok',
+      ids: [...wrappers.keys()],
     })
   )
 })

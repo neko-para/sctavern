@@ -21,7 +21,7 @@ function RemoteGame(props: Props) {
   const [searchParams, setSearchParams] = useSearchParams()
   const id = searchParams.get('id')
   const pos = Number(searchParams.get('pos') ?? '0')
-  const ob = searchParams.has('ob')
+  const ob = !!(Number(searchParams.get('ob')) ?? 0)
   const navigate = useNavigate()
 
   const adapter = useRef<ClientAdapter | null>(null)
