@@ -1,4 +1,10 @@
-import { canElite, elited, isNormal, UnitData } from '@sctavern/data'
+import {
+  canElite,
+  elited,
+  isNormal,
+  UnitData,
+  UpgradeKey,
+} from '@sctavern/data'
 import type { UnitKey } from '@sctavern/data'
 import type { CardInstance } from '../card'
 import type { Descriptor } from '../types'
@@ -418,8 +424,22 @@ export default function (/* config */): Record<string, Descriptor> {
     人格上传0: {
       listener: {
         'card-selled'({ target }) {
+          if (target.name === '虫卵') {
+            return
+          }
           if (target.value() > this.value()) {
             this.obtain_unit(rep('菲尼克斯', this.gold ? 3 : 1))
+          }
+          if (target.upgrades.length > this.upgrades.length) {
+            const us: UpgradeKey[] = []
+            target.upgrades.forEach(u => {
+              if (!us.includes(u)) {
+                us.push(u)
+              }
+            })
+            us.slice(0, this.gold ? 3 : 1).forEach(u => {
+              this.obtain_upgrade(u)
+            })
           }
         },
       },

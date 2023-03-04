@@ -48,7 +48,11 @@ function 黑暗容器_获得(
   }
 }
 
-function 黑暗容器_强化(req: number) {
+function 黑暗容器_升格(req: number) {
+  return NotImplementYet()
+}
+
+function 黑暗容器_强化() {
   return NotImplementYet()
 }
 
@@ -66,7 +70,7 @@ export default function (/* config */): Record<string, Descriptor> {
 
     原始蟑螂0: 供养(1, '原始蟑螂'),
     不死队0: 黑暗容器_获得('不死队', 1, 2),
-    不死队1: 黑暗容器_强化(8),
+    不死队1: 黑暗容器_强化(),
     小捞油水0: {
       listener: {
         'post-sell'() {
@@ -126,7 +130,7 @@ export default function (/* config */): Record<string, Descriptor> {
       },
     },
     鲜血猎手0: 黑暗容器_获得('鲜血猎手', 1, 2),
-    鲜血猎手1: 黑暗容器_强化(5),
+    鲜血猎手1: 黑暗容器_强化(),
     暴掠龙0: 供养(2, '暴掠龙'),
     暴掠龙1: {
       listener: {
@@ -414,18 +418,22 @@ export default function (/* config */): Record<string, Descriptor> {
     },
     死亡舰队0: 黑暗容器_获得('毁灭者', 1, 2),
     死亡舰队1: {
+      config: {
+        unique: 'normal',
+      },
       listener: {
-        'round-end'() {
-          const consume = this.gold ? 5 : 10
-          if (this.attrib.get('dark') >= consume) {
-            this.gain_darkness(-consume)
-            this.obtain_unit(['塔达林母舰'])
-          }
+        'obtain-darkness'() {
+          this.$ref$Player
+            .all()
+            .filter(c => c !== this)
+            .forEach(ci => {
+              ci.gain_darkness(2)
+            })
         },
       },
     },
     虚空裂痕0: 黑暗容器_获得('百夫长', 1, 2),
-    虚空裂痕1: 黑暗容器_强化(5),
+    虚空裂痕1: 黑暗容器_升格(5),
     虚空裂痕2: {
       listener: {
         'round-end'() {
@@ -479,7 +487,7 @@ export default function (/* config */): Record<string, Descriptor> {
         },
       },
     },
-    深渊行者0: 黑暗容器_强化(10),
+    深渊行者0: 黑暗容器_强化(),
     深渊行者1: {
       listener: {
         seize() {
@@ -554,26 +562,14 @@ export default function (/* config */): Record<string, Descriptor> {
       },
     },
     死亡之握0: {
-      config: {
-        unique: 'normal',
-      },
       listener: {
-        'round-end'() {
-          this.$ref$Player.store
-            .filter(notNull)
-            .map(s => CardData[s.card].unit)
-            .forEach(units => {
-              this.obtain_unit(
-                this.$ref$Player.$ref$Game.lcg
-                  .shuffle(
-                    Object.keys(units)
-                      .map(u => UnitData[u as UnitKey])
-                      .filter(u => isNormal(u) && !u.tag.heroic)
-                      .map(u => u.name)
-                  )
-                  .slice(0, this.gold ? 2 : 1)
-              )
-            })
+        'round-start'() {
+          this.attrib.set('死亡之握', -1)
+        },
+        'card-entered'({ target }) {
+          if (this.attrib.get('死亡之握', -1) === -1) {
+            this.attrib.set('死亡之握', 'TZPN'.indexOf(target.race))
+          }
         },
       },
     },
@@ -582,14 +578,21 @@ export default function (/* config */): Record<string, Descriptor> {
         unique: 'normal',
       },
       listener: {
-        'store-refreshed'() {
-          this.obtain_unit(
-            this.$ref$Player.$ref$Game.lcg
-              .shuffle([
-                ...new Set(this.units.filter(u => !UnitData[u].tag.heroic)),
-              ])
-              .slice(0, this.gold ? 2 : 1)
-          )
+        'round-end'() {
+          const r = this.attrib.get('死亡之握', -1)
+          if (r === -1) {
+            return
+          }
+          const race = 'TZPN'.substring(r, r + 1) as Race
+          const cards = this.$ref$Player.store
+            .filter(notNull)
+            .map(s => s.card)
+            .filter(c => CardData[c].race === race)
+          Array.from({ length: this.gold ? 2 : 1 }).forEach(() => {
+            cards.forEach(c => {
+              this.load_unit(CardData[c], false, u => !UnitData[u].tag.heroic)
+            })
+          })
         },
       },
     },

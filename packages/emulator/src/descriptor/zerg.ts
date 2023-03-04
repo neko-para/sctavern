@@ -198,6 +198,19 @@ export default function (/* config */): Record<string, Descriptor> {
       },
     },
     地底伏击0: 孵化('post-enter', '潜伏者', 1, 2),
+    遮天蔽日0: {
+      listener: {
+        'round-end'() {
+          const ar = this.around()
+          this.obtain_unit(
+            rep('腐化者', ar.filter(ci => ci.race !== 'Z').length * 2)
+          )
+          this.$ref$Player.spawn(
+            rep('腐化者', ar.filter(ci => ci.race === 'Z').length)
+          )
+        },
+      },
+    },
     孵化刺蛇0: 孵化('round-end', '刺蛇(精英)', 1, 2),
     感染深渊0: {
       listener: {
@@ -230,7 +243,11 @@ export default function (/* config */): Record<string, Descriptor> {
     腐化大龙0: {
       listener: {
         'round-start'() {
-          this.replace(this.find('腐化者', this.gold ? 4 : 2), '巢虫领主')
+          this.replace(
+            this.find(['异龙', '异龙(精英)'], this.gold ? 2 : 1),
+            '巢虫领主'
+          )
+          this.replace(this.find('腐化者', this.gold ? 2 : 1), '巢虫领主')
         },
       },
     },

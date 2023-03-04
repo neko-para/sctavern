@@ -90,8 +90,8 @@ override = false
 category = 'public'
 
 [[upgrade]]
-name = '刚毅护盾'
-pinyin = 'gyhd'
+name = '完美冻结'
+pinyin = 'wmdj'
 override = false
 category = 'public'
 
@@ -165,12 +165,6 @@ category = 'special'
 name = '暗影战士'
 pinyin = 'ayzs'
 override = false
-category = 'special'
-
-[[upgrade]]
-name = '完美冻结'
-pinyin = 'wmdj'
-override = true
 category = 'special'
 
 [[upgrade]]

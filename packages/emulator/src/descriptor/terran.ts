@@ -289,35 +289,11 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'post-enter'() {
           this.around().forEach(ci => {
-            let nPro = 0,
-              nNor = 0
-            ci.units.forEach(u => {
-              if (u === '陆战队员') {
-                nNor++
-              } else if (u === '陆战队员(精英)') {
-                nPro++
-              }
-            })
-            const nProRest = nPro % 3
-            let nProTran = nPro - nProRest,
-              nNorTran = 0
-            let cnt = nProTran / 3
-            if (6 - nProRest * 2 <= nNor) {
-              nNorTran += 6 - nProRest * 2
-              nNor -= 6 - nProRest * 2
-              nProTran += nProRest
-              cnt++
-            }
-            const nNorRest = nNor % 6
-            cnt += (nNor - nNorRest) / 6
-            nNorTran += nNor - nNorRest
-            ci.filter((u, i) =>
-              [
-                ...ci.find('陆战队员(精英)', nProTran),
-                ...ci.find('陆战队员', nNorTran),
-              ].includes(i)
-            )
-            ci.obtain_unit(rep('牛头人陆战队员', cnt))
+            const nNor = Math.floor(ci.find('陆战队员').length / 6)
+            const nPro = Math.floor(ci.find('陆战队员(精英)').length / 3)
+            ci.filter('陆战队员', nNor * 6)
+            ci.filter('陆战队员(精英)', nPro * 3)
+            ci.obtain_unit(rep('牛头人陆战队员', nNor + nPro))
           })
         },
       },
