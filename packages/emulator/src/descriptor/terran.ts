@@ -289,11 +289,14 @@ export default function (/* config */): Record<string, Descriptor> {
       listener: {
         'post-enter'() {
           this.around().forEach(ci => {
-            const nNor = Math.floor(ci.find('陆战队员').length / 6)
-            const nPro = Math.floor(ci.find('陆战队员(精英)').length / 3)
-            ci.filter('陆战队员', nNor * 6)
+            const nPro = ci.find('陆战队员(精英)').length
+            const nNor = ci.find('陆战队员').length
+            const res = Math.floor((nPro * 2 + nNor) / 6)
+            const rNor = (nPro * 2 + nNor) % 6
             ci.filter('陆战队员(精英)', nPro * 3)
-            ci.obtain_unit(rep('牛头人陆战队员', nNor + nPro))
+            ci.filter('陆战队员', nNor * 6)
+            ci.obtain_unit(rep('牛头人陆战队员', res))
+            ci.obtain_unit(rep('陆战队员', rNor))
           })
         },
       },

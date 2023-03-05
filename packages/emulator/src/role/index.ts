@@ -1164,7 +1164,7 @@ export function CreateRoleTable() {
     },
     诺娃: {
       listener: {
-        'round-enter'({ round }, player) {
+        'round-enter'(m, player) {
           player.push_discover(
             player.$ref$Game.lcg
               .shuffle(
@@ -1173,7 +1173,7 @@ export function CreateRoleTable() {
                   : PackData.辅助卡
                 ).map(c => CardData[c])
               )
-              .slice(0, this.attrib.mode === 2 ? 4 : round % 2 === 1 ? 5 : 2)
+              .slice(0, this.attrib.mode === 2 ? 4 : 2)
               .map(card => ({
                 type: 'card',
                 card,
