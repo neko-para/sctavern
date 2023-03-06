@@ -144,10 +144,13 @@ export default function (/* config */): Record<string, Descriptor> {
                 .filter(x => x.store)
             )
             .slice(0, 2)
-          cards.forEach(({ store, index }) => {
-            this.$ref$Player.store[index] = null
-            this.load_unit(CardData[store?.card as CardKey])
-          })
+          this.$ref$Player.$ref$Game.pool.drop(
+            cards.map(({ store, index }) => {
+              this.$ref$Player.store[index] = null
+              this.load_unit(CardData[store?.card as CardKey])
+              return CardData[store?.card as CardKey]
+            })
+          )
         },
       },
     },
