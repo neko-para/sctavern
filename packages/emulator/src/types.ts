@@ -49,6 +49,8 @@ export interface PresentAction extends Action {
   acckey: 's' | 'g' | 'x'
 }
 
+export type GameStatus = 'select' | 'store' | 'battle'
+
 export type PlayerStatus =
   | 'middle'
   | 'normal'
@@ -135,6 +137,11 @@ export type InsertContext =
       card: CardKey
     }
 
+export type CounterTarget = {
+  type: 'Player' | 'AI' | 'Amon'
+  index: number
+}
+
 export interface DiscoverContext {
   item: DiscoverItem[]
   id: number
@@ -155,6 +162,8 @@ export interface GameState {
     current: number
     require: number
   }
+
+  status: GameStatus
 
   player: (PlayerState | null)[]
 }
@@ -210,6 +219,10 @@ export interface PlayerState {
   life: number
   level: number
   upgrade_cost: number
+
+  value: number
+  // battleValue: number
+  target: CounterTarget
 
   status: PlayerStatus
 

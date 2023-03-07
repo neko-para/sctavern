@@ -1,19 +1,10 @@
-import { ProphesyData, ProphesyKey, RoleData, RoleKey } from '@sctavern/data'
 import type { InnerMsg } from './events'
 import { PlayerInstance } from './player'
 import { Pool } from './pool'
-import type {
-  GameState,
-  GameConfig,
-  PresentAction,
-  RoleProphesyImpl,
-  ProphesyImpl,
-} from './types'
-import { dup, notNull, repX } from './utils'
-import DescriptorTable from './descriptor'
+import type { GameState, GameConfig, GameStatus, CounterTarget } from './types'
+import { dup, repX } from './utils'
 import { Attribute } from './attrib'
 import type { StateTransfer } from './stateTransfer'
-import ProphesyTable from './prophesy'
 
 export class LCG {
   seed: number
@@ -50,15 +41,6 @@ export class LCG {
   }
 }
 
-function getText(key: string): [string, string] | [] {
-  const [desc, extra] = DescriptorTable(key)
-  if (desc.text instanceof Function) {
-    return desc.text(extra)
-  } else {
-    return desc.text ?? []
-  }
-}
-
 export class GameInstance {
   $ignore$StateTransfer: StateTransfer
 
@@ -70,7 +52,10 @@ export class GameInstance {
   round: number
   pool: Pool
 
-  player: (PlayerInstance | null)[]
+  status: GameStatus
+  playerTargets: CounterTarget[]
+
+  player: PlayerInstance[]
 
   constructor(cfg: GameConfig, st: StateTransfer) {
     this.$ignore$StateTransfer = st
@@ -85,6 +70,8 @@ export class GameInstance {
       this.config.PoolPack,
       this.config.Pve
     )
+    this.status = 'store' // 'select'
+    this.playerTargets = []
     this.player = repX(null, this.config.Role.length).map((v, i) => {
       return new PlayerInstance(this, this.config.Role[i])
     })
@@ -93,7 +80,7 @@ export class GameInstance {
   input(msg: InnerMsg) {
     if (msg.msg === '$select') {
       const pl = this.player[msg.player]
-      if (msg.area === pl?.selected.area && msg.place === pl.selected.place) {
+      if (msg.area === pl.selected.area && msg.place === pl.selected.place) {
         return
       }
     }
@@ -103,7 +90,7 @@ export class GameInstance {
 
   post(msg: InnerMsg) {
     if ('player' in msg) {
-      this.player[msg.player]?.answer(msg)
+      this.player[msg.player].answer(msg)
     } else {
       this.player.forEach(p => {
         if (p) {
@@ -120,276 +107,14 @@ export class GameInstance {
       round: this.round,
 
       endProgress: {
-        current: this.player.filter(notNull).filter(p => p.fin).length,
-        require: this.player.filter(notNull).length,
+        current: this.player.filter(p => p.fin).length,
+        require: this.player.filter(p => p.curStatus() !== 'die').length,
       },
 
-      player: this.player.map((p, ip) => {
-        return p
-          ? {
-              config: dup(p.config),
-              life: p.life,
-              level: p.level,
-              upgrade_cost: p.upgrade_cost,
-              status: p.curStatus(),
+      status: this.status,
 
-              discover: p.discoverItem[0] || null,
-
-              mineral: p.mineral,
-              mineral_max: p.mineral_max,
-              gas: p.gas,
-              gas_max: p.gas_max,
-
-              selected: dup(p.selected),
-              locked: p.locked,
-
-              roles: p.roles.map((role, index) => ({
-                name: role.name,
-                ability: RoleData[role.name].ability,
-                desc: RoleData[role.name].desc,
-                enable: role.enable,
-
-                progress: role.progress.cur === -1 ? null : dup(role.progress),
-                enhance: role.enhance,
-                record: p.role_impl(index).record.apply(role),
-              })),
-
-              action: [
-                {
-                  action: 'upgrade',
-                  enable: p.can_tavern_upgrade() && p.curStatus() === 'normal',
-                  msg: {
-                    msg: '$upgrade',
-                    player: ip,
-                  },
-                },
-                {
-                  action: 'refresh',
-                  enable: p.can_refresh() && p.curStatus() === 'normal',
-                  msg: {
-                    msg: '$refresh',
-                    player: ip,
-                  },
-                  special: !!p.attrib.get('free-refresh'),
-                },
-                {
-                  action: p.locked ? 'unlock' : 'lock',
-                  enable: p.curStatus() === 'normal',
-                  msg: {
-                    msg: p.locked ? '$unlock' : '$lock',
-                    player: ip,
-                  },
-                },
-                {
-                  action: 'finish',
-                  enable: p.curStatus() === 'normal',
-                  msg: {
-                    msg: '$finish',
-                    player: ip,
-                  },
-                },
-              ],
-              abilityAction: p.roles.map((role, place) => ({
-                enable: role.enable && p.curStatus() === 'normal',
-                msg: {
-                  msg: '$ability',
-                  player: ip,
-                  place,
-                },
-              })),
-              store: p.store.map((s, i) => {
-                if (!s) {
-                  return null
-                }
-                const action = p.can_combine(s.card) ? 'combine' : 'enter'
-                return {
-                  card: s.card,
-                  special: s.special,
-                  actions: [
-                    {
-                      action,
-                      enable:
-                        p.can_buy(s.card, action, i) &&
-                        (p.can_combine(s.card) || p.can_enter(s.card)) &&
-                        p.curStatus() === 'normal',
-                      msg: {
-                        msg: '$action',
-                        player: ip,
-                        action,
-                        area: 'store',
-                        place: i,
-                      },
-                      acckey: 'e',
-                    },
-                    {
-                      action: 'stage',
-                      enable:
-                        p.can_buy(s.card, 'stage', i) &&
-                        p.can_stage() &&
-                        p.curStatus() === 'normal',
-                      msg: {
-                        msg: '$action',
-                        player: ip,
-                        action: 'stage',
-                        area: 'store',
-                        place: i,
-                      },
-                      acckey: 'v',
-                    },
-                  ],
-                }
-              }),
-              hand: p.hand.map((h, i) => {
-                if (!h) {
-                  return null
-                }
-                const action = p.can_combine(h.card) ? 'combine' : 'enter'
-                return h
-                  ? {
-                      card: h.card,
-                      actions: [
-                        {
-                          action,
-                          enable:
-                            (action === 'enter' ? p.can_enter(h.card) : true) &&
-                            p.curStatus() === 'normal',
-                          msg: {
-                            msg: '$action',
-                            player: ip,
-                            action,
-                            area: 'hand',
-                            place: i,
-                          },
-                          acckey: 'e',
-                        },
-                        {
-                          action: 'sell',
-                          enable: p.curStatus() === 'normal',
-                          msg: {
-                            msg: '$action',
-                            player: ip,
-                            action: 'sell',
-                            area: 'hand',
-                            place: i,
-                          },
-                          acckey: 's',
-                        },
-                      ],
-                    }
-                  : null
-              }),
-              present: p.present.map((pr, i) => {
-                const acts: PresentAction[] = []
-                if (p.curStatus() === 'insert') {
-                  acts.push({
-                    action: 'insert',
-                    enable: true,
-                    msg: {
-                      msg: '$choice',
-                      player: ip,
-                      category: 'insert',
-                      place: i,
-                    },
-                    acckey: 'x',
-                  })
-                } else if (p.curStatus() === 'deploy') {
-                  acts.push({
-                    action: 'deploy',
-                    enable: true,
-                    msg: {
-                      msg: '$choice',
-                      player: ip,
-                      category: 'deploy',
-                      place: i,
-                    },
-                    acckey: 'x',
-                  })
-                } else if (p.curStatus() === 'normal') {
-                  if (pr) {
-                    acts.push({
-                      action: 'upgrade',
-                      enable: p.can_pres_upgrade(pr.card),
-                      msg: {
-                        msg: '$action',
-                        player: ip,
-                        action: 'upgrade',
-                        area: 'present',
-                        place: i,
-                      },
-                      acckey: 'g',
-                    })
-                    acts.push({
-                      action: 'sell',
-                      enable: true,
-                      msg: {
-                        msg: '$action',
-                        player: ip,
-                        action: 'sell',
-                        area: 'present',
-                        place: i,
-                      },
-                      acckey: 's',
-                    })
-                  }
-                }
-                return {
-                  card: pr
-                    ? {
-                        config: dup(pr.card.config),
-                        name: pr.card.name,
-                        race: pr.card.race,
-                        level: pr.card.level,
-                        color:
-                          pr.card.color === 'normal'
-                            ? pr.card.gold
-                              ? 'gold'
-                              : 'normal'
-                            : pr.card.color,
-                        belong: pr.card.belong,
-                        units: dup(pr.card.units),
-                        upgrades: dup(pr.card.upgrades),
-                        descs: pr.card.descs.map(
-                          key =>
-                            getText(key)[pr.card.gold ? 1 : 0] ??
-                            `未知描述 ${key}`
-                        ),
-                        notes: pr.card.descs
-                          .map(
-                            key =>
-                              DescriptorTable(key)[0].note?.(
-                                pr.card,
-                                p.check_unique_active(key, i)
-                              ) || []
-                          )
-                          .flat()
-                          .concat(pr.card.extraNote()),
-                        value: pr.card.value(),
-                      }
-                    : null,
-                  actions: acts,
-                }
-              }),
-              prophesy: (() => {
-                const res: Partial<Record<ProphesyKey, number | null>> = {}
-                p.prophesy.forEach(key => {
-                  const pd = ProphesyTable[key]
-                  if (pd.count) {
-                    if (typeof ProphesyData[key].type === 'string') {
-                      res[key] = (pd as RoleProphesyImpl).count?.call(
-                        p.find_role(ProphesyData[key].type as RoleKey),
-                        p
-                      )
-                    } else {
-                      res[key] = (pd as ProphesyImpl).count?.call(p)
-                    }
-                  } else {
-                    res[key] = null
-                  }
-                })
-                return res
-              })(),
-            }
-          : null
+      player: this.player.map(p => {
+        return p ? p.getState() : null
       }),
     }
     return state
@@ -401,15 +126,75 @@ export class GameInstance {
 
   start() {
     this.round = 0
+    this.attrib.set('BaseDamage', 6)
+    this.attrib.set('ValueDamageDivider', 500)
     this.roundStart()
-    this.emit()
   }
 
   checkFin() {
-    const ps = this.player.filter(notNull)
-    if (ps.length === ps.filter(p => p.fin).length) {
+    if (
+      this.player.filter(p => p.curStatus() !== 'die').length ===
+      this.player.filter(p => p.fin).length
+    ) {
       this.roundEnd()
     }
+  }
+
+  roundStart() {
+    this.round += 1
+
+    if (this.round > 1) {
+      if (this.round <= 10) {
+        this.attrib.alter('ValueDamageDivider', 60)
+      }
+
+      if (this.round > 10 || this.round % 2 === 1) {
+        this.attrib.alter('BaseDamage', 2)
+      }
+    }
+
+    if (!this.config.Pve) {
+      this.playerTargets = this.lcg.shuffle(
+        this.player
+          .filter(p => p.curStatus() !== 'die')
+          .map(ci => ({ type: 'Player', index: ci.index() }))
+      )
+      if (this.playerTargets.length === 1) {
+        this.playerTargets.push({
+          type: 'AI',
+          index: 0,
+        })
+      }
+      if (this.playerTargets.length % 2 === 1) {
+        this.playerTargets.push({
+          type: 'AI',
+          index: this.lcg.one_of(
+            this.playerTargets
+              .slice(0, this.playerTargets.length - 1)
+              .map(x => x.index)
+          ) as number,
+        })
+      }
+      let i = 0
+      while (i < this.playerTargets.length) {
+        this.player[this.playerTargets[i].index].next_target =
+          this.playerTargets[i + 1]
+        if (this.playerTargets[i + 1].type === 'Player') {
+          this.player[this.playerTargets[i + 1].index].next_target =
+            this.playerTargets[i]
+        }
+        i += 2
+      }
+    }
+
+    this.post({
+      msg: 'round-start',
+      round: this.round,
+    })
+    this.post({
+      msg: 'round-enter',
+      round: this.round,
+    })
   }
 
   roundEnd() {
@@ -422,27 +207,129 @@ export class GameInstance {
       round: this.round,
     })
 
-    this.player.filter(notNull).forEach(p => (p.fin = false))
-    this.roundStart()
+    this.player.forEach(p => {
+      p.fin = false
+    })
+    this.doBattle()
   }
 
-  roundStart() {
-    this.round += 1
-    this.post({
-      msg: 'round-start',
-      round: this.round,
-    })
-    this.post({
-      msg: 'round-enter',
-      round: this.round,
-    })
-    this.player.forEach(p => {
-      if (p && p.life > 0) {
-        p.post({
-          msg: 'battle-result',
-          win: true,
-        })
+  doBattle() {
+    this.status = 'battle'
+
+    if (!this.config.Pve) {
+      let i = 0
+      while (i < this.playerTargets.length) {
+        const a = this.playerTargets[i].index
+        const b = this.playerTargets[i + 1].index
+        const bIsAI = this.playerTargets[i + 1].type === 'AI'
+
+        const restA = this.player[a].value()
+        const restB = this.player[b].value() * (bIsAI ? 0.5 : 1)
+
+        const result = ((): {
+          state: 'AW' | 'BW' | 'DR'
+          aLoss: number
+          bLoss: number
+        } => {
+          if (restA > restB) {
+            if (restA < restB * 1.2) {
+              return {
+                state: 'DR',
+                aLoss: this.attrib.get('BaseDamage'),
+                bLoss: this.attrib.get('BaseDamage'),
+              }
+            } else {
+              return {
+                state: 'AW',
+                aLoss: 0,
+                bLoss:
+                  this.attrib.get('BaseDamage') +
+                  Math.floor(
+                    (restA - restB) / this.attrib.get('ValueDamageDivider')
+                  ),
+              }
+            }
+          } else {
+            if (restB < restA * 1.2) {
+              return {
+                state: 'DR',
+                aLoss: this.attrib.get('BaseDamage'),
+                bLoss: this.attrib.get('BaseDamage'),
+              }
+            } else {
+              return {
+                state: 'BW',
+                aLoss:
+                  this.attrib.get('BaseDamage') +
+                  Math.floor(
+                    (restB - restA) / this.attrib.get('ValueDamageDivider')
+                  ),
+                bLoss: 0,
+              }
+            }
+          }
+        })()
+
+        switch (result.state) {
+          case 'AW':
+            this.player[a].post({
+              msg: 'battle-result',
+              state: 'win',
+              life: 0,
+            })
+            if (!bIsAI) {
+              this.player[b].post({
+                msg: 'battle-result',
+                state: 'loss',
+                life: this.player[b].post({
+                  msg: 'recalc-life-loss',
+                  loss: result.bLoss,
+                }).loss,
+              })
+            }
+            break
+          case 'BW':
+            this.player[a].post({
+              msg: 'battle-result',
+              state: 'loss',
+              life: this.player[a].post({
+                msg: 'recalc-life-loss',
+                loss: result.aLoss,
+              }).loss,
+            })
+            if (!bIsAI) {
+              this.player[b].post({
+                msg: 'battle-result',
+                state: 'win',
+                life: 0,
+              })
+            }
+            break
+          case 'DR':
+            this.player[a].post({
+              msg: 'battle-result',
+              state: 'draw',
+              life: this.player[a].post({
+                msg: 'recalc-life-loss',
+                loss: result.aLoss,
+              }).loss,
+            })
+            if (!bIsAI) {
+              this.player[b].post({
+                msg: 'battle-result',
+                state: 'draw',
+                life: this.player[b].post({
+                  msg: 'recalc-life-loss',
+                  loss: result.bLoss,
+                }).loss,
+              })
+            }
+            break
+        }
+        i += 2
       }
-    })
+    }
+
+    this.roundStart()
   }
 }

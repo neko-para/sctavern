@@ -5,6 +5,7 @@ import {
   AllProphesy,
   ProphesyData,
   UnitData,
+  RoleData,
 } from '@sctavern/data'
 import type {
   RoleKey,
@@ -30,8 +31,11 @@ import type {
   InsertContext,
   RoleProphesyImpl,
   ProphesyImpl,
+  PlayerState,
+  PresentAction,
+  CounterTarget,
 } from './types'
-import { notNull, repX } from './utils'
+import { dup, notNull, repX } from './utils'
 import DescriptorTable from './descriptor'
 import RoleTable from './role'
 import ProphesyTable from './prophesy'
@@ -377,6 +381,14 @@ const playerBind: GenericListener<PlayerInstance> = {
     }
   },
 
+  'battle-result'({ state, life }) {
+    if (state !== 'win') {
+      this.life -= life
+      if (this.life <= 0) {
+        this.status.push('die')
+      }
+    }
+  },
   'round-start'() {
     if (this.curStatus() !== 'middle') {
       return
@@ -496,6 +508,8 @@ export class PlayerInstance {
   status: PlayerStatus[]
   fin: boolean
 
+  next_target: CounterTarget
+
   // insertCard: CardKey[]
   insertItem: InsertContext[]
   deployCard: CardKey[]
@@ -568,6 +582,11 @@ export class PlayerInstance {
     this.status = ['middle']
     this.fin = false
 
+    this.next_target = {
+      type: 'Amon',
+      index: 0,
+    }
+
     this.insertItem = []
     this.deployCard = []
     this.discoverItem = []
@@ -627,6 +646,252 @@ export class PlayerInstance {
     }
     this.$ref$Game.post(m)
     return m
+  }
+
+  getState(): PlayerState {
+    const ip = this.index()
+    return {
+      config: dup(this.config),
+
+      life: this.life,
+      level: this.level,
+      upgrade_cost: this.upgrade_cost,
+
+      value: this.value(),
+      target: this.next_target,
+
+      status: this.curStatus(),
+
+      discover: this.discoverItem[0] || null,
+
+      mineral: this.mineral,
+      mineral_max: this.mineral_max,
+      gas: this.gas,
+      gas_max: this.gas_max,
+
+      selected: dup(this.selected),
+      locked: this.locked,
+
+      roles: this.roles.map((role, index) => ({
+        name: role.name,
+        ability: RoleData[role.name].ability,
+        desc: RoleData[role.name].desc,
+        enable: role.enable,
+
+        progress: role.progress.cur === -1 ? null : dup(role.progress),
+        enhance: role.enhance,
+        record: this.role_impl(index).record.apply(role),
+      })),
+
+      action: [
+        {
+          action: 'upgrade',
+          enable: this.can_tavern_upgrade() && this.curStatus() === 'normal',
+          msg: {
+            msg: '$upgrade',
+            player: ip,
+          },
+        },
+        {
+          action: 'refresh',
+          enable: this.can_refresh() && this.curStatus() === 'normal',
+          msg: {
+            msg: '$refresh',
+            player: ip,
+          },
+          special: !!this.attrib.get('free-refresh'),
+        },
+        {
+          action: this.locked ? 'unlock' : 'lock',
+          enable: this.curStatus() === 'normal',
+          msg: {
+            msg: this.locked ? '$unlock' : '$lock',
+            player: ip,
+          },
+        },
+        {
+          action: 'finish',
+          enable: this.curStatus() === 'normal',
+          msg: {
+            msg: '$finish',
+            player: ip,
+          },
+        },
+      ],
+      abilityAction: this.roles.map((role, place) => ({
+        enable: role.enable && this.curStatus() === 'normal',
+        msg: {
+          msg: '$ability',
+          player: ip,
+          place,
+        },
+      })),
+      store: this.store.map((s, i) => {
+        if (!s) {
+          return null
+        }
+        const action = this.can_combine(s.card) ? 'combine' : 'enter'
+        return {
+          card: s.card,
+          special: s.special,
+          actions: [
+            {
+              action,
+              enable:
+                this.can_buy(s.card, action, i) &&
+                (this.can_combine(s.card) || this.can_enter(s.card)) &&
+                this.curStatus() === 'normal',
+              msg: {
+                msg: '$action',
+                player: ip,
+                action,
+                area: 'store',
+                place: i,
+              },
+              acckey: 'e',
+            },
+            {
+              action: 'stage',
+              enable:
+                this.can_buy(s.card, 'stage', i) &&
+                this.can_stage() &&
+                this.curStatus() === 'normal',
+              msg: {
+                msg: '$action',
+                player: ip,
+                action: 'stage',
+                area: 'store',
+                place: i,
+              },
+              acckey: 'v',
+            },
+          ],
+        }
+      }),
+      hand: this.hand.map((h, i) => {
+        if (!h) {
+          return null
+        }
+        const action = this.can_combine(h.card) ? 'combine' : 'enter'
+        return h
+          ? {
+              card: h.card,
+              actions: [
+                {
+                  action,
+                  enable:
+                    (action === 'enter' ? this.can_enter(h.card) : true) &&
+                    this.curStatus() === 'normal',
+                  msg: {
+                    msg: '$action',
+                    player: ip,
+                    action,
+                    area: 'hand',
+                    place: i,
+                  },
+                  acckey: 'e',
+                },
+                {
+                  action: 'sell',
+                  enable: this.curStatus() === 'normal',
+                  msg: {
+                    msg: '$action',
+                    player: ip,
+                    action: 'sell',
+                    area: 'hand',
+                    place: i,
+                  },
+                  acckey: 's',
+                },
+              ],
+            }
+          : null
+      }),
+      present: this.present.map((pr, i) => {
+        const acts: PresentAction[] = []
+        if (this.curStatus() === 'insert') {
+          acts.push({
+            action: 'insert',
+            enable: true,
+            msg: {
+              msg: '$choice',
+              player: ip,
+              category: 'insert',
+              place: i,
+            },
+            acckey: 'x',
+          })
+        } else if (this.curStatus() === 'deploy') {
+          acts.push({
+            action: 'deploy',
+            enable: true,
+            msg: {
+              msg: '$choice',
+              player: ip,
+              category: 'deploy',
+              place: i,
+            },
+            acckey: 'x',
+          })
+        } else if (this.curStatus() === 'normal') {
+          if (pr) {
+            acts.push({
+              action: 'upgrade',
+              enable: this.can_pres_upgrade(pr.card),
+              msg: {
+                msg: '$action',
+                player: ip,
+                action: 'upgrade',
+                area: 'present',
+                place: i,
+              },
+              acckey: 'g',
+            })
+            acts.push({
+              action: 'sell',
+              enable: true,
+              msg: {
+                msg: '$action',
+                player: ip,
+                action: 'sell',
+                area: 'present',
+                place: i,
+              },
+              acckey: 's',
+            })
+          }
+        }
+        return {
+          card: pr ? pr.card.getState() : null,
+          actions: acts,
+        }
+      }),
+      prophesy: (() => {
+        const res: Partial<Record<ProphesyKey, number | null>> = {}
+        this.prophesy.forEach(key => {
+          const pd = ProphesyTable[key]
+          if (pd.count) {
+            if (typeof ProphesyData[key].type === 'string') {
+              res[key] = (pd as RoleProphesyImpl).count?.call(
+                this.find_role(ProphesyData[key].type as RoleKey),
+                this
+              )
+            } else {
+              res[key] = (pd as ProphesyImpl).count?.call(this)
+            }
+          } else {
+            res[key] = null
+          }
+        })
+        return res
+      })(),
+    }
+  }
+
+  value() {
+    return this.present
+      .map(c => c?.card.value() ?? 0)
+      .reduce((a, b) => a + b, 0)
   }
 
   find_role(role: RoleKey) {

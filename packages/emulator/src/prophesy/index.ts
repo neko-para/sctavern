@@ -61,9 +61,9 @@ export function CreateProphesyTable() {
         this.attrib.speed = 0
       },
       listener: {
-        'battle-result'({ win }) {
+        'battle-result'({ state }) {
           if (this.attrib.mode === 2) {
-            if (win) {
+            if (state === 'win') {
               this.attrib.speed += 12
             }
           }
@@ -119,8 +119,8 @@ export function CreateProphesyTable() {
         this.progress.cur = 0
       },
       listener: {
-        'battle-result'({ win }) {
-          if (win) {
+        'battle-result'({ state }) {
+          if (state === 'win') {
             this.progress.cur += 2
           } else {
             this.progress.cur += 1
@@ -158,8 +158,8 @@ export function CreateProphesyTable() {
         'round-end'(m, player) {
           player.life = Math.min(100, player.life + 10)
         },
-        'battle-result'({ win }) {
-          if (!win) {
+        'battle-result'({ state }) {
+          if (state !== 'win') {
             this.attrib.shield += 4
           }
         },

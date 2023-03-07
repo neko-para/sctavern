@@ -14,6 +14,8 @@ export function repX<T>(v: T, n: number) {
 }
 
 export function dup<T>(v: T): T {
+  return structuredClone(v)
+  /*
   if (typeof v === 'object' && v) {
     if (v instanceof Array) {
       return v.map(dup) as unknown as T
@@ -27,6 +29,7 @@ export function dup<T>(v: T): T {
   } else {
     return v
   }
+  */
 }
 
 export function notNull<T>(v: T | null): v is T {

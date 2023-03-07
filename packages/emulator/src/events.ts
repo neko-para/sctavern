@@ -98,7 +98,12 @@ export type GameMsg = ApplyKey<
 export type PlayerMsg = ApplyKey<
   | {
       msg: 'battle-result'
-      win: boolean
+      state: 'win' | 'loss' | 'draw'
+      life: number
+    }
+  | {
+      msg: 'recalc-life-loss'
+      loss: number
     }
   | {
       msg: 'tavern-upgraded'

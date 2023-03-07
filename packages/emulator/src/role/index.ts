@@ -648,6 +648,11 @@ export function CreateRoleTable() {
     副官: {
       init() {},
       listener: {
+        'recalc-life-loss'(m, player) {
+          if (this.attrib.mode === 1 && player.attrib.get('副官') > 0) {
+            m.loss = Math.max(0, m.loss - 20)
+          }
+        },
         'round-enter'(m, player) {
           player.attrib.alter('free-refresh', 1)
           if (this.attrib.mode === 1) {

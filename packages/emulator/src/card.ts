@@ -10,8 +10,13 @@ import { UnitData, UpgradeData, CardData } from '@sctavern/data'
 import { Dispatch } from './dispatch'
 import type { GenericListener, InnerMsg } from './events'
 import type { PlayerInstance } from './player'
-import type { CardConfig, DistributiveOmit, ObtainUnitWay } from './types'
-import { mostValueUnit, notNull, rep } from './utils'
+import type {
+  CardConfig,
+  DistributiveOmit,
+  ObtainUnitWay,
+  PresentItemState,
+} from './types'
+import { dup, mostValueUnit, notNull, rep } from './utils'
 import DescriptorTable from './descriptor'
 import { Attribute } from './attrib'
 
@@ -192,6 +197,43 @@ export class CardInstance {
     }
     this.$ref$Player.$ref$Game.post(m)
     return m
+  }
+
+  getState(): PresentItemState['card'] {
+    function getText(key: string): [string, string] | [] {
+      const [desc, extra] = DescriptorTable(key)
+      if (desc.text instanceof Function) {
+        return desc.text(extra)
+      } else {
+        return desc.text ?? []
+      }
+    }
+
+    return {
+      config: dup(this.config),
+      name: this.name,
+      race: this.race,
+      level: this.level,
+      color:
+        this.color === 'normal' ? (this.gold ? 'gold' : 'normal') : this.color,
+      belong: this.belong,
+      units: dup(this.units),
+      upgrades: dup(this.upgrades),
+      descs: this.descs.map(
+        key => getText(key)[this.gold ? 1 : 0] ?? `未知描述 ${key}`
+      ),
+      notes: this.descs
+        .map(
+          key =>
+            DescriptorTable(key)[0].note?.(
+              this,
+              this.$ref$Player.check_unique_active(key, this.index())
+            ) || []
+        )
+        .flat()
+        .concat(this.extraNote()),
+      value: this.value(),
+    }
   }
 
   answer(msg: InnerMsg) {
