@@ -22,8 +22,9 @@ function HandCard(props: Props) {
           return (
             <Button
               variant="text"
-              onClick={() => {
+              onClick={ev => {
                 client.post(act.msg)
+                ev.stopPropagation()
               }}
               disabled={!act.enable}
               key={index}

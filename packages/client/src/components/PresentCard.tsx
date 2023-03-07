@@ -74,8 +74,9 @@ function PresentCard(props: Props) {
               <Button
                 color="inherit"
                 variant="text"
-                onClick={() => {
+                onClick={ev => {
                   setShowInfo(true)
+                  ev.stopPropagation()
                 }}
               >
                 <span className="Label">{props.item.card.name}</span>
@@ -132,8 +133,9 @@ function PresentCard(props: Props) {
             return (
               <Button
                 variant="text"
-                onClick={() => {
+                onClick={ev => {
                   client.post(act.msg)
+                  ev.stopPropagation()
                 }}
                 disabled={!act.enable}
                 key={index}
