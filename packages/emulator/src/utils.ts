@@ -4,6 +4,8 @@ import type { UnitKey } from '@sctavern/data'
 import type { GameInstance, LCG } from './game'
 import cm from './serialize'
 import type { Descriptor } from './types'
+import { deflateRaw, inflateRaw } from 'pako'
+import { diff, patch, type Delta } from './differ'
 
 export function rep(v: UnitKey, n: number) {
   return Array.from({ length: n }, () => v)
@@ -97,4 +99,41 @@ export function randomUpgrades(
   pred: (u: UpgradeKey) => boolean = () => true
 ): UpgradeKey[] {
   return lcg.shuffle(RandomUpgrade.filter(pred)).slice(0, count)
+}
+
+export function compress(obj: unknown): Buffer {
+  return Buffer.from(deflateRaw(JSON.stringify(obj)))
+}
+
+export function decompress<T>(buf: Buffer): T {
+  return JSON.parse(inflateRaw(buf, { to: 'string' }))
+}
+
+export class DiffCompressSync<T> {
+  value: T
+
+  constructor(init: T = {} as T) {
+    this.value = init
+  }
+
+  directSet(buf: Buffer) {
+    this.value = decompress<T>(buf)
+  }
+
+  directGet(): Buffer {
+    return compress(this.value)
+  }
+
+  applyPatch(buf: Buffer) {
+    this.value = patch(this.value, decompress<Delta>(buf))
+  }
+
+  createPatch(v: T): Buffer | null {
+    const dlt = diff(this.value, v)
+    if (!dlt) {
+      return null
+    }
+    this.value = v
+    return compress(dlt)
+  }
 }

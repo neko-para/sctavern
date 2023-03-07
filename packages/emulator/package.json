@@ -8,6 +8,7 @@
     "@sctavern/data": "*",
     "buffer": "^6.0.3",
     "isomorphic-ws": "^5.0.0",
+    "jsondiffpatch": "^0.4.1",
     "pako": "^2.1.0"
   },
   "devDependencies": {

@@ -2,5 +2,9 @@
   "root": true,
   "ignorePatterns": ["**/*"],
   "plugins": [],
-  "overrides": []
+  "overrides": [],
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2020
+  }
 }

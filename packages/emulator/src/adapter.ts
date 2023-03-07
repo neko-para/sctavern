@@ -2,18 +2,7 @@ import { InnerMsg } from './events'
 import { GameState } from './types'
 import WebSocket from 'isomorphic-ws'
 import { Buffer } from 'buffer'
-import { deflateRaw, inflateRaw } from 'pako'
-
-type GameStateBuffer = Buffer
-
-function compress(state: GameState): GameStateBuffer {
-  return Buffer.from(deflateRaw(JSON.stringify(state), { level: 9 }))
-}
-
-function decompress(buffer: GameStateBuffer): GameState {
-  // console.log(buffer.length / inflateRaw(buffer, { to: 'string' }).length)
-  return JSON.parse(inflateRaw(buffer, { to: 'string' }))
-}
+import { DiffCompressSync } from './utils'
 
 export interface ClientAdapter {
   sendInput(msg: InnerMsg): Promise<void>
@@ -56,8 +45,10 @@ export function directLinkAdapters() {
 
 export function wsClientAdapter(url: string): ClientAdapter {
   const result: ClientAdapter & {
+    sync: null | DiffCompressSync<GameState>
     ws: WebSocket
   } = {
+    sync: null,
     ws: new WebSocket(url),
     async sendInput(msg: InnerMsg) {
       return new Promise((resolve, reject) => {
@@ -77,30 +68,52 @@ export function wsClientAdapter(url: string): ClientAdapter {
     onState: () => void 0,
   }
   result.ws.addEventListener('message', ev => {
-    ;(ev.data as unknown as Blob).arrayBuffer().then(ab => {
-      result.onState(decompress(Buffer.from(ab)))
-    })
+    const blob = ev.data as unknown as Blob
+    blob
+      .arrayBuffer()
+      .then(ab => Buffer.from(ab))
+      .then(buf => {
+        if (result.sync) {
+          result.sync.applyPatch(buf)
+        } else {
+          result.sync = new DiffCompressSync()
+          result.sync.directSet(buf)
+        }
+        result.onState(structuredClone(result.sync.value))
+      })
   })
   return result
 }
 
 export function wsServerAdapter(socket: WebSocket.WebSocket): ServerAdapter {
   const result: ServerAdapter & {
+    sync: null | DiffCompressSync<GameState>
     ws: WebSocket.WebSocket
   } = {
+    sync: null,
     ws: socket,
     onInput: () => void 0,
     onClose: () => void 0,
 
     async setState(state: GameState) {
       return new Promise((resolve, reject) => {
-        this.ws.send(compress(state), err => {
-          if (err) {
-            reject(err)
+        let buf = (() => {
+          if (this.sync) {
+            return this.sync.createPatch(state)
           } else {
-            resolve(void 0)
+            this.sync = new DiffCompressSync(state)
+            return this.sync.directGet()
           }
-        })
+        })()
+        if (buf) {
+          this.ws.send(buf, err => {
+            if (err) {
+              reject(err)
+            } else {
+              resolve(void 0)
+            }
+          })
+        }
       })
     },
   }
@@ -111,52 +124,4 @@ export function wsServerAdapter(socket: WebSocket.WebSocket): ServerAdapter {
     result.onClose()
   })
   return result
-}
-
-export async function wsServerAdapters(
-  port: number,
-  listener: (adapter: ServerAdapter, search: URLSearchParams) => void
-) {
-  return new Promise<void>(resolve => {
-    const result = {
-      server: new WebSocket.Server(
-        {
-          port,
-        },
-        resolve
-      ),
-    }
-    result.server.on('connection', (socket, request) => {
-      if (!request.url) {
-        return
-      }
-      const url = new URL(request.url, `http://${request.headers.host}`)
-      const subr: ServerAdapter & {
-        ws: WebSocket.WebSocket
-      } = {
-        ws: socket,
-        onInput: () => void 0,
-        onClose: () => void 0,
-
-        async setState(state: GameState) {
-          return new Promise((resolve, reject) => {
-            this.ws.send(JSON.stringify(state), err => {
-              if (err) {
-                reject(err)
-              } else {
-                resolve(void 0)
-              }
-            })
-          })
-        },
-      }
-      subr.ws.on('message', data => {
-        subr.onInput(JSON.parse(data.toString()))
-      })
-      subr.ws.on('close', () => {
-        subr.onClose()
-      })
-      listener(subr, url.searchParams)
-    })
-  })
 }
