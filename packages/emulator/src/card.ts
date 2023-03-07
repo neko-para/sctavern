@@ -424,6 +424,17 @@ export class CardInstance {
     this.attrib.set('void', 1)
   }
 
+  get_void() {
+    const cnt = this.$ref$Player.count()
+    return this.attrib.get('void')
+      ? Object.keys(cnt)
+          .map(r => (cnt[r as Race] ? 1 : 0))
+          .reduce((a, b) => a + b, -1) *
+          15 +
+          this.$ref$Player.get_extra_void()
+      : -1
+  }
+
   seize(
     target: CardInstance,
     option?: {
@@ -566,16 +577,7 @@ export class CardInstance {
     }
 
     if (this.attrib.get('void')) {
-      const cnt = this.$ref$Player.count()
-      res.push(
-        `虚空投影: ${
-          Object.keys(cnt)
-            .map(r => (cnt[r as Race] ? 1 : 0))
-            .reduce((a, b) => a + b, -1) *
-            15 +
-          this.$ref$Player.get_extra_void()
-        }%`
-      )
+      res.push(`虚空投影: ${this.get_void()}%`)
     }
 
     if (this.attrib.has('sacrifice')) {

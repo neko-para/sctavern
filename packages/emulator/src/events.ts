@@ -1,6 +1,7 @@
 import type { CardKey, UnitKey, UpgradeKey } from '@sctavern/data'
 import type { CardInstance } from './card'
 import type {
+  BattleUnit,
   DiscoverContext,
   GameArea,
   InsertContext,
@@ -104,6 +105,14 @@ export type PlayerMsg = ApplyKey<
   | {
       msg: 'recalc-life-loss'
       loss: number
+    }
+  | {
+      msg: 'get-battle-unit'
+      units: BattleUnit[]
+    }
+  | {
+      msg: 'filter-battle-unit'
+      unit: BattleUnit
     }
   | {
       msg: 'tavern-upgraded'

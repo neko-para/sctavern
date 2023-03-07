@@ -141,6 +141,7 @@ export class GameInstance {
   }
 
   roundStart() {
+    this.status = 'store'
     this.round += 1
 
     if (this.round > 1) {

@@ -6,6 +6,7 @@ import {
   ProphesyData,
   UnitData,
   RoleData,
+  isNormal,
 } from '@sctavern/data'
 import type {
   RoleKey,
@@ -34,6 +35,7 @@ import type {
   PlayerState,
   PresentAction,
   CounterTarget,
+  BattleUnit,
 } from './types'
 import { dup, notNull, repX } from './utils'
 import DescriptorTable from './descriptor'
@@ -659,6 +661,7 @@ export class PlayerInstance {
 
       value: this.value(),
       target: this.next_target,
+      battle_units: this.battle_units(),
 
       status: this.curStatus(),
 
@@ -892,6 +895,34 @@ export class PlayerInstance {
     return this.present
       .map(c => c?.card.value() ?? 0)
       .reduce((a, b) => a + b, 0)
+  }
+
+  battle_units(): BattleUnit[] {
+    let us: BattleUnit[] = []
+    this.all().forEach(ci => {
+      ci.units.forEach(u => {
+        if (!isNormal(UnitData[u])) {
+          return
+        }
+        us.push({
+          unit: u,
+          upgrades: ci.upgrades.map(x => x),
+          extraUpgrades: {
+            虚空能量: ci.get_void(),
+          },
+        })
+      })
+    })
+    us = this.post({
+      msg: 'get-battle-unit',
+      units: us,
+    }).units.map(u => {
+      return this.post({
+        msg: 'filter-battle-unit',
+        unit: u,
+      }).unit
+    })
+    return us
   }
 
   find_role(role: RoleKey) {

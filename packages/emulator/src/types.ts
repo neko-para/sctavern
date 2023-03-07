@@ -223,6 +223,7 @@ export interface PlayerState {
   value: number
   // battleValue: number
   target: CounterTarget
+  battle_units: BattleUnit[]
 
   status: PlayerStatus
 
@@ -302,4 +303,12 @@ export interface ProphesyImpl {
   listener: GenericListener<PlayerInstance>
 
   count?: (this: PlayerInstance) => number
+}
+
+export type ExtraUpgradeKey = '虚空能量' | '升格'
+
+export interface BattleUnit {
+  unit: UnitKey
+  upgrades: UpgradeKey[]
+  extraUpgrades: Partial<Record<ExtraUpgradeKey, number>>
 }
