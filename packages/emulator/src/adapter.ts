@@ -1,6 +1,19 @@
 import { InnerMsg } from './events'
 import { GameState } from './types'
 import WebSocket from 'isomorphic-ws'
+import { Buffer } from 'buffer'
+import { deflateRaw, inflateRaw } from 'pako'
+
+type GameStateBuffer = Buffer
+
+function compress(state: GameState): GameStateBuffer {
+  return Buffer.from(deflateRaw(JSON.stringify(state), { level: 9 }))
+}
+
+function decompress(buffer: GameStateBuffer): GameState {
+  // console.log(buffer.length / inflateRaw(buffer, { to: 'string' }).length)
+  return JSON.parse(inflateRaw(buffer, { to: 'string' }))
+}
 
 export interface ClientAdapter {
   sendInput(msg: InnerMsg): Promise<void>
@@ -64,7 +77,9 @@ export function wsClientAdapter(url: string): ClientAdapter {
     onState: () => void 0,
   }
   result.ws.addEventListener('message', ev => {
-    result.onState(JSON.parse(ev.data.toString()))
+    ;(ev.data as unknown as Blob).arrayBuffer().then(ab => {
+      result.onState(decompress(Buffer.from(ab)))
+    })
   })
   return result
 }
@@ -79,7 +94,7 @@ export function wsServerAdapter(socket: WebSocket.WebSocket): ServerAdapter {
 
     async setState(state: GameState) {
       return new Promise((resolve, reject) => {
-        this.ws.send(JSON.stringify(state), err => {
+        this.ws.send(compress(state), err => {
           if (err) {
             reject(err)
           } else {

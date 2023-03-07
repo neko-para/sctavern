@@ -6,9 +6,12 @@
   },
   "dependencies": {
     "@sctavern/data": "*",
-    "isomorphic-ws": "^5.0.0"
+    "buffer": "^6.0.3",
+    "isomorphic-ws": "^5.0.0",
+    "pako": "^2.1.0"
   },
   "devDependencies": {
+    "@types/pako": "^2.0.0",
     "@types/ws": "^8.5.4",
     "esbuild": "^0.17.6"
   }
