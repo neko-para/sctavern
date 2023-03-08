@@ -41,6 +41,94 @@ export class LCG {
   }
 }
 
+const counterMap: Record<'over7' | 'over5' | 'over3', [number, number][][]> = {
+  over7: [
+    [
+      [0, 1],
+      [2, 3],
+      [4, 5],
+      [6, 7],
+    ],
+    [
+      [0, 3],
+      [1, 5],
+      [2, 7],
+      [4, 6],
+    ],
+    [
+      [0, 5],
+      [3, 7],
+      [1, 6],
+      [2, 4],
+    ],
+    [
+      [0, 7],
+      [5, 6],
+      [3, 4],
+      [1, 2],
+    ],
+    [
+      [0, 6],
+      [7, 4],
+      [5, 2],
+      [3, 1],
+    ],
+    [
+      [0, 4],
+      [6, 2],
+      [7, 1],
+      [5, 3],
+    ],
+    [
+      [0, 2],
+      [4, 1],
+      [6, 3],
+      [7, 5],
+    ],
+  ],
+  over5: [
+    [
+      [0, 1],
+      [2, 3],
+      [4, 5],
+    ],
+    [
+      [0, 3],
+      [1, 4],
+      [2, 4],
+    ],
+    [
+      [0, 5],
+      [3, 4],
+      [1, 2],
+    ],
+    [
+      [0, 4],
+      [5, 2],
+      [3, 1],
+    ],
+    [
+      [0, 2],
+      [4, 1],
+      [5, 3],
+    ],
+  ],
+  over3: [
+    [
+      [0, 1],
+      [2, 3],
+    ],
+    [
+      [0, 3],
+      [1, 2],
+    ],
+    [
+      [0, 2],
+      [3, 1],
+    ],
+  ],
+}
+
 export class GameInstance {
   $ignore$StateTransfer: StateTransfer
 
@@ -53,7 +141,10 @@ export class GameInstance {
   pool: Pool
 
   status: GameStatus
-  playerTargets: CounterTarget[]
+  playerTargets: [number, number][]
+
+  counterOrder: number[]
+  counterDelta: number
 
   player: PlayerInstance[]
 
@@ -72,6 +163,13 @@ export class GameInstance {
     )
     this.status = 'store' // 'select'
     this.playerTargets = []
+
+    this.counterOrder = Array.from(
+      { length: this.config.Role.length },
+      (v, k) => k
+    )
+    this.counterDelta = 0
+
     this.player = repX(null, this.config.Role.length).map((v, i) => {
       return new PlayerInstance(this, this.config.Role[i])
     })
@@ -128,6 +226,8 @@ export class GameInstance {
     this.round = 0
     this.attrib.set('BaseDamage', 6)
     this.attrib.set('ValueDamageDivider', 500)
+    this.lcg.shuffle(this.counterOrder)
+    this.counterDelta = 0
     this.roundStart()
   }
 
@@ -155,36 +255,56 @@ export class GameInstance {
     }
 
     if (!this.config.Pve) {
-      this.playerTargets = this.lcg.shuffle(
-        this.player
-          .filter(p => p.curStatus() !== 'die')
-          .map(ci => ({ type: 'Player', index: ci.index() }))
-      )
-      if (this.playerTargets.length === 1) {
-        this.playerTargets.push({
+      if (this.counterOrder.length === 1) {
+        this.playerTargets = [[0, -1]]
+        this.player[0].next_target = {
           type: 'AI',
           index: 0,
-        })
-      }
-      if (this.playerTargets.length % 2 === 1) {
-        this.playerTargets.push({
-          type: 'AI',
-          index: this.lcg.one_of(
-            this.playerTargets
-              .slice(0, this.playerTargets.length - 1)
-              .map(x => x.index)
-          ) as number,
-        })
-      }
-      let i = 0
-      while (i < this.playerTargets.length) {
-        this.player[this.playerTargets[i].index].next_target =
-          this.playerTargets[i + 1]
-        if (this.playerTargets[i + 1].type === 'Player') {
-          this.player[this.playerTargets[i + 1].index].next_target =
-            this.playerTargets[i]
         }
-        i += 2
+      } else {
+        const counterData: [number, number][][] =
+          this.counterOrder.length >= 7
+            ? counterMap.over7
+            : this.counterOrder.length >= 5
+            ? counterMap.over5
+            : this.counterOrder.length >= 3
+            ? counterMap.over3
+            : [[[0, 1]]]
+        const rDlt = this.counterDelta % counterData.length
+        this.playerTargets = counterData[rDlt].map(pair => [
+          this.counterOrder[pair[0]],
+          this.counterOrder[pair[1]],
+        ])
+        this.playerTargets.forEach(([a, b]) => {
+          if (a >= 0) {
+            this.player[a].next_target =
+              b >= 0
+                ? {
+                    type: 'Player',
+                    index: b,
+                  }
+                : {
+                    type: 'AI',
+                    index: this.lcg.one_of(
+                      this.counterOrder.filter(x => x >= 0 && x !== a)
+                    ) as number,
+                  }
+          }
+          if (b >= 0) {
+            this.player[b].next_target =
+              a >= 0
+                ? {
+                    type: 'Player',
+                    index: a,
+                  }
+                : {
+                    type: 'AI',
+                    index: this.lcg.one_of(
+                      this.counterOrder.filter(x => x >= 0 && x !== b)
+                    ) as number,
+                  }
+          }
+        })
       }
     }
 
@@ -218,13 +338,11 @@ export class GameInstance {
     this.status = 'battle'
 
     if (!this.config.Pve) {
-      let i = 0
-      while (i < this.playerTargets.length) {
-        const a = this.playerTargets[i].index
-        const b = this.playerTargets[i + 1].index
-        const bIsAI = this.playerTargets[i + 1].type === 'AI'
+      this.playerTargets.forEach(([a, b]) => {
+        const aIsAI = a < 0
+        const bIsAI = b < 0
 
-        const restA = this.player[a].value()
+        const restA = this.player[a].value() * (aIsAI ? 0.5 : 1)
         const restB = this.player[b].value() * (bIsAI ? 0.5 : 1)
 
         const result = ((): {
@@ -233,7 +351,7 @@ export class GameInstance {
           bLoss: number
         } => {
           if (restA > restB) {
-            if (restA < restB * 1.2) {
+            if (restA <= restB * 1.2) {
               return {
                 state: 'DR',
                 aLoss: this.attrib.get('BaseDamage'),
@@ -251,7 +369,7 @@ export class GameInstance {
               }
             }
           } else {
-            if (restB < restA * 1.2) {
+            if (restB <= restA * 1.2) {
               return {
                 state: 'DR',
                 aLoss: this.attrib.get('BaseDamage'),
@@ -273,11 +391,13 @@ export class GameInstance {
 
         switch (result.state) {
           case 'AW':
-            this.player[a].post({
-              msg: 'battle-result',
-              state: 'win',
-              life: 0,
-            })
+            if (!aIsAI) {
+              this.player[a].post({
+                msg: 'battle-result',
+                state: 'win',
+                life: 0,
+              })
+            }
             if (!bIsAI) {
               this.player[b].post({
                 msg: 'battle-result',
@@ -290,14 +410,16 @@ export class GameInstance {
             }
             break
           case 'BW':
-            this.player[a].post({
-              msg: 'battle-result',
-              state: 'loss',
-              life: this.player[a].post({
-                msg: 'recalc-life-loss',
-                loss: result.aLoss,
-              }).loss,
-            })
+            if (!aIsAI) {
+              this.player[a].post({
+                msg: 'battle-result',
+                state: 'loss',
+                life: this.player[a].post({
+                  msg: 'recalc-life-loss',
+                  loss: result.aLoss,
+                }).loss,
+              })
+            }
             if (!bIsAI) {
               this.player[b].post({
                 msg: 'battle-result',
@@ -307,14 +429,16 @@ export class GameInstance {
             }
             break
           case 'DR':
-            this.player[a].post({
-              msg: 'battle-result',
-              state: 'draw',
-              life: this.player[a].post({
-                msg: 'recalc-life-loss',
-                loss: result.aLoss,
-              }).loss,
-            })
+            if (!aIsAI) {
+              this.player[a].post({
+                msg: 'battle-result',
+                state: 'draw',
+                life: this.player[a].post({
+                  msg: 'recalc-life-loss',
+                  loss: result.aLoss,
+                }).loss,
+              })
+            }
             if (!bIsAI) {
               this.player[b].post({
                 msg: 'battle-result',
@@ -327,7 +451,29 @@ export class GameInstance {
             }
             break
         }
-        i += 2
+      })
+      const co = this.player
+        .filter(p => p.curStatus() === 'middle')
+        .map(p => p.index())
+      if (co.length === 0) {
+        // 1player, loss
+        this.status = 'finish'
+        return
+      } else if (co.length === 1) {
+        if (this.config.Role.length > 1) {
+          // win!
+          this.status = 'finish'
+          return
+        }
+      }
+      if (this.counterOrder.length - co.length >= 2) {
+        if (co.length % 2 === 1) {
+          co.push(-1)
+        }
+        this.counterOrder = co
+        this.counterDelta = 0
+      } else {
+        this.counterDelta += 1
       }
     }
 

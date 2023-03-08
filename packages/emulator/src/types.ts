@@ -49,7 +49,7 @@ export interface PresentAction extends Action {
   acckey: 's' | 'g' | 'x'
 }
 
-export type GameStatus = 'select' | 'store' | 'battle'
+export type GameStatus = 'select' | 'store' | 'battle' | 'finish'
 
 export type PlayerStatus =
   | 'middle'
