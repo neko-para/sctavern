@@ -10,6 +10,8 @@ import {
 import { ServerAdapter } from './adapter'
 import { UndoRedoSave, UndoRedoSync } from './differ'
 
+export type WrapperSave = UndoRedoSave<unknown>
+
 export const DefaultGameConfig: GameConfig = {
   Pack: ['核心'],
   Seed: 1,
@@ -129,7 +131,7 @@ export class Wrapper {
     this.saveStateChanged()
   }
 
-  load(save: UndoRedoSave) {
+  load(save: WrapperSave) {
     // this.save = save
     this.save = UndoRedoSync.from(save)
     this.loadActive()

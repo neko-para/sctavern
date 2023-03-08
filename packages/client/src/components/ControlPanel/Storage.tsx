@@ -1,4 +1,4 @@
-import { PortableSave, Wrapper } from '@sctavern/emulator'
+import { WrapperSave, Wrapper } from '@sctavern/emulator'
 import Zip from 'jszip'
 import FileSaver from 'file-saver'
 
@@ -7,9 +7,9 @@ export interface Props {
 }
 
 function Storage(props: Props) {
-  const [save, setSave] = useState<PortableSave | null>(null)
+  const [save, setSave] = useState<WrapperSave | null>(null)
 
-  function doSave(s: PortableSave) {
+  function doSave(s: WrapperSave) {
     localStorage.setItem(
       'save',
       JSON.stringify({
