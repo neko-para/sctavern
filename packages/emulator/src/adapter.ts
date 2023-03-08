@@ -2,7 +2,7 @@ import { InnerMsg } from './events'
 import { GameState } from './types'
 import WebSocket from 'isomorphic-ws'
 import { Buffer } from 'buffer'
-import { DiffCompressSync } from './utils'
+import { DiffCompressSync } from './differ'
 
 export interface ClientAdapter {
   sendInput(msg: InnerMsg): Promise<void>

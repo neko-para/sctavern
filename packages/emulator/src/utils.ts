@@ -108,32 +108,3 @@ export function compress(obj: unknown): Buffer {
 export function decompress<T>(buf: Buffer): T {
   return JSON.parse(inflateRaw(buf, { to: 'string' }))
 }
-
-export class DiffCompressSync<T> {
-  value: T
-
-  constructor(init: T = {} as T) {
-    this.value = init
-  }
-
-  directSet(buf: Buffer) {
-    this.value = decompress<T>(buf)
-  }
-
-  directGet(): Buffer {
-    return compress(this.value)
-  }
-
-  applyPatch(buf: Buffer) {
-    this.value = patch(this.value, decompress<Delta>(buf))
-  }
-
-  createPatch(v: T): Buffer | null {
-    const dlt = diff(this.value, v)
-    if (!dlt) {
-      return null
-    }
-    this.value = v
-    return compress(dlt)
-  }
-}

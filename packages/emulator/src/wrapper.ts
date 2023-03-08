@@ -1,6 +1,6 @@
 import { GameInstance } from './game'
 import { StateTransfer } from './stateTransfer'
-import type { GameConfig } from './types'
+import type { GameConfig, GameState } from './types'
 import defaultManager from './serialize'
 import {
   PresetPoolPack,
@@ -8,11 +8,7 @@ import {
   PvpPresetActiveUnit,
 } from '@sctavern/data'
 import { ServerAdapter } from './adapter'
-
-export interface PortableSave {
-  old: string[]
-  new: string[]
-}
+import { UndoRedoSave, UndoRedoSync } from './differ'
 
 export const DefaultGameConfig: GameConfig = {
   Pack: ['核心'],
@@ -31,7 +27,8 @@ export class Wrapper {
   stateTransfer: StateTransfer
   adapters: ServerAdapter[]
   game: GameInstance
-  save: PortableSave
+
+  save: UndoRedoSync
 
   loading: boolean
 
@@ -68,10 +65,9 @@ export class Wrapper {
       },
       this.stateTransfer
     )
-    this.save = {
-      old: [defaultManager.serialize(this.game)],
-      new: [],
-    }
+    this.save = new UndoRedoSync(
+      JSON.parse(defaultManager.serialize(this.game))
+    )
 
     this.loading = false
 
@@ -127,52 +123,48 @@ export class Wrapper {
   init(cfg: GameConfig) {
     this.unbind()
     this.game = new GameInstance(cfg, this.stateTransfer)
-    this.save = {
-      old: [defaultManager.serialize(this.game)],
-      new: [],
-    }
+    this.save = new UndoRedoSync(
+      JSON.parse(defaultManager.serialize(this.game))
+    )
     this.saveStateChanged()
   }
 
-  load(save: PortableSave) {
+  load(save: UndoRedoSave) {
     // this.save = save
-    this.save = JSON.parse(JSON.stringify(save))
+    this.save = UndoRedoSync.from(save)
     this.loadActive()
   }
 
   loadActive() {
     this.unbind()
     this.game = defaultManager.deserialize(
-      this.save.old[this.save.old.length - 1]
+      JSON.stringify(this.save.current)
     ) as GameInstance
     this.bind()
     this.saveStateChanged()
   }
 
   undo() {
-    if (this.save.old.length > 1) {
-      this.save.new.push(this.save.old.pop() as string)
+    if (this.save.undo()) {
       this.loadActive()
     }
   }
 
   redo() {
-    if (this.save.new.length > 0) {
-      this.save.old.push(this.save.new.pop() as string)
+    if (this.save.redo()) {
       this.loadActive()
     }
   }
 
   getState() {
     return {
-      canRedo: this.save.new.length > 0,
-      canUndo: this.save.old.length > 1,
+      canRedo: this.save.post.length > 0,
+      canUndo: this.save.prev.length > 1,
     }
   }
 
   autoSave() {
-    this.save.new = []
-    this.save.old.push(defaultManager.serialize(this.game))
+    this.save.do(JSON.parse(defaultManager.serialize(this.game)))
     this.saveStateChanged()
   }
 }

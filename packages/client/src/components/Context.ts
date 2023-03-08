@@ -11,7 +11,7 @@ import { createContext } from 'react'
 Init()
 
 const dl = directLinkAdapters()
-const fake = new Wrapper(dl.server)
+const fake = new Wrapper()
 const client = new Client(0, dl.client)
 const ctx = fake.game.getState()
 
