@@ -5,7 +5,6 @@ import type { GameInstance, LCG } from './game'
 import cm from './serialize'
 import type { Descriptor } from './types'
 import { deflateRaw, inflateRaw } from 'pako'
-import { diff, patch, type Delta } from './differ'
 
 export function rep(v: UnitKey, n: number) {
   return Array.from({ length: n }, () => v)
@@ -13,6 +12,16 @@ export function rep(v: UnitKey, n: number) {
 
 export function repX<T>(v: T, n: number) {
   return Array.from({ length: n }, () => v)
+}
+
+export function chunk<T>(arr: T[], k: number) {
+  let i = 0
+  const res: T[][] = []
+  while (i < arr.length) {
+    res.push(arr.slice(i, i + k))
+    i += k
+  }
+  return res
 }
 
 export function dup<T>(v: T): T {

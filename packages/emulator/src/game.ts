@@ -2,7 +2,7 @@ import type { InnerMsg } from './events'
 import { PlayerInstance } from './player'
 import { Pool } from './pool'
 import type { GameState, GameConfig, GameStatus, CounterTarget } from './types'
-import { dup, repX } from './utils'
+import { chunk, dup, repX } from './utils'
 import { Attribute } from './attrib'
 import type { StateTransfer } from './stateTransfer'
 
@@ -41,92 +41,30 @@ export class LCG {
   }
 }
 
-const counterMap: Record<'over7' | 'over5' | 'over3', [number, number][][]> = {
-  over7: [
-    [
-      [0, 1],
-      [2, 3],
-      [4, 5],
-      [6, 7],
-    ],
-    [
-      [0, 3],
-      [1, 5],
-      [2, 7],
-      [4, 6],
-    ],
-    [
-      [0, 5],
-      [3, 7],
-      [1, 6],
-      [2, 4],
-    ],
-    [
-      [0, 7],
-      [5, 6],
-      [3, 4],
-      [1, 2],
-    ],
-    [
-      [0, 6],
-      [7, 4],
-      [5, 2],
-      [3, 1],
-    ],
-    [
-      [0, 4],
-      [6, 2],
-      [7, 1],
-      [5, 3],
-    ],
-    [
-      [0, 2],
-      [4, 1],
-      [6, 3],
-      [7, 5],
-    ],
-  ],
-  over5: [
-    [
-      [0, 1],
-      [2, 3],
-      [4, 5],
-    ],
-    [
-      [0, 3],
-      [1, 4],
-      [2, 4],
-    ],
-    [
-      [0, 5],
-      [3, 4],
-      [1, 2],
-    ],
-    [
-      [0, 4],
-      [5, 2],
-      [3, 1],
-    ],
-    [
-      [0, 2],
-      [4, 1],
-      [5, 3],
-    ],
-  ],
-  over3: [
-    [
-      [0, 1],
-      [2, 3],
-    ],
-    [
-      [0, 3],
-      [1, 2],
-    ],
-    [
-      [0, 2],
-      [3, 1],
-    ],
-  ],
+function doShift(pos: number[]) {
+  const arr = pos
+    .slice(1)
+    .map((value, index) => ({
+      value,
+      index,
+      dir: index % 2 === 0,
+    }))
+    .sort((a, b) => {
+      if (a.dir === b.dir) {
+        return a.dir ? a.index - b.index : b.index - a.index
+      } else {
+        return a.dir ? -1 : 1
+      }
+    })
+  const newarr = arr.map(x => x.value)
+  newarr.push(newarr.shift() as number)
+  arr.forEach((value, index) => {
+    value.value = newarr[index]
+  })
+  arr.sort((a, b) => {
+    return a.index - b.index
+  })
+  return [pos[0], ...arr.map(x => x.value)]
 }
 
 export class GameInstance {
@@ -144,7 +82,6 @@ export class GameInstance {
   playerTargets: [number, number][]
 
   counterOrder: number[]
-  counterDelta: number
 
   player: PlayerInstance[]
 
@@ -168,7 +105,6 @@ export class GameInstance {
       { length: this.config.Role.length },
       (v, k) => k
     )
-    this.counterDelta = 0
 
     this.player = repX(null, this.config.Role.length).map((v, i) => {
       return new PlayerInstance(this, this.config.Role[i])
@@ -227,7 +163,6 @@ export class GameInstance {
     this.attrib.set('BaseDamage', 6)
     this.attrib.set('ValueDamageDivider', 500)
     this.lcg.shuffle(this.counterOrder)
-    this.counterDelta = 0
     this.roundStart()
   }
 
@@ -262,19 +197,8 @@ export class GameInstance {
           index: 0,
         }
       } else {
-        const counterData: [number, number][][] =
-          this.counterOrder.length >= 7
-            ? counterMap.over7
-            : this.counterOrder.length >= 5
-            ? counterMap.over5
-            : this.counterOrder.length >= 3
-            ? counterMap.over3
-            : [[[0, 1]]]
-        const rDlt = this.counterDelta % counterData.length
-        this.playerTargets = counterData[rDlt].map(pair => [
-          this.counterOrder[pair[0]],
-          this.counterOrder[pair[1]],
-        ])
+        this.counterOrder = doShift(this.counterOrder)
+        this.playerTargets = chunk(this.counterOrder, 2) as [number, number][]
         this.playerTargets.forEach(([a, b]) => {
           if (a >= 0) {
             this.player[a].next_target =
@@ -470,10 +394,8 @@ export class GameInstance {
         if (co.length % 2 === 1) {
           co.push(-1)
         }
+        this.lcg.shuffle(co)
         this.counterOrder = co
-        this.counterDelta = 0
-      } else {
-        this.counterDelta += 1
       }
     }
 
