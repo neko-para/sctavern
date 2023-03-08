@@ -62,3 +62,15 @@
 .text-align-end {
   text-align: end;
 }
+
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+.ah-50 {
+  height: 50vh;
+}
+
+.ah-75 {
+  height: 75vh;
+}

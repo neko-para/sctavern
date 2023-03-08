@@ -203,9 +203,9 @@ function GameConfig(props: PropsWithChildren<Props>) {
 
   return (
     <Fragment>
-      <CardContent>
+      <CardContent className="overflow-y-auto ah-50">
         <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" rowGap={2}>
-          <Box gridColumn="span 10">
+          <Box gridColumn="span 9">
             <TextField
               fullWidth
               type="number"
@@ -220,7 +220,7 @@ function GameConfig(props: PropsWithChildren<Props>) {
               }}
             ></TextField>
           </Box>
-          <Box gridColumn="span 2" alignSelf="center" justifySelf="center">
+          <Box gridColumn="span 3" alignSelf="center" justifySelf="center">
             <Button
               variant="contained"
               onClick={() => {
@@ -272,7 +272,7 @@ function GameConfig(props: PropsWithChildren<Props>) {
               随机
             </Button>
           </Box>
-          <Box gridColumn="span 3" alignSelf="center" justifySelf="center">
+          <Box gridColumn="span 6" alignSelf="center" justifySelf="center">
             <Button
               variant="contained"
               disabled={props.local}
@@ -287,7 +287,7 @@ function GameConfig(props: PropsWithChildren<Props>) {
               添加
             </Button>
           </Box>
-          <Box gridColumn="span 3">
+          <Box gridColumn="span 6">
             <FormControlLabel
               label="启用PVE"
               control={
@@ -299,7 +299,7 @@ function GameConfig(props: PropsWithChildren<Props>) {
               }
             ></FormControlLabel>
           </Box>
-          <Box gridColumn="span 6" alignSelf="center" justifySelf="center">
+          <Box gridColumn="span 12" alignSelf="center" justifySelf="center">
             {config.Pve &&
             config.Role[0]
               .map(r => noPveRoles.includes(r))

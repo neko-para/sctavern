@@ -121,7 +121,15 @@ function RemoteConfig() {
                   setTab(1)
                 })
               }}
-            ></GameConfig>
+            >
+              <Button
+                onClick={() => {
+                  navigate('/local/config')
+                }}
+              >
+                单机
+              </Button>
+            </GameConfig>
           </Fragment>
         )}
         {tab === 1 && (

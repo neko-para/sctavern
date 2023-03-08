@@ -10,4 +10,7 @@ export const tr = {
   lock: '锁定',
   unlock: '解锁',
   finish: '结束',
+  Player: '玩家',
+  AI: '电脑',
+  Amon: '埃蒙',
 } as const

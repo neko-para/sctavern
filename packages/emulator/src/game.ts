@@ -354,8 +354,8 @@ export class GameInstance {
             if (restA <= restB * 1.2) {
               return {
                 state: 'DR',
-                aLoss: this.attrib.get('BaseDamage'),
-                bLoss: this.attrib.get('BaseDamage'),
+                aLoss: Math.floor(this.attrib.get('BaseDamage') / 2),
+                bLoss: Math.floor(this.attrib.get('BaseDamage') / 2),
               }
             } else {
               return {
@@ -372,8 +372,8 @@ export class GameInstance {
             if (restB <= restA * 1.2) {
               return {
                 state: 'DR',
-                aLoss: this.attrib.get('BaseDamage'),
-                bLoss: this.attrib.get('BaseDamage'),
+                aLoss: Math.floor(this.attrib.get('BaseDamage') / 2),
+                bLoss: Math.floor(this.attrib.get('BaseDamage') / 2),
               }
             } else {
               return {

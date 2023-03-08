@@ -17,7 +17,15 @@ function LocalConfig() {
                 })
             )
           }}
-        ></GameConfig>
+        >
+          <Button
+            onClick={() => {
+              navigate('/remote/config')
+            }}
+          >
+            联机
+          </Button>
+        </GameConfig>
       </CardView>
     </Container>
   )
