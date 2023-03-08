@@ -1,7 +1,7 @@
 import { compress, decompress } from '../utils'
-import { diff, patch, unpatch, type Delta } from './utils'
+import { diff, patch, unpatch, type Delta } from 'jsondiffpatch-rc'
 
-export { diff, patch, unpatch, type Delta } from './utils'
+export { diff, patch, unpatch, type Delta }
 
 export class DiffCompressSync<T> {
   value: T
