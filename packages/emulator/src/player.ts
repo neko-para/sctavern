@@ -714,7 +714,7 @@ export class PlayerInstance {
         },
         {
           action: 'finish',
-          enable: this.curStatus() === 'normal',
+          enable: this.curStatus() === 'normal' && !this.fin,
           msg: {
             msg: '$finish',
             player: ip,

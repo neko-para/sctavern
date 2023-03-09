@@ -9,10 +9,7 @@
     "dev:client": "cd packages/client && npm run dev",
     "build:server-dist": "cd packages/server && npm run build:dist",
     "build:dist": "npm run build:data && npm run build:client-direct && npm run build:server-dist",
-    "dev:server": "cd packages/server && npm run api",
-
-    "build:clientvue": "cd packages/client-vue && npm run build",
-    "dev:clientvue": "cd packages/client-vue && npm run dev"
+    "dev:server": "cd packages/server && npm run api"
   },
   "workspaces": {
     "packages": [
