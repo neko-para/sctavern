@@ -1,7 +1,6 @@
 import { initDefault } from './serialize'
 
 export * from './adapter'
-export * from './battle'
 export * from './card'
 export * from './client'
 export * from './events'
