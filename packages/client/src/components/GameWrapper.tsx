@@ -9,10 +9,19 @@ export interface Props {
 }
 
 function GameWrapper(props: PropsWithChildren<Props>) {
-  const [state, setState] = useState<GameState>(useContext(gameContext))
-  props.client.adapter.onState = st => {
-    setState(st)
-  }
+  const [state, setState] = useState<GameState>(
+    props.client.state ?? useContext(gameContext)
+  )
+  useEffect(() => {
+    props.client.onStateChanged = () => {
+      if (props.client.state) {
+        setState(props.client.state)
+      }
+    }
+    return () => {
+      props.client.onStateChanged = () => void 0
+    }
+  }, [props.client])
   return (
     <gameContext.Provider value={state}>
       <clientContext.Provider value={props.client}>

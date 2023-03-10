@@ -20,38 +20,53 @@ function LocalGame(props: Props) {
   const cfgJson = searchParams.get('config')
   const navigate = useNavigate()
 
-  const adapter = useRef(directLinkAdapters())
-  const wrapper = useRef(new Wrapper())
-  const client = useRef(new Client(0, adapter.current.client))
+  const [wrapper, setWrapper] = useState<Wrapper | null>(null)
+  const [client, setClient] = useState<Client | null>(null)
   useEffect(() => {
-    wrapper.current.addAdapter(adapter.current.server)
+    const adapter = directLinkAdapters()
+    const w = new Wrapper()
+    const c = new Client(0, adapter.client)
     if (cfgJson) {
-      wrapper.current.init(JSON.parse(cfgJson))
+      w.init(JSON.parse(cfgJson))
     }
-    wrapper.current.game.start()
+    w.game.start()
+    w.addAdapter(adapter.server)
+    setWrapper(w)
+    setClient(c)
+    return () => {
+      if (wrapper) {
+        wrapper.adapters = []
+      }
+      setWrapper(null)
+      setClient(null)
+    }
   }, [])
-  return (
-    <GameWrapper client={client.current} instance={props.instance}>
-      <Box
-        component={CardView}
-        alignSelf="start"
-        display="grid"
-        gridTemplateColumns="repeat(2, 1fr)"
-      >
-        <Button
-          onClick={() => {
-            navigate('/local/config')
-          }}
+  if (client && wrapper) {
+    return (
+      <GameWrapper client={client} instance={props.instance}>
+        <Box
+          component={CardView}
+          alignSelf="start"
+          display="grid"
+          gridTemplateColumns="repeat(2, 1fr)"
         >
-          返回
-        </Button>
-        <div></div>
-        <Control wrapper={wrapper.current}></Control>
-        <Cheat></Cheat>
-        <Storage wrapper={wrapper.current}></Storage>
-      </Box>
-    </GameWrapper>
-  )
+          <Button
+            onClick={() => {
+              navigate('/local/config')
+            }}
+          >
+            返回
+          </Button>
+          <div></div>
+          <Control wrapper={wrapper}></Control>
+          <Cheat></Cheat>
+          <Storage wrapper={wrapper}></Storage>
+        </Box>
+      </GameWrapper>
+    )
+  } else {
+    return <div></div>
+  }
 }
 
 export default LocalGame
