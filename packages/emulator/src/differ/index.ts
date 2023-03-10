@@ -1,5 +1,5 @@
 import { compress, decompress } from '../utils'
-import { diff, patch, unpatch, type Delta } from 'jsondiffpatch-rc'
+import { diff, patch, unpatch, type Delta } from './wrap'
 
 export { diff, patch, unpatch, type Delta }
 

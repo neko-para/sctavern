@@ -76,7 +76,6 @@ export default defineConfig(({ mode }) => ({
           }
         },
       },
-      external: ['chalk'],
     },
   },
   server: {
