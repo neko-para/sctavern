@@ -8,7 +8,15 @@ import type {
   ObtainUnitWay,
 } from './types'
 
-type ApplyKey<T, I> = T extends unknown ? T & I : never
+type merge<K1, K2> = {
+  [key in keyof K1 | keyof K2]: key extends keyof K1
+    ? K1[key]
+    : key extends keyof K2
+    ? K2[key]
+    : never
+}
+
+type ApplyKey<T, I> = T extends unknown ? merge<T, I> : never
 
 export type InputMsg = ApplyKey<
   | {

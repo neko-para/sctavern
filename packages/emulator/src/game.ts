@@ -266,8 +266,8 @@ export class GameInstance {
         const aIsAI = a < 0
         const bIsAI = b < 0
 
-        const restA = this.player[a].value() * (aIsAI ? 0.5 : 1)
-        const restB = this.player[b].value() * (bIsAI ? 0.5 : 1)
+        const restA = aIsAI ? 0 : this.player[a].value()
+        const restB = bIsAI ? 0 : this.player[b].value()
 
         const result = ((): {
           state: 'AW' | 'BW' | 'DR'
