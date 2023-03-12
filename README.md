@@ -1,6 +1,10 @@
 [TOC]
 
-# 星际酒馆模拟器 解析
+# 星际酒馆模拟器
+
+### 部署在[GithubPage](https://neko-para.github.io/sctavern/)
+
+> 该页面不支持联机
 
 ## 数据
 
