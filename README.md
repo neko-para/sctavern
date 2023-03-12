@@ -6,6 +6,16 @@
 
 > 该页面不支持联机
 
+### 原始游戏图片
+
+![](./assets/realgame1.png)
+
+### 模拟器图片(PC)
+
+![](./assets/emugame1.png)
+
+![](./assets/emugame2.png)
+
 ## 数据
 
 存放游戏核心的数据信息
